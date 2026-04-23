@@ -52,6 +52,77 @@ static gint    gtk_argc = 0;
 static gchar **gtk_argv = NULL;
 
 static gchar **
+split_file_list (const gchar *str)
+{
+  gchar **parts;
+  gint i, j;
+
+  if (str == NULL)
+    return g_new0 (gchar *, 1);
+
+  parts = g_strsplit (str, G_SEARCHPATH_SEPARATOR_S, -1);
+
+  for (i = 0, j = 0; parts[i]; i++)
+    {
+      gchar *part = g_strstrip (parts[i]);
+
+      if (*part == '\0')
+        {
+          g_free (parts[i]);
+          parts[i] = NULL;
+          continue;
+        }
+
+      if (part[0] == '~' && part[1] == G_DIR_SEPARATOR)
+        {
+          const gchar *home = g_get_home_dir ();
+
+          if (home && *home)
+            {
+              gchar *expanded = g_build_filename (home, part + 2, NULL);
+              g_free (parts[i]);
+              parts[i] = expanded;
+            }
+          else if (part != parts[i])
+            {
+              gchar *trimmed = g_strdup (part);
+              g_free (parts[i]);
+              parts[i] = trimmed;
+            }
+        }
+      else if (part[0] == '~' && part[1] == '\0')
+        {
+          const gchar *home = g_get_home_dir ();
+
+          if (home && *home)
+            {
+              gchar *expanded = g_strdup (home);
+              g_free (parts[i]);
+              parts[i] = expanded;
+            }
+          else if (part != parts[i])
+            {
+              gchar *trimmed = g_strdup (part);
+              g_free (parts[i]);
+              parts[i] = trimmed;
+            }
+        }
+      else if (part != parts[i])
+        {
+          gchar *trimmed = g_strdup (part);
+          g_free (parts[i]);
+          parts[i] = trimmed;
+        }
+
+      parts[j++] = parts[i];
+    }
+
+  parts[j] = NULL;
+
+  return parts;
+}
+
+static gchar **
 get_module_path (void)
 {
   const gchar *module_path_env;
@@ -93,7 +164,7 @@ get_module_path (void)
   g_free (home_gtk_dir);
   g_free (default_dir);
 
-  result = pango_split_file_list (module_path);
+  result = split_file_list (module_path);
   g_free (module_path);
 
   return result;
@@ -402,7 +473,7 @@ load_modules (const char *module_str)
 
   GTK_NOTE (MODULES, g_print ("Loading module list: %s\n", module_str));
 
-  module_names = pango_split_file_list (module_str);
+  module_names = split_file_list (module_str);
   for (i = 0; module_names[i]; i++) 
     module_list = load_module (module_list, module_names[i]);
 

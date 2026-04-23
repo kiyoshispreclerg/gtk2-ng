@@ -83,6 +83,60 @@ print_escaped (GString *contents, const char *str)
   g_string_append_c (contents, ' ');
 }
 
+static char **
+split_file_list (const char *str)
+{
+  gchar **parts;
+  gint i, j;
+
+  if (str == NULL)
+    return g_new0 (gchar *, 1);
+
+  parts = g_strsplit (str, G_SEARCHPATH_SEPARATOR_S, -1);
+
+  for (i = 0, j = 0; parts[i]; i++)
+    {
+      gchar *part = g_strstrip (parts[i]);
+
+      if (*part == '\0')
+        {
+          g_free (parts[i]);
+          parts[i] = NULL;
+          continue;
+        }
+
+      if (part[0] == '~' && part[1] == G_DIR_SEPARATOR)
+        {
+          const gchar *home = g_get_home_dir ();
+
+          if (home && *home)
+            {
+              gchar *expanded = g_build_filename (home, part + 2, NULL);
+              g_free (parts[i]);
+              parts[i] = expanded;
+            }
+          else if (part != parts[i])
+            {
+              gchar *trimmed = g_strdup (part);
+              g_free (parts[i]);
+              parts[i] = trimmed;
+            }
+        }
+      else if (part != parts[i])
+        {
+          gchar *trimmed = g_strdup (part);
+          g_free (parts[i]);
+          parts[i] = trimmed;
+        }
+
+      parts[j++] = parts[i];
+    }
+
+  parts[j] = NULL;
+
+  return parts;
+}
+
 static gboolean
 query_module (const char *dir, const char *name, GString *contents)
 {
@@ -194,7 +248,7 @@ int main (int argc, char **argv)
 
       g_string_append_printf (contents, "# ModulesPath = %s\n#\n", path);
 
-      dirs = pango_split_file_list (path);
+      dirs = split_file_list (path);
       dirs_done = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
 
       for (i = 0; dirs[i]; i++)
@@ -224,6 +278,7 @@ int main (int argc, char **argv)
           }
 
       g_hash_table_destroy (dirs_done);
+      g_strfreev (dirs);
     }
   else
     {
