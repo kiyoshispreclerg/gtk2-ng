@@ -5383,7 +5383,7 @@ supports_am_pm (void)
  * Returns a newly allocated string holding UTC time in HH:MM:SS format
  * or NULL.
  */
-gchar *
+static gchar *
 localtime_to_utctime (const char *local_time)
 {
   const char *formats_0[] = {" %I : %M : %S %p ", " %p %I : %M : %S ",
@@ -5396,6 +5396,8 @@ localtime_to_utctime (const char *local_time)
   struct tm  *actual_local_time;
   struct tm  *actual_utc_time;
   struct tm   local_print_time;
+  struct tm   utc_now;
+  struct tm   local_now;
   struct tm   utc_print_time;
   struct tm   diff_time;
   gchar      *utc_time = NULL;
@@ -5424,10 +5426,22 @@ localtime_to_utctime (const char *local_time)
   if (end != NULL && end[0] == '\0')
     {
       time_t rawtime;
+      struct tm *tmp_tm;
+
       time (&rawtime);
 
-      actual_utc_time = g_memdup (gmtime (&rawtime), sizeof (struct tm));
-      actual_local_time = g_memdup (localtime (&rawtime), sizeof (struct tm));
+      tmp_tm = gmtime (&rawtime);
+      if (tmp_tm == NULL)
+        return NULL;
+      utc_now = *tmp_tm;
+
+      tmp_tm = localtime (&rawtime);
+      if (tmp_tm == NULL)
+        return NULL;
+      local_now = *tmp_tm;
+
+      actual_utc_time = &utc_now;
+      actual_local_time = &local_now;
 
       diff_time.tm_hour = actual_utc_time->tm_hour - actual_local_time->tm_hour;
       diff_time.tm_min  = actual_utc_time->tm_min  - actual_local_time->tm_min;

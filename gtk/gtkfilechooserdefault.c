@@ -219,7 +219,7 @@ enum {
 	MODEL_COL_NUM_COLUMNS,					\
 	G_TYPE_STRING,		  /* MODEL_COL_NAME */		\
 	G_TYPE_INT64,		  /* MODEL_COL_SIZE */		\
-	G_TYPE_LONG,		  /* MODEL_COL_MTIME */		\
+	G_TYPE_INT64,		  /* MODEL_COL_MTIME */		\
 	G_TYPE_FILE,		  /* MODEL_COL_FILE */		\
 	G_TYPE_STRING,		  /* MODEL_COL_NAME_COLLATED */	\
 	G_TYPE_BOOLEAN,		  /* MODEL_COL_IS_FOLDER */	\
@@ -6767,10 +6767,10 @@ mtime_sort_func (GtkTreeModel *model,
   COMPARE_DIRECTORIES;
   else
     {
-      glong ta, tb;
+      gint64 ta, tb;
 
-      ta = g_value_get_long (_gtk_file_system_model_get_value (fs_model, a, MODEL_COL_MTIME));
-      tb = g_value_get_long (_gtk_file_system_model_get_value (fs_model, b, MODEL_COL_MTIME));
+      ta = g_value_get_int64 (_gtk_file_system_model_get_value (fs_model, a, MODEL_COL_MTIME));
+      tb = g_value_get_int64 (_gtk_file_system_model_get_value (fs_model, b, MODEL_COL_MTIME));
 
       return ta < tb ? -1 : (ta == tb ? 0 : 1);
     }
@@ -7165,12 +7165,13 @@ stop_loading_and_clear_list_model (GtkFileChooserDefault *impl,
 }
 
 static char *
-my_g_format_time_for_display (glong secs)
+my_g_format_time_for_display (gint64 secs)
 {
   GDate mtime, now;
+  GDateTime *mtime_dt;
+  GDateTime *now_dt;
   gint days_diff;
   struct tm tm_mtime;
-  time_t time_mtime, time_now;
   const gchar *format;
   gchar *locale_format = NULL;
   gchar buf[256];
@@ -7181,28 +7182,39 @@ my_g_format_time_for_display (glong secs)
   char charset[20];
 #endif
 
-  time_mtime = secs;
+  mtime_dt = g_date_time_new_from_unix_local (secs);
+  if (mtime_dt == NULL)
+    return g_strdup (_("Unknown"));
 
-#ifdef HAVE_LOCALTIME_R
-  localtime_r ((time_t *) &time_mtime, &tm_mtime);
-#else
-  {
-    struct tm *ptm = localtime ((time_t *) &time_mtime);
+  memset (&tm_mtime, 0, sizeof (tm_mtime));
+  tm_mtime.tm_sec = g_date_time_get_second (mtime_dt);
+  tm_mtime.tm_min = g_date_time_get_minute (mtime_dt);
+  tm_mtime.tm_hour = g_date_time_get_hour (mtime_dt);
+  tm_mtime.tm_mday = g_date_time_get_day_of_month (mtime_dt);
+  tm_mtime.tm_mon = g_date_time_get_month (mtime_dt) - 1;
+  tm_mtime.tm_year = g_date_time_get_year (mtime_dt) - 1900;
+  tm_mtime.tm_wday = g_date_time_get_day_of_week (mtime_dt) % 7;
+  tm_mtime.tm_yday = g_date_time_get_day_of_year (mtime_dt) - 1;
+  tm_mtime.tm_isdst = -1;
 
-    if (!ptm)
-      {
-        g_warning ("ptm != NULL failed");
-        
-        return g_strdup (_("Unknown"));
-      }
-    else
-      memcpy ((void *) &tm_mtime, (void *) ptm, sizeof (struct tm));
-  }
-#endif /* HAVE_LOCALTIME_R */
+  g_date_clear (&mtime, 1);
+  g_date_set_dmy (&mtime,
+                  g_date_time_get_day_of_month (mtime_dt),
+                  (GDateMonth) g_date_time_get_month (mtime_dt),
+                  g_date_time_get_year (mtime_dt));
 
-  g_date_set_time_t (&mtime, time_mtime);
-  time_now = time (NULL);
-  g_date_set_time_t (&now, time_now);
+  now_dt = g_date_time_new_now_local ();
+  if (now_dt == NULL)
+    {
+      g_date_time_unref (mtime_dt);
+      return g_strdup (_("Unknown"));
+    }
+
+  g_date_clear (&now, 1);
+  g_date_set_dmy (&now,
+                  g_date_time_get_day_of_month (now_dt),
+                  (GDateMonth) g_date_time_get_month (now_dt),
+                  g_date_time_get_year (now_dt));
 
   days_diff = g_date_get_julian (&now) - g_date_get_julian (&mtime);
 
@@ -7237,7 +7249,7 @@ my_g_format_time_for_display (glong secs)
   if (dot != NULL)
     {
       codepage = g_ascii_strtoll (dot+1, NULL, 10);
-      
+
       /* All codepages should fit in 16 bits AFAIK */
       if (codepage > 0 && codepage < 65536)
         {
@@ -7263,7 +7275,10 @@ my_g_format_time_for_display (glong secs)
   if (date_str == NULL)
     date_str = g_strdup (_("Unknown"));
 
+  g_date_time_unref (now_dt);
+  g_date_time_unref (mtime_dt);
   g_free (locale_format);
+
   return date_str;
 }
 
@@ -7480,16 +7495,25 @@ file_system_model_set (GtkFileSystemModel *model,
     case MODEL_COL_MTIME:
     case MODEL_COL_MTIME_TEXT:
       {
-        GTimeVal tv;
+        GDateTime *dt;
+        gint64 tv = 0;
+
         if (info == NULL)
           break;
-        g_file_info_get_modification_time (info, &tv);
+
+        dt = g_file_info_get_modification_date_time (info);
+        if (dt)
+          {
+            tv = g_date_time_to_unix (dt);
+            g_date_time_unref (dt);
+          }
+
         if (column == MODEL_COL_MTIME)
-          g_value_set_long (value, tv.tv_sec);
-        else if (tv.tv_sec == 0)
+          g_value_set_int64 (value, tv);
+        else if (tv == 0)
           g_value_set_static_string (value, _("Unknown"));
         else
-          g_value_take_string (value, my_g_format_time_for_display (tv.tv_sec));
+          g_value_take_string (value, my_g_format_time_for_display (tv));
         break;
       }
     case MODEL_COL_ELLIPSIZE:

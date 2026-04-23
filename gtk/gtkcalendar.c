@@ -683,15 +683,15 @@ static void
 gtk_calendar_init (GtkCalendar *calendar)
 {
   GtkWidget *widget = GTK_WIDGET (calendar);
-  time_t secs;
-  struct tm *tm;
+  GDateTime *now_dt;
   gint i;
 #ifdef G_OS_WIN32
   wchar_t wbuffer[100];
 #else
   static const char *month_format = NULL;
   char buffer[255];
-  time_t tmp_time;
+  GDateTime *tmp_dt;
+  gchar *tmp_str;
 #endif
   GtkCalendarPrivate *priv;
   gchar *year_before;
@@ -705,67 +705,89 @@ gtk_calendar_init (GtkCalendar *calendar)
 #endif
 
   priv = calendar->priv = G_TYPE_INSTANCE_GET_PRIVATE (calendar,
-						       GTK_TYPE_CALENDAR,
-						       GtkCalendarPrivate);
+                                                       GTK_TYPE_CALENDAR,
+                                                       GtkCalendarPrivate);
 
   gtk_widget_set_can_focus (widget, TRUE);
-  
+
   if (!default_abbreviated_dayname[0])
     for (i=0; i<7; i++)
       {
 #ifndef G_OS_WIN32
-	tmp_time= (i+3)*86400;
-	strftime (buffer, sizeof (buffer), "%a", gmtime (&tmp_time));
-	default_abbreviated_dayname[i] = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
+        tmp_dt = g_date_time_new_utc (2001, 1, i + 1, 12, 0, 0.0);
+        if (tmp_dt)
+          {
+            tmp_str = g_date_time_format (tmp_dt, "%a");
+            default_abbreviated_dayname[i] = tmp_str ? tmp_str : g_strdup ("");
+            g_date_time_unref (tmp_dt);
+          }
+        else
+          default_abbreviated_dayname[i] = g_strdup ("");
 #else
-	if (!GetLocaleInfoW (GetThreadLocale (), LOCALE_SABBREVDAYNAME1 + (i+6)%7,
-			     wbuffer, G_N_ELEMENTS (wbuffer)))
-	  default_abbreviated_dayname[i] = g_strdup_printf ("(%d)", i);
-	else
-	  default_abbreviated_dayname[i] = g_utf16_to_utf8 (wbuffer, -1, NULL, NULL, NULL);
+        if (!GetLocaleInfoW (GetThreadLocale (), LOCALE_SABBREVDAYNAME1 + (i+6)%7,
+                             wbuffer, G_N_ELEMENTS (wbuffer)))
+          default_abbreviated_dayname[i] = g_strdup_printf ("(%d)", i);
+        else
+          default_abbreviated_dayname[i] = g_utf16_to_utf8 (wbuffer, -1, NULL, NULL, NULL);
 #endif
       }
-  
+
   if (!default_monthname[0])
     for (i=0; i<12; i++)
       {
 #ifndef G_OS_WIN32
-	tmp_time=i*2764800;
-	if (G_UNLIKELY (month_format == NULL))
-	  {
-	    buffer[0] = '\0';
-	    month_format = "%OB";
-	    strftime (buffer, sizeof (buffer), month_format, gmtime (&tmp_time));
-	    /* "%OB" is not supported in Linux with glibc < 2.27  */
-	    if (!strcmp (buffer, "%OB") || !strcmp (buffer, "OB") || !strcmp (buffer, ""))
-	      {
-		month_format = "%B";
-		strftime (buffer, sizeof (buffer), month_format, gmtime (&tmp_time));
-	      }
-	  }
-	else
-	  strftime (buffer, sizeof (buffer), month_format, gmtime (&tmp_time));
+        tmp_dt = g_date_time_new_utc (2001, i + 1, 1, 12, 0, 0.0);
+        if (G_UNLIKELY (month_format == NULL))
+          {
+            buffer[0] = '\0';
+            month_format = "%OB";
+            tmp_str = tmp_dt ? g_date_time_format (tmp_dt, month_format) : NULL;
+            if (tmp_str)
+              {
+                g_strlcpy (buffer, tmp_str, sizeof (buffer));
+                g_free (tmp_str);
+              }
 
-	default_monthname[i] = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
+            if (!strcmp (buffer, "%OB") || !strcmp (buffer, "OB") || !strcmp (buffer, ""))
+              month_format = "%B";
+          }
+
+        if (tmp_dt)
+          {
+            tmp_str = g_date_time_format (tmp_dt, month_format);
+            default_monthname[i] = tmp_str ? tmp_str : g_strdup ("");
+            g_date_time_unref (tmp_dt);
+          }
+        else
+          default_monthname[i] = g_strdup ("");
 #else
-	if (!GetLocaleInfoW (GetThreadLocale (), LOCALE_SMONTHNAME1 + i,
-			     wbuffer, G_N_ELEMENTS (wbuffer)))
-	  default_monthname[i] = g_strdup_printf ("(%d)", i);
-	else
-	  default_monthname[i] = g_utf16_to_utf8 (wbuffer, -1, NULL, NULL, NULL);
+        if (!GetLocaleInfoW (GetThreadLocale (), LOCALE_SMONTHNAME1 + i,
+                             wbuffer, G_N_ELEMENTS (wbuffer)))
+          default_monthname[i] = g_strdup_printf ("(%d)", i);
+        else
+          default_monthname[i] = g_utf16_to_utf8 (wbuffer, -1, NULL, NULL, NULL);
 #endif
       }
-  
+
   /* Set defaults */
-  secs = time (NULL);
-  tm = localtime (&secs);
-  calendar->month = tm->tm_mon;
-  calendar->year  = 1900 + tm->tm_year;
+  now_dt = g_date_time_new_now_local ();
+  if (now_dt)
+    {
+      calendar->month = g_date_time_get_month (now_dt) - 1;
+      calendar->year = g_date_time_get_year (now_dt);
+      calendar->selected_day = g_date_time_get_day_of_month (now_dt);
+      g_date_time_unref (now_dt);
+    }
+  else
+    {
+      calendar->month = 0;
+      calendar->year = 1970;
+      calendar->selected_day = 1;
+    }
 
   for (i=0;i<31;i++)
     calendar->marked_date[i] = FALSE;
   calendar->num_marked_dates = 0;
-  calendar->selected_day = tm->tm_mday;
   
   calendar->display_flags = (GTK_CALENDAR_SHOW_HEADING |
 			     GTK_CALENDAR_SHOW_DAY_NAMES |
@@ -2212,8 +2234,7 @@ calendar_paint_header (GtkCalendar *calendar)
   PangoLayout *layout;
   PangoRectangle logical_rect;
   gboolean year_left;
-  time_t tmp_time;
-  struct tm *tm;
+  GDateTime *tmp_dt;
   gchar *str;
 
   if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR) 
@@ -2233,9 +2254,7 @@ calendar_paint_header (GtkCalendar *calendar)
 		    NULL, widget, "calendar",
 		    0, 0, header_width, priv->header_h);
 
-  tmp_time = 1;  /* Jan 1 1970, 00:00:01 UTC */
-  tm = gmtime (&tmp_time);
-  tm->tm_year = calendar->year - 1900;
+  tmp_dt = g_date_time_new_utc (calendar->year, 1, 1, 12, 0, 0.0);
 
   /* Translators: This dictates how the year is displayed in
    * gtkcalendar widget.  See strftime() manual for the format.
@@ -2247,8 +2266,20 @@ calendar_paint_header (GtkCalendar *calendar)
    *
    * "%Y" is appropriate for most locales.
    */
-  strftime (buffer, sizeof (buffer), C_("calendar year format", "%Y"), tm);
-  str = g_locale_to_utf8 (buffer, -1, NULL, NULL, NULL);
+  if (tmp_dt)
+    {
+      str = g_date_time_format (tmp_dt, C_("calendar year format", "%Y"));
+      g_date_time_unref (tmp_dt);
+    }
+  else
+    str = NULL;
+
+  if (str == NULL)
+    {
+      g_snprintf (buffer, sizeof (buffer), "%u", calendar->year);
+      str = g_strdup (buffer);
+    }
+
   layout = gtk_widget_create_pango_layout (widget, str);
   g_free (str);
   

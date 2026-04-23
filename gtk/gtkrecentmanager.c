@@ -60,7 +60,7 @@ typedef struct
   
   guint count;
   
-  time_t stamp;
+  gint64 stamp;
 } RecentAppInfo;
 
 struct _GtkRecentInfo
@@ -70,9 +70,9 @@ struct _GtkRecentInfo
   gchar *display_name;
   gchar *description;
   
-  time_t added;
-  time_t modified;
-  time_t visited;
+  gint64 added;
+  gint64 modified;
+  gint64 visited;
   
   gchar *mime_type;
   
@@ -142,8 +142,9 @@ static void     gtk_recent_manager_clamp_to_age        (GtkRecentManager  *manag
                                                         gint               age);
 static void     gtk_recent_manager_clamp_to_size       (GtkRecentManager  *manager,
                                                         const gint         size);
-
-
+static gboolean recent_time_get_days_elapsed           (gint64             now,
+                                                        gint64             then,
+                                                        gint              *days_elapsed);
 static void build_recent_items_list (GtkRecentManager  *manager);
 static void purge_recent_items_list (GtkRecentManager  *manager,
                                      GError           **error);
@@ -170,6 +171,54 @@ filename_warning (const gchar *format,
   g_free (utf8);
 }
 
+static gboolean
+recent_time_get_days_elapsed (gint64 now,
+                              gint64 then,
+                              gint  *days_elapsed)
+{
+  gint64 delta;
+
+  g_return_val_if_fail (days_elapsed != NULL, FALSE);
+
+  if (now == (gint64) -1 || then == (gint64) -1)
+    return FALSE;
+
+  if (then > now)
+    {
+      *days_elapsed = 0;
+      return TRUE;
+    }
+
+  delta = now - then;
+  *days_elapsed = (gint) (delta / G_GINT64_CONSTANT (86400));
+
+  return TRUE;
+}
+static time_t
+recent_time_to_time_t (gint64 value)
+{
+  if (sizeof (time_t) == 8)
+    return (time_t) value;
+
+  if (sizeof (time_t) == 4)
+    {
+      if (value > G_MAXINT32)
+        return (time_t) G_MAXINT32;
+
+      if (value < G_MININT32)
+        return (time_t) G_MININT32;
+
+      return (time_t) value;
+    }
+
+  if (value > (gint64) G_MAXLONG)
+    return (time_t) G_MAXLONG;
+
+  if (value < (gint64) G_MINLONG)
+    return (time_t) G_MINLONG;
+
+  return (time_t) value;
+}
 /* Test of haystack has the needle prefix, comparing case
  * insensitive. haystack may be UTF-8, but needle must
  * contain only lowercase ascii. */
@@ -1576,6 +1625,8 @@ gtk_recent_manager_clamp_to_age (GtkRecentManager *manager,
     return;
 
   now = time (NULL);
+  if (now == (time_t) -1)
+    return;
 
   uris = g_bookmark_file_get_uris (priv->recent_items, &n_uris);
 
@@ -1586,8 +1637,8 @@ gtk_recent_manager_clamp_to_age (GtkRecentManager *manager,
       gint item_age;
 
       modified = g_bookmark_file_get_modified (priv->recent_items, uri, NULL);
-      item_age = (gint) ((now - modified) / (60 * 60 * 24));
-      if (item_age > age)
+      if (recent_time_get_days_elapsed (now, modified, &item_age) &&
+          item_age > age)
         g_bookmark_file_remove_item (priv->recent_items, uri, NULL);
     }
 
@@ -1841,7 +1892,7 @@ gtk_recent_info_get_added (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, (time_t) -1);
   
-  return info->added;
+  return recent_time_to_time_t (info->added);
 }
 
 /**
@@ -1861,7 +1912,7 @@ gtk_recent_info_get_modified (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, (time_t) -1);
   
-  return info->modified;
+  return recent_time_to_time_t (info->modified);
 }
 
 /**
@@ -1881,7 +1932,7 @@ gtk_recent_info_get_visited (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, (time_t) -1);
   
-  return info->visited;
+  return recent_time_to_time_t (info->visited);
 }
 
 /**
@@ -1985,7 +2036,7 @@ gtk_recent_info_get_application_info (GtkRecentInfo  *info,
     *count = ai->count;
   
   if (time_)
-    *time_ = ai->stamp;
+    *time_ = recent_time_to_time_t (ai->stamp);
 
   return TRUE;
 }
@@ -2080,7 +2131,7 @@ gchar *
 gtk_recent_info_last_application (GtkRecentInfo  *info)
 {
   GSList *l;
-  time_t last_stamp = (time_t) -1;
+  gint64 last_stamp = (gint64) -1;
   gchar *name = NULL;
   
   g_return_val_if_fail (info != NULL, NULL);
@@ -2472,17 +2523,16 @@ gtk_recent_info_get_uri_display (GtkRecentInfo *info)
 gint
 gtk_recent_info_get_age (GtkRecentInfo *info)
 {
-  time_t now, delta;
+  gint64 now;
   gint retval;
 
   g_return_val_if_fail (info != NULL, -1);
 
-  now = time (NULL);
-  
-  delta = now - info->modified;
-  
-  retval = (gint) (delta / (60 * 60 * 24));
-  
+  now = (gint64) time (NULL);
+
+  if (!recent_time_get_days_elapsed (now, info->modified, &retval))
+    return -1;
+
   return retval;
 }
 

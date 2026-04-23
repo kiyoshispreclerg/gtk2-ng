@@ -139,7 +139,7 @@ _gtk_icon_cache_new_for_path (const gchar *path)
 #undef gtk_fstat
 
   /* Verify cache is uptodate */
-  if (st.st_mtime < path_st.st_mtime)
+  if ((gint64) st.st_mtime < (gint64) path_st.st_mtime)
     {
       GTK_NOTE (ICONTHEME, 
 		g_print ("cache outdated\n"));

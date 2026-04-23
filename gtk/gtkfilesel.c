@@ -153,7 +153,7 @@ struct _CompletionDirSent
 {
 #ifndef G_PLATFORM_WIN32
   ino_t inode;
-  time_t mtime;
+  gint64 mtime;
   dev_t device;
 #endif
 
@@ -3001,7 +3001,7 @@ open_new_dir (gchar    *dir_name,
 
   sent = g_new (CompletionDirSent, 1);
 #ifndef G_PLATFORM_WIN32
-  sent->mtime = sbuf->st_mtime;
+  sent->mtime = (gint64) sbuf->st_mtime;
   sent->inode = sbuf->st_ino;
   sent->device = sbuf->st_dev;
 #endif
@@ -3189,7 +3189,7 @@ open_dir (gchar           *dir_name,
       sent = cdsl->data;
 
       if (sent->inode == sbuf.st_ino &&
-	  sent->mtime == sbuf.st_mtime &&
+          sent->mtime == (gint64) sbuf.st_mtime &&
 	  sent->device == sbuf.st_dev)
 	return attach_dir (sent, dir_name, cmpl_state);
 

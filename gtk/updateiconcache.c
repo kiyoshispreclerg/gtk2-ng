@@ -81,7 +81,8 @@ static int check_dir_mtime (const char        *dir,
                             const struct stat *sb,
                             int                tf)
 {
-  if (tf != FTW_NS && sb->st_mtime > cache_stat.st_mtime)
+  if (tf != FTW_NS &&
+      (gint64) sb->st_mtime > (gint64) cache_stat.st_mtime)
     {
       cache_up_to_date = FALSE;
       /* stop tree walk */
@@ -143,7 +144,7 @@ is_cache_up_to_date (const gchar *path)
     }
 
   /* Check mtime */
-  return cache_stat.st_mtime >= path_stat.st_mtime;
+  return (gint64) cache_stat.st_mtime >= (gint64) path_stat.st_mtime;
 }
 
 #endif  /* !HAVE_FTW_H */

@@ -137,7 +137,7 @@ typedef struct
 {
   GdkDisplay *display;
   char *startup_id;
-  GTimeVal time;
+  gint64 time_usec;
 } StartupNotificationData;
 
 static void
@@ -175,33 +175,41 @@ free_startup_timeout (void *data)
   g_free (std);
 }
 
+static gint64
+get_current_time_usec (void)
+{
+  GTimeVal now;
+
+  g_get_current_time (&now);
+
+  return ((gint64) now.tv_sec) * G_USEC_PER_SEC + now.tv_usec;
+}
+
 static gboolean
 startup_timeout (void *data)
 {
   StartupTimeoutData *std;
   GSList *tmp;
-  GTimeVal now;
+  gint64 now_usec;
   int min_timeout;
 
   std = data;
 
   min_timeout = STARTUP_TIMEOUT_LENGTH;
 
-  g_get_current_time (&now);
+  now_usec = get_current_time_usec ();
 
   tmp = std->contexts;
   while (tmp != NULL)
     {
       StartupNotificationData *sn_data;
       GSList *next;
-      double elapsed;
+      gint64 elapsed;
 
       sn_data = tmp->data;
       next = tmp->next;
 
-      elapsed =
-        ((((double) now.tv_sec - sn_data->time.tv_sec) * G_USEC_PER_SEC +
-          (now.tv_usec - sn_data->time.tv_usec))) / 1000.0;
+      elapsed = (now_usec - sn_data->time_usec) / 1000;
 
       if (elapsed >= STARTUP_TIMEOUT_LENGTH)
         {
@@ -211,7 +219,7 @@ startup_timeout (void *data)
         }
       else
         {
-          min_timeout = MIN (min_timeout, (STARTUP_TIMEOUT_LENGTH - elapsed));
+          min_timeout = MIN (min_timeout, (gint) (STARTUP_TIMEOUT_LENGTH - elapsed));
         }
 
       tmp = next;
@@ -249,7 +257,7 @@ add_startup_timeout (GdkScreen  *screen,
   sn_data = g_new (StartupNotificationData, 1);
   sn_data->display = g_object_ref (gdk_screen_get_display (screen));
   sn_data->startup_id = g_strdup (startup_id);
-  g_get_current_time (&sn_data->time);
+  sn_data->time_usec = get_current_time_usec ();
 
   data->contexts = g_slist_prepend (data->contexts, sn_data);
 

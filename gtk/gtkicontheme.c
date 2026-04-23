@@ -99,7 +99,7 @@ struct _GtkIconThemePrivate
   GdkScreen *screen;
   
   /* time when we last stat:ed for theme changes */
-  long last_stat_time;
+  gint64 last_stat_time;
   GList *dir_mtimes;
 
   gulong reset_styles_idle;
@@ -194,7 +194,7 @@ typedef struct
 typedef struct 
 {
   char *dir;
-  time_t mtime; /* 0 == not existing or not a dir */
+  gint64 mtime; /* 0 == not existing or not a dir */
   gboolean exists;
 
   GtkIconCache *cache;
@@ -923,7 +923,7 @@ insert_theme (GtkIconTheme *icon_theme, const char *theme_name)
       dir_mtime->dir = path;
       if (g_stat (path, &stat_buf) == 0 && S_ISDIR (stat_buf.st_mode))
 	{
-	  dir_mtime->mtime = stat_buf.st_mtime;
+	  dir_mtime->mtime = (gint64) stat_buf.st_mtime;
 	  dir_mtime->exists = TRUE;
 	}
       else
@@ -1050,7 +1050,6 @@ load_themes (GtkIconTheme *icon_theme)
   const char *file;
   UnthemedIcon *unthemed_icon;
   IconSuffix old_suffix, new_suffix;
-  GTimeVal tv;
   IconThemeDirMtime *dir_mtime;
   GStatBuf stat_buf;
   
@@ -1085,7 +1084,7 @@ load_themes (GtkIconTheme *icon_theme)
 
       if (g_stat (dir, &stat_buf) != 0 || !S_ISDIR (stat_buf.st_mode))
 	continue;
-      dir_mtime->mtime = stat_buf.st_mtime;
+      dir_mtime->mtime = (gint64) stat_buf.st_mtime;
       dir_mtime->exists = TRUE;
 
       dir_mtime->cache = _gtk_icon_cache_new_for_path (dir);
@@ -1159,8 +1158,7 @@ load_themes (GtkIconTheme *icon_theme)
 
   priv->themes_valid = TRUE;
   
-  g_get_current_time(&tv);
-  priv->last_stat_time = tv.tv_sec;
+  priv->last_stat_time = g_get_real_time () / G_USEC_PER_SEC;
 }
 
 void
@@ -1199,7 +1197,7 @@ static void
 ensure_valid_themes (GtkIconTheme *icon_theme)
 {
   GtkIconThemePrivate *priv = icon_theme->priv;
-  GTimeVal tv;
+  gint64 now;
   gboolean was_valid = priv->themes_valid;
 
   if (priv->loading_themes)
@@ -1210,9 +1208,9 @@ ensure_valid_themes (GtkIconTheme *icon_theme)
 
   if (priv->themes_valid)
     {
-      g_get_current_time (&tv);
+      now = g_get_real_time () / G_USEC_PER_SEC;
 
-      if (ABS (tv.tv_sec - priv->last_stat_time) > 5 &&
+      if (ABS (now - priv->last_stat_time) > 5 &&
 	  rescan_themes (icon_theme))
 	blow_themes (icon_theme);
     }
@@ -1899,7 +1897,6 @@ rescan_themes (GtkIconTheme *icon_theme)
   GList *d;
   int stat_res;
   GStatBuf stat_buf;
-  GTimeVal tv;
 
   priv = icon_theme->priv;
 
@@ -1912,7 +1909,7 @@ rescan_themes (GtkIconTheme *icon_theme)
       /* dir mtime didn't change */
       if (stat_res == 0 && dir_mtime->exists &&
 	  S_ISDIR (stat_buf.st_mode) &&
-	  dir_mtime->mtime == stat_buf.st_mtime)
+	  dir_mtime->mtime == (gint64) stat_buf.st_mtime)
 	continue;
       /* didn't exist before, and still doesn't */
       if (!dir_mtime->exists &&
@@ -1922,8 +1919,7 @@ rescan_themes (GtkIconTheme *icon_theme)
       return TRUE;
     }
 
-  g_get_current_time (&tv);
-  priv->last_stat_time = tv.tv_sec;
+  priv->last_stat_time = g_get_real_time () / G_USEC_PER_SEC;
 
   return FALSE;
 }

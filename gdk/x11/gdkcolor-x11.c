@@ -44,7 +44,7 @@ struct _GdkColormapPrivateX11
 
   GHashTable *hash;
   GdkColorInfo *info;
-  time_t last_sync_time;
+  gint64 last_sync_time;
 
   gboolean foreign;
 };
@@ -325,7 +325,7 @@ static void
 gdk_colormap_sync (GdkColormap *colormap,
 		   gboolean     force)
 {
-  time_t current_time;
+  gint64 current_time;
   GdkColormapPrivateX11 *private = GDK_COLORMAP_PRIVATE_DATA (colormap);
 
   g_return_if_fail (GDK_IS_COLORMAP (colormap));
@@ -333,7 +333,7 @@ gdk_colormap_sync (GdkColormap *colormap,
   if (private->screen->closed)
     return;
 
-  current_time = time (NULL);
+    current_time = (gint64) time (NULL);
   if (!force && ((current_time - private->last_sync_time) < MIN_SYNC_TIME))
     return;
 

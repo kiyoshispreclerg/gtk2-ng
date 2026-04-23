@@ -97,7 +97,7 @@ struct _GtkRcSet
 
 struct _GtkRcFile
 {
-  time_t mtime;
+  gint64 mtime;
   gchar *name;
   gchar *canonical_name;
   gchar *directory;
@@ -1020,7 +1020,7 @@ gtk_rc_context_parse_one_file (GtkRcContext *context,
     {
       gint fd;
       
-      rc_file->mtime = statbuf.st_mtime;
+      rc_file->mtime = (gint64) statbuf.st_mtime;
 
       fd = g_open (rc_file->canonical_name, O_RDONLY, 0);
       if (fd < 0)
@@ -1786,7 +1786,7 @@ gtk_rc_reparse_all_for_settings (GtkSettings *settings,
 	  if (!rc_file->is_string)
 	    {
 	      if (!g_lstat (rc_file->name, &statbuf) && 
-		  (statbuf.st_mtime != rc_file->mtime))
+		  ((gint64) statbuf.st_mtime != rc_file->mtime))
 		{
 		  mtime_modified = TRUE;
 		  break;
