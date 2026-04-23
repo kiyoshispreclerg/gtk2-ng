@@ -178,11 +178,7 @@ free_startup_timeout (void *data)
 static gint64
 get_current_time_usec (void)
 {
-  GTimeVal now;
-
-  g_get_current_time (&now);
-
-  return ((gint64) now.tv_sec) * G_USEC_PER_SEC + now.tv_usec;
+  return g_get_real_time ();
 }
 
 static gboolean
