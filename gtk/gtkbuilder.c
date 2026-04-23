@@ -1212,7 +1212,7 @@ gtk_builder_value_from_string_type (GtkBuilder   *builder,
   switch (G_TYPE_FUNDAMENTAL (type))
     {
     case G_TYPE_CHAR:
-      g_value_set_char (value, string[0]);
+      g_value_set_schar (value, (gint8) string[0]);
       break;
     case G_TYPE_UCHAR:
       g_value_set_uchar (value, (guchar)string[0]);

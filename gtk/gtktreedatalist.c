@@ -129,7 +129,7 @@ _gtk_tree_data_list_node_to_value (GtkTreeDataList *list,
       g_value_set_boolean (value, (gboolean) list->data.v_int);
       break;
     case G_TYPE_CHAR:
-      g_value_set_char (value, (gchar) list->data.v_char);
+      g_value_set_schar (value, (gchar) list->data.v_char);
       break;
     case G_TYPE_UCHAR:
       g_value_set_uchar (value, (guchar) list->data.v_uchar);
