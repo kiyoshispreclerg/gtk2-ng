@@ -156,7 +156,12 @@ send_event_handler (Display *dpy,
   else if (dpy->last_request_read == state->get_input_focus_req)
     {
       xGetInputFocusReply replbuf;
-      xGetInputFocusReply *repl;
+      G_GNUC_UNUSED xGetInputFocusReply *repl;
+
+      /* If this still causes trouble on some toolchains, remove the
+       * 'repl' variable entirely and cast the _XGetAsyncReply() call
+       * to (void) instead.
+       */
       
       if (rep->generic.type != X_Error)
 	{
@@ -167,6 +172,13 @@ send_event_handler (Display *dpy,
 	    _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			    (sizeof(xGetInputFocusReply) - sizeof(xReply)) >> 2,
 			    True);
+          /*
+           * Fallback variant if G_GNUC_UNUSED causes problems:
+           *
+           * (void) _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
+           *                        (sizeof(xGetInputFocusReply) - sizeof(xReply)) >> 2,
+           *                        True);
+           */
 	}
 
       if (state->callback)
@@ -275,9 +287,25 @@ _gdk_x11_send_client_message_async (GdkDisplay           *display,
    * XSync (dpy, 0)
    */
   {
-    xReq *req;
+    G_GNUC_UNUSED xReq *req;
+
+   /* Keep the GetInputFocus roundtrip for the conservative variant.
+    * If this code ever causes trouble, try commenting out the
+    * GetEmptyReq() call first and keep only the request number
+    * assignment below.
+    */
     
     GetEmptyReq(GetInputFocus, req);
+
+   /*
+    * Fallback variant if the extra roundtrip causes problems:
+    *
+    * state->get_input_focus_req = dpy->request;
+    * return;
+    *
+    * or, more locally, comment out the GetEmptyReq() line above and
+    * leave only the assignment below.
+    */
     state->get_input_focus_req = dpy->request;
   }
   
@@ -309,7 +337,12 @@ set_input_focus_handler (Display *dpy,
   if (dpy->last_request_read == state->get_input_focus_req)
     {
       xGetInputFocusReply replbuf;
-      xGetInputFocusReply *repl;
+      G_GNUC_UNUSED xGetInputFocusReply *repl;
+
+      /* If this still causes trouble on some toolchains, remove the
+       * 'repl' variable entirely and cast the _XGetAsyncReply() call
+       * to (void) instead.
+       */
       
       if (rep->generic.type != X_Error)
 	{
@@ -320,6 +353,13 @@ set_input_focus_handler (Display *dpy,
 	    _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			    (sizeof(xGetInputFocusReply) - sizeof(xReply)) >> 2,
 			    True);
+          /*
+           * Fallback variant if G_GNUC_UNUSED causes problems:
+           *
+           * (void) _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
+           *                        (sizeof(xGetInputFocusReply) - sizeof(xReply)) >> 2,
+           *                        True);
+           */
 	}
 
       DeqAsyncHandler(state->dpy, &state->async);
@@ -368,9 +408,25 @@ _gdk_x11_set_input_focus_safe (GdkDisplay             *display,
    * XSync (dpy, 0)
    */
   {
-    xReq *req;
+    G_GNUC_UNUSED xReq *req;
+
+   /* Keep the GetInputFocus roundtrip for the conservative variant.
+    * If this code ever causes trouble, try commenting out the
+    * GetEmptyReq() call first and keep only the request number
+    * assignment below.
+    */
     
     GetEmptyReq(GetInputFocus, req);
+
+   /*
+    * Fallback variant if the extra roundtrip causes problems:
+    *
+    * state->get_input_focus_req = dpy->request;
+    * return;
+    *
+    * or, more locally, comment out the GetEmptyReq() line above and
+    * leave only the assignment below.
+    */
     state->get_input_focus_req = dpy->request;
   }
   
@@ -778,7 +834,12 @@ roundtrip_handler (Display *dpy,
   if (dpy->last_request_read == state->get_input_focus_req)
     {
       xGetInputFocusReply replbuf;
-      xGetInputFocusReply *repl;
+      G_GNUC_UNUSED xGetInputFocusReply *repl;
+
+      /* If this still causes trouble on some toolchains, remove the
+       * 'repl' variable entirely and cast the _XGetAsyncReply() call
+       * to (void) instead.
+       */
       
       if (rep->generic.type != X_Error)
 	{
@@ -789,6 +850,13 @@ roundtrip_handler (Display *dpy,
 	    _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			    (sizeof(xGetInputFocusReply) - sizeof(xReply)) >> 2,
 			    True);
+          /*
+           * Fallback variant if G_GNUC_UNUSED causes problems:
+           *
+           * (void) _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
+           *                        (sizeof(xGetInputFocusReply) - sizeof(xReply)) >> 2,
+           *                        True);
+           */
 	}
 
       
@@ -831,9 +899,25 @@ _gdk_x11_roundtrip_async (GdkDisplay           *display,
    * XSync (dpy, 0)
    */
   {
-    xReq *req;
+    G_GNUC_UNUSED xReq *req;
+
+   /* Keep the GetInputFocus roundtrip for the conservative variant.
+    * If this code ever causes trouble, try commenting out the
+    * GetEmptyReq() call first and keep only the request number
+    * assignment below.
+    */
     
     GetEmptyReq(GetInputFocus, req);
+
+   /*
+    * Fallback variant if the extra roundtrip causes problems:
+    *
+    * state->get_input_focus_req = dpy->request;
+    * return;
+    *
+    * or, more locally, comment out the GetEmptyReq() line above and
+    * leave only the assignment below.
+    */
     state->get_input_focus_req = dpy->request;
   }
   

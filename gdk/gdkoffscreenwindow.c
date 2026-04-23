@@ -959,9 +959,6 @@ gdk_offscreen_window_move_resize (GdkWindow *window,
 				  gint       height)
 {
   GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkOffscreenWindow *offscreen;
-
-  offscreen = GDK_OFFSCREEN_WINDOW (private->impl);
 
   if (!with_move)
     {
@@ -994,17 +991,7 @@ gdk_offscreen_window_show (GdkWindow *window,
 static void
 gdk_offscreen_window_hide (GdkWindow *window)
 {
-  GdkWindowObject *private;
-  GdkOffscreenWindow *offscreen;
-  GdkDisplay *display;
-
   g_return_if_fail (window != NULL);
-
-  private = (GdkWindowObject*) window;
-  offscreen = GDK_OFFSCREEN_WINDOW (private->impl);
-
-  /* May need to break grabs on children */
-  display = gdk_drawable_get_display (window);
 
   /* TODO: This needs updating to the new grab world */
 #if 0

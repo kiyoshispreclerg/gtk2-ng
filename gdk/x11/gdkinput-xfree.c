@@ -168,7 +168,6 @@ _gdk_input_crossing_event (GdkWindow *window,
 			   gboolean enter)
 {
   GdkDisplay *display = GDK_WINDOW_DISPLAY (window);
-  GdkDisplayX11 *display_impl = GDK_DISPLAY_X11 (display);
   GdkWindowObject *priv = (GdkWindowObject *)window;
   GdkInputWindow *input_window;
   gint root_x, root_y;
@@ -268,7 +267,6 @@ _gdk_input_other_event (GdkEvent *event,
   GdkEventType event_type;
   int x, y;
   GdkDisplay *display = GDK_WINDOW_DISPLAY (event_window);
-  GdkDisplayX11 *display_impl = GDK_DISPLAY_X11 (display);
 
   /* This is a sort of a hack, as there isn't any XDeviceAnyEvent -
      but it's potentially faster than scanning through the types of

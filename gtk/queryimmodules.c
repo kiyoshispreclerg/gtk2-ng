@@ -159,9 +159,9 @@ query_module (const char *dir, const char *name, GString *contents)
 {
   void          (*list)   (const GtkIMContextInfo ***contexts,
                            guint                    *n_contexts);
-  void          (*init)   (GTypeModule              *type_module);
-  void          (*exit)   (void);
-  GtkIMContext *(*create) (const gchar             *context_id);
+  G_GNUC_UNUSED void          (*init)   (GTypeModule              *type_module);
+  G_GNUC_UNUSED void          (*exit)   (void);
+  G_GNUC_UNUSED GtkIMContext *(*create) (const gchar             *context_id);
 
   gpointer list_ptr;
   gpointer init_ptr;

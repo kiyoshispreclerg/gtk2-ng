@@ -449,9 +449,20 @@ node_should_be_visible (GtkFileSystemModel *model, guint id, gboolean filtered_o
   if (node->info == NULL)
     return FALSE;
 
-  if (!model->show_hidden &&
-      (g_file_info_get_is_hidden (node->info) || g_file_info_get_is_backup (node->info)))
-    return FALSE;
+  if (!model->show_hidden)
+    {
+      gboolean is_hidden = FALSE;
+      gboolean is_backup = FALSE;
+
+      if (g_file_info_has_attribute (node->info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN))
+        is_hidden = g_file_info_get_is_hidden (node->info);
+
+      if (g_file_info_has_attribute (node->info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP))
+        is_backup = g_file_info_get_is_backup (node->info);
+
+      if (is_hidden || is_backup)
+        return FALSE;
+    }
 
   if (_gtk_file_info_consider_as_directory (node->info))
     {
@@ -1951,6 +1962,7 @@ _gtk_file_system_model_update_file (GtkFileSystemModel *model,
     }
 
   node = get_node (model, id);
+
 
   old_info = node->info;
   node->info = g_object_ref (info);

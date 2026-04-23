@@ -1641,6 +1641,8 @@ gtk_path_bar_get_info_callback (GCancellable *cancellable,
   ButtonData *button_data;
   const gchar *display_name;
   gboolean is_hidden;
+  gboolean info_is_hidden = FALSE;
+  gboolean info_is_backup = FALSE;
 
   if (cancellable != file_info->path_bar->get_info_cancellable)
     {
@@ -1659,7 +1661,14 @@ gtk_path_bar_get_info_callback (GCancellable *cancellable,
     }
 
   display_name = g_file_info_get_display_name (info);
-  is_hidden = g_file_info_get_is_hidden (info) || g_file_info_get_is_backup (info);
+
+  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN))
+    info_is_hidden = g_file_info_get_is_hidden (info);
+
+  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP))
+    info_is_backup = g_file_info_get_is_backup (info);
+
+  is_hidden = info_is_hidden || info_is_backup;
 
   gtk_widget_push_composite_child ();
   button_data = make_directory_button (file_info->path_bar, display_name,
