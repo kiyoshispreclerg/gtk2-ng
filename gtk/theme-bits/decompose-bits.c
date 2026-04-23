@@ -138,8 +138,6 @@ int main (int argc, char **argv)
       exit (1);
     }
 
-  g_type_init ();
-  
   pixbuf = gdk_pixbuf_new_from_file (argv[1], &error);
   if (!pixbuf)
     {
