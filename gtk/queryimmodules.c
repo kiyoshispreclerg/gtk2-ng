@@ -122,6 +122,23 @@ split_file_list (const char *str)
               parts[i] = trimmed;
             }
         }
+      else if (part[0] == '~' && part[1] == '\0')
+        {
+          const gchar *home = g_get_home_dir ();
+
+          if (home && *home)
+            {
+              gchar *expanded = g_strdup (home);
+              g_free (parts[i]);
+              parts[i] = expanded;
+            }
+          else if (part != parts[i])
+            {
+              gchar *trimmed = g_strdup (part);
+              g_free (parts[i]);
+              parts[i] = trimmed;
+            }
+        }
       else if (part != parts[i])
         {
           gchar *trimmed = g_strdup (part);
