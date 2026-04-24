@@ -386,10 +386,13 @@ gail_finish_select (GtkWidget *widget)
                                               (gpointer) gail_map_submenu_cb,
                                               NULL); 
           if (!handler_id)
-            g_signal_connect (menu_item->submenu, "map",
-                              G_CALLBACK (gail_map_submenu_cb),
-                              NULL);
-            return;
+            {
+              g_signal_connect (menu_item->submenu, "map",
+                                G_CALLBACK (gail_map_submenu_cb),
+                                NULL);
+            }
+
+          return;
 
         }
       /*

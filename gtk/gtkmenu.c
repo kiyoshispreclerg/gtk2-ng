@@ -1321,10 +1321,7 @@ gtk_menu_real_insert (GtkMenuShell *menu_shell,
 static void
 gtk_menu_tearoff_bg_copy (GtkMenu *menu)
 {
-  GtkWidget *widget;
   gint width, height;
-
-  widget = GTK_WIDGET (menu);
 
   if (menu->torn_off)
     {
@@ -3366,7 +3363,8 @@ gtk_menu_scroll_by (GtkMenu *menu,
 {
   GtkWidget *widget;
   gint offset;
-  gint view_width, view_height;
+  gint view_height;
+  /* gint view_width; */
   gboolean double_arrows;
   GtkBorder arrow_border;
   
@@ -3390,8 +3388,9 @@ gtk_menu_scroll_by (GtkMenu *menu,
   if ((menu->scroll_offset >= 0) && (offset < 0))
     offset = 0;
 
-  view_width = gdk_window_get_width (widget->window);
-  view_height = gdk_window_get_height (widget->window);
+  /* view_width = gdk_window_get_width (widget->window); */
+  /* probs planned, but unimplemented logic */
+   view_height = gdk_window_get_height (widget->window);
 
   if (menu->scroll_offset == 0 &&
       view_height >= widget->requisition.height)
@@ -4660,7 +4659,8 @@ gtk_menu_scroll_item_visible (GtkMenuShell *menu_shell,
 {
   GtkMenu *menu;
   gint child_offset, child_height;
-  gint width, height;
+  gint height;
+  /* gint width; */
   gint y;
   gint arrow_height;
   gboolean last_child = 0;
@@ -4679,7 +4679,7 @@ gtk_menu_scroll_item_visible (GtkMenuShell *menu_shell,
       gboolean double_arrows;
       
       y = menu->scroll_offset;
-      width = gdk_window_get_width (GTK_WIDGET (menu)->window);
+      /* width = gdk_window_get_width (GTK_WIDGET (menu)->window); */
       height = gdk_window_get_height (GTK_WIDGET (menu)->window);
 
       gtk_widget_style_get (GTK_WIDGET (menu),

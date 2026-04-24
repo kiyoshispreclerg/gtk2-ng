@@ -3167,7 +3167,6 @@ gtk_icon_view_paint_item (GtkIconView     *icon_view,
   GdkRectangle cell_area, box;
   GList *l;
   gint i;
-  GtkStateType state;
   GtkCellRendererState flags;
       
   if (icon_view->priv->model == NULL)
@@ -3182,18 +3181,9 @@ gtk_icon_view_paint_item (GtkIconView     *icon_view,
   padding = focus_width; 
   
   if (item->selected)
-    {
       flags = GTK_CELL_RENDERER_SELECTED;
-      if (gtk_widget_has_focus (GTK_WIDGET (icon_view)))
-	state = GTK_STATE_SELECTED;
-      else
-	state = GTK_STATE_ACTIVE;
-    }
   else
-    {
       flags = 0;
-      state = GTK_STATE_NORMAL;
-    }
   
 #ifdef DEBUG_ICON_VIEW
   gdk_draw_rectangle (drawable,
@@ -4460,15 +4450,13 @@ static void
 gtk_icon_view_scroll_to_item (GtkIconView     *icon_view, 
 			      GtkIconViewItem *item)
 {
-  gint x, y, width, height;
+  gint x, y;
   gint focus_width;
 
   gtk_widget_style_get (GTK_WIDGET (icon_view),
 			"focus-line-width", &focus_width,
 			NULL);
 
-  width = gdk_window_get_width (icon_view->priv->bin_window);
-  height = gdk_window_get_height (icon_view->priv->bin_window);
   gdk_window_get_position (icon_view->priv->bin_window, &x, &y);
   
   if (y + item->y - focus_width < 0)
@@ -9212,13 +9200,11 @@ gtk_icon_view_accessible_model_row_changed (GtkTreeModel *tree_model,
   GtkWidget *widget;
   GtkIconView *icon_view;
   GtkIconViewItem *item;
-  GtkIconViewAccessible *a11y_view;
   GtkIconViewItemAccessible *a11y_item;
   const gchar *name;
   gchar *text;
 
   atk_obj = gtk_widget_get_accessible (GTK_WIDGET (user_data));
-  a11y_view = GTK_ICON_VIEW_ACCESSIBLE (atk_obj);
   index = gtk_tree_path_get_indices(path)[0];
   a11y_item = GTK_ICON_VIEW_ITEM_ACCESSIBLE (
       gtk_icon_view_accessible_find_child (atk_obj, index));

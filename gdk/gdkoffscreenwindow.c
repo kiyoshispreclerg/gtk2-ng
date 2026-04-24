@@ -899,7 +899,6 @@ gdk_offscreen_window_move_resize_internal (GdkWindow *window,
 {
   GdkWindowObject *private = (GdkWindowObject *)window;
   GdkOffscreenWindow *offscreen;
-  gint dx, dy, dw, dh;
   GdkGC *gc;
   GdkPixmap *old_pixmap;
 
@@ -912,11 +911,6 @@ gdk_offscreen_window_move_resize_internal (GdkWindow *window,
 
   if (private->destroyed)
     return;
-
-  dx = x - private->x;
-  dy = y - private->y;
-  dw = width - private->width;
-  dh = height - private->height;
 
   private->x = x;
   private->y = y;

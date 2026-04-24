@@ -333,7 +333,7 @@ gdk_colormap_sync (GdkColormap *colormap,
   if (private->screen->closed)
     return;
 
-    current_time = (gint64) time (NULL);
+  current_time = (gint64) time (NULL);
   if (!force && ((current_time - private->last_sync_time) < MIN_SYNC_TIME))
     return;
 

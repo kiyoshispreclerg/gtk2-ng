@@ -1115,7 +1115,6 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
       int name_offset;
       int name_size;
       int image_list_offset;
-      int tmp;
       int i, len;
       GList *list;
 
@@ -1168,8 +1167,6 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 	return FALSE;
       
       /* Image data goes right after the image list */
-      tmp = image_list_offset + 4 + len * 8;
-
       list = node->image_list;
       data_offset = image_data_offset;
       for (i = 0; i < len; i++)
