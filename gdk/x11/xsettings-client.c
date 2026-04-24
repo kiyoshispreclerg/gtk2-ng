@@ -199,6 +199,9 @@ parse_settings (unsigned char *data,
   buffer.len = len;
   
   result = fetch_card8 (&buffer, (unsigned char *)&buffer.byte_order);
+  if (result != XSETTINGS_SUCCESS)
+    goto out;
+
   if (buffer.byte_order != MSBFirst &&
       buffer.byte_order != LSBFirst)
     {

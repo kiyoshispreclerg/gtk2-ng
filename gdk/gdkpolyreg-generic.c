@@ -509,6 +509,9 @@ gdk_region_polygon (const GdkPoint *points,
 	return(region);
     }
 
+    if (n_points < 2)
+      return region;
+
     pETEs = g_new (EdgeTableEntry, n_points);
 
     pts = FirstPtBlock.pts;

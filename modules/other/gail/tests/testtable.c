@@ -687,7 +687,7 @@ _property_change_handler (AtkObject         *obj,
 	   values->property_name ? values->property_name: "NULL");
   g_print("    - ");
 
-  if (&values->old_value != NULL && G_IS_VALUE (&values->old_value))
+  if (G_IS_VALUE (&values->old_value))
   {
     GType old_type = G_VALUE_TYPE (&values->old_value);
 
@@ -713,7 +713,7 @@ _property_change_handler (AtkObject         *obj,
     g_print("value was <not a value>\n");
   }
   g_print("    - ");
-  if (&values->new_value != NULL && G_IS_VALUE (&values->new_value))
+  if (G_IS_VALUE (&values->new_value))
   {
     GType new_type = G_VALUE_TYPE (&values->new_value);
 

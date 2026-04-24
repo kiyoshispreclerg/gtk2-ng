@@ -375,7 +375,7 @@ static void _send_to_festival (const gchar *role_name,
   int len = (strlen (role_name)+1 + strlen (name)+2 + 4 + strlen (accel)+2);
   int i, j;
   gchar ch;
-  gchar *accel_name;
+  const gchar *accel_name;
   
   string = (gchar *) g_malloc (len * sizeof (gchar));
 
@@ -400,10 +400,10 @@ static void _send_to_festival (const gchar *role_name,
     };
   if ((say_accel) && (strlen (accel) > 0))
     {
-      accel_name = (gchar *)accel;
+      accel_name = accel;
       if (strncmp (accel, "<C", 2) == 0)
         {
-          accel_name = strncpy (accel_name, " control ", 9);
+          accel_name = " control ";
         }
       else if (strncmp (accel, " control", 5))
         {

@@ -132,7 +132,7 @@ gail_toplevel_initialize (AtkObject *accessible,
   ATK_OBJECT_CLASS (gail_toplevel_parent_class)->initialize (accessible, data);
 
   accessible->role = ATK_ROLE_APPLICATION;
-  accessible->name = g_get_prgname();
+  accessible->name = (gchar *) g_get_prgname();
   accessible->accessible_parent = NULL;
 }
 

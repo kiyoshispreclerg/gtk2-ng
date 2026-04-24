@@ -3192,19 +3192,22 @@ gtk_icon_info_get_embedded_rect (GtkIconInfo  *icon_info,
       gint scaled_x1, scaled_y1;
       
       if (rectangle)
-	{
-	  icon_info_scale_point (icon_info,
-				 icon_info->data->x0, icon_info->data->y0,
-				 &scaled_x0, &scaled_y0);
-	  icon_info_scale_point (icon_info,
-				 icon_info->data->x1, icon_info->data->y1,
-				 &scaled_x1, &scaled_y1);
-	  
-	  rectangle->x = scaled_x0;
-	  rectangle->y = scaled_y0;
-	  rectangle->width = scaled_x1 - rectangle->x;
-	  rectangle->height = scaled_y1 - rectangle->y;
-	}
+        {
+          if (!icon_info_scale_point (icon_info,
+                                      icon_info->data->x0, icon_info->data->y0,
+                                      &scaled_x0, &scaled_y0))
+            return FALSE;
+
+          if (!icon_info_scale_point (icon_info,
+                                      icon_info->data->x1, icon_info->data->y1,
+                                      &scaled_x1, &scaled_y1))
+            return FALSE;
+
+          rectangle->x = scaled_x0;
+          rectangle->y = scaled_y0;
+          rectangle->width = scaled_x1 - rectangle->x;
+          rectangle->height = scaled_y1 - rectangle->y;
+        }
 
       return TRUE;
     }

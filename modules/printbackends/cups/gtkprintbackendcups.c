@@ -2797,7 +2797,7 @@ avahi_service_browser_signal_handler (GDBusConnection *connection,
   else if (g_strcmp0 (signal_name, "ItemRemove") == 0)
     {
       GtkPrinterCups *printer;
-      GList          *list;
+      GList          *list = NULL;
       GList          *iter;
 
       g_variant_get (parameters, "(ii&s&s&su)",
@@ -4843,7 +4843,10 @@ cups_printer_get_options (GtkPrinter           *printer,
           ppd_name = gtk_paper_size_get_ppd_name (paper_size);
 
           if (ppd_name)
-            strncpy (option->defchoice, ppd_name, PPD_MAX_NAME);
+            {
+              strncpy (option->defchoice, ppd_name, PPD_MAX_NAME - 1);
+              option->defchoice[PPD_MAX_NAME - 1] = '\0';
+            }
           else
             {
               gchar *custom_name;
@@ -4862,7 +4865,8 @@ cups_printer_get_options (GtkPrinter           *printer,
                * 230.4x142.9"
                */
               custom_name = g_strdup_printf (_("Custom %sx%s"), width, height);
-              strncpy (option->defchoice, custom_name, PPD_MAX_NAME);
+              strncpy (option->defchoice, custom_name, PPD_MAX_NAME - 1);
+              option->defchoice[PPD_MAX_NAME - 1] = '\0';
               g_free (custom_name);
             }
         }

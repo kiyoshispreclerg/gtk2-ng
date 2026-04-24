@@ -2489,8 +2489,8 @@ gtk_icon_view_item_hit_test (GtkIconView      *icon_view,
       gtk_icon_view_get_cell_box (icon_view, item, info, &box);
 
       if (MIN (x + width, box.x + box.width) - MAX (x, box.x) > 0 &&
-	MIN (y + height, box.y + box.height) - MAX (y, box.y) > 0)
-	return TRUE;
+          MIN (y + height, box.y + box.height) - MAX (y, box.y) > 0)
+        return TRUE;
     }
 
   return FALSE;
@@ -2931,6 +2931,13 @@ gtk_icon_view_get_cell_box (GtkIconView         *icon_view,
 			    GtkIconViewCellInfo *info,
 			    GdkRectangle        *box)
 {
+  g_return_if_fail (box != NULL);
+
+  box->x = 0;
+  box->y = 0;
+  box->width = 0;
+  box->height = 0;
+
   g_return_if_fail (info->position < item->n_cells);
 
   *box = item->box[info->position];
@@ -3507,20 +3514,16 @@ gtk_icon_view_get_item_at_coords (GtkIconView          *icon_view,
 		  if (!info->cell->visible)
 		    continue;
 
-		  gtk_icon_view_get_cell_box (icon_view, item, info, &box);
+                  gtk_icon_view_get_cell_box (icon_view, item, info, &box);
 
-		  if ((x >= box.x && x <= box.x + box.width &&
-		       y >= box.y && y <= box.y + box.height) ||
-		      (x >= box.x  &&
-		       x <= box.x + box.width &&
-		       y >= box.y &&
-		       y <= box.y + box.height))
-		    {
-		      if (cell_at_pos)
-			*cell_at_pos = info;
+                  if (x >= box.x && x <= box.x + box.width &&
+                      y >= box.y && y <= box.y + box.height)
+                    {
+                      if (cell_at_pos)
+                        *cell_at_pos = info;
 
-		      return item;
-		    }
+                      return item;
+                    }
 		}
 
 	      if (only_in_cell)

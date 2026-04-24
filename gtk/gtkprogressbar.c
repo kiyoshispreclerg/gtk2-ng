@@ -708,6 +708,10 @@ gtk_progress_bar_get_activity (GtkProgressBar            *pbar,
     case GTK_PROGRESS_BOTTOM_TO_TOP:
       *amount = MAX (2, widget->allocation.height / pbar->activity_blocks);
       break;
+
+    default:
+      *amount = 0;
+      break;
     }
 }
 

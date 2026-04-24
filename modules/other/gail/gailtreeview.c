@@ -4129,12 +4129,16 @@ cell_info_remove (GailTreeView *tree_view,
 #endif
 
 static void
-cell_info_get_index (GtkTreeView            *tree_view, 
+cell_info_get_index (GtkTreeView            *tree_view,
                      GailTreeViewCellInfo   *info,
                      gint                   *index)
 {
   GtkTreePath *path;
   gint column_number;
+
+  gail_return_if_fail (index != NULL);
+
+  *index = -1;
 
   path = gtk_tree_row_reference_get_path (info->cell_row_ref);
   gail_return_if_fail (path);
