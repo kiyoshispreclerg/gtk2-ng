@@ -129,10 +129,17 @@ _gtk_pixbuf_segment_new (GdkPixbuf *pixbuf)
 {
   GtkTextLineSegment *seg;
 
+  /* gcc-11 issues a diagnostic here because the size allocated
+   * for SEG does not cover the entire size of a GtkTextLineSegment
+   * and gcc has no way to know that the union will only be used
+   * for limited types and the additional space is not needed.
+   */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+
   seg = g_malloc (PIXBUF_SEG_SIZE);
 
   seg->type = &gtk_text_pixbuf_type;
-
   seg->next = NULL;
 
   seg->byte_count = 3; /* We convert to the 0xFFFC "unknown character",
@@ -141,6 +148,7 @@ _gtk_pixbuf_segment_new (GdkPixbuf *pixbuf)
   seg->char_count = 1;
 
   seg->body.pixbuf.pixbuf = pixbuf;
+#pragma GCC diagnostic pop
 
   g_object_ref (pixbuf);
 
@@ -226,10 +234,17 @@ _gtk_widget_segment_new (GtkTextChildAnchor *anchor)
 {
   GtkTextLineSegment *seg;
 
+  /* gcc-11 issues a diagnostic here because the size allocated
+   * for SEG does not cover the entire size of a GtkTextLineSegment
+   * and gcc has no way to know that the union will only be used
+   * for limited types and the additional space is not needed.
+   */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+
   seg = g_malloc (WIDGET_SEG_SIZE);
 
   seg->type = &gtk_text_child_type;
-
   seg->next = NULL;
 
   seg->byte_count = 3; /* We convert to the 0xFFFC "unknown character",
@@ -242,9 +257,10 @@ _gtk_widget_segment_new (GtkTextChildAnchor *anchor)
   seg->body.child.widgets = NULL;
   seg->body.child.tree = NULL;
   seg->body.child.line = NULL;
+#pragma GCC diagnostic pop
 
   g_object_ref (anchor);
-  
+
   return seg;
 }
 

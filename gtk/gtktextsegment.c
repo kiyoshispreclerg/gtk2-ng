@@ -418,6 +418,14 @@ _gtk_toggle_segment_new (GtkTextTagInfo *info, gboolean on)
 {
   GtkTextLineSegment *seg;
 
+  /* gcc-11 issues a diagnostic here because the size allocated
+   * for SEG does not cover the entire size of a GtkTextLineSegment
+   * and gcc has no way to know that the union will only be used
+   * for limited types and the additional space is not needed.
+   */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+
   seg = g_malloc (TSEG_SIZE);
 
   seg->type = on ? &gtk_text_toggle_on_type : &gtk_text_toggle_off_type;
@@ -429,6 +437,7 @@ _gtk_toggle_segment_new (GtkTextTagInfo *info, gboolean on)
 
   seg->body.toggle.info = info;
   seg->body.toggle.inNodeCounts = 0;
+#pragma GCC diagnostic pop
 
   return seg;
 }
