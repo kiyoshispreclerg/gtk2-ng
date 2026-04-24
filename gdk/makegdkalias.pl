@@ -121,8 +121,8 @@ EOF
   }
   else {
     print <<EOF
-\#undef $str 
-extern __typeof ($str) $str __attribute((alias("$alias"), visibility("default")));
+#undef $str
+extern __typeof ($str) $str __attribute((alias("$alias"), visibility("default")))$attributes;
 
 EOF
   }
