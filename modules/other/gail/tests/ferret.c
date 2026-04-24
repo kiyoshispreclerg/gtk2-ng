@@ -271,7 +271,7 @@ typedef struct
 static void
 _send_to_magnifier(gint x, gint y, gint w, gint h)
 {
-  int desc, length_msg;
+  int desc;
   gchar buff[100];
 
   sprintf (buff, "~5:%d,%d", x+w/2, y+h/2);
@@ -303,7 +303,7 @@ _send_to_magnifier(gint x, gint y, gint w, gint h)
       return;
     }
 
-  length_msg = write(desc,buff,strlen(buff));
+  write(desc,buff,strlen(buff));
   unlink("/tmp/mag_client");
   return;
 }
@@ -1330,11 +1330,8 @@ _print_text_attributes (AtkText *aobject)
     gchar *output_str, *label_str;
     gint start_offset, end_offset, caret_offset;
     gint attribute_set_len, attribute_offset, i;
-    gint n_chars;
     gint group_num;
     TabNumber tab_n = TEXT;
-
-    n_chars = atk_text_get_character_count(aobject);
 
     group_num = _print_groupname (tab_n, TEXT_ATTRIBUTES,
       "Text Attributes at Caret");

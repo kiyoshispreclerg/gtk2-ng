@@ -2338,6 +2338,9 @@ specific_filter_add_child (void)
   gtk_tree_store_set (store, &iter, 0, "Hello", -1);
   gtk_tree_store_append (store, &child, &iter_first);
   gtk_tree_store_set (store, &child, 0, "Hello", -1);
+
+  g_object_unref (filter);
+  g_object_unref (store);
 }
 
 static void
@@ -2362,6 +2365,10 @@ specific_list_store_clear (void)
   view = gtk_tree_view_new_with_model (filter);
 
   gtk_list_store_clear (list);
+
+  gtk_widget_destroy (view);
+  g_object_unref (filter);
+  g_object_unref (list);
 }
 
 static void
@@ -2475,6 +2482,11 @@ specific_bug_301558 (void)
 
       add = !add;
     }
+
+  gtk_widget_destroy (view);
+  g_object_unref (filter);
+  g_object_unref (sort);
+  g_object_unref (tree);
 }
 
 
@@ -2501,7 +2513,6 @@ specific_bug_311955 (void)
   GtkTreeModel *sort;
   GtkTreeModel *filter;
 
-  GtkWidget *window;
   GtkWidget *tree_view;
   int i;
   int n;
@@ -2524,7 +2535,6 @@ specific_bug_311955 (void)
                                           specific_bug_311955_filter_func,
                                           NULL, NULL);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   tree_view = gtk_tree_view_new_with_model (filter);
   g_object_unref (store);
 
@@ -2698,6 +2708,10 @@ specific_bug_464173 (void)
 
   visible = FALSE;
   gtk_tree_model_filter_refilter (f_model);
+
+  gtk_widget_destroy (view);
+  g_object_unref (f_model);
+  g_object_unref (model);
 }
 
 
@@ -2743,12 +2757,15 @@ specific_bug_540201 (void)
   gtk_tree_store_append (store, &iter, &root);
   gtk_tree_store_set (store, &iter, 0, 22, -1);
 
-
   gtk_tree_store_append (store, &root, NULL);
   gtk_tree_store_set (store, &root, 0, 33, -1);
 
   gtk_tree_store_append (store, &iter, &root);
   gtk_tree_store_set (store, &iter, 0, 22, -1);
+
+  gtk_widget_destroy (tree_view);
+  g_object_unref (filter);
+  g_object_unref (store);
 }
 
 
@@ -2819,6 +2836,10 @@ specific_bug_549287 (void)
       /* since we inserted something, we changed the visibility conditions: */
       gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filtered));
     }
+
+  gtk_widget_destroy (view);
+  g_object_unref (filtered);
+  g_object_unref (store);
 }
 
 /* main */
