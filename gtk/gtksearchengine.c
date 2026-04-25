@@ -133,8 +133,7 @@ _gtk_search_engine_new (void)
     return engine;
 #endif
 
-  if (g_thread_supported ())
-    engine = _gtk_search_engine_simple_new ();
+  engine = _gtk_search_engine_simple_new ();
   
   return engine;
 }
