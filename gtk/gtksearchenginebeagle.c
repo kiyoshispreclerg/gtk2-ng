@@ -163,7 +163,7 @@ struct _GtkSearchEngineBeaglePrivate
 };
 
 
-G_DEFINE_TYPE (GtkSearchEngineBeagle, _gtk_search_engine_beagle, GTK_TYPE_SEARCH_ENGINE);
+G_DEFINE_TYPE_WITH_PRIVATE (GtkSearchEngineBeagle, _gtk_search_engine_beagle, GTK_TYPE_SEARCH_ENGINE);
 
 static void
 finalize (GObject *object)
@@ -363,25 +363,22 @@ _gtk_search_engine_beagle_class_init (GtkSearchEngineBeagleClass *class)
 {
   GObjectClass *gobject_class;
   GtkSearchEngineClass *engine_class;
-  
+
   gobject_class = G_OBJECT_CLASS (class);
   gobject_class->finalize = finalize;
-  
+
   engine_class = GTK_SEARCH_ENGINE_CLASS (class);
   engine_class->set_query = gtk_search_engine_beagle_set_query;
   engine_class->start = gtk_search_engine_beagle_start;
   engine_class->stop = gtk_search_engine_beagle_stop;
   engine_class->is_indexed = gtk_search_engine_beagle_is_indexed;
-
-  g_type_class_add_private (gobject_class, sizeof (GtkSearchEngineBeaglePrivate));
 }
 
 static void
 _gtk_search_engine_beagle_init (GtkSearchEngineBeagle *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, GTK_TYPE_SEARCH_ENGINE_BEAGLE, GtkSearchEngineBeaglePrivate);
+  engine->priv = _gtk_search_engine_beagle_get_instance_private (engine);
 }
-
 
 GtkSearchEngine *
 _gtk_search_engine_beagle_new (void)

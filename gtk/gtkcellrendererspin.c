@@ -28,7 +28,7 @@
 #include "gtkcellrendererspin.h"
 #include "gtkalias.h"
 
-#define GTK_CELL_RENDERER_SPIN_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_CELL_RENDERER_SPIN, GtkCellRendererSpinPrivate))
+#define GTK_CELL_RENDERER_SPIN_GET_PRIVATE(obj) ((GtkCellRendererSpinPrivate *) gtk_cell_renderer_spin_get_instance_private (GTK_CELL_RENDERER_SPIN (obj)))
 
 struct _GtkCellRendererSpinPrivate
 {
@@ -64,8 +64,7 @@ enum {
 
 #define GTK_CELL_RENDERER_SPIN_PATH "gtk-cell-renderer-spin-path"
 
-G_DEFINE_TYPE (GtkCellRendererSpin, gtk_cell_renderer_spin, GTK_TYPE_CELL_RENDERER_TEXT)
-
+G_DEFINE_TYPE_WITH_PRIVATE (GtkCellRendererSpin, gtk_cell_renderer_spin, GTK_TYPE_CELL_RENDERER_TEXT)
 
 static void
 gtk_cell_renderer_spin_class_init (GtkCellRendererSpinClass *klass)
@@ -124,8 +123,6 @@ gtk_cell_renderer_spin_class_init (GtkCellRendererSpinClass *klass)
 						      P_("The number of decimal places to display"),
 						      0, 20, 0,
 						      GTK_PARAM_READWRITE));  
-
-  g_type_class_add_private (object_class, sizeof (GtkCellRendererSpinPrivate));
 }
 
 static void
