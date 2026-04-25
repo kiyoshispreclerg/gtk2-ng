@@ -45,7 +45,7 @@
 #include "gtkintl.h"
 #include "gtkalias.h"
 
-#define GTK_ACTION_GROUP_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_ACTION_GROUP, GtkActionGroupPrivate))
+#define GTK_ACTION_GROUP_GET_PRIVATE(obj) ((GtkActionGroupPrivate *) gtk_action_group_get_instance_private (GTK_ACTION_GROUP (obj)))
 
 struct _GtkActionGroupPrivate 
 {
@@ -58,6 +58,15 @@ struct _GtkActionGroupPrivate
   gpointer         translate_data;
   GDestroyNotify   translate_notify;
 };
+
+static gint gtk_action_group_private_offset;
+
+static inline GtkActionGroupPrivate *
+
+gtk_action_group_get_instance_private (GtkActionGroup *self)
+{
+  return (GtkActionGroupPrivate *) G_STRUCT_MEMBER_P (self, gtk_action_group_private_offset);
+}
 
 enum 
 {
@@ -129,6 +138,7 @@ gtk_action_group_get_type (void)
         sizeof (GtkActionGroup),
         0, /* n_preallocs */
         (GInstanceInitFunc) gtk_action_group_init,
+        NULL            /* value_table */
       };
 
       const GInterfaceInfo buildable_info =
@@ -140,6 +150,9 @@ gtk_action_group_get_type (void)
 
       type = g_type_register_static (G_TYPE_OBJECT, I_("GtkActionGroup"),
 				     &type_info, 0);
+
+      gtk_action_group_private_offset =
+        g_type_add_instance_private (type, sizeof (GtkActionGroupPrivate));
 
       g_type_add_interface_static (type,
 				   GTK_TYPE_BUILDABLE,
@@ -278,8 +291,6 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
 		  _gtk_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1, 
 		  GTK_TYPE_ACTION);
-
-  g_type_class_add_private (gobject_class, sizeof (GtkActionGroupPrivate));
 }
 
 
