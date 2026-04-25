@@ -52,7 +52,7 @@
 #include "gtkprivate.h"
 #include "gtkalias.h"
 
-#define GTK_LABEL_GET_PRIVATE(obj) (gtk_label_get_instance_private (GTK_LABEL (obj)))
+#define GTK_LABEL_GET_PRIVATE(obj) ((GtkLabelPrivate *) gtk_label_get_instance_private (GTK_LABEL (obj)))
 
 typedef struct
 {
