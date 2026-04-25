@@ -384,8 +384,6 @@ gtk_menu_item_class_init (GtkMenuItemClass *klass)
                                                              P_("The minimum desired width of the menu item in characters"),
                                                              0, G_MAXINT, 12,
                                                              GTK_PARAM_READABLE));
-
-  g_type_class_add_private (object_class, sizeof (GtkMenuItemPrivate));
 }
 
 static void
