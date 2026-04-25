@@ -44,7 +44,7 @@
 #include "gtkbuildable.h"
 #include "gtkalias.h"
 
-#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_DIALOG, GtkDialogPrivate))
+#define GET_PRIVATE(obj) ((GtkDialogPrivate *) gtk_dialog_get_instance_private (GTK_DIALOG (obj)))
 
 typedef struct {
   guint ignore_separator : 1;
@@ -113,8 +113,9 @@ enum {
 static guint dialog_signals[LAST_SIGNAL];
 
 G_DEFINE_TYPE_WITH_CODE (GtkDialog, gtk_dialog, GTK_TYPE_WINDOW,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-						gtk_dialog_buildable_interface_init))
+                         G_ADD_PRIVATE (GtkDialog)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
+                                                gtk_dialog_buildable_interface_init))
 
 static void
 gtk_dialog_class_init (GtkDialogClass *class)
@@ -133,8 +134,6 @@ gtk_dialog_class_init (GtkDialogClass *class)
   widget_class->style_set = gtk_dialog_style_set;
 
   class->close = gtk_dialog_close;
-  
-  g_type_class_add_private (gobject_class, sizeof (GtkDialogPrivate));
 
   /**
    * GtkDialog:has-separator:
