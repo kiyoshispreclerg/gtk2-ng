@@ -47,7 +47,7 @@
 
 #define SCROLL_EDGE_SIZE 15
 
-#define GTK_ICON_VIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_ICON_VIEW, GtkIconViewPrivate))
+#define GTK_ICON_VIEW_GET_PRIVATE(obj) ((GtkIconViewPrivate *) gtk_icon_view_get_instance_private (GTK_ICON_VIEW (obj)))
 
 typedef struct _GtkIconViewItem GtkIconViewItem;
 struct _GtkIconViewItem
@@ -472,10 +472,11 @@ static void     gtk_icon_view_buildable_custom_tag_end   (GtkBuildable  *buildab
 static guint icon_view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (GtkIconView, gtk_icon_view, GTK_TYPE_CONTAINER,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_CELL_LAYOUT,
-						gtk_icon_view_cell_layout_init)
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-						gtk_icon_view_buildable_init))
+                         G_ADD_PRIVATE (GtkIconView)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_CELL_LAYOUT,
+                                                gtk_icon_view_cell_layout_init)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
+                                                gtk_icon_view_buildable_init))
 
 static void
 gtk_icon_view_class_init (GtkIconViewClass *klass)
@@ -485,10 +486,8 @@ gtk_icon_view_class_init (GtkIconViewClass *klass)
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
   GtkBindingSet *binding_set;
-  
-  binding_set = gtk_binding_set_by_class (klass);
 
-  g_type_class_add_private (klass, sizeof (GtkIconViewPrivate));
+  binding_set = gtk_binding_set_by_class (klass);
 
   gobject_class = (GObjectClass *) klass;
   object_class = (GtkObjectClass *) klass;
