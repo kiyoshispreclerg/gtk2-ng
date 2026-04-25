@@ -127,7 +127,7 @@ enum {
  *     Cancels the current selection
  */
 
-#define GTK_MENU_SHELL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_MENU_SHELL, GtkMenuShellPrivate))
+#define GTK_MENU_SHELL_GET_PRIVATE(obj) ((GtkMenuShellPrivate *) gtk_menu_shell_get_instance_private (GTK_MENU_SHELL (obj)))
 
 typedef struct _GtkMenuShellPrivate GtkMenuShellPrivate;
 
@@ -205,7 +205,8 @@ static gboolean gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell,
 
 static guint menu_shell_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_ABSTRACT_TYPE (GtkMenuShell, gtk_menu_shell, GTK_TYPE_CONTAINER)
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkMenuShell, gtk_menu_shell, GTK_TYPE_CONTAINER,
+                                  G_ADD_PRIVATE (GtkMenuShell))
 
 static void
 gtk_menu_shell_class_init (GtkMenuShellClass *klass)
@@ -401,12 +402,10 @@ gtk_menu_shell_class_init (GtkMenuShellClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_TAKE_FOCUS,
                                    g_param_spec_boolean ("take-focus",
-							 P_("Take Focus"),
-							 P_("A boolean that determines whether the menu grabs the keyboard focus"),
-							 TRUE,
-							 GTK_PARAM_READWRITE));
-
-  g_type_class_add_private (object_class, sizeof (GtkMenuShellPrivate));
+                                                         P_("Take Focus"),
+                                                         P_("A boolean that determines whether the menu grabs the keyboard focus"),
+                                                         TRUE,
+                                                         GTK_PARAM_READWRITE));
 }
 
 static GType
