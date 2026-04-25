@@ -63,18 +63,16 @@ struct _GdkGCPrivate
   guint exposures : 2;
 };
 
-#define GDK_GC_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GDK_TYPE_GC, GdkGCPrivate))
+#define GDK_GC_GET_PRIVATE(o) ((GdkGCPrivate *) gdk_gc_get_instance_private (GDK_GC (o)))
 
-G_DEFINE_TYPE (GdkGC, gdk_gc, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GdkGC, gdk_gc, G_TYPE_OBJECT)
 
 static void
 gdk_gc_class_init (GdkGCClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
-  
-  object_class->finalize = gdk_gc_finalize;
 
-  g_type_class_add_private (object_class, sizeof (GdkGCPrivate));
+  object_class->finalize = gdk_gc_finalize;
 }
 
 static void
