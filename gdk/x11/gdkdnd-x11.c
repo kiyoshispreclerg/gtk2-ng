@@ -48,6 +48,7 @@
 #include "gdkalias.h"
 
 typedef struct _GdkDragContextPrivateX11 GdkDragContextPrivateX11;
+typedef GdkDragContextPrivateX11 GdkDragContextPrivate;
 
 typedef enum {
   GDK_DRAG_STATUS_DRAG,
@@ -156,16 +157,14 @@ static const struct {
   { "XdndDrop",     xdnd_drop_filter },
 };
 	      
-G_DEFINE_TYPE (GdkDragContext, gdk_drag_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GdkDragContext, gdk_drag_context, G_TYPE_OBJECT)
 
 static void
 gdk_drag_context_init (GdkDragContext *dragcontext)
 {
   GdkDragContextPrivateX11 *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (dragcontext, 
-					 GDK_TYPE_DRAG_CONTEXT, 
-					 GdkDragContextPrivateX11);
+  private = gdk_drag_context_get_instance_private (dragcontext);
   
   dragcontext->windowing_data = private;
 
@@ -178,8 +177,6 @@ gdk_drag_context_class_init (GdkDragContextClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = gdk_drag_context_finalize;
-
-  g_type_class_add_private (object_class, sizeof (GdkDragContextPrivateX11));
 }
 
 static void
