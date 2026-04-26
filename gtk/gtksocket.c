@@ -155,6 +155,8 @@ enum {
 
 static guint socket_signals[LAST_SIGNAL] = { 0 };
 
+static gpointer gtk_socket_get_instance_private (GtkSocket *socket);
+
 /*
  * _gtk_socket_get_private:
  *
