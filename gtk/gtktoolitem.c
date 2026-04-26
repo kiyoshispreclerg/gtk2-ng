@@ -93,8 +93,6 @@ enum {
   PROP_ACTIVATABLE_USE_ACTION_APPEARANCE
 };
 
-#define GTK_TOOL_ITEM_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_TOOL_ITEM, GtkToolItemPrivate))
-
 struct _GtkToolItemPrivate
 {
   gchar *tip_text;
@@ -157,6 +155,7 @@ static void gtk_tool_item_set_use_action_appearance  (GtkToolItem          *item
 static guint toolitem_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (GtkToolItem, gtk_tool_item, GTK_TYPE_BIN,
+                         G_ADD_PRIVATE (GtkToolItem)
 			 G_IMPLEMENT_INTERFACE (GTK_TYPE_ACTIVATABLE,
 						gtk_tool_item_activatable_interface_init))
 
@@ -301,8 +300,6 @@ gtk_tool_item_class_init (GtkToolItemClass *klass)
 		  GTK_TYPE_TOOLTIPS,
 		  G_TYPE_STRING,
 		  G_TYPE_STRING);		  
-
-  g_type_class_add_private (object_class, sizeof (GtkToolItemPrivate));
 }
 
 static void
@@ -310,7 +307,7 @@ gtk_tool_item_init (GtkToolItem *toolitem)
 {
   gtk_widget_set_can_focus (GTK_WIDGET (toolitem), FALSE);
 
-  toolitem->priv = GTK_TOOL_ITEM_GET_PRIVATE (toolitem);
+  toolitem->priv = gtk_tool_item_get_instance_private (toolitem);
 
   toolitem->priv->visible_horizontal = TRUE;
   toolitem->priv->visible_vertical = TRUE;
