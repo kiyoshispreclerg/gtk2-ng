@@ -117,14 +117,12 @@ static void gtk_input_dialog_fill_keys        (GtkInputDialog      *inputd,
 
 static guint input_dialog_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GtkInputDialog, gtk_input_dialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE_WITH_PRIVATE (GtkInputDialog, gtk_input_dialog, GTK_TYPE_DIALOG)
 
 static GtkInputDialogPrivate *
 gtk_input_dialog_get_private (GtkInputDialog *input_dialog)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (input_dialog, 
-				      GTK_TYPE_INPUT_DIALOG, 
-				      GtkInputDialogPrivate);
+  return gtk_input_dialog_get_instance_private (input_dialog);
 }
 
 static GtkInputDialog *
@@ -172,8 +170,6 @@ gtk_input_dialog_class_init (GtkInputDialogClass *klass)
 		  _gtk_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  GDK_TYPE_DEVICE);
-
-  g_type_class_add_private (object_class, sizeof (GtkInputDialogPrivate));
 }
 
 static void
