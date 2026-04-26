@@ -86,6 +86,8 @@ typedef enum {
   STEPPER_D
 } Stepper;
 
+typedef GtkRangeLayout GtkRangePrivate;
+
 struct _GtkRangeLayout
 {
   /* These are in widget->window coordinates */
