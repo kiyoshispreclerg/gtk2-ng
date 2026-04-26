@@ -36,8 +36,6 @@
 #include "gtkdnd.h"
 #include "gtkalias.h"
 
-#define GTK_EXPANDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_EXPANDER, GtkExpanderPrivate))
-
 #define DEFAULT_EXPANDER_SIZE 10
 #define DEFAULT_EXPANDER_SPACING 2
 
@@ -137,6 +135,7 @@ static void gtk_expander_buildable_add_child      (GtkBuildable *buildable,
 						   const gchar  *type);
 
 G_DEFINE_TYPE_WITH_CODE (GtkExpander, gtk_expander, GTK_TYPE_BIN,
+                         G_ADD_PRIVATE (GtkExpander)
 			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
 						gtk_expander_buildable_init))
 
@@ -180,8 +179,6 @@ gtk_expander_class_init (GtkExpanderClass *klass)
   container_class->forall = gtk_expander_forall;
 
   klass->activate = gtk_expander_activate;
-
-  g_type_class_add_private (klass, sizeof (GtkExpanderPrivate));
 
   g_object_class_install_property (gobject_class,
 				   PROP_EXPANDED,
@@ -274,7 +271,7 @@ gtk_expander_init (GtkExpander *expander)
 {
   GtkExpanderPrivate *priv;
 
-  expander->priv = priv = GTK_EXPANDER_GET_PRIVATE (expander);
+  expander->priv = priv = gtk_expander_get_instance_private (expander);
 
   gtk_widget_set_can_focus (GTK_WIDGET (expander), TRUE);
   gtk_widget_set_has_window (GTK_WIDGET (expander), FALSE);
