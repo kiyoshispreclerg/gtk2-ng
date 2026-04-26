@@ -97,10 +97,7 @@ enum {
   PAGE_SETUP_LIST_N_COLS
 };
 
-G_DEFINE_TYPE (GtkPageSetupUnixDialog, gtk_page_setup_unix_dialog, GTK_TYPE_DIALOG)
-
-#define GTK_PAGE_SETUP_UNIX_DIALOG_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_PAGE_SETUP_UNIX_DIALOG, GtkPageSetupUnixDialogPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (GtkPageSetupUnixDialog, gtk_page_setup_unix_dialog, GTK_TYPE_DIALOG)
 
 static void gtk_page_setup_unix_dialog_finalize  (GObject                *object);
 static void populate_dialog                      (GtkPageSetupUnixDialog *dialog);
@@ -142,8 +139,6 @@ gtk_page_setup_unix_dialog_class_init (GtkPageSetupUnixDialogClass *class)
   object_class = (GObjectClass *) class;
 
   object_class->finalize = gtk_page_setup_unix_dialog_finalize;
-
-  g_type_class_add_private (class, sizeof (GtkPageSetupUnixDialogPrivate));
 }
 
 static void
@@ -153,7 +148,7 @@ gtk_page_setup_unix_dialog_init (GtkPageSetupUnixDialog *dialog)
   GtkTreeIter iter;
   gchar *tmp;
 
-  priv = dialog->priv = GTK_PAGE_SETUP_UNIX_DIALOG_GET_PRIVATE (dialog);
+  priv = dialog->priv = gtk_page_setup_unix_dialog_get_instance_private (dialog);
 
   priv->print_backends = NULL;
 
