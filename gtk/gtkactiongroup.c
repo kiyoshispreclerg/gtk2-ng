@@ -169,6 +169,8 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
 {
   GObjectClass *gobject_class;
 
+  g_type_class_adjust_private_offset (klass, &gtk_action_group_private_offset);
+
   gobject_class = G_OBJECT_CLASS (klass);
   parent_class = g_type_class_peek_parent (klass);
 
