@@ -30,9 +30,6 @@
 #include "gtkprintbackend.h"
 #include "gtkalias.h"
 
-#define GTK_PRINT_BACKEND_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_PRINT_BACKEND, GtkPrintBackendPrivate))
-
 static void gtk_print_backend_dispose      (GObject      *object);
 static void gtk_print_backend_set_property (GObject      *object,
                                             guint         prop_id,
@@ -88,6 +85,8 @@ gtk_print_backend_error_quark (void)
 
 typedef struct _GtkPrintBackendModule GtkPrintBackendModule;
 typedef struct _GtkPrintBackendModuleClass GtkPrintBackendModuleClass;
+
+static gpointer gtk_print_backend_get_instance_private (GtkPrintBackend *backend);
 
 struct _GtkPrintBackendModule
 {
@@ -200,7 +199,7 @@ gtk_print_backend_set_property (GObject      *object,
   GtkPrintBackend *backend = GTK_PRINT_BACKEND (object);
   GtkPrintBackendPrivate *priv;
 
-  priv = backend->priv = GTK_PRINT_BACKEND_GET_PRIVATE (backend); 
+  priv = backend->priv = gtk_print_backend_get_instance_private (backend);
 
   switch (prop_id)
     {
@@ -222,7 +221,7 @@ gtk_print_backend_get_property (GObject    *object,
   GtkPrintBackend *backend = GTK_PRINT_BACKEND (object);
   GtkPrintBackendPrivate *priv;
 
-  priv = backend->priv = GTK_PRINT_BACKEND_GET_PRIVATE (backend); 
+  priv = backend->priv = gtk_print_backend_get_instance_private (backend);
 
   switch (prop_id)
     {
@@ -348,7 +347,7 @@ gtk_print_backend_load_modules (void)
  *             GtkPrintBackend           *
  *****************************************/
 
-G_DEFINE_TYPE (GtkPrintBackend, gtk_print_backend, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (GtkPrintBackend, gtk_print_backend, G_TYPE_OBJECT)
 
 static void                 fallback_printer_request_details       (GtkPrinter          *printer);
 static gboolean             fallback_printer_mark_conflicts        (GtkPrinter          *printer,
@@ -398,8 +397,6 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
                                                      GTK_PRINT_BACKEND_STATUS_UNKNOWN,
                                                      GTK_PARAM_READWRITE)); 
 
-  g_type_class_add_private (class, sizeof (GtkPrintBackendPrivate));
-  
   signals[PRINTER_LIST_CHANGED] =
     g_signal_new (I_("printer-list-changed"),
 		  G_TYPE_FROM_CLASS (class),
@@ -455,7 +452,7 @@ gtk_print_backend_init (GtkPrintBackend *backend)
 {
   GtkPrintBackendPrivate *priv;
 
-  priv = backend->priv = GTK_PRINT_BACKEND_GET_PRIVATE (backend); 
+  priv = backend->priv = gtk_print_backend_get_instance_private (backend);
 
   priv->printers = g_hash_table_new_full (g_str_hash, g_str_equal, 
 					  (GDestroyNotify) g_free,
