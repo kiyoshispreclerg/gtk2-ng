@@ -59,8 +59,6 @@
  *  Private Macros  *
  * **************** */
 
-#define GTK_FILE_CHOOSER_BUTTON_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_FILE_CHOOSER_BUTTON, GtkFileChooserButtonPrivate))
-
 #define DEFAULT_TITLE		N_("Select a File")
 #define DESKTOP_DISPLAY_NAME	N_("Desktop")
 #define FALLBACK_DISPLAY_NAME	N_("(None)") /* this string is used in gtk+/gtk/tests/filechooser.c - change it there if you change it here */
@@ -316,9 +314,9 @@ static guint file_chooser_button_signals[LAST_SIGNAL] = { 0 };
  * ******************* */
 
 G_DEFINE_TYPE_WITH_CODE (GtkFileChooserButton, gtk_file_chooser_button, GTK_TYPE_HBOX, { \
+    G_ADD_PRIVATE (GtkFileChooserButton) \
     G_IMPLEMENT_INTERFACE (GTK_TYPE_FILE_CHOOSER, gtk_file_chooser_button_file_chooser_iface_init) \
 })
-
 
 /* ***************** *
  *  GType Functions  *
@@ -432,8 +430,6 @@ gtk_file_chooser_button_class_init (GtkFileChooserButtonClass * class)
 						     GTK_PARAM_READWRITE));
 
   _gtk_file_chooser_install_properties (gobject_class);
-
-  g_type_class_add_private (class, sizeof (GtkFileChooserButtonPrivate));
 }
 
 static void
@@ -443,7 +439,7 @@ gtk_file_chooser_button_init (GtkFileChooserButton *button)
   GtkWidget *box, *image, *sep;
   GtkTargetList *target_list;
 
-  priv = button->priv = GTK_FILE_CHOOSER_BUTTON_GET_PRIVATE (button);
+  priv = button->priv = gtk_file_chooser_button_get_instance_private (button);
 
   priv->icon_size = FALLBACK_ICON_SIZE;
   priv->focus_on_click = TRUE;
