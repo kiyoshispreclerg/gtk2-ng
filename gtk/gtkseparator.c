@@ -46,9 +46,6 @@ struct _GtkSeparatorPrivate
   GtkOrientation orientation;
 };
 
-#define GTK_SEPARATOR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_SEPARATOR, GtkSeparatorPrivate))
-
-
 static void       gtk_separator_set_property (GObject        *object,
                                               guint           prop_id,
                                               const GValue   *value,
@@ -65,6 +62,7 @@ static gboolean   gtk_separator_expose       (GtkWidget      *widget,
 
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkSeparator, gtk_separator, GTK_TYPE_WIDGET,
+                                  G_ADD_PRIVATE (GtkSeparator)
                                   G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE,
                                                          NULL))
 
@@ -84,15 +82,13 @@ gtk_separator_class_init (GtkSeparatorClass *class)
   g_object_class_override_property (object_class,
                                     PROP_ORIENTATION,
                                     "orientation");
-
-  g_type_class_add_private (object_class, sizeof (GtkSeparatorPrivate));
 }
 
 static void
 gtk_separator_init (GtkSeparator *separator)
 {
   GtkWidget *widget = GTK_WIDGET (separator);
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (separator);
+  GtkSeparatorPrivate *private = gtk_separator_get_instance_private (separator);
 
   gtk_widget_set_has_window (GTK_WIDGET (separator), FALSE);
 
@@ -108,7 +104,7 @@ gtk_separator_set_property (GObject      *object,
                             const GValue *value,
                             GParamSpec   *pspec)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (object);
+  GtkSeparatorPrivate *private = gtk_separator_get_instance_private (GTK_SEPARATOR (object));
 
   switch (prop_id)
     {
@@ -128,7 +124,7 @@ gtk_separator_get_property (GObject    *object,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (object);
+  GtkSeparatorPrivate *private = gtk_separator_get_instance_private (GTK_SEPARATOR (object));
 
   switch (prop_id)
     {
@@ -145,7 +141,7 @@ static void
 gtk_separator_size_request (GtkWidget      *widget,
                             GtkRequisition *requisition)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (widget);
+  GtkSeparatorPrivate *private = gtk_separator_get_instance_private (GTK_SEPARATOR (widget));
   gboolean wide_separators;
   gint     separator_width;
   gint     separator_height;
@@ -179,7 +175,7 @@ static gboolean
 gtk_separator_expose (GtkWidget      *widget,
                       GdkEventExpose *event)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (widget);
+  GtkSeparatorPrivate *private = gtk_separator_get_instance_private (GTK_SEPARATOR (widget));
   gboolean wide_separators;
   gint     separator_width;
   gint     separator_height;
