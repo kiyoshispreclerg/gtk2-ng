@@ -1286,22 +1286,39 @@ build_recent_info (GBookmarkFile  *bookmarks,
 
   g_assert (bookmarks != NULL);
   g_assert (info != NULL);
-  
+
   info->display_name = g_bookmark_file_get_title (bookmarks, info->uri, NULL);
   info->description = g_bookmark_file_get_description (bookmarks, info->uri, NULL);
   info->mime_type = g_bookmark_file_get_mime_type (bookmarks, info->uri, NULL);
-    
+
   info->is_private = g_bookmark_file_get_is_private (bookmarks, info->uri, NULL);
-  
-  info->added = g_bookmark_file_get_added (bookmarks, info->uri, NULL);
-  info->modified = g_bookmark_file_get_modified (bookmarks, info->uri, NULL);
-  info->visited = g_bookmark_file_get_visited (bookmarks, info->uri, NULL);
-  
+
+  {
+    GDateTime *added;
+    GDateTime *modified;
+    GDateTime *visited;
+
+    added = g_bookmark_file_get_added_date_time (bookmarks, info->uri, NULL);
+    modified = g_bookmark_file_get_modified_date_time (bookmarks, info->uri, NULL);
+    visited = g_bookmark_file_get_visited_date_time (bookmarks, info->uri, NULL);
+
+    info->added = added ? g_date_time_to_unix (added) : -1;
+    info->modified = modified ? g_date_time_to_unix (modified) : -1;
+    info->visited = visited ? g_date_time_to_unix (visited) : -1;
+
+    if (added)
+      g_date_time_unref (added);
+    if (modified)
+      g_date_time_unref (modified);
+    if (visited)
+      g_date_time_unref (visited);
+  }
+
   groups = g_bookmark_file_get_groups (bookmarks, info->uri, &groups_len, NULL);
   for (i = 0; i < groups_len; i++)
     {
       gchar *group_name = g_strdup (groups[i]);
-      
+
       info->groups = g_slist_append (info->groups, group_name);
     }
 
@@ -1631,10 +1648,16 @@ gtk_recent_manager_clamp_to_age (GtkRecentManager *manager,
   for (i = 0; i < n_uris; i++)
     {
       const gchar *uri = uris[i];
+      GDateTime *modified_date_time;
       time_t modified;
       gint item_age;
 
-      modified = g_bookmark_file_get_modified (priv->recent_items, uri, NULL);
+      modified_date_time = g_bookmark_file_get_modified_date_time (priv->recent_items, uri, NULL);
+      modified = modified_date_time ? g_date_time_to_unix (modified_date_time) : (time_t) -1;
+
+      if (modified_date_time)
+        g_date_time_unref (modified_date_time);
+
       if (recent_time_get_days_elapsed (now, modified, &item_age) &&
           item_age > age)
         g_bookmark_file_remove_item (priv->recent_items, uri, NULL);
