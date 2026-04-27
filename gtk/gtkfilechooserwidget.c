@@ -68,9 +68,7 @@ gtk_file_chooser_widget_class_init (GtkFileChooserWidgetClass *class)
 static void
 gtk_file_chooser_widget_init (GtkFileChooserWidget *chooser_widget)
 {
-  GtkFileChooserWidgetPrivate *priv;
-
-  priv = chooser_widget->priv = gtk_file_chooser_widget_get_instance_private (chooser_widget);
+  chooser_widget->priv = gtk_file_chooser_widget_get_instance_private (chooser_widget);
 }
 
 static void

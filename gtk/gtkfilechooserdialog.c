@@ -78,10 +78,9 @@ gtk_file_chooser_dialog_class_init (GtkFileChooserDialogClass *class)
 static void
 gtk_file_chooser_dialog_init (GtkFileChooserDialog *dialog)
 {
-  GtkFileChooserDialogPrivate *priv;
   GtkDialog *fc_dialog = GTK_DIALOG (dialog);
 
-  priv = dialog->priv = gtk_file_chooser_dialog_get_instance_private (dialog);
+  dialog->priv = gtk_file_chooser_dialog_get_instance_private (dialog);
   dialog->priv->response_requested = FALSE;
 
   gtk_dialog_set_has_separator (fc_dialog, FALSE);
