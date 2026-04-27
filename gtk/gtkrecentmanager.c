@@ -632,20 +632,21 @@ get_default_recent_file (void)
         {
           char *exec;
           guint count;
-          time_t stamp;
+          GDateTime *stamp;
 
-          g_bookmark_file_get_app_info (bf_old, uris[i], apps[j],
-                                        &exec,
-                                        &count,
-                                        &stamp,
-                                        NULL);
+          g_bookmark_file_get_application_info (bf_old, uris[i], apps[j],
+                                                &exec,
+                                                &count,
+                                                &stamp,
+                                                NULL);
 
-          g_bookmark_file_set_app_info (bf_new, uris[i], apps[j],
-                                        exec,
-                                        count,
-                                        stamp,
-                                        NULL);
+          g_bookmark_file_set_application_info (bf_new, uris[i], apps[j],
+                                                exec,
+                                                count,
+                                                stamp,
+                                                NULL);
 
+          g_date_time_unref (stamp);
           g_free (exec);
         }
 
@@ -1305,35 +1306,37 @@ build_recent_info (GBookmarkFile  *bookmarks,
     }
 
   g_strfreev (groups);
-  
+
   apps = g_bookmark_file_get_applications (bookmarks, info->uri, &apps_len, NULL);
   for (i = 0; i < apps_len; i++)
     {
       gchar *app_name, *app_exec;
       guint count;
-      time_t stamp;
+      GDateTime *stamp;
       RecentAppInfo *app_info;
       gboolean res;
-      
+
       app_name = apps[i];
-      
-      res = g_bookmark_file_get_app_info (bookmarks, info->uri, app_name,
-      					  &app_exec,
-      					  &count,
-      					  &stamp,
-      					  NULL);
+
+      res = g_bookmark_file_get_application_info (bookmarks, info->uri, app_name,
+                                                  &app_exec,
+                                                  &count,
+                                                  &stamp,
+                                                  NULL);
       if (!res)
         continue;
-      
+
       app_info = recent_app_info_new (app_name);
       app_info->exec = app_exec;
       app_info->count = count;
-      app_info->stamp = stamp;
-      
+      app_info->stamp = g_date_time_to_unix (stamp);
+
+      g_date_time_unref (stamp);
+
       info->applications = g_slist_prepend (info->applications, app_info);
       g_hash_table_replace (info->apps_lookup, app_info->name, app_info);
     }
-  
+
   g_strfreev (apps);
 }
 
