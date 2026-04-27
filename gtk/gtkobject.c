@@ -126,7 +126,7 @@ gtk_arg_set_from_value (GtkArg       *arg,
 {
   switch (G_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:           GTK_VALUE_CHAR (*arg) = g_value_get_char (value);       break;
+    case G_TYPE_CHAR:           GTK_VALUE_CHAR (*arg) = g_value_get_schar (value);       break;
     case G_TYPE_UCHAR:          GTK_VALUE_UCHAR (*arg) = g_value_get_uchar (value);     break;
     case G_TYPE_BOOLEAN:        GTK_VALUE_BOOL (*arg) = g_value_get_boolean (value);    break;
     case G_TYPE_INT:            GTK_VALUE_INT (*arg) = g_value_get_int (value);         break;

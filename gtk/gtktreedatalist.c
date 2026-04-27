@@ -192,7 +192,7 @@ _gtk_tree_data_list_value_to_node (GtkTreeDataList *list,
       list->data.v_int = g_value_get_boolean (value);
       break;
     case G_TYPE_CHAR:
-      list->data.v_char = g_value_get_char (value);
+      list->data.v_char = g_value_get_schar (value);
       break;
     case G_TYPE_UCHAR:
       list->data.v_uchar = g_value_get_uchar (value);
@@ -329,9 +329,9 @@ _gtk_tree_data_list_compare_func (GtkTreeModel *model,
 	retval = 1;
       break;
     case G_TYPE_CHAR:
-      if (g_value_get_char (&a_value) < g_value_get_char (&b_value))
+      if (g_value_get_schar (&a_value) < g_value_get_schar (&b_value))
 	retval = -1;
-      else if (g_value_get_char (&a_value) == g_value_get_char (&b_value))
+      else if (g_value_get_schar (&a_value) == g_value_get_schar (&b_value))
 	retval = 0;
       else
 	retval = 1;
