@@ -11344,7 +11344,7 @@ gtk_tree_view_insert_column (GtkTreeView       *tree_view,
  * @position: The position to insert the new column in.
  * @title: The title to set the header to.
  * @cell: The #GtkCellRenderer.
- * @Varargs: A %NULL-terminated list of attributes.
+ * @...: A %NULL-terminated list of attributes.
  *
  * Creates a new #GtkTreeViewColumn and inserts it into the @tree_view at
  * @position.  If @position is -1, then the newly created column is inserted at

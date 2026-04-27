@@ -1403,7 +1403,7 @@ gtk_tree_model_unref_node (GtkTreeModel *tree_model,
  * gtk_tree_model_get:
  * @tree_model: a #GtkTreeModel
  * @iter: a row in @tree_model
- * @Varargs: pairs of column number and value return locations, terminated by -1
+ * @...: pairs of column number and value return locations, terminated by -1
  *
  * Gets the value of one or more cells in the row referenced by @iter.
  * The variable argument list should contain integer column numbers,

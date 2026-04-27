@@ -589,7 +589,7 @@ gtk_message_dialog_get_property (GObject     *object,
  * @type: type of message
  * @buttons: set of buttons to use
  * @message_format: (allow-none): printf()-style format string, or %NULL
- * @Varargs: arguments for @message_format
+ * @...: arguments for @message_format
  *
  * Creates a new message dialog, which is a simple dialog with an icon
  * indicating the dialog type (error, warning, etc.) and some text the
@@ -658,7 +658,7 @@ gtk_message_dialog_new (GtkWindow     *parent,
  * @type: type of message
  * @buttons: set of buttons to use
  * @message_format: (allow-none): printf()-style format string, or %NULL
- * @Varargs: arguments for @message_format
+ * @...: arguments for @message_format
  * 
  * Creates a new message dialog, which is a simple dialog with an icon
  * indicating the dialog type (error, warning, etc.) and some text which
@@ -805,7 +805,7 @@ gtk_message_dialog_set_markup (GtkMessageDialog *message_dialog,
  * gtk_message_dialog_format_secondary_text:
  * @message_dialog: a #GtkMessageDialog
  * @message_format: (allow-none): printf()-style format string, or %NULL
- * @Varargs: arguments for @message_format
+ * @...: arguments for @message_format
  * 
  * Sets the secondary text of the message dialog to be @message_format 
  * (with printf()-style).
@@ -855,7 +855,7 @@ gtk_message_dialog_format_secondary_text (GtkMessageDialog *message_dialog,
  * @message_dialog: a #GtkMessageDialog
  * @message_format: printf()-style markup string (see 
      <link linkend="PangoMarkupFormat">Pango markup format</link>), or %NULL
- * @Varargs: arguments for @message_format
+ * @...: arguments for @message_format
  * 
  * Sets the secondary text of the message dialog to be @message_format (with 
  * printf()-style), which is marked up with the 

@@ -850,7 +850,7 @@ gtk_container_child_set_property (GtkContainer *container,
  * @container: a #GtkContainer 
  * @widget: a widget to be placed inside @container 
  * @first_prop_name: the name of the first child property to set 
- * @Varargs: a %NULL-terminated list of property names and values, starting
+ * @...: a %NULL-terminated list of property names and values, starting
  *           with @first_prop_name
  * 
  * Adds @widget to @container, setting child properties at the same time.
@@ -890,7 +890,7 @@ gtk_container_add_with_properties (GtkContainer *container,
  * @container: a #GtkContainer
  * @child: a widget which is a child of @container
  * @first_prop_name: the name of the first property to set
- * @Varargs: a %NULL-terminated list of property names and values, starting
+ * @...: a %NULL-terminated list of property names and values, starting
  *           with @first_prop_name
  * 
  * Sets one or more child properties for @child and @container.
@@ -917,7 +917,7 @@ gtk_container_child_set (GtkContainer      *container,
  * @container: a #GtkContainer
  * @child: a widget which is a child of @container
  * @first_prop_name: the name of the first property to get
- * @Varargs: return location for the first property, followed 
+ * @...: return location for the first property, followed 
  *     optionally by more name/return location pairs, followed by %NULL
  * 
  * Gets the values of one or more child properties for @child and @container.

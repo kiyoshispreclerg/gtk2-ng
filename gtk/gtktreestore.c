@@ -242,7 +242,7 @@ gtk_tree_store_init (GtkTreeStore *tree_store)
 /**
  * gtk_tree_store_new:
  * @n_columns: number of columns in the tree store
- * @Varargs: all #GType types for the columns, from first to last
+ * @...: all #GType types for the columns, from first to last
  *
  * Creates a new tree store as with @n_columns columns each of the types passed
  * in.  Note that only types derived from standard GObject fundamental types 
@@ -1065,7 +1065,7 @@ gtk_tree_store_set_valist (GtkTreeStore *tree_store,
  * gtk_tree_store_set:
  * @tree_store: A #GtkTreeStore
  * @iter: A valid #GtkTreeIter for the row being modified
- * @Varargs: pairs of column number and value, terminated with -1
+ * @...: pairs of column number and value, terminated with -1
  *
  * Sets the value of one or more cells in the row referenced by @iter.
  * The variable argument list should contain integer column numbers,
@@ -1384,7 +1384,7 @@ gtk_tree_store_insert_after (GtkTreeStore *tree_store,
  * @iter: (out) (allow-none): An unset #GtkTreeIter to set the new row, or %NULL.
  * @parent: (allow-none): A valid #GtkTreeIter, or %NULL
  * @position: position to insert the new row
- * @Varargs: pairs of column number and value, terminated with -1
+ * @...: pairs of column number and value, terminated with -1
  *
  * Creates a new row at @position.  @iter will be changed to point to this
  * new row.  If @position is larger than the number of rows on the list, then

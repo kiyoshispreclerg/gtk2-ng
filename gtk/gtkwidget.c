@@ -3005,7 +3005,7 @@ gtk_widget_thaw_child_notify (GtkWidget *widget)
  * gtk_widget_new:
  * @type: type ID of the widget to create
  * @first_property_name: name of first property to set
- * @Varargs: value of first property, followed by more properties, 
+ * @...: value of first property, followed by more properties, 
  *           %NULL-terminated
  * 
  * This is a convenience function for creating a widget and setting
@@ -3038,7 +3038,7 @@ gtk_widget_new (GType        type,
  * gtk_widget_set:
  * @widget: a #GtkWidget
  * @first_property_name: name of first property to set
- * @Varargs: value of first property, followed by more properties, 
+ * @...: value of first property, followed by more properties, 
  *           %NULL-terminated
  * 
  * Precursor of g_object_set().
@@ -10017,7 +10017,7 @@ gtk_widget_style_get_valist (GtkWidget   *widget,
  * gtk_widget_style_get:
  * @widget: a #GtkWidget
  * @first_property_name: the name of the first property to get
- * @Varargs: pairs of property names and locations to 
+ * @...: pairs of property names and locations to 
  *   return the property values, starting with the location for 
  *   @first_property_name, terminated by %NULL.
  *
