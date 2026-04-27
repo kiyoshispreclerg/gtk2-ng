@@ -29,8 +29,6 @@
  */
 
 #undef GTK_DISABLE_DEPRECATED
-/* For GCompletion */
-#undef G_DISABLE_DEPRECATED
 
 #include "config.h"
 #include <string.h>
@@ -73,6 +71,8 @@ static void         gtk_combo_unrealize		 (GtkWidget	   *widget);
 static void         gtk_combo_destroy            (GtkObject        *combo);
 static GtkListItem *gtk_combo_find               (GtkCombo         *combo);
 static gchar *      gtk_combo_func               (GtkListItem      *li);
+static gchar *      gtk_combo_complete           (GtkCombo         *combo,
+                                                  const gchar      *prefix);
 static gboolean     gtk_combo_focus_idle         (GtkCombo         *combo);
 static gint         gtk_combo_entry_focus_out    (GtkEntry         *entry,
 						  GdkEventFocus    *event,
@@ -213,32 +213,27 @@ gtk_combo_entry_key_press (GtkEntry * entry, GdkEventKey * event, GtkCombo * com
       state == GDK_MOD1_MASK)
     {
       GtkEditable *editable = GTK_EDITABLE (entry);
-      GCompletion * cmpl;
       gchar* prefix;
       gchar* nprefix = NULL;
       gint pos;
 
       if ( !GTK_LIST (combo->list)->children )
-	return FALSE;
-    
-      cmpl = g_completion_new ((GCompletionFunc)gtk_combo_func);
-      g_completion_add_items (cmpl, GTK_LIST (combo->list)->children);
+        return FALSE;
 
       pos = gtk_editable_get_position (editable);
       prefix = gtk_editable_get_chars (editable, 0, pos);
 
-      g_completion_complete_utf8 (cmpl, prefix, &nprefix);
+      nprefix = gtk_combo_complete (combo, prefix);
 
-      if (nprefix && strlen (nprefix) > strlen (prefix)) 
-	{
-	  gtk_editable_insert_text (editable, g_utf8_offset_to_pointer (nprefix, pos), 
-				    strlen (nprefix) - strlen (prefix), &pos);
-	  gtk_editable_set_position (editable, pos);
-	}
+      if (nprefix && strlen (nprefix) > strlen (prefix))
+        {
+          gtk_editable_insert_text (editable, g_utf8_offset_to_pointer (nprefix, pos),
+                                    strlen (nprefix) - strlen (prefix), &pos);
+          gtk_editable_set_position (editable, pos);
+        }
 
       g_free (nprefix);
       g_free (prefix);
-      g_completion_free (cmpl);
 
       return TRUE;
     }
@@ -373,10 +368,64 @@ gtk_combo_func (GtkListItem * li)
     {
       label = GTK_BIN (li)->child;
       if (!label || !GTK_IS_LABEL (label))
-	return NULL;
+        return NULL;
       ltext = (gchar *) gtk_label_get_text (GTK_LABEL (label));
     }
   return ltext;
+}
+
+static gchar *
+gtk_combo_complete (GtkCombo    *combo,
+                    const gchar *prefix)
+{
+  GList *items;
+  gchar *nprefix = NULL;
+
+  for (items = GTK_LIST (combo->list)->children; items; items = items->next)
+    {
+      gchar *text;
+
+      text = gtk_combo_func (GTK_LIST_ITEM (items->data));
+      if (!text)
+        continue;
+
+      if (g_str_has_prefix (text, prefix))
+        {
+          if (nprefix == NULL)
+            {
+              nprefix = g_strdup (text);
+            }
+          else
+            {
+              gchar *p = nprefix;
+              const gchar *q = text;
+
+              while (*p != '\0' && *q != '\0')
+                {
+                  gunichar pc;
+                  gunichar qc;
+                  gchar *next_p;
+                  const gchar *next_q;
+
+                  pc = g_utf8_get_char (p);
+                  qc = g_utf8_get_char (q);
+
+                  if (pc != qc)
+                    break;
+
+                  next_p = g_utf8_next_char (p);
+                  next_q = g_utf8_next_char (q);
+
+                  p = next_p;
+                  q = next_q;
+                }
+
+              *p = '\0';
+            }
+        }
+    }
+
+  return nprefix;
 }
 
 static gint
