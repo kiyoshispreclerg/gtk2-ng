@@ -25,6 +25,7 @@
 
 #include "config.h"
 #include <pango/pangocairo.h>
+#include <fribidi.h>
 #include "gtkintl.h"
 
 #define GTK_TYPE_FILL_LAYOUT_RENDERER            (_gtk_fill_layout_renderer_get_type())
@@ -245,17 +246,19 @@ _gtk_pango_find_base_dir (const gchar *text,
 
   while ((end == NULL && *p != '\0') || (end != NULL && p < end))
     {
-      PangoBidiType bidi_type;
+      FriBidiCharType fribidi_ch_type;
 
-      bidi_type = pango_bidi_type_for_unichar (g_utf8_get_char (p));
+      fribidi_ch_type = fribidi_get_bidi_type (g_utf8_get_char (p));
 
-      if (bidi_type == PANGO_BIDI_TYPE_L)
-        return PANGO_DIRECTION_LTR;
-      else if (bidi_type == PANGO_BIDI_TYPE_R ||
-               bidi_type == PANGO_BIDI_TYPE_AL)
+      if (!FRIBIDI_IS_STRONG (fribidi_ch_type))
+        {
+          p = g_utf8_next_char (p);
+          continue;
+        }
+      else if (FRIBIDI_IS_RTL (fribidi_ch_type))
         return PANGO_DIRECTION_RTL;
-
-      p = g_utf8_next_char (p);
+      else
+        return PANGO_DIRECTION_LTR;
     }
 
   return PANGO_DIRECTION_NEUTRAL;
