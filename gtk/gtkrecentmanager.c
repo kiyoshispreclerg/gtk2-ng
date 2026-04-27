@@ -646,7 +646,6 @@ get_default_recent_file (void)
                                                 stamp,
                                                 NULL);
 
-          g_date_time_unref (stamp);
           g_free (exec);
         }
 
@@ -1305,13 +1304,6 @@ build_recent_info (GBookmarkFile  *bookmarks,
     info->added = added ? g_date_time_to_unix (added) : -1;
     info->modified = modified ? g_date_time_to_unix (modified) : -1;
     info->visited = visited ? g_date_time_to_unix (visited) : -1;
-
-    if (added)
-      g_date_time_unref (added);
-    if (modified)
-      g_date_time_unref (modified);
-    if (visited)
-      g_date_time_unref (visited);
   }
 
   groups = g_bookmark_file_get_groups (bookmarks, info->uri, &groups_len, NULL);
@@ -1347,8 +1339,6 @@ build_recent_info (GBookmarkFile  *bookmarks,
       app_info->exec = app_exec;
       app_info->count = count;
       app_info->stamp = g_date_time_to_unix (stamp);
-
-      g_date_time_unref (stamp);
 
       info->applications = g_slist_prepend (info->applications, app_info);
       g_hash_table_replace (info->apps_lookup, app_info->name, app_info);
@@ -1654,9 +1644,6 @@ gtk_recent_manager_clamp_to_age (GtkRecentManager *manager,
 
       modified_date_time = g_bookmark_file_get_modified_date_time (priv->recent_items, uri, NULL);
       modified = modified_date_time ? g_date_time_to_unix (modified_date_time) : (time_t) -1;
-
-      if (modified_date_time)
-        g_date_time_unref (modified_date_time);
 
       if (recent_time_get_days_elapsed (now, modified, &item_age) &&
           item_age > age)
