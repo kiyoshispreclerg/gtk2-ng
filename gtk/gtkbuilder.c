@@ -238,6 +238,12 @@ typedef struct
   gchar *value;
 } DelayedProperty;
 
+typedef struct
+{
+  const gchar *name;
+  GValue value;
+} BuilderParameter;
+
 static void
 gtk_builder_get_parameters (GtkBuilder  *builder,
                             GType        object_type,
@@ -251,17 +257,17 @@ gtk_builder_get_parameters (GtkBuilder  *builder,
   GObjectClass *oclass;
   DelayedProperty *property;
   GError *error = NULL;
-  
+
   oclass = g_type_class_ref (object_type);
   g_assert (oclass != NULL);
 
-  *parameters = g_array_new (FALSE, FALSE, sizeof (GParameter));
-  *construct_parameters = g_array_new (FALSE, FALSE, sizeof (GParameter));
+  *parameters = g_array_new (FALSE, FALSE, sizeof (BuilderParameter));
+  *construct_parameters = g_array_new (FALSE, FALSE, sizeof (BuilderParameter));
 
   for (l = properties; l; l = l->next)
     {
       PropertyInfo *prop = (PropertyInfo*)l->data;
-      GParameter parameter = { NULL };
+      BuilderParameter parameter = { 0, };
 
       pspec = g_object_class_find_property (G_OBJECT_CLASS (oclass),
                                             prop->name);
@@ -432,9 +438,35 @@ _gtk_builder_construct (GtkBuilder *builder,
     }
   else
     {
-      obj = g_object_newv (object_type,
-                           construct_parameters->len,
-                           (GParameter *)construct_parameters->data);
+      if (construct_parameters->len)
+        {
+          const gchar **names;
+          GValue *values;
+
+          names = g_new (const gchar *, construct_parameters->len);
+          values = g_new (GValue, construct_parameters->len);
+
+          for (i = 0; i < construct_parameters->len; i++)
+            {
+              BuilderParameter *param = &g_array_index (construct_parameters,
+                                                        BuilderParameter, i);
+
+              names[i] = param->name;
+              values[i] = param->value;
+            }
+
+          obj = g_object_new_with_properties (object_type,
+                                              construct_parameters->len,
+                                              names,
+                                              values);
+
+          g_free (names);
+          g_free (values);
+        }
+      else
+        {
+          obj = g_object_new (object_type, NULL);
+        }
 
       /* No matter what, make sure we have a reference.
        *
@@ -453,8 +485,8 @@ _gtk_builder_construct (GtkBuilder *builder,
 
       for (i = 0; i < construct_parameters->len; i++)
         {
-          GParameter *param = &g_array_index (construct_parameters,
-                                              GParameter, i);
+          BuilderParameter *param = &g_array_index (construct_parameters,
+                                                    BuilderParameter, i);
           g_value_unset (&param->value);
         }
     }
@@ -473,7 +505,7 @@ _gtk_builder_construct (GtkBuilder *builder,
 
   for (i = 0; i < parameters->len; i++)
     {
-      GParameter *param = &g_array_index (parameters, GParameter, i);
+      BuilderParameter *param = &g_array_index (parameters, BuilderParameter, i);
       if (custom_set_property)
         iface->set_buildable_property (buildable, builder, param->name, &param->value);
       else
