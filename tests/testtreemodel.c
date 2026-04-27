@@ -228,9 +228,12 @@ test_run (gchar        *title,
       for (d = 0; d < repeats; d++)
 	{
 	  (*clear)(store);
-#ifdef HAVE_MALLINFO
-	  /* Peculiar location of this, btw.  -- MW.  */
-	  uordblks_before = mallinfo().uordblks;
+#if defined(HAVE_MALLINFO2)
+          /* Peculiar location of this, btw.  -- MW.  */
+          uordblks_before = mallinfo2().uordblks;
+#elif defined(HAVE_MALLINFO)
+          /* Peculiar location of this, btw.  -- MW.  */
+          uordblks_before = mallinfo().uordblks;
 #endif
 	  g_timer_reset (timer);
 	  g_timer_start (timer);
@@ -241,10 +244,12 @@ test_run (gchar        *title,
 	}
       
       elapsed = elapsed * 1000 / repeats;
-#ifdef HAVE_MALLINFO
-      memused = (mallinfo().uordblks - uordblks_before) / 1024;
+#if defined(HAVE_MALLINFO2)
+        memused = (mallinfo2().uordblks - uordblks_before) / 1024;
+#elif defined(HAVE_MALLINFO)
+        memused = (mallinfo().uordblks - uordblks_before) / 1024;
 #else
-      memused = 0;
+        memused = 0;
 #endif
       g_print ("%d \t%f \t%f  \t%dk\n", 
 	       items, elapsed, elapsed/items, memused);
