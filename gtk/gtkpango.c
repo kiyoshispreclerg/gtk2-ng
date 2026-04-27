@@ -231,3 +231,32 @@ _gtk_pango_fill_layout (cairo_t     *cr,
     cairo_move_to (cr, current_x, current_y);
 }
 
+PangoDirection
+_gtk_pango_find_base_dir (const gchar *text,
+                          gint         length)
+{
+  const gchar *p;
+  const gchar *end;
+
+  g_return_val_if_fail (text != NULL, PANGO_DIRECTION_NEUTRAL);
+
+  p = text;
+  end = length < 0 ? NULL : text + length;
+
+  while ((end == NULL && *p != '\0') || (end != NULL && p < end))
+    {
+      PangoBidiType bidi_type;
+
+      bidi_type = pango_bidi_type_for_unichar (g_utf8_get_char (p));
+
+      if (bidi_type == PANGO_BIDI_TYPE_L)
+        return PANGO_DIRECTION_LTR;
+      else if (bidi_type == PANGO_BIDI_TYPE_R ||
+               bidi_type == PANGO_BIDI_TYPE_AL)
+        return PANGO_DIRECTION_RTL;
+
+      p = g_utf8_next_char (p);
+    }
+
+  return PANGO_DIRECTION_NEUTRAL;
+}

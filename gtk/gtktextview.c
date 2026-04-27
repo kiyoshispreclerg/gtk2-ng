@@ -46,6 +46,7 @@
 #include "gtkimmulticontext.h"
 #include "gdk/gdkkeysyms.h"
 #include "gtkprivate.h"
+#include "gtkpango.h"
 #include "gtktextutil.h"
 #include "gtkwindow.h"
 #include "gtkalias.h"
@@ -5075,7 +5076,7 @@ iter_line_is_rtl (const GtkTextIter *iter)
   gtk_text_iter_set_line_offset (&start, 0);
   gtk_text_iter_forward_line (&end);
   text = gtk_text_iter_get_visible_text (&start, &end);
-  direction = pango_find_base_dir (text, -1);
+  direction = _gtk_pango_find_base_dir (text, -1);
 
   g_free (text);
 

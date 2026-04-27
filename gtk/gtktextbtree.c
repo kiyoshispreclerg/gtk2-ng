@@ -64,6 +64,7 @@
 #include "gtktextiterprivate.h"
 #include "gtkdebug.h"
 #include "gtktextmarkprivate.h"
+#include "gtkpango.h"
 #include "gtkalias.h"
 
 /*
@@ -594,11 +595,11 @@ gtk_text_btree_resolve_bidi (GtkTextIter *start,
         {
           if (seg->type == &gtk_text_char_type && seg->byte_count > 0)
             {
-	      PangoDirection pango_dir;
+              PangoDirection pango_dir;
 
-              pango_dir = pango_find_base_dir (seg->body.chars,
-					       seg->byte_count);
-	      
+              pango_dir = _gtk_pango_find_base_dir (seg->body.chars,
+                                                    seg->byte_count);
+
               if (pango_dir != PANGO_DIRECTION_NEUTRAL)
                 {
                   line->dir_strong = pango_dir;

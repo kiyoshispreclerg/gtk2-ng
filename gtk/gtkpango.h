@@ -41,6 +41,10 @@ void
 _gtk_pango_fill_layout (cairo_t     *cr,
                         PangoLayout *layout);
 
+PangoDirection
+_gtk_pango_find_base_dir (const gchar *text,
+                          gint         length);
+
 
 G_END_DECLS
 
