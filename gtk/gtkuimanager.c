@@ -88,8 +88,6 @@ struct _Node {
   guint always_show_image     : 1; /* used for menu items */
 };
 
-#define GTK_UI_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_UI_MANAGER, GtkUIManagerPrivate))
-
 struct _GtkUIManagerPrivate 
 {
   GtkAccelGroup *accel_group;
@@ -193,6 +191,7 @@ enum
 static guint ui_manager_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (GtkUIManager, gtk_ui_manager, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GtkUIManager)
 			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
 						gtk_ui_manager_buildable_init))
 
@@ -376,8 +375,6 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
   klass->disconnect_proxy = NULL;
   klass->pre_activate = NULL;
   klass->post_activate = NULL;
-
-  g_type_class_add_private (gobject_class, sizeof (GtkUIManagerPrivate));
 }
 
 
@@ -387,7 +384,7 @@ gtk_ui_manager_init (GtkUIManager *self)
   guint merge_id;
   GNode *node;
 
-  self->private_data = GTK_UI_MANAGER_GET_PRIVATE (self);
+  self->private_data = gtk_ui_manager_get_instance_private (self);
 
   self->private_data->accel_group = gtk_accel_group_new ();
 
