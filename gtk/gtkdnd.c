@@ -45,6 +45,7 @@
 #include "gtkimage.h"
 #include "gtkinvisible.h"
 #include "gtkmain.h"
+#include "gtkpixdatautils.h"
 #include "gtkplug.h"
 #include "gtkstock.h"
 #include "gtktooltip.h"
@@ -743,8 +744,8 @@ gtk_drag_get_cursor (GdkDisplay        *display,
       break;
 
   if (drag_cursors[i].pixbuf == NULL)
-    drag_cursors[i].pixbuf = 
-      gdk_pixbuf_new_from_inline (-1, drag_cursors[i].data, FALSE, NULL);
+    drag_cursors[i].pixbuf =
+      _gtk_pixbuf_new_from_inline_pixdata (drag_cursors[i].data, NULL);
 
   if (drag_cursors[i].cursor != NULL)
     {

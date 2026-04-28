@@ -221,6 +221,26 @@ _gtk_pixbuf_new_from_pixdata_stream (const guint8  *stream,
   return NULL;
 }
 
+GdkPixbuf *
+_gtk_pixbuf_new_from_inline_pixdata (const guint8  *stream,
+                                     GError       **error)
+{
+  guint32 length;
+
+  g_return_val_if_fail (stream != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (memcmp (stream, GTK_PIXDATA_MAGIC, 4) != 0)
+    {
+      pixdata_set_error (error);
+      return NULL;
+    }
+
+  length = pixdata_get_uint32 (stream + 4);
+
+  return _gtk_pixbuf_new_from_pixdata_stream (stream, length, error);
+}
+
 guint8 *
 _gtk_pixdata_serialize_from_pixbuf (GdkPixbuf *pixbuf,
                                     gsize     *length_p)
