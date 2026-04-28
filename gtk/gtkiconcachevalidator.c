@@ -25,17 +25,27 @@
 #include <gdk-pixbuf/gdk-pixdata.h>
 
 
-#define VERBOSE(x) 
+#define VERBOSE(x)
 
 #define check(name,condition) \
   if (!(condition)) \
     { \
       VERBOSE(g_print ("bad %s\n", (name))); \
       return FALSE; \
-    } 
+    }
 
-static inline gboolean 
-get_uint16 (CacheInfo *info, 
+static guint32
+get_uint32_from_stream (const guint8 *stream,
+                        guint32       offset)
+{
+  return ((guint32) stream[offset] << 24) |
+         ((guint32) stream[offset + 1] << 16) |
+         ((guint32) stream[offset + 2] << 8) |
+         ((guint32) stream[offset + 3]);
+}
+
+static inline gboolean
+get_uint16 (CacheInfo *info,
             guint32    offset, 
             guint16   *value)
 {
@@ -150,8 +160,69 @@ check_directory_list (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
-check_pixel_data (CacheInfo *info, 
+static gboolean
+check_pixdata_stream (const guint8 *stream,
+                      guint32       length)
+{
+  guint32 magic;
+  guint32 stream_length;
+  guint32 pixdata_type;
+  guint32 rowstride;
+  guint32 width;
+  guint32 height;
+  guint32 bytes_per_pixel;
+  guint64 minimum_rowstride;
+  guint64 minimum_pixel_length;
+  guint64 pixel_length;
+
+  if (length < GDK_PIXDATA_HEADER_LENGTH)
+    return FALSE;
+
+  magic = get_uint32_from_stream (stream, 0);
+  stream_length = get_uint32_from_stream (stream, 4);
+  pixdata_type = get_uint32_from_stream (stream, 8);
+  rowstride = get_uint32_from_stream (stream, 12);
+  width = get_uint32_from_stream (stream, 16);
+  height = get_uint32_from_stream (stream, 20);
+
+  if (magic != GDK_PIXBUF_MAGIC_NUMBER ||
+      stream_length != length ||
+      width == 0 ||
+      height == 0)
+    return FALSE;
+
+  /*
+   * gtk-update-icon-cache stores raw 8-bit RGB/RGBA GdkPixdata in the
+   * icon cache.  The validator intentionally accepts only that format,
+   * matching the reader in gtkiconcache.c and rejecting obsolete
+   * GdkPixdata encodings that this cache writer does not generate.
+   */
+  if ((pixdata_type & GDK_PIXDATA_ENCODING_MASK) != GDK_PIXDATA_ENCODING_RAW ||
+      (pixdata_type & GDK_PIXDATA_SAMPLE_WIDTH_MASK) != GDK_PIXDATA_SAMPLE_WIDTH_8)
+    return FALSE;
+
+  if ((pixdata_type & GDK_PIXDATA_COLOR_TYPE_MASK) == GDK_PIXDATA_COLOR_TYPE_RGB)
+    bytes_per_pixel = 3;
+  else if ((pixdata_type & GDK_PIXDATA_COLOR_TYPE_MASK) == GDK_PIXDATA_COLOR_TYPE_RGBA)
+    bytes_per_pixel = 4;
+  else
+    return FALSE;
+
+  minimum_rowstride = (guint64) width * bytes_per_pixel;
+  if ((guint64) rowstride < minimum_rowstride)
+    return FALSE;
+
+  pixel_length = (guint64) length - GDK_PIXDATA_HEADER_LENGTH;
+  minimum_pixel_length = (guint64) rowstride * (height - 1) + minimum_rowstride;
+
+  if (pixel_length < minimum_pixel_length)
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
+check_pixel_data (CacheInfo *info,
                   guint32    offset)
 {
   guint32 type;
@@ -163,15 +234,10 @@ check_pixel_data (CacheInfo *info,
   check ("pixel data type", type == 0);
   check ("pixel data length", offset + 8 + length < info->cache_size);
 
-  if (info->flags & CHECK_PIXBUFS) 
-    {
-      GdkPixdata data; 
- 
-      check ("pixel data", gdk_pixdata_deserialize (&data, length,
-                                                    (const guint8*)info->cache + offset + 8, 
-                                                    NULL));
-    }
-	
+  if (info->flags & CHECK_PIXBUFS)
+    check ("pixel data", check_pixdata_stream ((const guint8 *)info->cache + offset + 8,
+                                               length));
+
   return TRUE;
 }
 
