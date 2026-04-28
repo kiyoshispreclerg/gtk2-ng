@@ -138,8 +138,8 @@ rm -rf autom4te.cache
 
 $ACLOCAL -I m4 $ACLOCAL_FLAGS || exit $?
 
-libtoolize --force || exit $?
-gtkdocize || exit $?
+libtoolize --copy --force || exit $?
+gtkdocize --copy || exit $?
 
 autoheader || exit $?
 
