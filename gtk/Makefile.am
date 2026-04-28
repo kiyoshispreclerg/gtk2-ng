@@ -1139,7 +1139,8 @@ gtk_query_immodules_2_0_SOURCES = queryimmodules.c
 
 gtk_update_icon_cache_DEPENDENCIES = $(GTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT)
 gtk_update_icon_cache_LDADD = $(GDK_PIXBUF_LIBS) $(GTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT)
-gtk_update_icon_cache_SOURCES = updateiconcache.c 
+gtk_update_icon_cache_SOURCES = updateiconcache.c gtkpixdatautils.c
+gtk_update_icon_cache_CFLAGS = $(AM_CFLAGS)
 
 .PHONY: files test test-debug
 

@@ -40,7 +40,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include <gdk-pixbuf/gdk-pixdata.h>
+#include "gtkpixdatautils.h"
 #include <glib/gi18n.h>
 #include "gtkiconcachevalidator.h"
 
@@ -165,9 +165,10 @@ has_theme_index (const gchar *path)
 }
 
 
-typedef struct 
+typedef struct
 {
-  GdkPixdata pixdata;
+  guint8 *pixdata;
+  gsize pixdata_len;
   gboolean has_pixdata;
   guint32 offset;
   guint size;
@@ -512,17 +513,29 @@ maybe_cache_image_data (Image       *image,
 	    g_hash_table_insert (image_data_hash, g_strdup (path2), idata);  
 	}
 
-      if (!idata->has_pixdata)
-	{
-	  pixbuf = gdk_pixbuf_new_from_file (path, NULL);
-	  
-	  if (pixbuf) 
-	    {
-	      gdk_pixdata_from_pixbuf (&idata->pixdata, pixbuf, FALSE);
-	      idata->size = idata->pixdata.length + 8;
-	      idata->has_pixdata = TRUE;
-	    }
-	}
+        if (!idata->has_pixdata)
+          {
+            pixbuf = gdk_pixbuf_new_from_file (path, NULL);
+
+            if (pixbuf)
+              {
+                idata->pixdata = _gtk_pixdata_serialize_from_pixbuf (pixbuf,
+                                                                     &idata->pixdata_len);
+                g_object_unref (pixbuf);
+
+                if (idata->pixdata && idata->pixdata_len <= G_MAXUINT - 8)
+                  {
+                    idata->size = (guint) idata->pixdata_len + 8;
+                    idata->has_pixdata = TRUE;
+                  }
+                else
+                  {
+                    g_free (idata->pixdata);
+                    idata->pixdata = NULL;
+                    idata->pixdata_len = 0;
+                  }
+              }
+          }
 
       image->image_data = idata;
 
@@ -820,26 +833,19 @@ write_card32 (FILE *cache, guint32 n)
 static gboolean
 write_image_data (FILE *cache, ImageData *image_data, int offset)
 {
-  guint8 *s;
-  guint len;
   gint i;
-  GdkPixdata *pixdata = &image_data->pixdata;
 
-  /* Type 0 is GdkPixdata */
+  /* Type 0 is a GdkP pixdata stream */
+  if (!image_data->pixdata || image_data->pixdata_len > G_MAXUINT32)
+    return FALSE;
+
   if (!write_card32 (cache, 0))
     return FALSE;
 
-  s = gdk_pixdata_serialize (pixdata, &len);
+  if (!write_card32 (cache, (guint32) image_data->pixdata_len))
+    return FALSE;
 
-  if (!write_card32 (cache, len))
-    {
-      g_free (s);
-      return FALSE;
-    }
-
-  i = fwrite (s, len, 1, cache);
-  
-  g_free (s);
+  i = fwrite (image_data->pixdata, image_data->pixdata_len, 1, cache);
 
   return i == 1;
 }
