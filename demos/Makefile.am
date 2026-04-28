@@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS = gtk-demo
 
-INCLUDES = 				\
+AM_CPPFLAGS = 				\
 	-I$(top_srcdir) 		\
 	-I$(top_builddir)/gdk		\
 	-DGDK_DISABLE_DEPRECATED	\

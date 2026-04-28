@@ -33,7 +33,7 @@ EXTRA_DIST +=			\
 	abicheck.sh		\
 	pltcheck.sh
 
-INCLUDES =                              \
+AM_CPPFLAGS =                              \
 	-DG_LOG_DOMAIN=\"Gdk\"		\
 	-DGDK_COMPILATION		\
 	-I$(top_srcdir)			\

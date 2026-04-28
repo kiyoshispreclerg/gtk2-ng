@@ -5,7 +5,7 @@ if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/gdk		\
 	-I$(top_builddir)/gdk		\
@@ -154,7 +154,9 @@ IME_MODULE=im-ime.la
 endif
 endif
 
-im_quartz_la_CPPFLAGS = -xobjective-c
+im_quartz_la_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	-xobjective-c
 im_quartz_la_LDFLAGS = -rpath $(moduledir) -avoid-version -module $(no_undefined)
 im_quartz_la_SOURCES = imquartz.c
 libstatic_im_quartz_la_SOURCES = $(im_quartz_la_SOURCES)
@@ -167,8 +169,14 @@ QUARTZ_MODULE = im-quartz.la
 endif
 endif
 
-multipress_defs = -DMULTIPRESS_LOCALEDIR=\""$(mplocaledir)"\" -DMULTIPRESS_CONFDIR=\""$(sysconfdir)/gtk-2.0"\"
-im_multipress_la_CPPFLAGS = $(multipress_defs)
+multipress_defs = \
+	-DMULTIPRESS_LOCALEDIR=\""$(mplocaledir)"\" \
+	-DMULTIPRESS_CONFDIR=\""$(sysconfdir)/gtk-2.0"\"
+
+im_multipress_la_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	$(multipress_defs)
+
 libstatic_im_multipress_la_CPPFLAGS = $(im_multipress_la_CPPFLAGS)
 im_multipress_la_LDFLAGS = -rpath $(moduledir) -avoid-version -module $(no_undefined)
 im_multipress_la_SOURCES =	\

@@ -1,7 +1,7 @@
 ## Makefile.am for gtk+/tests
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES =				\
+AM_CPPFLAGS =				\
 	-I$(top_srcdir)			\
 	-I$(top_builddir)/gdk		\
 	-I$(top_srcdir)/gdk		\
@@ -95,7 +95,9 @@ noinst_PROGRAMS += autotestkeywords
 TESTS = autotestkeywords
 
 autotestkeywords_SOURCES = autotestkeywords.cc
-autotestkeywords_CPPFLAGS = -I$(srcdir)/dummy-headers
+autotestkeywords_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	-I$(srcdir)/dummy-headers
 
 if HAVE_OBJC
 autotestkeywords_CPPFLAGS += -DHAVE_OBJC=1 -x objective-c++

@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)		\
 	 -I$(top_builddir) 	\
 	$(BASE_DEPENDENCIES_CFLAGS)
