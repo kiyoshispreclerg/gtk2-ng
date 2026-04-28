@@ -230,32 +230,32 @@ m4_define([debug_default],
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,
-              AC_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
+              AS_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
                              [turn on debugging @<:@default=debug_default@:>@]),,
               enable_debug=debug_default)
 AC_ARG_ENABLE(shm,
-              [AC_HELP_STRING([--enable-shm],
+              [AS_HELP_STRING([--enable-shm],
                               [support shared memory if available [default=yes]])],,
               [enable_shm="yes"])
 AC_ARG_ENABLE(xkb,
-              [AC_HELP_STRING([--enable-xkb],
+              [AS_HELP_STRING([--enable-xkb],
                               [support XKB [default=maybe]])],,
               [enable_xkb="maybe"])
 AC_ARG_ENABLE(xinerama,
-              [AC_HELP_STRING([--enable-xinerama],
+              [AS_HELP_STRING([--enable-xinerama],
 	                      [support xinerama extension if available [default=yes]])],,
               [enable_xinerama="yes"])
 AC_ARG_ENABLE(rebuilds,
-              [AC_HELP_STRING([--disable-rebuilds],
+              [AS_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
 AC_ARG_ENABLE(visibility,
-              [AC_HELP_STRING([--disable-visibility],
+              [AS_HELP_STRING([--disable-visibility],
                               [don't use ELF visibility attributes])],,
               [enable_visibility=yes])
 
 AC_ARG_WITH(xinput,
-            [AC_HELP_STRING([--with-xinput=@<:@no/yes@:>@], [support XInput])])
+            [AS_HELP_STRING([--with-xinput=@<:@no/yes@:>@], [support XInput])])
 
 if test "$platform_win32" = yes; then
   gdktarget=win32
@@ -412,7 +412,7 @@ dnl * See whether to include shared library dependencies *
 dnl ******************************************************
 
 AC_ARG_ENABLE(explicit-deps, 
-              [AC_HELP_STRING([--enable-explicit-deps=@<:@yes/no/auto@:>@],
+              [AS_HELP_STRING([--enable-explicit-deps=@<:@yes/no/auto@:>@],
                               [use explicit dependencies in .pc files [default=auto]])],,
               [enable_explicit_deps=auto])
 
@@ -759,7 +759,7 @@ AC_CHECK_FUNCS(_NSGetEnviron)
 AC_MSG_CHECKING(whether to build dynamic modules)
 
 AC_ARG_ENABLE(modules,
-              [AC_HELP_STRING([--disable-modules],
+              [AS_HELP_STRING([--disable-modules],
                               [disable dynamic module loading])])
 
 dynworks=false
@@ -806,8 +806,8 @@ AM_CONDITIONAL(BUILD_DYNAMIC_MODULES, $dynworks)
 AC_MSG_CHECKING(immodules to build)
 
 dnl due to an autoconf bug, commas in the first arg to
-dnl AC_HELP_STRING cause problems.
-dnl AC_HELP_STRING([--with-included-immodules=MODULE1 MODULE2 ...],
+dnl AS_HELP_STRING cause problems.
+dnl AS_HELP_STRING([--with-included-immodules=MODULE1 MODULE2 ...],
 dnl                [build the specified input method modules into gtk])
 AC_ARG_WITH(included_immodules,
 [  --with-included-immodules=MODULE1,MODULE2,...
@@ -1453,7 +1453,7 @@ LIBS="$old_LIBS"
 ################################################################
 
 AC_ARG_ENABLE(cups,
-              [AC_HELP_STRING([--disable-cups]
+              [AS_HELP_STRING([--disable-cups]
                               [disable cups print backend])],,
               [enable_cups=auto])
 
@@ -1519,7 +1519,7 @@ fi
 #
 
 AC_ARG_ENABLE(papi,
-              [AC_HELP_STRING([--disable-papi]
+              [AS_HELP_STRING([--disable-papi]
                               [disable papi print backend])],,
              [enable_papi=auto])
 
@@ -1562,7 +1562,7 @@ CPPFLAGS="$gtk_save_cppflags"
      
 			  	
 AC_ARG_ENABLE(test-print-backend,
-              [AC_HELP_STRING([--enable-test-print-backend],
+              [AS_HELP_STRING([--enable-test-print-backend],
                               [build test print backend])],,
               [enable_test_print_backend=no])
 AM_CONDITIONAL(TEST_PRINT_BACKEND, test "x$enable_test_print_backend" != "xno")
@@ -1607,7 +1607,7 @@ AC_CHECK_PROG(DB2HTML, db2html, true, false)
 AM_CONDITIONAL(HAVE_DOCBOOK, $DB2HTML)
 
 AC_ARG_ENABLE(man,
-              [AC_HELP_STRING([--enable-man],
+              [AS_HELP_STRING([--enable-man],
                               [regenerate man pages from Docbook [default=no]])],,
               enable_man=no)
 
