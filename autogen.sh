@@ -133,10 +133,8 @@ fi
 
 rm -rf autom4te.cache
 
-# README and INSTALL are required by automake, but may be deleted by clean
-# up rules. to get automake to work, simply touch these here, they will be
-# regenerated from their corresponding *.in files by ./configure anyway.
-touch README INSTALL
+# Automake runs in foreign mode; README and INSTALL are not required
+# merely to bootstrap the build tree.
 
 $ACLOCAL -I m4 $ACLOCAL_FLAGS || exit $?
 
