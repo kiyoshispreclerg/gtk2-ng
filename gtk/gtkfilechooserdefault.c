@@ -413,9 +413,11 @@ static void view_mode_combo_box_changed_cb (GtkComboBox           *combo,
 
 static void icon_view_scale_value_changed_cb (GtkRange              *range,
                                               GtkFileChooserDefault *impl);
+static void icon_view_scale_remove_timeout   (GtkFileChooserDefault *impl);
+static void icon_view_scale_queue_cache_clear (GtkFileChooserDefault *impl);
 
 static void location_button_toggled_cb (GtkToggleButton *toggle,
-					GtkFileChooserDefault *impl);
+                                        GtkFileChooserDefault *impl);
 static void location_switch_to_path_bar (GtkFileChooserDefault *impl);
 
 static void stop_loading_and_clear_list_model (GtkFileChooserDefault *impl,
@@ -864,6 +866,8 @@ gtk_file_chooser_default_finalize (GObject *object)
   GtkFileChooserDefault *impl = GTK_FILE_CHOOSER_DEFAULT (object);
   GSList *l;
 
+  icon_view_scale_remove_timeout (impl);
+
   unset_file_system_backend (impl);
 
   if (impl->shortcuts_pane_filter_model)
@@ -915,8 +919,8 @@ gtk_file_chooser_default_finalize (GObject *object)
 /* Shows an error dialog set as transient for the specified window */
 static void
 error_message_with_parent (GtkWindow  *parent,
-			   const char *msg,
-			   const char *detail)
+                           const char *msg,
+                           const char *detail)
 {
   GtkWidget *dialog;
 
@@ -5254,11 +5258,151 @@ view_mode_combo_box_changed_cb (GtkComboBox *combo,
   view_mode_set (impl, target);
 }
 
+static void
+icon_view_scale_remove_inactive_timeout (GtkFileChooserDefault *impl)
+{
+  if (impl->icon_view_scale_timeout_id)
+    {
+      g_source_remove (impl->icon_view_scale_timeout_id);
+      impl->icon_view_scale_timeout_id = 0;
+    }
+}
+
+static void
+icon_view_scale_remove_visible_timeout (GtkFileChooserDefault *impl)
+{
+  if (impl->icon_view_scale_visible_timeout_id)
+    {
+      g_source_remove (impl->icon_view_scale_visible_timeout_id);
+      impl->icon_view_scale_visible_timeout_id = 0;
+    }
+
+  impl->pending_icon_view_icon_size = 0;
+}
+
+static void
+icon_view_scale_remove_timeout (GtkFileChooserDefault *impl)
+{
+  icon_view_scale_remove_inactive_timeout (impl);
+  icon_view_scale_remove_visible_timeout (impl);
+}
+
+static void
+icon_view_scale_clear_model_cache (GtkFileChooserDefault *impl,
+                                   GtkFileSystemModel    *model)
+{
+  if (model)
+    _gtk_file_system_model_clear_cache (model, MODEL_COL_ICON_PIXBUF);
+}
+
+static gboolean
+icon_view_scale_clear_cache_cb (gpointer data)
+{
+  GtkFileChooserDefault *impl = data;
+
+  impl->icon_view_scale_timeout_id = 0;
+
+  /*
+   * The currently visible model is refreshed through a much shorter
+   * timeout.  This longer timeout only catches inactive models so that
+   * switching to Search/Recent/Browse later does not reuse pixbufs from
+   * an older icon-view scale.
+   */
+  if (impl->current_model != GTK_TREE_MODEL (impl->browse_files_model))
+    icon_view_scale_clear_model_cache (impl, impl->browse_files_model);
+  if (impl->current_model != GTK_TREE_MODEL (impl->search_model))
+    icon_view_scale_clear_model_cache (impl, impl->search_model);
+  if (impl->current_model != GTK_TREE_MODEL (impl->recent_model))
+    icon_view_scale_clear_model_cache (impl, impl->recent_model);
+
+  return FALSE;
+}
+
+static gboolean
+icon_view_scale_apply_visible_size_cb (gpointer data)
+{
+  GtkFileChooserDefault *impl = data;
+  gint icon_size;
+
+  impl->icon_view_scale_visible_timeout_id = 0;
+
+  icon_size = impl->pending_icon_view_icon_size;
+  impl->pending_icon_view_icon_size = 0;
+
+  if (icon_size <= 0)
+    icon_size = FALLBACK_ICON_VIEW_ICON_SIZE;
+
+  if (impl->icon_view_icon_size == icon_size)
+    return FALSE;
+
+  /*
+   * Apply the visible zoom as one atomic UI update: size, cell layout,
+   * visible pixbuf cache and resize are kept in sync.  Delaying only the
+   * pixbuf cache while changing the layout immediately can leave stale
+   * large pixbufs in smaller cells and causes clipped/corrupt-looking
+   * icons during fast zooming.
+   */
+  impl->icon_view_icon_size = icon_size;
+
+  if (impl->view_mode != VIEW_MODE_ICON || !impl->browse_files_icon_view)
+    return FALSE;
+
+  update_icon_view_cell_layout (impl);
+
+  if (impl->current_model == GTK_TREE_MODEL (impl->browse_files_model))
+    icon_view_scale_clear_model_cache (impl, impl->browse_files_model);
+  else if (impl->current_model == GTK_TREE_MODEL (impl->search_model))
+    icon_view_scale_clear_model_cache (impl, impl->search_model);
+  else if (impl->current_model == GTK_TREE_MODEL (impl->recent_model))
+    icon_view_scale_clear_model_cache (impl, impl->recent_model);
+
+  gtk_widget_queue_resize (impl->browse_files_icon_view);
+
+  return FALSE;
+}
+
+static void
+icon_view_scale_queue_visible_size_apply (GtkFileChooserDefault *impl,
+                                          gint                   icon_size)
+{
+  impl->pending_icon_view_icon_size = icon_size;
+
+  if (impl->icon_view_scale_visible_timeout_id)
+    return;
+
+  /*
+   * Coalesce fast slider motion into one near-immediate visible update.
+   * The timeout is not removed/re-added for every slider event; only the
+   * pending size is updated.  This keeps CPU use low while applying size,
+   * layout and visible pixbuf cache together on the next short tick.
+   */
+  impl->icon_view_scale_visible_timeout_id =
+    gdk_threads_add_timeout (16, icon_view_scale_apply_visible_size_cb, impl);
+}
+
+static void
+icon_view_scale_queue_cache_clear (GtkFileChooserDefault *impl)
+{
+  icon_view_scale_remove_inactive_timeout (impl);
+
+  /*
+   * Inactive models can wait longer than the visible model.  This avoids
+   * clearing Search/Recent/Browse caches repeatedly while the user drags
+   * the slider, without allocating pixbufs for unused icon sizes.
+   *
+   * Do not remove the visible timeout here; visible size, layout and cache
+   * are applied by the short 16ms timeout.
+   */
+  impl->icon_view_scale_timeout_id =
+    gdk_threads_add_timeout (500, icon_view_scale_clear_cache_cb, impl);
+}
+
 /* Callback used when the icon view scale is changed */
 static void
 icon_view_scale_value_changed_cb (GtkRange *range,
                                   GtkFileChooserDefault *impl)
 {
+  gint icon_size;
   gdouble value = gtk_range_get_value (range);
 
   value = round (value / 16) * 16;
@@ -5266,24 +5410,27 @@ icon_view_scale_value_changed_cb (GtkRange *range,
   if (value <= 0)
     value = FALLBACK_ICON_VIEW_ICON_SIZE;
 
-  if (impl->icon_view_icon_size == (gint)value)
-    return;
-
-  impl->icon_view_icon_size = (gint)value;
+  icon_size = (gint) value;
 
   if (impl->view_mode != VIEW_MODE_ICON)
-    return;
+    {
+      icon_view_scale_remove_visible_timeout (impl);
+      impl->icon_view_icon_size = icon_size;
+      return;
+    }
 
-  update_icon_view_cell_layout (impl);
+  if (impl->icon_view_scale_visible_timeout_id)
+    {
+      if (impl->pending_icon_view_icon_size == icon_size)
+        return;
+    }
+  else if (impl->icon_view_icon_size == icon_size)
+    {
+      return;
+    }
 
-  if (impl->browse_files_model)
-    _gtk_file_system_model_clear_cache (impl->browse_files_model, MODEL_COL_ICON_PIXBUF);
-  if (impl->search_model)
-    _gtk_file_system_model_clear_cache (impl->search_model, MODEL_COL_ICON_PIXBUF);
-  if (impl->recent_model)
-    _gtk_file_system_model_clear_cache (impl->recent_model, MODEL_COL_ICON_PIXBUF);
-
-  gtk_widget_queue_resize (impl->browse_files_icon_view);
+  icon_view_scale_queue_visible_size_apply (impl, icon_size);
+  icon_view_scale_queue_cache_clear (impl);
 }
 
 /* Callback used when one of the location mode buttons is toggled */
@@ -11375,6 +11522,18 @@ current_view_set_file_model (GtkFileChooserDefault *impl, GtkTreeModel *model)
     g_assert_not_reached ();
 
   g_object_set (view, "model", impl->current_model, NULL);
+
+  /*
+   * If an icon-view scale change has queued a delayed clear for inactive
+   * models, a model can become visible before that timeout fires.  Clear the
+   * newly visible model immediately so it cannot show pixbufs cached for an
+   * older icon size.
+   */
+  if (impl->view_mode == VIEW_MODE_ICON &&
+      impl->icon_view_scale_timeout_id &&
+      GTK_IS_FILE_SYSTEM_MODEL (impl->current_model))
+    icon_view_scale_clear_model_cache (impl,
+                                       GTK_FILE_SYSTEM_MODEL (impl->current_model));
 }
 
 static void
