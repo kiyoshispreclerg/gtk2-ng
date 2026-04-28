@@ -12,21 +12,9 @@ FILE=gdk
 
 DIE=0
 
-have_libtool=false
-if libtoolize --version < /dev/null > /dev/null 2>&1 ; then
-	libtool_version=`libtoolize --version |
-			 head -1 |
-			 sed -e 's/^\(.*\)([^)]*)\(.*\)$/\1\2/g' \
-			     -e 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
-	case $libtool_version in
-	    1.4*|1.5*|2.2*|2.4*)
-		have_libtool=true
-		;;
-	esac
-fi
-if $have_libtool ; then : ; else
+if libtoolize --version < /dev/null > /dev/null 2>&1 ; then : ; else
 	echo
-	echo "You must have libtool 1.4 installed to compile $PROJECT."
+	echo "You must have libtool installed to compile $PROJECT."
 	echo "Install the appropriate package for your distribution,"
 	echo "or get the source tarball at http://ftp.gnu.org/gnu/libtool/"
 	DIE=1
@@ -48,44 +36,59 @@ fi
 	DIE=1
 }
 
-if automake-1.16 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.16
-    ACLOCAL=aclocal-1.16
-else if automake-1.15 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.15
-    ACLOCAL=aclocal-1.15
-else if automake-1.14 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.14
-    ACLOCAL=aclocal-1.14
-else if automake-1.13 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.13
-    ACLOCAL=aclocal-1.13
-else if automake-1.12 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.12
-    ACLOCAL=aclocal-1.12
-else if automake-1.11 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.11
-    ACLOCAL=aclocal-1.11
-else if automake-1.10 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.10
-    ACLOCAL=aclocal-1.10
-else if automake-1.7 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.7
-    ACLOCAL=aclocal-1.7
-else
+if test -z "$AUTOMAKE"; then
+	for am_version in 1.18 1.17 1.16 1.15 1.14 1.13 1.12 1.11 1.10 1.7; do
+		if automake-$am_version --version < /dev/null > /dev/null 2>&1 ; then
+			AUTOMAKE=automake-$am_version
+			ACLOCAL=aclocal-$am_version
+			break
+		fi
+	done
+fi
+
+if test -z "$AUTOMAKE"; then
+	if automake --version < /dev/null > /dev/null 2>&1 ; then
+		AUTOMAKE=automake
+		ACLOCAL=aclocal
+	else
+		echo
+		echo "You must have automake installed to compile $PROJECT."
+		echo "Install the appropriate package for your distribution,"
+		echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
+		DIE=1
+	fi
+fi
+
+if $AUTOMAKE --version < /dev/null > /dev/null 2>&1 ; then : ; else
 	echo
-	echo "You must have automake 1.7.x, 1,10.x, 1.11.x, 1.12.x, 1.13.x, 1.14.x,"
-	echo "1.15.x or 1.16.x installed to compile $PROJECT."
+	echo "You must have a working automake installed to compile $PROJECT."
 	echo "Install the appropriate package for your distribution,"
 	echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
 	DIE=1
 fi
+
+if test -z "$ACLOCAL"; then
+	case "$AUTOMAKE" in
+		automake-*)
+			am_aclocal=`echo "$AUTOMAKE" | sed 's/^automake/aclocal/'`
+			if $am_aclocal --version < /dev/null > /dev/null 2>&1 ; then
+				ACLOCAL=$am_aclocal
+			else
+				ACLOCAL=aclocal
+			fi
+			;;
+		*)
+			ACLOCAL=aclocal
+			;;
+	esac
 fi
-fi
-fi
-fi
-fi
-fi
+
+if $ACLOCAL --version < /dev/null > /dev/null 2>&1 ; then : ; else
+	echo
+	echo "You must have aclocal installed to compile $PROJECT."
+	echo "Install the appropriate package for your distribution,"
+	echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
+	DIE=1
 fi
 
 if test "$DIE" -eq 1; then
