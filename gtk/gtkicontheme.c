@@ -2858,13 +2858,38 @@ apply_emblems (GtkIconInfo *info)
   info->emblems_applied = TRUE;
 }
 
+static GdkInterpType
+icon_info_get_scale_interp_type (gint    image_width,
+                                 gint    image_height,
+                                 gdouble scale)
+{
+  gint image_size;
+
+  image_size = MAX (image_width, image_height);
+
+  /*
+   * Strongly upscaling small bitmap icons with bilinear filtering makes
+   * them blurry and costs more CPU.  Keep bilinear filtering for larger
+   * sources and moderate scaling, but use nearest-neighbour scaling for
+   * tiny bitmap icons that are enlarged substantially.
+   *
+   * This decision is made only when the icon pixbuf is created.  Cached
+   * pixbufs are reused while scrolling and drawing.
+   */
+/*if (image_size > 0 && image_size <= 64 && scale >= 3.0) */
+  if (image_size > 0 && image_size <= 64 && scale >= 2.0)
+    return GDK_INTERP_NEAREST;
+
+  return GDK_INTERP_BILINEAR;
+}
+
 /* This function contains the complicated logic for deciding
  * on the size at which to load the icon and loading it at
  * that size.
  */
 static gboolean
 icon_info_ensure_scale_and_pixbuf (GtkIconInfo  *icon_info,
-				   gboolean      scale_only)
+                                   gboolean      scale_only)
 {
   int image_width, image_height;
   GdkPixbuf *source_pixbuf;
@@ -3040,9 +3065,11 @@ icon_info_ensure_scale_and_pixbuf (GtkIconInfo  *icon_info,
   else
     {
       icon_info->pixbuf = gdk_pixbuf_scale_simple (source_pixbuf,
-						   0.5 + image_width * icon_info->scale,
-						   0.5 + image_height * icon_info->scale,
-						   GDK_INTERP_BILINEAR);
+                                                   0.5 + image_width * icon_info->scale,
+                                                   0.5 + image_height * icon_info->scale,
+                                                   icon_info_get_scale_interp_type (image_width,
+                                                                                   image_height,
+                                                                                   icon_info->scale));
       g_object_unref (source_pixbuf);
     }
 
@@ -3541,10 +3568,12 @@ gtk_icon_theme_lookup_by_gicon (GtkIconTheme       *icon_theme,
 	  max = MAX (width, height);
 	  scale = (gdouble) size / (gdouble) max;
 
-	  scaled = gdk_pixbuf_scale_simple (pixbuf,
-					    0.5 + width * scale,
-					    0.5 + height * scale,
-					    GDK_INTERP_BILINEAR);
+          scaled = gdk_pixbuf_scale_simple (pixbuf,
+                                            0.5 + width * scale,
+                                            0.5 + height * scale,
+                                            icon_info_get_scale_interp_type (width,
+                                                                            height,
+                                                                            scale));
 
 	  info = gtk_icon_info_new_for_pixbuf (icon_theme, scaled);
 
