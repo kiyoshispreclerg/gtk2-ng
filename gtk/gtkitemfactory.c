@@ -31,6 +31,7 @@
 
 #undef GTK_DISABLE_DEPRECATED
 #include	"gtkitemfactory.h"
+#include        "gtkpixdatautils.h"
 #include	"gtkoptionmenu.h"
 #include	"gtkmenubar.h"
 #include	"gtkmenu.h"
@@ -1052,10 +1053,7 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
       image = NULL;
       if (entry->extra_data)
 	{
-	  pixbuf = gdk_pixbuf_new_from_inline (-1,
-					       entry->extra_data,
-					       FALSE,
-					       NULL);
+	  pixbuf = _gtk_pixbuf_new_from_inline_pixdata (entry->extra_data, NULL);
 	  if (pixbuf)
 	    image = gtk_image_new_from_pixbuf (pixbuf);
 	}
