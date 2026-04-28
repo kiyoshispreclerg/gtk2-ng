@@ -2079,7 +2079,7 @@ thaw_updates (GtkFileSystemModel *model)
  **/
 void
 _gtk_file_system_model_clear_cache (GtkFileSystemModel *model,
-                                    int                 column)
+				    int                 column)
 {
   guint i;
   int start, end;
@@ -2102,21 +2102,62 @@ _gtk_file_system_model_clear_cache (GtkFileSystemModel *model,
   for (i = 0; i < model->files->len; i++)
     {
       FileModelNode *node = get_node (model, i);
+
       changed = FALSE;
       for (column = start; column < end; column++)
         {
           if (!G_VALUE_TYPE (&node->values[column]))
             continue;
-          
+
           g_value_unset (&node->values[column]);
           changed = TRUE;
         }
 
       if (changed && node->visible)
-	emit_row_changed_for_node (model, i);
+        emit_row_changed_for_node (model, i);
     }
 
   /* FIXME: resort? */
+}
+
+void
+_gtk_file_system_model_clear_cache_for_iter (GtkFileSystemModel *model,
+					     GtkTreeIter        *iter,
+					     int                 column)
+{
+  FileModelNode *node;
+  int start, end;
+  gboolean changed = FALSE;
+
+  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (ITER_IS_VALID (model, iter));
+  g_return_if_fail (column >= -1 && (guint) column < model->n_columns);
+
+  if (column > -1)
+    {
+      start = column;
+      end = column + 1;
+    }
+  else
+    {
+      start = 0;
+      end = model->n_columns;
+    }
+
+  node = get_node (model, ITER_INDEX (iter));
+
+  for (column = start; column < end; column++)
+    {
+      if (!G_VALUE_TYPE (&node->values[column]))
+        continue;
+
+      g_value_unset (&node->values[column]);
+      changed = TRUE;
+    }
+
+  if (changed && node->visible)
+    emit_row_changed_for_node (model, ITER_INDEX (iter));
 }
 
 /**

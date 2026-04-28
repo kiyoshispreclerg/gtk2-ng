@@ -84,14 +84,16 @@ void                _gtk_file_system_model_set_show_files   (GtkFileSystemModel 
 void                _gtk_file_system_model_set_filter_folders (GtkFileSystemModel *model,
 							     gboolean            show_folders);
 void                _gtk_file_system_model_clear_cache      (GtkFileSystemModel *model,
-                                                             int                 column);
-
+						             int                 column);
+void                _gtk_file_system_model_clear_cache_for_iter (GtkFileSystemModel *model,
+						             GtkTreeIter        *iter,
+						             int                 column);
 void                _gtk_file_system_model_set_filter       (GtkFileSystemModel *model,
-                                                             GtkFileFilter      *filter);
+						             GtkFileFilter      *filter);
 
-void _gtk_file_system_model_add_editable    (GtkFileSystemModel *model,
-					     GtkTreeIter        *iter);
-void _gtk_file_system_model_remove_editable (GtkFileSystemModel *model);
+void                _gtk_file_system_model_add_editable    (GtkFileSystemModel *model,
+		  				     	     GtkTreeIter        *iter);
+void                _gtk_file_system_model_remove_editable (GtkFileSystemModel *model);
 
 G_END_DECLS
 

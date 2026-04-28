@@ -234,7 +234,9 @@ struct _GtkFileChooserDefault
   GtkWidget *icon_view_scale_zoom_out_icon;
   guint icon_view_scale_timeout_id;
   guint icon_view_scale_visible_timeout_id;
+  guint icon_view_scale_after_layout_id;
   gint pending_icon_view_icon_size;
+  gint icon_view_scale_visible_overscan;
   ViewMode view_mode;
 
   GtkWidget *location_button;
