@@ -25,7 +25,22 @@
 #include "pixbuf.h"
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-static GCache *pixbuf_cache = NULL;
+typedef struct _PixbufCacheEntry PixbufCacheEntry;
+
+struct _PixbufCacheEntry
+{
+  gchar *filename;
+  GdkPixbuf *pixbuf;
+  guint ref_count;
+};
+
+static GHashTable *pixbuf_filename_ht = NULL;
+static GHashTable *pixbuf_pixbuf_ht = NULL;
+
+static void              pixbuf_cache_init       (void);
+static PixbufCacheEntry *pixbuf_cache_entry_new  (const gchar       *filename);
+static void              pixbuf_cache_entry_free (PixbufCacheEntry  *entry);
+static GdkPixbuf        *pixbuf_cache_value_new  (gchar             *filename);
 
 static GdkPixbuf *
 bilinear_gradient (GdkPixbuf    *src,
@@ -545,13 +560,28 @@ theme_clear_pixbuf (ThemePixbuf **theme_pb)
 #endif
 }
 
-void         
+void
 theme_pixbuf_set_filename (ThemePixbuf *theme_pb,
-			   const char  *filename)
+                           const char  *filename)
 {
   if (theme_pb->pixbuf)
     {
-      g_cache_remove (pixbuf_cache, theme_pb->pixbuf);
+      PixbufCacheEntry *entry;
+
+      entry = g_hash_table_lookup (pixbuf_pixbuf_ht, theme_pb->pixbuf);
+      if (entry)
+        {
+          entry->ref_count--;
+
+          if (entry->ref_count == 0)
+            {
+              g_hash_table_remove (pixbuf_filename_ht, entry->filename);
+              g_hash_table_remove (pixbuf_pixbuf_ht, entry->pixbuf);
+
+              pixbuf_cache_entry_free (entry);
+            }
+        }
+
       theme_pb->pixbuf = NULL;
     }
 
@@ -725,11 +755,45 @@ theme_pixbuf_set_stretch (ThemePixbuf *theme_pb,
     theme_pixbuf_compute_hints (theme_pb);
 }
 
+static void
+pixbuf_cache_init (void)
+{
+  if (pixbuf_filename_ht)
+    return;
+
+  pixbuf_filename_ht = g_hash_table_new (g_str_hash, g_str_equal);
+  pixbuf_pixbuf_ht = g_hash_table_new (g_direct_hash, g_direct_equal);
+}
+
+static PixbufCacheEntry *
+pixbuf_cache_entry_new (const gchar *filename)
+{
+  PixbufCacheEntry *entry;
+
+  entry = g_slice_new0 (PixbufCacheEntry);
+  entry->filename = g_strdup (filename);
+  entry->pixbuf = pixbuf_cache_value_new (entry->filename);
+  entry->ref_count = 1;
+
+  return entry;
+}
+
+static void
+pixbuf_cache_entry_free (PixbufCacheEntry *entry)
+{
+  g_free (entry->filename);
+
+  if (entry->pixbuf)
+    g_object_unref (entry->pixbuf);
+
+  g_slice_free (PixbufCacheEntry, entry);
+}
+
 static GdkPixbuf *
 pixbuf_cache_value_new (gchar *filename)
 {
   GError *err = NULL;
-    
+
   GdkPixbuf *result = gdk_pixbuf_new_from_file (filename, &err);
   if (!result)
     {
@@ -746,19 +810,36 @@ theme_pixbuf_get_pixbuf (ThemePixbuf *theme_pb)
 {
   if (!theme_pb->pixbuf)
     {
-      if (!pixbuf_cache)
-	pixbuf_cache = g_cache_new ((GCacheNewFunc)pixbuf_cache_value_new,
-				    (GCacheDestroyFunc)g_object_unref,
-				    (GCacheDupFunc)g_strdup,
-				    (GCacheDestroyFunc)g_free,
-				    g_str_hash, g_direct_hash, g_str_equal);
-      
-      theme_pb->pixbuf = g_cache_insert (pixbuf_cache, theme_pb->filename);
+      PixbufCacheEntry *entry;
 
-      if (theme_pb->stretch)
-	theme_pixbuf_compute_hints (theme_pb);
+      pixbuf_cache_init ();
+
+      entry = g_hash_table_lookup (pixbuf_filename_ht, theme_pb->filename);
+      if (entry)
+        entry->ref_count++;
+      else
+        {
+          entry = pixbuf_cache_entry_new (theme_pb->filename);
+
+          if (entry->pixbuf)
+            {
+              g_hash_table_insert (pixbuf_filename_ht, entry->filename, entry);
+              g_hash_table_insert (pixbuf_pixbuf_ht, entry->pixbuf, entry);
+            }
+          else
+            {
+              pixbuf_cache_entry_free (entry);
+              entry = NULL;
+            }
+        }
+
+      if (entry)
+        theme_pb->pixbuf = entry->pixbuf;
+
+      if (theme_pb->pixbuf && theme_pb->stretch)
+        theme_pixbuf_compute_hints (theme_pb);
     }
-  
+
   return theme_pb->pixbuf;
 }
 
