@@ -1626,6 +1626,13 @@ file_icon_cache_key_free (FileIconCacheKey *key)
   g_slice_free (FileIconCacheKey, key);
 }
 
+static void
+file_icon_cache_theme_changed_cb (GtkIconTheme *icon_theme,
+                                  GHashTable   *cache)
+{
+  g_hash_table_remove_all (cache);
+}
+
 static GHashTable *
 file_icon_cache_get_for_icon_theme (GtkIconTheme *icon_theme)
 {
@@ -1646,6 +1653,10 @@ file_icon_cache_get_for_icon_theme (GtkIconTheme *icon_theme)
                                quark_file_icon_cache,
                                cache,
                                (GDestroyNotify) g_hash_table_destroy);
+
+      g_signal_connect (icon_theme, "changed",
+                        G_CALLBACK (file_icon_cache_theme_changed_cb),
+                        cache);
     }
 
   return cache;
