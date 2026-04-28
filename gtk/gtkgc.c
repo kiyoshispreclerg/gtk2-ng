@@ -34,6 +34,7 @@
 
 
 typedef struct _GtkGCKey       GtkGCKey;
+typedef struct _GtkGCEntry     GtkGCEntry;
 typedef struct _GtkGCDrawable  GtkGCDrawable;
 
 struct _GtkGCKey
@@ -44,39 +45,46 @@ struct _GtkGCKey
   GdkGCValuesMask mask;
 };
 
+struct _GtkGCEntry
+{
+  GtkGCKey *key;
+  GdkGC *gc;
+  guint ref_count;
+};
+
 struct _GtkGCDrawable
 {
   gint depth;
   GdkPixmap *drawable;
 };
 
-
 static void      gtk_gc_init             (void);
 static GtkGCKey* gtk_gc_key_dup          (GtkGCKey      *key);
 static void      gtk_gc_key_destroy      (GtkGCKey      *key);
+static GtkGCEntry *gtk_gc_entry_new      (GtkGCKey      *key);
+static void      gtk_gc_entry_free       (GtkGCEntry    *entry);
 static gpointer  gtk_gc_new              (gpointer       key);
 static void      gtk_gc_destroy          (gpointer       value);
 static guint     gtk_gc_key_hash         (gpointer       key);
-static guint     gtk_gc_value_hash       (gpointer       value);
 static gint      gtk_gc_key_equal        (gpointer       a,
-					  gpointer       b);
+                                          gpointer       b);
 static guint     gtk_gc_drawable_hash    (GtkGCDrawable *d);
 static gint      gtk_gc_drawable_equal   (GtkGCDrawable *a,
-					  GtkGCDrawable *b);
-
+                                          GtkGCDrawable *b);
 
 static gint initialize = TRUE;
-static GCache *gc_cache = NULL;
+static GHashTable *gc_key_ht = NULL;
+static GHashTable *gc_gc_ht = NULL;
 static GQuark quark_gtk_gc_drawable_ht = 0;
 
 GdkGC*
 gtk_gc_get (gint             depth,
-	    GdkColormap     *colormap,
-	    GdkGCValues     *values,
-	    GdkGCValuesMask  values_mask)
+            GdkColormap     *colormap,
+            GdkGCValues     *values,
+            GdkGCValuesMask  values_mask)
 {
   GtkGCKey key;
-  GdkGC *gc;
+  GtkGCEntry *entry;
 
   if (initialize)
     gtk_gc_init ();
@@ -86,18 +94,41 @@ gtk_gc_get (gint             depth,
   key.values = *values;
   key.mask = values_mask;
 
-  gc = g_cache_insert (gc_cache, &key);
+  entry = g_hash_table_lookup (gc_key_ht, &key);
+  if (entry)
+    {
+      entry->ref_count++;
+      return entry->gc;
+    }
 
-  return gc;
+  entry = gtk_gc_entry_new (&key);
+
+  g_hash_table_insert (gc_key_ht, entry->key, entry);
+  g_hash_table_insert (gc_gc_ht, entry->gc, entry);
+
+  return entry->gc;
 }
 
 void
 gtk_gc_release (GdkGC *gc)
 {
+  GtkGCEntry *entry;
+
   if (initialize)
     gtk_gc_init ();
 
-  g_cache_remove (gc_cache, gc);
+  entry = g_hash_table_lookup (gc_gc_ht, gc);
+  if (!entry)
+    return;
+
+  entry->ref_count--;
+  if (entry->ref_count > 0)
+    return;
+
+  g_hash_table_remove (gc_key_ht, entry->key);
+  g_hash_table_remove (gc_gc_ht, entry->gc);
+
+  gtk_gc_entry_free (entry);
 }
 
 static void 
@@ -132,13 +163,9 @@ gtk_gc_init (void)
 
   quark_gtk_gc_drawable_ht = g_quark_from_static_string ("gtk-gc-drawable-ht");
 
-  gc_cache = g_cache_new ((GCacheNewFunc) gtk_gc_new,
-			  (GCacheDestroyFunc) gtk_gc_destroy,
-			  (GCacheDupFunc) gtk_gc_key_dup,
-			  (GCacheDestroyFunc) gtk_gc_key_destroy,
-			  (GHashFunc) gtk_gc_key_hash,
-			  (GHashFunc) gtk_gc_value_hash,
-			  (GEqualFunc) gtk_gc_key_equal);
+  gc_key_ht = g_hash_table_new ((GHashFunc) gtk_gc_key_hash,
+                                (GEqualFunc) gtk_gc_key_equal);
+  gc_gc_ht = g_hash_table_new (g_direct_hash, g_direct_equal);
 }
 
 static GtkGCKey*
@@ -157,6 +184,27 @@ static void
 gtk_gc_key_destroy (GtkGCKey *key)
 {
   g_slice_free (GtkGCKey, key);
+}
+
+static GtkGCEntry *
+gtk_gc_entry_new (GtkGCKey *key)
+{
+  GtkGCEntry *entry;
+
+  entry = g_slice_new (GtkGCEntry);
+  entry->key = gtk_gc_key_dup (key);
+  entry->gc = gtk_gc_new (entry->key);
+  entry->ref_count = 1;
+
+  return entry;
+}
+
+static void
+gtk_gc_entry_free (GtkGCEntry *entry)
+{
+  gtk_gc_destroy (entry->gc);
+  gtk_gc_key_destroy (entry->key);
+  g_slice_free (GtkGCEntry, entry);
 }
 
 static gpointer
@@ -277,12 +325,6 @@ gtk_gc_key_hash (gpointer key)
     }
 
   return hash_val;
-}
-
-static guint
-gtk_gc_value_hash (gpointer value)
-{
-  return (gulong) value;
 }
 
 static gboolean
