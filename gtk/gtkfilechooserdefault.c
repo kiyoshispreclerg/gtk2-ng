@@ -5551,7 +5551,7 @@ icon_view_scale_queue_cache_clear (GtkFileChooserDefault *impl)
    * are applied by the short 16ms timeout.
    */
   impl->icon_view_scale_timeout_id =
-    gdk_threads_add_timeout (1000, icon_view_scale_clear_cache_cb, impl);
+    gdk_threads_add_timeout (500, icon_view_scale_clear_cache_cb, impl);
 }
 
 /* Callback used when the icon view scale is changed */

@@ -1575,30 +1575,143 @@ _gtk_file_system_volume_get_root (GtkFileSystemVolume *volume)
   return file;
 }
 
+typedef struct
+{
+  GdkScreen *screen;
+  GIcon     *icon;
+  gint       icon_size;
+} FileIconCacheKey;
+
+static guint
+file_icon_cache_key_hash (gconstpointer data)
+{
+  const FileIconCacheKey *key = data;
+
+  return g_direct_hash (key->screen) ^
+         g_icon_hash (key->icon) ^
+         key->icon_size;
+}
+
+static gboolean
+file_icon_cache_key_equal (gconstpointer a,
+                           gconstpointer b)
+{
+  const FileIconCacheKey *key_a = a;
+  const FileIconCacheKey *key_b = b;
+
+  return key_a->screen == key_b->screen &&
+         key_a->icon_size == key_b->icon_size &&
+         g_icon_equal (key_a->icon, key_b->icon);
+}
+
+static FileIconCacheKey *
+file_icon_cache_key_new (GdkScreen *screen,
+                         GIcon     *icon,
+                         gint       icon_size)
+{
+  FileIconCacheKey *key;
+
+  key = g_slice_new (FileIconCacheKey);
+  key->screen = screen;
+  key->icon = g_object_ref (icon);
+  key->icon_size = icon_size;
+
+  return key;
+}
+
+static void
+file_icon_cache_key_free (FileIconCacheKey *key)
+{
+  g_object_unref (key->icon);
+  g_slice_free (FileIconCacheKey, key);
+}
+
+static GHashTable *
+file_icon_cache_get_for_icon_theme (GtkIconTheme *icon_theme)
+{
+  static GQuark quark_file_icon_cache = 0;
+  GHashTable *cache;
+
+  if (G_UNLIKELY (quark_file_icon_cache == 0))
+    quark_file_icon_cache = g_quark_from_static_string ("gtk-file-icon-cache");
+
+  cache = g_object_get_qdata (G_OBJECT (icon_theme), quark_file_icon_cache);
+  if (!cache)
+    {
+      cache = g_hash_table_new_full (file_icon_cache_key_hash,
+                                     file_icon_cache_key_equal,
+                                     (GDestroyNotify) file_icon_cache_key_free,
+                                     g_object_unref);
+      g_object_set_qdata_full (G_OBJECT (icon_theme),
+                               quark_file_icon_cache,
+                               cache,
+                               (GDestroyNotify) g_hash_table_destroy);
+    }
+
+  return cache;
+}
+
 static GdkPixbuf *
 get_pixbuf_from_gicon (GIcon      *icon,
-		       GtkWidget  *widget,
-		       gint        icon_size,
-		       GError    **error)
+                       GtkWidget  *widget,
+                       gint        icon_size,
+                       GError    **error)
 {
   GdkScreen *screen;
   GtkIconTheme *icon_theme;
   GtkIconInfo *icon_info;
+  GHashTable *cache;
+  FileIconCacheKey lookup_key;
+  FileIconCacheKey *cache_key;
   GdkPixbuf *pixbuf;
 
   screen = gtk_widget_get_screen (GTK_WIDGET (widget));
   icon_theme = gtk_icon_theme_get_for_screen (screen);
 
+  /*
+   * Normal file icons are often shared by many rows in a file chooser
+   * directory, e.g. many image/jpeg files all resolving to the same themed
+   * icon.  Cache the rendered pixbuf per screen, GIcon and requested size so
+   * zooming or scrolling a large folder does not repeatedly load/scale the
+   * same theme icon.
+   *
+   * Thumbnails do not go through this helper and remain per-file.
+   */
+  if (G_IS_THEMED_ICON (icon) || G_IS_EMBLEMED_ICON (icon))
+    {
+      cache = file_icon_cache_get_for_icon_theme (icon_theme);
+      lookup_key.screen = screen;
+      lookup_key.icon = icon;
+      lookup_key.icon_size = icon_size;
+
+      pixbuf = g_hash_table_lookup (cache, &lookup_key);
+      if (pixbuf)
+        return g_object_ref (pixbuf);
+    }
+  else
+    {
+      cache = NULL;
+    }
+
   icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
-					      icon,
-					      icon_size,
-					      GTK_ICON_LOOKUP_USE_BUILTIN);
+                                              icon,
+                                              icon_size,
+                                              GTK_ICON_LOOKUP_USE_BUILTIN);
 
   if (!icon_info)
     return NULL;
 
   pixbuf = gtk_icon_info_load_icon (icon_info, error);
   gtk_icon_info_free (icon_info);
+
+  if (!pixbuf)
+    return NULL;
+
+  if (cache)
+    {
+      cache_key = file_icon_cache_key_new (screen, icon, icon_size);
+      g_hash_table_insert (cache, cache_key, g_object_ref (pixbuf));
+    }
 
   return pixbuf;
 }
