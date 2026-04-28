@@ -23,6 +23,16 @@ pixdata_get_uint32 (const guint8 *data)
          ((guint32) data[3]);
 }
 
+static void
+pixdata_put_uint32 (guint8  *data,
+                    guint32  value)
+{
+  data[0] = (value >> 24) & 0xff;
+  data[1] = (value >> 16) & 0xff;
+  data[2] = (value >> 8) & 0xff;
+  data[3] = value & 0xff;
+}
+
 static gboolean
 pixdata_type_get_info (guint32   pixdata_type,
                        gboolean *rle_p,
@@ -209,4 +219,62 @@ _gtk_pixbuf_new_from_pixdata_stream (const guint8  *stream,
  invalid:
   pixdata_set_error (error);
   return NULL;
+}
+
+guint8 *
+_gtk_pixdata_serialize_from_pixbuf (GdkPixbuf *pixbuf,
+                                    gsize     *length_p)
+{
+  guint32 pixdata_type;
+  gint width;
+  gint height;
+  gint rowstride;
+  gint n_channels;
+  gsize pixel_data_size;
+  gsize total_length;
+  guint8 *data;
+
+  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
+  g_return_val_if_fail (length_p != NULL, NULL);
+
+  width = gdk_pixbuf_get_width (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+
+  if (n_channels != 3 && n_channels != 4)
+    return NULL;
+
+  if (height < 0 || rowstride < 0)
+    return NULL;
+
+  if ((gsize) height > G_MAXSIZE / (gsize) rowstride)
+    return NULL;
+
+  pixel_data_size = (gsize) rowstride * (gsize) height;
+  total_length = GTK_PIXDATA_HEADER_LENGTH + pixel_data_size;
+
+  if (total_length > G_MAXUINT32)
+    return NULL;
+
+  pixdata_type = GTK_PIXDATA_ENCODING_RAW |
+                 GTK_PIXDATA_SAMPLE_WIDTH_8 |
+                 (n_channels == 4 ? GTK_PIXDATA_COLOR_TYPE_RGBA : GTK_PIXDATA_COLOR_TYPE_RGB);
+
+  data = g_malloc (total_length);
+
+  memcpy (data, GTK_PIXDATA_MAGIC, 4);
+  pixdata_put_uint32 (data + 4, total_length);
+  pixdata_put_uint32 (data + 8, pixdata_type);
+  pixdata_put_uint32 (data + 12, rowstride);
+  pixdata_put_uint32 (data + 16, width);
+  pixdata_put_uint32 (data + 20, height);
+
+  memcpy (data + GTK_PIXDATA_HEADER_LENGTH,
+          gdk_pixbuf_get_pixels (pixbuf),
+          pixel_data_size);
+
+  *length_p = total_length;
+
+  return data;
 }

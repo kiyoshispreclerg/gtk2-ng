@@ -30,7 +30,7 @@
 #include <stdlib.h>
 
 #undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include "gdk-pixbuf/gdk-pixdata.h"
+#include "gtkpixdatautils.h"
 #include "gtktextbufferserialize.h"
 #include "gtkintl.h"
 #include "gtkalias.h"
@@ -592,12 +592,12 @@ serialize_pixbufs (SerializationContext *context,
   for (list = context->pixbufs; list != NULL; list = list->next)
     {
       GdkPixbuf *pixbuf = list->data;
-      GdkPixdata pixdata;
       guint8 *tmp;
-      guint len;
+      gsize len;
 
-      gdk_pixdata_from_pixbuf (&pixdata, pixbuf, FALSE);
-      tmp = gdk_pixdata_serialize (&pixdata, &len);
+      tmp = _gtk_pixdata_serialize_from_pixbuf (pixbuf, &len);
+      if (!tmp)
+        continue;
 
       serialize_section_header (text, "GTKTEXTBUFFERPIXBDATA-0001", len);
       g_string_append_len (text, (gchar *) tmp, len);
@@ -1062,21 +1062,15 @@ get_pixbuf_from_headers (GList   *headers,
                          GError **error)
 {
   Header *header;
-  GdkPixdata pixdata;
-  GdkPixbuf *pixbuf;
 
   header = g_list_nth_data (headers, id);
 
   if (!header)
     return NULL;
 
-  if (!gdk_pixdata_deserialize (&pixdata, header->length,
-                                (const guint8 *) header->start, error))
-    return NULL;
-
-  pixbuf = gdk_pixbuf_from_pixdata (&pixdata, TRUE, error);
-
-  return pixbuf;
+  return _gtk_pixbuf_new_from_pixdata_stream ((const guint8 *) header->start,
+                                              header->length,
+                                              error);
 }
 
 static void
