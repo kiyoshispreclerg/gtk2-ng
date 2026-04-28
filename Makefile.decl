@@ -3,8 +3,8 @@
 GTESTER        = gtester		# in $PATH for non-GLIB packages
 GTESTER_REPORT = gtester-report		# in $PATH for non-GLIB packages
 
-# initialize variables for unconditional += appending
-EXTRA_DIST =
+# initialize test variables for unconditional += appending
+#EXTRA_DIST =     # already declared
 TEST_PROGS =
 
 ### testing rules
