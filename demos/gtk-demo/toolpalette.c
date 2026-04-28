@@ -660,24 +660,24 @@ load_stock_items (GtkToolPalette *palette)
       GtkStockItem stock_item;
       gchar *id = iter->data;
 
-      switch (id[4])
-        {
-          case 'a':
-            group = group_af;
-            break;
+      {
+        const gchar *stock_name = id;
+        gchar first;
 
-          case 'g':
-            group = group_gn;
-            break;
+        if (g_str_has_prefix (stock_name, "gtk-"))
+          stock_name += 4;
 
-          case 'o':
-            group = group_or;
-            break;
+        first = g_ascii_tolower (stock_name[0]);
 
-          case 's':
-            group = group_sz;
-            break;
-        }
+        if (first >= 'a' && first <= 'f')
+          group = group_af;
+        else if (first >= 'g' && first <= 'n')
+          group = group_gn;
+        else if (first >= 'o' && first <= 'r')
+          group = group_or;
+        else
+          group = group_sz;
+      }
 
       item = gtk_tool_button_new_from_stock (id);
       gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item), id);
