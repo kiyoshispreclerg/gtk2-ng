@@ -151,23 +151,28 @@ dnl Initialize libtool
 AC_PROG_CC
 AM_DISABLE_STATIC
 
-dnl 
+dnl
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
 dnl We use this for an automated test for C++ header correctness.
-dnl 
+dnl
 AC_CHECK_TOOLS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], gcc)
-AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
+AC_LANG_PUSH([C++])
 
-AC_TRY_COMPILE(,[class a { int b; } c;], ,CXX=)
+AC_COMPILE_IFELSE(
+  [AC_LANG_SOURCE([[class a { int b; } c;]])],
+  [],
+  [CXX=])
 AM_CONDITIONAL(HAVE_CXX, test "$CXX" != "")
 
 gtk_save_cxxflags="$CXXFLAGS"
 CXXFLAGS="$CXXFLAGS -x objective-c++"
-AC_TRY_COMPILE([@interface Foo @end],,OBJC=yes,OBJC=no)
+AC_COMPILE_IFELSE(
+  [AC_LANG_SOURCE([[@interface Foo @end]])],
+  [OBJC=yes],
+  [OBJC=no])
 AM_CONDITIONAL(HAVE_OBJC, test "$OBJC" = "yes")
 CXXFLAGS="$gtk_save_cxxflags"
-AC_LANG_RESTORE
+AC_LANG_POP([C++])
 
 if test "$os_win32" = "yes"; then
   if test x$enable_static = xyes -o x$enable_static = x; then
