@@ -4597,14 +4597,24 @@ set_icon_cell_renderer_fixed_size (GtkFileChooserDefault *impl,
   gint xpad, ypad;
 
   if (view_mode == VIEW_MODE_LIST)
-    icon_size = impl->list_view_icon_size;
+    {
+      icon_size = impl->list_view_icon_size;
+
+      if (icon_size <= 0)
+        icon_size = FALLBACK_LIST_VIEW_ICON_SIZE;
+    }
   else if (view_mode == VIEW_MODE_ICON)
-    icon_size = impl->icon_view_icon_size;
+    {
+      icon_size = impl->icon_view_icon_size;
+
+      if (icon_size <= 0)
+        icon_size = FALLBACK_ICON_VIEW_ICON_SIZE;
+    }
   else
     g_assert_not_reached ();
 
   gtk_cell_renderer_get_padding (renderer, &xpad, &ypad);
-  gtk_cell_renderer_set_fixed_size (renderer, 
+  gtk_cell_renderer_set_fixed_size (renderer,
                                     xpad * 2 + icon_size,
                                     ypad * 2 + icon_size);
 }
@@ -5178,7 +5188,11 @@ icon_view_scale_value_changed_cb (GtkRange *range,
                                   GtkFileChooserDefault *impl)
 {
   gdouble value = gtk_range_get_value (range);
+
   value = round (value / 16) * 16;
+
+  if (value <= 0)
+    value = FALLBACK_ICON_VIEW_ICON_SIZE;
 
   if (impl->icon_view_icon_size == (gint)value)
     return;
@@ -6546,6 +6560,9 @@ settings_load (GtkFileChooserDefault *impl)
   location_mode_set (impl, location_mode, TRUE);
   view_mode_set (impl, view_mode);
 
+  if (icon_view_scale <= 0)
+    icon_view_scale = FALLBACK_ICON_VIEW_ICON_SIZE;
+
   gtk_range_set_value (GTK_RANGE (impl->icon_view_scale), icon_view_scale);
   impl->icon_view_icon_size = icon_view_scale;
 
@@ -7421,9 +7438,19 @@ file_system_model_set (GtkFileSystemModel *model,
               gint icon_size;
 
               if (column == MODEL_COL_ICON_PIXBUF)
-                icon_size = impl->icon_view_icon_size;
+                {
+                  icon_size = impl->icon_view_icon_size;
+
+                  if (icon_size <= 0)
+                    icon_size = FALLBACK_ICON_VIEW_ICON_SIZE;
+                }
               else
-                icon_size = impl->list_view_icon_size;
+                {
+                  icon_size = impl->list_view_icon_size;
+
+                  if (icon_size <= 0)
+                    icon_size = FALLBACK_LIST_VIEW_ICON_SIZE;
+                }
 
               g_value_take_object (value, _gtk_file_info_render_icon (info, GTK_WIDGET (impl), icon_size));
               return TRUE;
