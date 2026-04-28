@@ -31,10 +31,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include <gdk-pixbuf/gdk-pixdata.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkgamma.h"
+#include "gtkpixdatautils.h"
 #include "gtkcurve.h"
 #include "gtkdialog.h"
 #include "gtkdrawingarea.h"
@@ -319,13 +319,17 @@ button_realize_callback (GtkWidget *w)
     { gamma_pixdata, sizeof (gamma_pixdata) },
     { reset_pixdata, sizeof (reset_pixdata) }
   };
-  GdkPixdata pixdata;
   GdkPixbuf *pixbuf;
   int i;
 
   i = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_GtkGammaCurveIndex"));
-  gdk_pixdata_deserialize (&pixdata, streams[i].length, streams[i].stream, NULL);
-  pixbuf = gdk_pixbuf_from_pixdata (&pixdata, TRUE, NULL);
+  pixbuf = _gtk_pixbuf_new_from_pixdata_stream (streams[i].stream,
+                                                streams[i].length,
+                                                NULL);
+
+  if (!pixbuf)
+    return;
+
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (w), image);
   gtk_widget_show (image);

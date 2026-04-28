@@ -678,6 +678,7 @@ gtk_base_c_sources += \
 	gtkcurve.c		\
 	gtkfilesel.c		\
 	gtkgamma.c		\
+	gtkpixdatautils.c	\
 	gtkitemfactory.c	\
 	gtklist.c		\
 	gtklistitem.c		\
