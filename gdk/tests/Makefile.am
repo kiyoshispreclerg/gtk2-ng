@@ -13,14 +13,16 @@ AM_CPPFLAGS=\
 	-I$(top_builddir)/gdk \
 	$(NULL)
 
-check_gdk_cairo_SOURCES=\
-	check-gdk-cairo.c \
-	$(NULL)
-check_gdk_cairo_LDADD=\
-	$(GDK_DEP_LIBS) \
-	$(top_builddir)/gdk-pixbuf/libgdk_pixbuf-$(GTK_API_VERSION).la \
-	$(top_builddir)/gdk/libgdk-$(gdktarget)-$(GTK_API_VERSION).la \
-	$(NULL)
+#check_gdk_cairo_SOURCES=\
+#	check-gdk-cairo.c \
+#	$(NULL)
+#check_gdk_cairo_LDADD=\
+#	$(GDK_DEP_LIBS) \
+#	$(top_builddir)/gdk-pixbuf/libgdk_pixbuf-$(GTK_API_VERSION).la \
+#	$(top_builddir)/gdk/libgdk-$(gdktarget)-$(GTK_API_VERSION).la \
+#	$(NULL)
+
+#     tests are deaktivated. no need to keep unused variables     #
 
 CLEANFILES = \
 	cairosurface.png	\
