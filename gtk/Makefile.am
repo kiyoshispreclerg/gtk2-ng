@@ -276,6 +276,7 @@ gtk_public_h_sources =          \
 	gtkprintoperationpreview.h	\
 	gtkprintsettings.h	\
 	gtkprivate.h		\
+	gtkpixdatautils.h	\
 	gtkprogressbar.h	\
 	gtkradioaction.h	\
 	gtkradiobutton.h	\
