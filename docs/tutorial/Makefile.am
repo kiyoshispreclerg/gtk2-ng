@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-.PHONY: html pdf
+.PHONY: html pdf html-docbook html-no-docbook pdf-docbook pdf-no-docbook dist-hook-docbook dist-hook-no-docbook
 
 EXTRA_DIST += \
 	gtk-tut.sgml			\
@@ -37,7 +37,20 @@ EXTRA_DIST += \
 	images/tictactoe.png
 
 if HAVE_DOCBOOK
-html: gtk-tut.sgml
+TUTORIAL_HTML_TARGET = html-docbook
+TUTORIAL_PDF_TARGET = pdf-docbook
+TUTORIAL_DIST_TARGET = dist-hook-docbook
+
+all-local: html
+else
+TUTORIAL_HTML_TARGET = html-no-docbook
+TUTORIAL_PDF_TARGET = pdf-no-docbook
+TUTORIAL_DIST_TARGET = dist-hook-no-docbook
+endif
+
+html: $(TUTORIAL_HTML_TARGET)
+
+html-docbook: gtk-tut.sgml
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); \
 	   db2html gtk-tut.sgml; \
@@ -47,32 +60,32 @@ html: gtk-tut.sgml
 	   cp images/*.png html/images); \
 	fi
 
-pdf: gtk-tut.sgml
+html-no-docbook:
+	echo "***"
+	echo "*** Warning: Tutorial not built"
+	echo "***"
+
+pdf: $(TUTORIAL_PDF_TARGET)
+
+pdf-docbook: gtk-tut.sgml
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); db2pdf gtk-tut.sgml); \
 	fi
 
-all-local: html
+pdf-no-docbook:
+	echo "***"
+	echo "*** Warning: Tutorial not built"
+	echo "***"
 
-dist-hook: html
+dist-hook: $(TUTORIAL_DIST_TARGET)
+
+dist-hook-docbook: html
 	cp -Rp $(srcdir)/html $(distdir)
-else
-html:
-	echo "***"
-	echo "*** Warning: Tutorial not built"
-	echo "***"
 
-pdf:
-	echo "***"
-	echo "*** Warning: Tutorial not built"
-	echo "***"
-
-dist-hook:
+dist-hook-no-docbook:
 	echo "***"
 	echo "*** Warning: Tutorial not built"
 	echo "*** DISTRIBUTION IS INCOMPLETE"
 	echo "***"
-endif
-
 
 -include $(top_srcdir)/git.mk

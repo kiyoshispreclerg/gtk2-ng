@@ -4,7 +4,20 @@ EXTRA_DIST += 			\
 	gtk-faq.sgml
 
 if HAVE_DOCBOOK
-html:
+FAQ_HTML_TARGET = html-docbook
+FAQ_PDF_TARGET = pdf-docbook
+FAQ_DIST_TARGET = dist-hook-docbook
+
+all-local: html
+else
+FAQ_HTML_TARGET = html-no-docbook
+FAQ_PDF_TARGET = pdf-no-docbook
+FAQ_DIST_TARGET = dist-hook-no-docbook
+endif
+
+html: $(FAQ_HTML_TARGET)
+
+html-docbook:
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); \
 	   db2html gtk-faq.sgml; \
@@ -12,33 +25,34 @@ html:
 	   mv gtk-faq html); \
 	fi
 
-pdf:
+html-no-docbook:
+	echo "***"
+	echo "*** Warning: FAQ not built"
+	echo "***"
+
+pdf: $(FAQ_PDF_TARGET)
+
+pdf-docbook:
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); db2pdf gtk-faq.sgml); \
 	fi
 
-all-local: html
+pdf-no-docbook:
+	echo "***"
+	echo "*** Warning: FAQ not built"
+	echo "***"
 
-dist-hook: html
+dist-hook: $(FAQ_DIST_TARGET)
+
+dist-hook-docbook: html
 	cp -Rp $(srcdir)/html $(distdir)
-else
-html:
-	echo "***"
-	echo "*** Warning: FAQ not built"
-	echo "***"
 
-pdf:
-	echo "***"
-	echo "*** Warning: FAQ not built"
-	echo "***"
-
-dist-hook:
+dist-hook-no-docbook:
 	echo "***"
 	echo "*** Warning: FAQ not built"
 	echo "*** DISTRIBUTION IS INCOMPLETE"
 	echo "***"
-endif
 
-.PHONY: html
+.PHONY: html pdf html-docbook html-no-docbook pdf-docbook pdf-no-docbook dist-hook-docbook dist-hook-no-docbook
 
 -include $(top_srcdir)/git.mk
