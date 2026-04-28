@@ -189,32 +189,87 @@ _gtk_get_module_path (const gchar *type)
   for (path = paths; *path; path++)
     count++;
 
-  result = g_new (gchar *, count * 4 + 1);
+  result = g_new (gchar *, count * 5 + 1);
 
   count = 0;
   for (path = get_module_path (); *path; path++)
     {
       gint use_version, use_host;
-      
-      for (use_version = TRUE; use_version >= FALSE; use_version--)
-	for (use_host = TRUE; use_host >= FALSE; use_host--)
-	  {
-	    gchar *tmp_dir;
-	    
-	    if (use_version && use_host)
-	      tmp_dir = g_build_filename (*path, GTK_BINARY_VERSION, GTK_HOST, type, NULL);
-	    else if (use_version)
-	      tmp_dir = g_build_filename (*path, GTK_BINARY_VERSION, type, NULL);
-	    else if (use_host)
-	      tmp_dir = g_build_filename (*path, GTK_HOST, type, NULL);
-	    else
-	      tmp_dir = g_build_filename (*path, type, NULL);
 
-	    result[count++] = tmp_dir;
-	  }
+      for (use_version = TRUE; use_version >= FALSE; use_version--)
+        for (use_host = TRUE; use_host >= FALSE; use_host--)
+          {
+            gchar *tmp_dir;
+
+            if (use_version && use_host)
+              tmp_dir = g_build_filename (*path, GTK_BINARY_VERSION, GTK_HOST, type, NULL);
+            else if (use_version)
+              tmp_dir = g_build_filename (*path, GTK_BINARY_VERSION, type, NULL);
+            else if (use_host)
+              tmp_dir = g_build_filename (*path, GTK_HOST, type, NULL);
+            else
+              tmp_dir = g_build_filename (*path, type, NULL);
+
+            result[count++] = tmp_dir;
+          }
+
+      /*
+       * Also allow explicit absolute module directories in GTK_PATH.
+       * This is useful for uninstalled libtool build trees where modules
+       * live directly in .../.libs directories, for example print backends,
+       * theme engines or input modules.
+       *
+       * Keep this limited to absolute paths so the removed fallback that could
+       * load modules from the current working directory is not reintroduced.
+       */
+      if (g_path_is_absolute (*path))
+        result[count++] = g_strdup (*path);
     }
 
   result[count++] = NULL;
+
+  return result;
+}
+
+static const gchar *
+module_get_platform_prefix (void)
+{
+#ifdef G_OS_WIN32
+  return "";
+#else
+  return "lib";
+#endif
+}
+
+static gchar *
+module_build_path (const gchar *directory,
+                   const gchar *module_name)
+{
+  const gchar *prefix = module_get_platform_prefix ();
+  const gchar *suffix = "." G_MODULE_SUFFIX;
+  gboolean has_prefix;
+  gboolean has_suffix;
+  gchar *filename;
+  gchar *result;
+
+  has_prefix = prefix[0] == '\0' || g_str_has_prefix (module_name, prefix);
+  has_suffix = g_str_has_suffix (module_name, suffix);
+
+  if (has_prefix && has_suffix)
+    filename = g_strdup (module_name);
+  else if (has_prefix)
+    filename = g_strconcat (module_name, suffix, NULL);
+  else if (has_suffix)
+    filename = g_strconcat (prefix, module_name, NULL);
+  else
+    filename = g_strconcat (prefix, module_name, suffix, NULL);
+
+  if (directory && *directory)
+    result = g_build_filename (directory, filename, NULL);
+  else
+    result = g_strdup (filename);
+
+  g_free (filename);
 
   return result;
 }
@@ -271,13 +326,13 @@ _gtk_find_module (const gchar *name,
     {
       gchar *tmp_name;
 
-      tmp_name = g_module_build_path (*path, name);
+      tmp_name = module_build_path (*path, name);
       if (g_file_test (tmp_name, G_FILE_TEST_EXISTS))
-	{
-	  module_name = tmp_name;
-	  goto found;
-	}
-      g_free(tmp_name);
+        {
+          module_name = tmp_name;
+          goto found;
+        }
+      g_free (tmp_name);
 
       tmp_name = module_build_la_path (*path, name);
       if (g_file_test (tmp_name, G_FILE_TEST_EXISTS))
