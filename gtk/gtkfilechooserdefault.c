@@ -4619,6 +4619,77 @@ set_icon_cell_renderer_fixed_size (GtkFileChooserDefault *impl,
                                     ypad * 2 + icon_size);
 }
 
+static gint
+get_icon_view_item_width (GtkFileChooserDefault *impl)
+{
+  gint icon_size;
+  gint xpad = 0;
+  gint item_width;
+
+  icon_size = impl->icon_view_icon_size;
+  if (icon_size <= 0)
+    icon_size = FALLBACK_ICON_VIEW_ICON_SIZE;
+
+  if (impl->list_icon_renderer)
+    gtk_cell_renderer_get_padding (impl->list_icon_renderer, &xpad, NULL);
+
+  item_width = icon_size + xpad * 2;
+
+  /*
+   * The icon view zoom changes the pixbuf renderer size.  Keep the
+   * item width and text cell width in sync with that size, otherwise
+   * enlarged icons can be laid out against stale 128px item geometry.
+   *
+   * This only updates layout metadata; it does not allocate larger
+   * pixbufs or copy pixel data.
+   */
+  return MAX (ICON_VIEW_ITEM_WIDTH, item_width);
+}
+
+static void
+update_icon_view_cell_layout (GtkFileChooserDefault *impl)
+{
+  gint item_width;
+  gint icon_size;
+  gint xpad, ypad;
+
+  if (!impl->browse_files_icon_view)
+    return;
+
+  item_width = get_icon_view_item_width (impl);
+
+  gtk_icon_view_set_item_width (GTK_ICON_VIEW (impl->browse_files_icon_view),
+                                item_width);
+
+  icon_size = impl->icon_view_icon_size;
+  if (icon_size <= 0)
+    icon_size = FALLBACK_ICON_VIEW_ICON_SIZE;
+
+  if (impl->list_icon_renderer)
+    {
+      gtk_cell_renderer_get_padding (impl->list_icon_renderer, &xpad, &ypad);
+
+      /*
+       * In icon view mode the pixbuf cell and the text cell must use the
+       * same width.  Otherwise the text can be laid out against the full
+       * item width while the pixbuf cell keeps only the raw icon width,
+       * making enlarged icons appear horizontally offset from their labels.
+       */
+      gtk_cell_renderer_set_fixed_size (impl->list_icon_renderer,
+                                        item_width,
+                                        ypad * 2 + icon_size);
+    }
+
+  if (impl->list_name_renderer)
+    {
+      g_object_set (G_OBJECT (impl->list_name_renderer),
+                    "wrap-width", item_width,
+                    NULL);
+      gtk_cell_renderer_set_fixed_size (GTK_CELL_RENDERER (impl->list_name_renderer),
+                                        item_width, -1);
+    }
+}
+
 /* Creates the list view */
 static GtkWidget *
 create_browse_files_tree_view (GtkFileChooserDefault *impl)
@@ -4742,6 +4813,8 @@ create_browse_files_icon_view (GtkFileChooserDefault *impl)
 
   g_object_set_data (G_OBJECT (impl->browse_files_icon_view), I_("GtkFileChooserDefault"), impl);
   gtk_icon_view_set_item_padding (GTK_ICON_VIEW (impl->browse_files_icon_view), 0);
+  gtk_icon_view_set_item_width (GTK_ICON_VIEW (impl->browse_files_icon_view),
+                                get_icon_view_item_width (impl));
 
   g_signal_connect (impl->browse_files_icon_view, "item-activated",
                     G_CALLBACK (icon_item_activated), impl);
@@ -4788,10 +4861,9 @@ create_browse_files_icon_view (GtkFileChooserDefault *impl)
   g_object_set (G_OBJECT (impl->list_name_renderer),
                 "alignment", PANGO_ALIGN_CENTER,
                 "wrap-mode", PANGO_WRAP_WORD_CHAR,
-                "wrap-width", ICON_VIEW_ITEM_WIDTH - 6,
                 "yalign", 0.0f,
                 NULL);
-  gtk_cell_renderer_set_fixed_size (GTK_CELL_RENDERER (impl->list_name_renderer), ICON_VIEW_ITEM_WIDTH, -1);
+  update_icon_view_cell_layout (impl);
 
   g_signal_connect (impl->list_name_renderer, "edited",
                     G_CALLBACK (renderer_edited_cb), impl);
@@ -5202,7 +5274,7 @@ icon_view_scale_value_changed_cb (GtkRange *range,
   if (impl->view_mode != VIEW_MODE_ICON)
     return;
 
-  set_icon_cell_renderer_fixed_size (impl, impl->list_icon_renderer, VIEW_MODE_ICON);
+  update_icon_view_cell_layout (impl);
 
   if (impl->browse_files_model)
     _gtk_file_system_model_clear_cache (impl->browse_files_model, MODEL_COL_ICON_PIXBUF);
@@ -5211,7 +5283,7 @@ icon_view_scale_value_changed_cb (GtkRange *range,
   if (impl->recent_model)
     _gtk_file_system_model_clear_cache (impl->recent_model, MODEL_COL_ICON_PIXBUF);
 
-  gtk_widget_queue_resize (impl->browse_files_current_view);
+  gtk_widget_queue_resize (impl->browse_files_icon_view);
 }
 
 /* Callback used when one of the location mode buttons is toggled */
