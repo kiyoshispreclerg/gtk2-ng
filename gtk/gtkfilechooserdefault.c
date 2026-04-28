@@ -31,6 +31,7 @@
 #include "gtkclipboard.h"
 #include "gtkcomboboxtext.h"
 #include "gtkentry.h"
+#include "gtkeventbox.h"
 #include "gtkfilechooserprivate.h"
 #include "gtkfilechooserdefault.h"
 #include "gtkfilechooserdialog.h"
@@ -414,6 +415,12 @@ static void view_mode_combo_box_changed_cb (GtkComboBox           *combo,
 
 static void icon_view_scale_value_changed_cb (GtkRange              *range,
                                               GtkFileChooserDefault *impl);
+static gboolean icon_view_zoom_button_press_cb (GtkWidget          *widget,
+                                                GdkEventButton     *event,
+                                                GtkFileChooserDefault *impl);
+static gboolean browse_files_icon_view_scroll_event_cb (GtkWidget          *widget,
+                                                        GdkEventScroll     *event,
+                                                        GtkFileChooserDefault *impl);
 static void icon_view_scale_remove_timeout   (GtkFileChooserDefault *impl);
 static void icon_view_scale_queue_cache_clear (GtkFileChooserDefault *impl);
 static gboolean get_visible_range            (GtkTreePath          **start,
@@ -4834,6 +4841,9 @@ create_browse_files_icon_view (GtkFileChooserDefault *impl)
                     G_CALLBACK (list_popup_menu_cb), impl);
   g_signal_connect (impl->browse_files_icon_view, "button-press-event",
                     G_CALLBACK (list_button_press_event_cb), impl);
+  gtk_widget_add_events (impl->browse_files_icon_view, GDK_SCROLL_MASK);
+  g_signal_connect (impl->browse_files_icon_view, "scroll-event",
+                    G_CALLBACK (browse_files_icon_view_scroll_event_cb), impl);
 
   gtk_drag_dest_set (impl->browse_files_icon_view,
                      GTK_DEST_DEFAULT_ALL,
@@ -5234,6 +5244,8 @@ view_mode_set (GtkFileChooserDefault *impl, ViewMode view_mode)
   else if (view_mode == VIEW_MODE_LIST)
     {
       impl->browse_files_icon_view = NULL;
+      impl->list_icon_renderer = NULL;
+      impl->list_name_renderer = NULL;
       gtk_widget_hide (impl->icon_view_scale_hbox);
     }
   else
@@ -5554,6 +5566,78 @@ icon_view_scale_queue_cache_clear (GtkFileChooserDefault *impl)
     gdk_threads_add_timeout (500, icon_view_scale_clear_cache_cb, impl);
 }
 
+static void
+icon_view_zoom_step (GtkFileChooserDefault *impl,
+                     gint                   direction)
+{
+  GtkAdjustment *adjustment;
+  gdouble value;
+  gdouble step;
+
+  if (!impl->icon_view_scale)
+    return;
+
+  adjustment = gtk_range_get_adjustment (GTK_RANGE (impl->icon_view_scale));
+  step = gtk_adjustment_get_step_increment (adjustment);
+
+  if (step <= 0.0)
+    step = 16.0;
+
+  value = gtk_range_get_value (GTK_RANGE (impl->icon_view_scale));
+
+  if (direction > 0)
+    value += step;
+  else if (direction < 0)
+    value -= step;
+  else
+    return;
+
+  gtk_range_set_value (GTK_RANGE (impl->icon_view_scale), value);
+}
+
+static gboolean
+icon_view_zoom_button_press_cb (GtkWidget             *widget,
+                                GdkEventButton        *event,
+                                GtkFileChooserDefault *impl)
+{
+  gint direction;
+
+  direction = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "gtk-file-chooser-zoom-direction"));
+
+  if (event->button != 1)
+    return FALSE;
+
+  icon_view_zoom_step (impl, direction);
+
+  return TRUE;
+}
+
+static gboolean
+browse_files_icon_view_scroll_event_cb (GtkWidget             *widget,
+                                        GdkEventScroll        *event,
+                                        GtkFileChooserDefault *impl)
+{
+  if (impl->view_mode != VIEW_MODE_ICON)
+    return FALSE;
+
+  if ((event->state & GDK_CONTROL_MASK) == 0)
+    return FALSE;
+
+  switch (event->direction)
+    {
+    case GDK_SCROLL_UP:
+      icon_view_zoom_step (impl, 1);
+      return TRUE;
+
+    case GDK_SCROLL_DOWN:
+      icon_view_zoom_step (impl, -1);
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
+}
+
 /* Callback used when the icon view scale is changed */
 static void
 icon_view_scale_value_changed_cb (GtkRange *range,
@@ -5635,10 +5719,21 @@ static void
 icon_view_scale_create (GtkFileChooserDefault *impl)
 {
   GtkObject *adj;
+  GtkWidget *image;
 
   impl->icon_view_scale_hbox = gtk_hbox_new (FALSE, 12);
 
-  impl->icon_view_scale_zoom_out_icon = gtk_image_new_from_stock (GTK_STOCK_ZOOM_OUT, GTK_ICON_SIZE_BUTTON);
+  impl->icon_view_scale_zoom_out_icon = gtk_event_box_new ();
+  gtk_event_box_set_visible_window (GTK_EVENT_BOX (impl->icon_view_scale_zoom_out_icon), FALSE);
+  image = gtk_image_new_from_stock (GTK_STOCK_ZOOM_OUT, GTK_ICON_SIZE_BUTTON);
+  gtk_container_add (GTK_CONTAINER (impl->icon_view_scale_zoom_out_icon), image);
+  gtk_widget_show (image);
+  g_object_set_data (G_OBJECT (impl->icon_view_scale_zoom_out_icon),
+                     "gtk-file-chooser-zoom-direction",
+                     GINT_TO_POINTER (-1));
+  gtk_widget_set_tooltip_text (impl->icon_view_scale_zoom_out_icon, _("Zoom out"));
+  g_signal_connect (impl->icon_view_scale_zoom_out_icon, "button-press-event",
+                    G_CALLBACK (icon_view_zoom_button_press_cb), impl);
   gtk_size_group_add_widget (impl->browse_path_bar_size_group, impl->icon_view_scale_zoom_out_icon);
   gtk_box_pack_start (GTK_BOX (impl->icon_view_scale_hbox), impl->icon_view_scale_zoom_out_icon, FALSE, FALSE, 0);
   gtk_widget_show (impl->icon_view_scale_zoom_out_icon);
@@ -5650,16 +5745,24 @@ icon_view_scale_create (GtkFileChooserDefault *impl)
   gtk_box_pack_start (GTK_BOX (impl->icon_view_scale_hbox), impl->icon_view_scale, FALSE, FALSE, 0);
   gtk_widget_show (impl->icon_view_scale);
 
-  impl->icon_view_scale_zoom_in_icon = gtk_image_new_from_stock (GTK_STOCK_ZOOM_IN, GTK_ICON_SIZE_BUTTON);
+  impl->icon_view_scale_zoom_in_icon = gtk_event_box_new ();
+  gtk_event_box_set_visible_window (GTK_EVENT_BOX (impl->icon_view_scale_zoom_in_icon), FALSE);
+  image = gtk_image_new_from_stock (GTK_STOCK_ZOOM_IN, GTK_ICON_SIZE_BUTTON);
+  gtk_container_add (GTK_CONTAINER (impl->icon_view_scale_zoom_in_icon), image);
+  gtk_widget_show (image);
+  g_object_set_data (G_OBJECT (impl->icon_view_scale_zoom_in_icon),
+                     "gtk-file-chooser-zoom-direction",
+                     GINT_TO_POINTER (1));
+  gtk_widget_set_tooltip_text (impl->icon_view_scale_zoom_in_icon, _("Zoom in"));
+  g_signal_connect (impl->icon_view_scale_zoom_in_icon, "button-press-event",
+                    G_CALLBACK (icon_view_zoom_button_press_cb), impl);
   gtk_size_group_add_widget (impl->browse_path_bar_size_group, impl->icon_view_scale_zoom_in_icon);
   gtk_box_pack_start (GTK_BOX (impl->icon_view_scale_hbox), impl->icon_view_scale_zoom_in_icon, FALSE, FALSE, 0);
   gtk_widget_show (impl->icon_view_scale_zoom_in_icon);
 
   g_signal_connect (impl->icon_view_scale, "value-changed",
                     G_CALLBACK (icon_view_scale_value_changed_cb), impl);
-
 }
-
 
 /* Creates a toggle button for the location entry. */
 static void
