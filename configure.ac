@@ -149,7 +149,6 @@ esac
 
 dnl Initialize libtool
 AC_PROG_CC
-AM_DISABLE_STATIC
 
 dnl
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
@@ -185,8 +184,9 @@ if test "$os_win32" = "yes"; then
   enable_shared=yes
 fi
 
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+dnl Initialize libtool
+LT_INIT([disable-static win32-dll])
+
 dnl when using libtool 2.x create libtool early, because it's used in configure
 m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 
@@ -303,7 +303,6 @@ AC_DEFINE_UNQUOTED(GTK_COMPILED_WITH_DEBUGGING, "${enable_debug}",
 AM_SANITY_CHECK
 
 # Checks for programs.
-AC_ISC_POSIX
 AM_PROG_CC_C_O
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
