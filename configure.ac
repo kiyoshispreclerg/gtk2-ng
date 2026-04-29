@@ -456,10 +456,13 @@ AC_CHECK_FUNCS(localtime_r)
 
 # _NL_TIME_FIRST_WEEKDAY is an enum and not a define
 AC_MSG_CHECKING([for _NL_TIME_FIRST_WEEKDAY])
-AC_TRY_LINK([#include <langinfo.h>], [
-char c;
-c = *((unsigned char *)  nl_langinfo(_NL_TIME_FIRST_WEEKDAY));
-], gtk_ok=yes, gtk_ok=no)
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM(
+     [[#include <langinfo.h>]],
+     [[char c;
+       c = *((unsigned char *) nl_langinfo(_NL_TIME_FIRST_WEEKDAY));]])],
+  [gtk_ok=yes],
+  [gtk_ok=no])
 AC_MSG_RESULT($gtk_ok)
 if test "$gtk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_TIME_FIRST_WEEKDAY], [1],
@@ -468,10 +471,13 @@ fi
 
 # _NL_MEASUREMENT_MEASUREMENT is an enum and not a define
 AC_MSG_CHECKING([for _NL_MEASUREMENT_MEASUREMENT])
-AC_TRY_LINK([#include <langinfo.h>], [
-char c;
-c = *((unsigned char *)  nl_langinfo(_NL_MEASUREMENT_MEASUREMENT));
-], gtk_ok=yes, gtk_ok=no)
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM(
+     [[#include <langinfo.h>]],
+     [[char c;
+       c = *((unsigned char *) nl_langinfo(_NL_MEASUREMENT_MEASUREMENT));]])],
+  [gtk_ok=yes],
+  [gtk_ok=no])
 AC_MSG_RESULT($gtk_ok)
 if test "$gtk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_MEASUREMENT_MEASUREMENT], [1],
@@ -480,10 +486,13 @@ fi
 
 # _NL_PAPER_HEIGHT is an enum and not a define
 AC_MSG_CHECKING([for _NL_PAPER_HEIGHT])
-AC_TRY_LINK([#include <langinfo.h>], [
-char c;
-c = *((unsigned char *)  nl_langinfo(_NL_PAPER_HEIGHT));
-], gtk_ok=yes, gtk_ok=no)
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM(
+     [[#include <langinfo.h>]],
+     [[char c;
+       c = *((unsigned char *) nl_langinfo(_NL_PAPER_HEIGHT));]])],
+  [gtk_ok=yes],
+  [gtk_ok=no])
 AC_MSG_RESULT($gtk_ok)
 if test "$gtk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_PAPER_HEIGHT], [1],
@@ -492,22 +501,28 @@ fi
 
 # _NL_PAPER_WIDTH is an enum and not a define
 AC_MSG_CHECKING([for _NL_PAPER_WIDTH])
-AC_TRY_LINK([#include <langinfo.h>], [
-char c;
-c = *((unsigned char *)  nl_langinfo(_NL_PAPER_WIDTH));
-], gtk_ok=yes, gtk_ok=no)
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM(
+     [[#include <langinfo.h>]],
+     [[char c;
+       c = *((unsigned char *) nl_langinfo(_NL_PAPER_WIDTH));]])],
+  [gtk_ok=yes],
+  [gtk_ok=no])
 AC_MSG_RESULT($gtk_ok)
 if test "$gtk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_PAPER_WIDTH], [1],
 	    [Define if _NL_PAPER_WIDTH is available])
 fi
-	
+
 # sigsetjmp is a macro on some platforms, so AC_CHECK_FUNCS is not reliable
 AC_MSG_CHECKING(for sigsetjmp)
-AC_TRY_LINK([#include <setjmp.h>], [
-sigjmp_buf env;
-sigsetjmp(env, 0);
-], gtk_ok=yes, gtk_ok=no)
+AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM(
+     [[#include <setjmp.h>]],
+     [[sigjmp_buf env;
+       sigsetjmp(env, 0);]])],
+  [gtk_ok=yes],
+  [gtk_ok=no])
 AC_MSG_RESULT($gtk_ok)
 if test "$gtk_ok" = "yes"; then
   AC_DEFINE(HAVE_SIGSETJMP, 1,
