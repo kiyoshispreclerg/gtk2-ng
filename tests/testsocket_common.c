@@ -60,16 +60,20 @@ print_hello (GtkWidget *w,
     }
 }
 
+#define IF_CB(callback) ((GtkItemFactoryCallback) (callback))
+
 static GtkItemFactoryEntry menu_items[] = {
-  { "/_File",         NULL,         NULL,           0, "<Branch>" },
-  { "/File/_New",     "<control>N", print_hello,    ACTION_FILE_NEW, "<Item>" },
-  { "/File/_Open",    "<control>O", print_hello,    ACTION_FILE_OPEN, "<Item>" },
-  { "/File/sep1",     NULL,         NULL,           0, "<Separator>" },
-  { "/File/Quit",     "<control>Q", gtk_main_quit,  0, "<Item>" },
-  { "/O_K",            "<control>K",print_hello,    ACTION_OK, "<Item>" },
-  { "/_Help",         NULL,         NULL,           0, "<LastBranch>" },
-  { "/_Help/About",   NULL,         print_hello,    ACTION_HELP_ABOUT, "<Item>" },
+  { "/_File",         NULL,         NULL,                    0, "<Branch>" },
+  { "/File/_New",     "<control>N", IF_CB (print_hello),     ACTION_FILE_NEW, "<Item>" },
+  { "/File/_Open",    "<control>O", IF_CB (print_hello),     ACTION_FILE_OPEN, "<Item>" },
+  { "/File/sep1",     NULL,         NULL,                    0, "<Separator>" },
+  { "/File/Quit",     "<control>Q", IF_CB (gtk_main_quit),   0, "<Item>" },
+  { "/O_K",           "<control>K", IF_CB (print_hello),     ACTION_OK, "<Item>" },
+  { "/_Help",         NULL,         NULL,                    0, "<LastBranch>" },
+  { "/_Help/About",   NULL,         IF_CB (print_hello),     ACTION_HELP_ABOUT, "<Item>" },
 };
+
+#undef IF_CB
 
 static void
 remove_buttons (GtkWidget *widget, GtkWidget *other_button)

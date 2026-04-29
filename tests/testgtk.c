@@ -4229,47 +4229,50 @@ dump_accels (gpointer             callback_data,
 {
   gtk_accel_map_save_fd (1 /* stdout */);
 }
-    
+
+#define IF_CB(callback) ((GtkItemFactoryCallback) (callback))
+
 static GtkItemFactoryEntry menu_items[] =
 {
-  { "/_File",                  NULL,         NULL,                  0, "<Branch>" },
-  { "/File/tearoff1",          NULL,         gtk_ifactory_cb,       0, "<Tearoff>" },
-  { "/File/_New",              NULL,         gtk_ifactory_cb,       0, "<StockItem>", GTK_STOCK_NEW },
-  { "/File/_Open",             NULL,         gtk_ifactory_cb,       0, "<StockItem>", GTK_STOCK_OPEN },
-  { "/File/_Save",             NULL,         gtk_ifactory_cb,       0, "<StockItem>", GTK_STOCK_SAVE },
-  { "/File/Save _As...",       "<control>A", gtk_ifactory_cb,       0, "<StockItem>", GTK_STOCK_SAVE },
-  { "/File/_Dump \"_Accels\"",  NULL,        dump_accels,           0 },
+  { "/_File",                  NULL,         NULL,                                  0, "<Branch>" },
+  { "/File/tearoff1",          NULL,         IF_CB (gtk_ifactory_cb), 0, "<Tearoff>" },
+  { "/File/_New",              NULL,         IF_CB (gtk_ifactory_cb), 0, "<StockItem>", GTK_STOCK_NEW },
+  { "/File/_Open",             NULL,         IF_CB (gtk_ifactory_cb), 0, "<StockItem>", GTK_STOCK_OPEN },
+  { "/File/_Save",             NULL,         IF_CB (gtk_ifactory_cb), 0, "<StockItem>", GTK_STOCK_SAVE },
+  { "/File/Save _As...",       "<control>A", IF_CB (gtk_ifactory_cb), 0, "<StockItem>", GTK_STOCK_SAVE },
+  { "/File/_Dump \"_Accels\"",  NULL,        IF_CB (dump_accels),     0 },
   { "/File/\\/Test__Escaping/And\\/\n\tWei\\\\rdly",
-                                NULL,        gtk_ifactory_cb,       0 },
-  { "/File/sep1",        NULL,               gtk_ifactory_cb,       0, "<Separator>" },
-  { "/File/_Quit",       NULL,               gtk_ifactory_cb,       0, "<StockItem>", GTK_STOCK_QUIT },
+                                NULL,        IF_CB (gtk_ifactory_cb), 0 },
+  { "/File/sep1",        NULL,               IF_CB (gtk_ifactory_cb), 0, "<Separator>" },
+  { "/File/_Quit",       NULL,               IF_CB (gtk_ifactory_cb), 0, "<StockItem>", GTK_STOCK_QUIT },
 
-  { "/_Preferences",     		NULL, 0,               0, "<Branch>" },
-  { "/_Preferences/_Color", 		NULL, 0,               0, "<Branch>" },
-  { "/_Preferences/Color/_Red",      	NULL, gtk_ifactory_cb, 0, "<RadioItem>" },
-  { "/_Preferences/Color/_Green",   	NULL, gtk_ifactory_cb, 0, "/Preferences/Color/Red" },
-  { "/_Preferences/Color/_Blue",        NULL, gtk_ifactory_cb, 0, "/Preferences/Color/Red" },
-  { "/_Preferences/_Shape", 		NULL, 0,               0, "<Branch>" },
-  { "/_Preferences/Shape/_Square",      NULL, gtk_ifactory_cb, 0, "<RadioItem>" },
-  { "/_Preferences/Shape/_Rectangle",   NULL, gtk_ifactory_cb, 0, "/Preferences/Shape/Square" },
-  { "/_Preferences/Shape/_Oval",        NULL, gtk_ifactory_cb, 0, "/Preferences/Shape/Rectangle" },
-  { "/_Preferences/Shape/_Rectangle",   NULL, gtk_ifactory_cb, 0, "/Preferences/Shape/Square" },
-  { "/_Preferences/Shape/_Oval",        NULL, gtk_ifactory_cb, 0, "/Preferences/Shape/Rectangle" },
-  { "/_Preferences/Shape/_Image",       NULL, gtk_ifactory_cb, 0, "<ImageItem>", apple },
-  { "/_Preferences/Coffee",                  NULL, gtk_ifactory_cb, 0, "<CheckItem>" },
-  { "/_Preferences/Toast",                   NULL, gtk_ifactory_cb, 0, "<CheckItem>" },
-  { "/_Preferences/Marshmallow Froot Loops", NULL, gtk_ifactory_cb, 0, "<CheckItem>" },
+  { "/_Preferences",                    NULL, 0,                                      0, "<Branch>" },
+  { "/_Preferences/_Color",             NULL, 0,                                      0, "<Branch>" },
+  { "/_Preferences/Color/_Red",         NULL, IF_CB (gtk_ifactory_cb), 0, "<RadioItem>" },
+  { "/_Preferences/Color/_Green",       NULL, IF_CB (gtk_ifactory_cb), 0, "/Preferences/Color/Red" },
+  { "/_Preferences/Color/_Blue",        NULL, IF_CB (gtk_ifactory_cb), 0, "/Preferences/Color/Red" },
+  { "/_Preferences/_Shape",             NULL, 0,                                      0, "<Branch>" },
+  { "/_Preferences/Shape/_Square",      NULL, IF_CB (gtk_ifactory_cb), 0, "<RadioItem>" },
+  { "/_Preferences/Shape/_Rectangle",   NULL, IF_CB (gtk_ifactory_cb), 0, "/Preferences/Shape/Square" },
+  { "/_Preferences/Shape/_Oval",        NULL, IF_CB (gtk_ifactory_cb), 0, "/Preferences/Shape/Rectangle" },
+  { "/_Preferences/Shape/_Rectangle",   NULL, IF_CB (gtk_ifactory_cb), 0, "/Preferences/Shape/Square" },
+  { "/_Preferences/Shape/_Oval",        NULL, IF_CB (gtk_ifactory_cb), 0, "/Preferences/Shape/Rectangle" },
+  { "/_Preferences/Shape/_Image",       NULL, IF_CB (gtk_ifactory_cb), 0, "<ImageItem>", apple },
+  { "/_Preferences/Coffee",                  NULL, IF_CB (gtk_ifactory_cb), 0, "<CheckItem>" },
+  { "/_Preferences/Toast",                   NULL, IF_CB (gtk_ifactory_cb), 0, "<CheckItem>" },
+  { "/_Preferences/Marshmallow Froot Loops", NULL, IF_CB (gtk_ifactory_cb), 0, "<CheckItem>" },
 
   /* For testing deletion of menus */
-  { "/_Preferences/Should_NotAppear",          NULL, 0,               0, "<Branch>" },
-  { "/Preferences/ShouldNotAppear/SubItem1",   NULL, gtk_ifactory_cb, 0 },
-  { "/Preferences/ShouldNotAppear/SubItem2",   NULL, gtk_ifactory_cb, 0 },
+  { "/_Preferences/Should_NotAppear",          NULL, 0,                                      0, "<Branch>" },
+  { "/Preferences/ShouldNotAppear/SubItem1",   NULL, IF_CB (gtk_ifactory_cb), 0 },
+  { "/Preferences/ShouldNotAppear/SubItem2",   NULL, IF_CB (gtk_ifactory_cb), 0 },
 
-  { "/_Help",            NULL,         0,                     0, "<LastBranch>" },
-  { "/Help/_Help",       NULL,         gtk_ifactory_cb,       0, "<StockItem>", GTK_STOCK_HELP},
-  { "/Help/_About",      NULL,         gtk_ifactory_cb,       0 },
+  { "/_Help",            NULL,         0,                                      0, "<LastBranch>" },
+  { "/Help/_Help",       NULL,         IF_CB (gtk_ifactory_cb), 0, "<StockItem>", GTK_STOCK_HELP},
+  { "/Help/_About",      NULL,         IF_CB (gtk_ifactory_cb), 0 },
 };
 
+#undef IF_CB
 
 static int nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 

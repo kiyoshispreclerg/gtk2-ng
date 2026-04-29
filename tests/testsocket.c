@@ -62,11 +62,15 @@ quit_cb (gpointer        callback_data,
   gtk_widget_destroy (message_dialog);
 }
 
+#define IF_CB(callback) ((GtkItemFactoryCallback) (callback))
+
 static GtkItemFactoryEntry menu_items[] =
 {
   { "/_File",            NULL,         NULL,                  0, "<Branch>" },
-  { "/File/_Quit",       "<control>Q", quit_cb,               0 },
+  { "/File/_Quit",       "<control>Q", IF_CB (quit_cb),       0 },
 };
+
+#undef IF_CB
 
 static void
 socket_destroyed (GtkWidget *widget,

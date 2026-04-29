@@ -1062,19 +1062,29 @@ introspection_files = \
     gtktypebuiltins.h \
     gtktypebuiltins.c
 
-Gtk-2.0.gir: $(INTROSPECTION_SCANNER) $(gtktargetlib) $(top_builddir)/gdk/Gdk-2.0.gir Makefile
-Gtk_2_0_gir_SCANNERFLAGS = --include-uninstalled=$(top_builddir)/gdk/Gdk-2.0.gir
+Gtk_2_0_gir_SCANNERFLAGS = \
+	--identifier-prefix=Gtk \
+	--symbol-prefix=gtk \
+	--include-uninstalled=$(top_builddir)/gdk/Gdk-2.0.gir
 if USE_X11
 Gtk_2_0_gir_SCANNERFLAGS += --add-include-path=$(top_builddir)/gdk/x11
 endif
 Gtk_2_0_gir_INCLUDES = Atk-1.0
 Gtk_2_0_gir_CFLAGS = \
+		-I$(top_srcdir) \
+		-I$(top_builddir) \
+		-I$(top_srcdir)/gdk \
+		-I$(top_builddir)/gdk \
+		-I$(top_srcdir)/gtk \
+		-I$(top_builddir)/gtk \
+		-DGTK_COMPILATION \
 		$(INCLUDES) \
-		-UGDK_DISABLE_DEPRECATED \
-		-UGTK_DISABLE_DEPRECATED \
+		-DGTK_DISABLE_DEPRECATED \
 		-DGTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
 Gtk_2_0_gir_LIBS = $(gtktargetlib)
-Gtk_2_0_gir_FILES = $(introspection_files)
+Gtk_2_0_gir_FILES = \
+	$(filter-out gtkprivate.h gtkpixdatautils.h gtktextlayout.h gtkmarshal.h, \
+	$(introspection_files))
 Gtk_2_0_gir_EXPORT_PACKAGES = gtk+-2.0
 INTROSPECTION_GIRS += Gtk-2.0.gir
 

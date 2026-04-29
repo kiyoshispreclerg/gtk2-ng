@@ -1059,7 +1059,6 @@ gtk_icon_size_register_alias (const gchar *alias,
 /**
  * gtk_icon_size_from_name:
  * @name: the name to look up.
- * @returns: the icon size with the given name.
  *
  * Looks up the icon size associated with @name.
  *
@@ -1083,7 +1082,6 @@ gtk_icon_size_from_name (const gchar *name)
 /**
  * gtk_icon_size_get_name:
  * @size: (type int): a #GtkIconSize.
- * @returns: the name of the given icon size.
  *
  * Gets the canonical name of the given icon size. The returned string
  * is statically allocated and should not be freed.
