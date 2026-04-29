@@ -59,7 +59,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([no])])
 
 #
 # For each of the libraries we build, we define the following
- 
+
 # substituted variables:
 #
 # foo_PACKAGES:     pkg-config packages this library requires
@@ -1362,9 +1362,12 @@ if $PKG_CONFIG --uninstalled $PANGO_PACKAGES; then
 else
 	gtk_save_LIBS="$LIBS"
         LIBS="$PANGO_LIBS $LIBS"
-        AC_TRY_LINK_FUNC(pango_context_new, :, AC_MSG_ERROR([
+        AC_LINK_IFELSE(
+          [AC_LANG_CALL([], [pango_context_new])],
+          [:],
+          [AC_MSG_ERROR([
 *** Can't link to Pango. Pango is required to build
-*** GTK+. For more information see http://www.pango.org]))
+*** GTK+. For more information see http://www.pango.org])])
         LIBS="$gtk_save_LIBS"
 fi
 
@@ -1419,9 +1422,12 @@ if $PKG_CONFIG --uninstalled $ATK_PACKAGES; then
 else
 	gtk_save_LIBS="$LIBS"
         LIBS="$ATK_LIBS $LIBS"
-        AC_TRY_LINK_FUNC(atk_object_get_type, : , AC_MSG_ERROR([
-                *** Cannot link to Accessibility Toolkit. Accessibility Toolkit is required
-                *** to build GTK+]))
+        AC_LINK_IFELSE(
+          [AC_LANG_CALL([], [atk_object_get_type])],
+          [:],
+          [AC_MSG_ERROR([
+		*** Can't link to Accessibility Toolkit. Accessibility Toolkit is required
+		*** to build GTK+. For more information see http://www.gtk.org])])
         LIBS="$gtk_save_LIBS"
 fi
 
