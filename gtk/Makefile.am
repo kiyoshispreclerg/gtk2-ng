@@ -893,7 +893,7 @@ gtktypebuiltins.c: @REBUILD@ $(gtk_public_h_sources) gtktypebuiltins.c.template
 	&& cp xgen-gtbc gtktypebuiltins.c  \
 	&& rm -f xgen-gtbc
 
-gtktypefuncs.c: @REBUILD@ $(top_srcdir)/gtk/*.h $(top_srcdir)/gdk/*.h gtktypebuiltins.h Makefile
+gtktypefuncs.c: @REBUILD@ $(top_srcdir)/gtk/*.h $(top_srcdir)/gdk/*.h $(gtk_built_public_sources) Makefile
 	echo '#include <gtk/gtk.h>' > xgen-gtfsrc.c && \
 	  ${CPP} $(DEFS) $(INCLUDES) -DGTK_ENABLE_BROKEN $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-gtfsrc.c | \
 	  grep '^GType\s*g[td]k_[a-zA-Z0-9_]*_get_type\s*(void)' | \
