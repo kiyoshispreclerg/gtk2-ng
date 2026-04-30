@@ -36,6 +36,7 @@ Backed by the **devuanusers.com** community.
 
 ### Safe test install (strongly recommended)
 ```bash
+autoreconf -fvi
 ./configure --prefix=/tmp/gtk2-ng-test --with-xinput=yes
 make -j$(nproc)
 make install
@@ -56,6 +57,7 @@ leafpad   # or any other GTK2 app
 
 ### System-wide install
 ```bash
+autoreconf -fvi
 ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --with-xinput=yes
 make -j$(nproc)
 sudo make install
