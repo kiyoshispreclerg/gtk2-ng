@@ -7506,10 +7506,16 @@ show_and_select_files (GtkFileChooserDefault *impl,
       if (!_gtk_file_system_model_iter_is_visible (fsmodel, &iter))
         {
           GFileInfo *info = _gtk_file_system_model_get_info (fsmodel, &iter);
+          gboolean is_hidden = FALSE;
+          gboolean is_backup = FALSE;
 
-          if (!enabled_hidden &&
-              (g_file_info_get_is_hidden (info) ||
-               g_file_info_get_is_backup (info)))
+          if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN))
+            is_hidden = g_file_info_get_is_hidden (info);
+
+          if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP))
+            is_backup = g_file_info_get_is_backup (info);
+
+          if (!enabled_hidden && (is_hidden || is_backup))
             {
               g_object_set (impl, "show-hidden", TRUE, NULL);
               enabled_hidden = TRUE;
