@@ -245,6 +245,22 @@ AC_ARG_ENABLE(xinerama,
               [AS_HELP_STRING([--enable-xinerama],
 	                      [support xinerama extension if available [default=yes]])],,
               [enable_xinerama="yes"])
+AC_ARG_ENABLE(xrandr,
+              [AS_HELP_STRING([--enable-xrandr],
+                              [support XRandR extension if available [default=yes]])],,
+              [enable_xrandr="yes"])
+AC_ARG_ENABLE(xfixes,
+              [AS_HELP_STRING([--enable-xfixes],
+                              [support XFixes extension if available [default=yes]])],,
+              [enable_xfixes="yes"])
+AC_ARG_ENABLE(xcomposite,
+              [AS_HELP_STRING([--enable-xcomposite],
+                              [support X Composite extension if available [default=yes]])],,
+              [enable_xcomposite="yes"])
+AC_ARG_ENABLE(xdamage,
+              [AS_HELP_STRING([--enable-xdamage],
+                              [support X Damage extension if available [default=yes]])],,
+              [enable_xdamage="yes"])
 AC_ARG_ENABLE(rebuilds,
               [AS_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
@@ -1238,7 +1254,7 @@ if test "x$gdktarget" = "xx11"; then
   AM_CONDITIONAL(XINPUT_XFREE, test x$with_xinput = xxfree || test x$with_xinput = xyes)
 
   # Check for the RANDR extension
-  if $PKG_CONFIG --exists "xrandr >= 1.2.99" ; then
+  if test "x$enable_xrandr" != "xno" && $PKG_CONFIG --exists "xrandr >= 1.2.99" ; then
      AC_DEFINE(HAVE_RANDR, 1, [Have the Xrandr extension library])
 
      if $PKG_CONFIG --exists "xrandr >= 1.5.0" ; then
@@ -1257,7 +1273,7 @@ if test "x$gdktarget" = "xx11"; then
 
   # Checks for XFixes extension
   
-  if $PKG_CONFIG --exists xfixes ; then
+  if test "x$enable_xfixes" != "xno" && $PKG_CONFIG --exists xfixes ; then
     AC_DEFINE(HAVE_XFIXES, 1, [Have the XFIXES X extension])
     
     X_PACKAGES="$X_PACKAGES xfixes"
@@ -1266,7 +1282,7 @@ if test "x$gdktarget" = "xx11"; then
 
   # Checks for Xcomposite extension
 
-  if $PKG_CONFIG --exists xcomposite ; then
+  if test "x$enable_xcomposite" != "xno" && $PKG_CONFIG --exists xcomposite ; then
     AC_DEFINE(HAVE_XCOMPOSITE, 1, [Have the XCOMPOSITE X extension])
 
     X_PACKAGES="$X_PACKAGES xcomposite"
@@ -1275,7 +1291,7 @@ if test "x$gdktarget" = "xx11"; then
 
   # Checks for Xdamage extension
 
-  if $PKG_CONFIG --exists xdamage ; then
+  if test "x$enable_xdamage" != "xno" && $PKG_CONFIG --exists xdamage ; then
     AC_DEFINE(HAVE_XDAMAGE, 1, [Have the XDAMAGE X extension])
 
     X_PACKAGES="$X_PACKAGES xdamage"
