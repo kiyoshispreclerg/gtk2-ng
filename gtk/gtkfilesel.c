@@ -24,7 +24,9 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#if !defined(_XOPEN_SOURCE) && (!defined(__sun) || __STDC_VERSION__ - 0 < 199901L)
 #define _XOPEN_SOURCE 500
+#endif
 
 #include "config.h"
 
