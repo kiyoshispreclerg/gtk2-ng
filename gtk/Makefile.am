@@ -1085,6 +1085,8 @@ Gtk_2_0_gir_LIBS = $(gtktargetlib)
 Gtk_2_0_gir_FILES = \
 	$(filter-out gtkprivate.h gtkpixdatautils.h gtktextlayout.h gtkmarshal.h, \
 	$(introspection_files))
+Gtk-2.0.gir: $(gtktargetlib)
+
 Gtk_2_0_gir_EXPORT_PACKAGES = gtk+-2.0
 INTROSPECTION_GIRS += Gtk-2.0.gir
 
