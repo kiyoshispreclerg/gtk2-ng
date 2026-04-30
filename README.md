@@ -9,6 +9,7 @@ Backed by the **devuanusers.com** community.
 ## What has already been done
 - Added the two GTK2 patches currently used by the AUR maintainers
 - Implemented several modernizations from stefan11111’s GTK2 fork
+- Ported patches from NetBSD
 - Fixed all compiler warnings with modern toolchains
 - Made GTK2 compile cleanly with GCC 14/15 and Clang 21
 - Tested on Devuan, Arch, and Gentoo
