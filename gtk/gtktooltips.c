@@ -45,12 +45,8 @@
 
 
 #define DEFAULT_DELAY 500           /* Default delay in ms */
-#define STICKY_DELAY 0              /* Delay before popping up next tip
-                                     * if we're sticky
-                                     */
-#define STICKY_REVERT_DELAY 1000    /* Delay before sticky tooltips revert
-				     * to normal
-                                     */
+#define STICKY_DELAY 0              /* Delay before popping up next tip if we're sticky */
+#define STICKY_REVERT_DELAY 1000    /* Delay before sticky tooltips revert to normal */
 #define GTK_TOOLTIPS_GET_PRIVATE(obj) \
   ((GtkTooltipsPrivate *) gtk_tooltips_get_instance_private (GTK_TOOLTIPS (obj)))
 
