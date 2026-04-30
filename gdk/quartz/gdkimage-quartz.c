@@ -322,7 +322,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
   if (visual)
     depth = visual->depth;
 
-  g_assert (depth == 24 || depth == 32);
+  g_assert (depth == 1 || depth == 24 || depth == 32);
 
   image = g_object_new (gdk_image_get_type (), NULL);
   image->type = type;
@@ -333,10 +333,18 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 
   image->byte_order = (G_BYTE_ORDER == G_LITTLE_ENDIAN) ? GDK_LSB_FIRST : GDK_MSB_FIRST;
 
-  /* We only support images with bpp 4 */
-  image->bpp = 4;
-  image->bpl = image->width * image->bpp;
-  image->bits_per_pixel = image->bpp * 8;
+  if (depth == 1)
+    {
+      image->bpp = 1;
+      image->bpl = (image->width + 7) >> 3;
+      image->bits_per_pixel = 1;
+    }
+  else
+    {
+      image->bpp = 4;
+      image->bpl = image->width * image->bpp;
+      image->bits_per_pixel = image->bpp * 8;
+    }
   
   image->mem = g_malloc (image->bpl * image->height);
   memset (image->mem, 0x00, image->bpl * image->height);
@@ -355,9 +363,21 @@ gdk_image_get_pixel (GdkImage *image,
   g_return_val_if_fail (x >= 0 && x < image->width, 0);
   g_return_val_if_fail (y >= 0 && y < image->height, 0);
 
-  ptr = image->mem + y * image->bpl + x * image->bpp;
+  ptr = image->mem + y * image->bpl;
 
-  return *(guint32 *)ptr;
+  if (image->depth == 1)
+    {
+      guchar data = (image->byte_order == GDK_MSB_FIRST ?
+                     (0x80 >> (x & 7)) : (1 << (x & 7)));
+
+      return (ptr[x >> 3] & data) ? 0x1 : 0x0;
+    }
+  else
+    {
+      ptr += x * image->bpp;
+
+      return *(guint32 *)ptr;
+    }
 }
 
 void
@@ -368,16 +388,33 @@ gdk_image_put_pixel (GdkImage *image,
 {
   guchar *ptr;
 
-  ptr = image->mem + y * image->bpl + x * image->bpp;
+  ptr = image->mem + y * image->bpl;
 
-  *(guint32 *)ptr = pixel;
+  if (image->depth == 1)
+    {
+      guchar data = (image->byte_order == GDK_MSB_FIRST ?
+                     (0x80 >> (x & 7)) : (1 << (x & 7)));
+
+      if (pixel)
+        ptr[x >> 3] |= data;
+      else
+        ptr[x >> 3] &= ~data;
+    }
+  else
+    {
+      ptr += x * image->bpp;
+
+      *(guint32 *)ptr = pixel;
+    }
 }
 
 gint
 _gdk_windowing_get_bits_for_depth (GdkDisplay *display,
 				   gint        depth)
 {
-  if (depth == 24 || depth == 32)
+  if (depth == 1)
+    return 1;
+  else if (depth == 24 || depth == 32)
     return 32;
   else
     g_assert_not_reached ();

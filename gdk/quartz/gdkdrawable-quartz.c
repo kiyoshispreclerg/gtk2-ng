@@ -462,12 +462,7 @@ gdk_quartz_draw_drawable (GdkDrawable *drawable,
     }
 
   /* Handle drawable and pixmap sources. */
-  if (src_depth == 1)
-    {
-      /* FIXME: src depth 1 is not supported yet */
-      g_warning ("Source with depth 1 unsupported");
-    }
-  else if (dest_depth != 0 && src_depth == dest_depth)
+  if (dest_depth != 0 && src_depth == dest_depth)
     {
       GdkPixmapImplQuartz *pixmap_impl = GDK_PIXMAP_IMPL_QUARTZ (src_impl);
       CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
