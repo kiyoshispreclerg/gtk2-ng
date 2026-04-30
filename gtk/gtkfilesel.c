@@ -24,6 +24,8 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+#define _XOPEN_SOURCE 500
+
 #include "config.h"
 
 #include <stdio.h>
