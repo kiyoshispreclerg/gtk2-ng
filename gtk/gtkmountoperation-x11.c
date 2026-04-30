@@ -43,9 +43,6 @@
 #include <errno.h>
 
 #if defined(__OpenBSD__)
-#include <sys/param.h>
-#include <kvm.h>
-#include <fcntl.h>
 #include <sys/sysctl.h>
 #endif
 
@@ -718,6 +715,110 @@ pid_get_command_line (GPid pid)
   g_free (cmdline_filename);
 
   return cmdline_contents;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+#elif defined(__OpenBSD__)
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static GPid
+pid_get_parent (GPid pid)
+{
+  int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, pid,
+                sizeof (struct kinfo_proc), 0 };
+  struct kinfo_proc *kp = NULL;
+  size_t len = 0;
+  GPid ppid = 0;
+
+  /* fail if trying to get the parent of the init process (no such thing) */
+  if (pid == 1)
+    goto out;
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
+    goto out;
+
+  mib[5] = len / sizeof (struct kinfo_proc);
+
+  kp = g_malloc0 (len);
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), kp, &len, NULL, 0) < 0)
+    goto out;
+
+  ppid = kp->p_ppid;
+
+out:
+  g_free (kp);
+  return ppid;
+}
+
+static gchar *
+pid_get_env (GPid         pid,
+             const gchar *key)
+{
+  size_t len = 0;
+  char **strs;
+  char *ret = NULL;
+  char *end;
+  int key_len;
+  int i;
+  int mib[] = { CTL_KERN, KERN_PROC_ARGS, pid, KERN_PROC_ENV };
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
+    return ret;
+
+  strs = g_malloc0 (len);
+
+  key_len = strlen (key);
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), strs, &len, NULL, 0) != -1)
+    {
+      for (i = 0; strs[i] != NULL; i++)
+        {
+          if (g_str_has_prefix (strs[i], key) && (*(strs[i] + key_len) == '='))
+            {
+              ret = g_strdup (strs[i] + key_len + 1);
+
+              /* skip invalid UTF-8 */
+              if (!g_utf8_validate (ret, -1, (const gchar **) &end))
+                *end = '\0';
+              break;
+            }
+        }
+    }
+
+  g_free (strs);
+  return ret;
+}
+
+static gchar *
+pid_get_command_line (GPid pid)
+{
+  size_t len = 0;
+  char **strs;
+  char *ret, *end;
+  int mib[] = { CTL_KERN, KERN_PROC_ARGS, pid, KERN_PROC_ARGV };
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
+    return NULL;
+
+  strs = g_malloc0 (len);
+
+  if (sysctl (mib, G_N_ELEMENTS (mib), strs, &len, NULL, 0) == -1)
+    {
+      g_free (strs);
+      return NULL;
+    }
+
+  ret = g_strjoinv (" ", strs);
+
+  /* skip invalid UTF-8 */
+  if (!g_utf8_validate (ret, -1, (const gchar **) &end))
+    *end = '\0';
+
+  g_free (strs);
+  return ret;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
