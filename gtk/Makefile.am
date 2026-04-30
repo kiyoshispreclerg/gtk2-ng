@@ -1464,10 +1464,25 @@ endif
 
 gtkbuiltincache.h: @REBUILD@ stamp-icons
 	$(MAKE) $(AM_MAKEFLAGS) gtk-update-icon-cache$(EXEEXT)
-	$(gtk_update_icon_cache_program) --force --ignore-theme-index		\
-	   --include-image-data							\
-	   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
-	mv gtkbuiltincache.h.tmp gtkbuiltincache.h
+	{ lc_all=$${GTK_UPDATE_ICON_CACHE_LOCALE-};                         \
+	  if test -z "$$lc_all"; then                                      \
+	    for locale in C.UTF-8 C.utf8 en_US.UTF-8 en_US.utf8; do        \
+	      if LC_ALL=$$locale locale charmap >/dev/null 2>&1; then      \
+	        lc_all=$$locale;                                           \
+	        break;                                                     \
+	      fi;                                                          \
+	    done;                                                          \
+	  fi;                                                              \
+	  if test -n "$$lc_all"; then                                      \
+	    LC_ALL=$$lc_all $(gtk_update_icon_cache_program) --force --ignore-theme-index \
+	      --include-image-data                                         \
+	      --source builtin_icons stock-icons > gtkbuiltincache.h.tmp;  \
+	  else                                                            \
+	    $(gtk_update_icon_cache_program) --force --ignore-theme-index  \
+	      --include-image-data                                         \
+	      --source builtin_icons stock-icons > gtkbuiltincache.h.tmp;  \
+	  fi;                                                             \
+	} && mv gtkbuiltincache.h.tmp gtkbuiltincache.h
 
 EXTRA_DIST +=                   \
 	$(STOCK_ICONS)		\
