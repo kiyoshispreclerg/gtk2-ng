@@ -673,18 +673,18 @@ scan_directory (const gchar *base_path,
 	    flags |= HAS_SUFFIX_XPM;
 	  else if (g_str_has_suffix (name, ".icon"))
 	    flags |= HAS_ICON_FILE;
-	  
+
 	  if (flags == 0)
 	    continue;
-	  
+
 	  basename = g_strdup (name);
 	  dot = strrchr (basename, '.');
 	  *dot = '\0';
-	  
+
 	  image = g_hash_table_lookup (dir_hash, basename);
 	  if (!image)
 	    {
-	      if (!dir_added) 
+	      if (!dir_added)
 		{
 		  dir_added = TRUE;
 		  if (subdir)
@@ -693,19 +693,19 @@ scan_directory (const gchar *base_path,
 		      directories = g_list_append (directories, g_strdup (subdir));
 		    }
 		  else
-		    dir_index = 0xffff;
+                    continue;
 		}
-		
+
 	      image = g_new0 (Image, 1);
 	      image->dir_index = dir_index;
 	      g_hash_table_insert (dir_hash, g_strdup (basename), image);
 	    }
 
 	  image->flags |= flags;
-      
+
 	  maybe_cache_image_data (image, path);
           maybe_cache_icon_data (image, path);
-       
+
 	  g_free (basename);
 	}
 
@@ -716,7 +716,7 @@ scan_directory (const gchar *base_path,
 
   /* Move dir into the big file hash */
   g_hash_table_foreach_remove (dir_hash, foreach_remove_func, files);
-  
+
   g_hash_table_destroy (dir_hash);
 
   return directories;
