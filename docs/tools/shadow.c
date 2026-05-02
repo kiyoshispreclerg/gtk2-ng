@@ -1,6 +1,10 @@
 #include "shadow.h"
 #include <math.h>
 
+#if !defined(M_PI)
+# define M_PI 3.14159265358979323846
+#endif
+
 #define BLUR_RADIUS 5
 #define SHADOW_OFFSET (BLUR_RADIUS * 4 / 5)
 #define SHADOW_OPACITY 0.75
