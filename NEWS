@@ -1,3 +1,36 @@
+April 2026: GTK2 is not dead! This is a fork created by
+Daemonratte with the encouragement and support of the
+devuanusers.com community with new patches and new features
+to come. A summary of what's been done and roadmap for
+future improvements:
+
+## What has already been done
+- Added the two GTK2 patches currently used by the AUR maintainers
+- Implemented several modernizations from stefan11111’s GTK2 fork
+- Fixed all compiler warnings with modern toolchains
+- Made GTK2 compile cleanly with GCC 14/15 and Clang 21
+- Tested on Devuan, Arch, and Gentoo
+- Improved the file chooser:
+  - Classic list view still available
+  - New icon view added
+  - Easy switching between list and icon view
+  - Better thumbnail and icon handling
+  - Keeps responsiveness and avoids unnecessary overhead
+- Conservative approach — no ABI breaks where possible
+
+## Future plans
+- Backport further improvements from stefan11111’s GTK2 fork (Xlibre contributor)
+- Backport useful new features from Ardour’s GTK2 fork (YTK) without breaking ABI
+- Continue fixing bugs and modern compiler issues
+- Improve performance and responsiveness
+- Further file chooser improvements:
+  - Best-effort thumbnail generation for icon view
+  - Asynchronous loading for large/network folders
+  - Optional preview panel
+- Find a better project name
+- Add libppd support for legacy PPD-based printer options with newer CUPS
+=========================================================================
+
 Overview of Changes from GTK+ 2.24.32 to 2.24.33
 ================================================
 
