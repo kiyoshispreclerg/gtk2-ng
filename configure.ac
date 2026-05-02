@@ -195,7 +195,7 @@ m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 AC_SYS_LARGEFILE
 
 AM_PROG_AS
-AC_PATH_TOOL(NM, nm, nm)
+AC_CHECK_TOOL(NM, nm, nm)
 
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE([enable])
