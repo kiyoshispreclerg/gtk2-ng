@@ -43,23 +43,26 @@
 
 enum {
   PROP_0,
-  PROP_ORIENTATION
+  PROP_ORIENTATION,
+  PROP_PADDING
 };
 
 struct _GtkTrayIconPrivate
 {
   guint stamp;
-  
+
   Atom selection_atom;
   Atom manager_atom;
   Atom system_tray_opcode_atom;
   Atom orientation_atom;
+  Atom padding_atom;
   Atom visual_atom;
   Window manager_window;
   GdkVisual *manager_visual;
   gboolean manager_visual_rgba;
 
   GtkOrientation orientation;
+  gint padding;
 };
 
 static void gtk_tray_icon_constructed   (GObject     *object);
@@ -105,13 +108,23 @@ gtk_tray_icon_class_init (GtkTrayIconClass *class)
   widget_class->expose_event = gtk_tray_icon_expose;
 
   g_object_class_install_property (gobject_class,
-				   PROP_ORIENTATION,
-				   g_param_spec_enum ("orientation",
-						      P_("Orientation"),
-						      P_("The orientation of the tray"),
-						      GTK_TYPE_ORIENTATION,
-						      GTK_ORIENTATION_HORIZONTAL,
-						      GTK_PARAM_READABLE));
+                                   PROP_ORIENTATION,
+                                   g_param_spec_enum ("orientation",
+                                                      P_("Orientation"),
+                                                      P_("The orientation of the tray"),
+                                                      GTK_TYPE_ORIENTATION,
+                                                      GTK_ORIENTATION_HORIZONTAL,
+                                                      GTK_PARAM_READABLE));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_PADDING,
+                                   g_param_spec_int ("padding",
+                                                     P_("Padding"),
+                                                     P_("The padding that should be used around the tray icon"),
+                                                     0,
+                                                     G_MAXINT,
+                                                     0,
+                                                     GTK_PARAM_READABLE));
 }
 
 static void
@@ -122,6 +135,7 @@ gtk_tray_icon_init (GtkTrayIcon *icon)
   
   icon->priv->stamp = 1;
   icon->priv->orientation = GTK_ORIENTATION_HORIZONTAL;
+  icon->priv->padding = 0;
 
   gtk_widget_set_app_paintable (GTK_WIDGET (icon), TRUE);
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_PROPERTY_CHANGE_MASK);
@@ -152,12 +166,16 @@ gtk_tray_icon_constructed (GObject *object)
 						     False);
 
   icon->priv->orientation_atom = XInternAtom (xdisplay,
-					      "_NET_SYSTEM_TRAY_ORIENTATION",
-					      False);
+                                              "_NET_SYSTEM_TRAY_ORIENTATION",
+                                              False);
+
+  icon->priv->padding_atom = XInternAtom (xdisplay,
+                                          "_NET_SYSTEM_TRAY_PADDING",
+                                          False);
 
   icon->priv->visual_atom = XInternAtom (xdisplay,
-					 "_NET_SYSTEM_TRAY_VISUAL",
-					 False);
+                                         "_NET_SYSTEM_TRAY_VISUAL",
+                                         False);
 
   /* Add a root window filter so that we get changes on MANAGER */
   gdk_window_add_filter (root_window,
@@ -211,6 +229,9 @@ gtk_tray_icon_get_property (GObject    *object,
     {
     case PROP_ORIENTATION:
       g_value_set_enum (value, icon->priv->orientation);
+      break;
+    case PROP_PADDING:
+      g_value_set_int (value, icon->priv->padding);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -378,6 +399,52 @@ gtk_tray_icon_get_visual_property (GtkTrayIcon *icon)
     XFree (prop.prop);
 }
 
+static void
+gtk_tray_icon_get_padding_property (GtkTrayIcon *icon)
+{
+  GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (icon));
+  Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+  Atom type;
+  int format;
+  union {
+        gulong *prop;
+        guchar *prop_ch;
+  } prop = { NULL };
+  gulong nitems;
+  gulong bytes_after;
+  gint padding = 0;
+  int error, result;
+
+  g_assert (icon->priv->manager_window != None);
+
+  gdk_error_trap_push ();
+  type = None;
+  result = XGetWindowProperty (xdisplay,
+                               icon->priv->manager_window,
+                               icon->priv->padding_atom,
+                               0, G_MAXLONG, FALSE,
+                               XA_CARDINAL,
+                               &type, &format, &nitems,
+                               &bytes_after, &(prop.prop_ch));
+  error = gdk_error_trap_pop ();
+
+  if (!error && result == Success &&
+      type == XA_CARDINAL && nitems == 1 && format == 32)
+    padding = prop.prop[0];
+
+  if (type != None)
+    XFree (prop.prop);
+
+  if (padding < 0)
+    padding = 0;
+
+  if (icon->priv->padding != padding)
+    {
+      icon->priv->padding = padding;
+      g_object_notify (G_OBJECT (icon), "padding");
+    }
+}
+
 static GdkFilterReturn
 gtk_tray_icon_manager_filter (GdkXEvent *xevent, 
 			      GdkEvent  *event, 
@@ -398,13 +465,21 @@ gtk_tray_icon_manager_filter (GdkXEvent *xevent,
   else if (xev->xany.window == icon->priv->manager_window)
     {
       if (xev->xany.type == PropertyNotify &&
-	  xev->xproperty.atom == icon->priv->orientation_atom)
-	{
+          xev->xproperty.atom == icon->priv->orientation_atom)
+        {
           GTK_NOTE (PLUGSOCKET,
-		    g_print ("GtkStatusIcon %p: got PropertyNotify on manager window for orientation atom\n", icon));
+                    g_print ("GtkStatusIcon %p: got PropertyNotify on manager window for orientation atom\n", icon));
 
-	  gtk_tray_icon_get_orientation_property (icon);
-	}
+          gtk_tray_icon_get_orientation_property (icon);
+        }
+      else if (xev->xany.type == PropertyNotify &&
+               xev->xproperty.atom == icon->priv->padding_atom)
+        {
+          GTK_NOTE (PLUGSOCKET,
+                    g_print ("GtkStatusIcon %p: got PropertyNotify on manager window for padding atom\n", icon));
+
+          gtk_tray_icon_get_padding_property (icon);
+        }
       else if (xev->xany.type == DestroyNotify)
 	{
           GTK_NOTE (PLUGSOCKET,
@@ -505,10 +580,11 @@ gtk_tray_icon_update_manager_window (GtkTrayIcon *icon)
 
       gdkwin = gdk_window_lookup_for_display (display,
 					      icon->priv->manager_window);
-      
+
       gdk_window_add_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
 
       gtk_tray_icon_get_orientation_property (icon);
+      gtk_tray_icon_get_padding_property (icon);
       gtk_tray_icon_get_visual_property (icon);
 
       if (gtk_widget_get_realized (GTK_WIDGET (icon)))
@@ -748,7 +824,14 @@ _gtk_tray_icon_get_orientation (GtkTrayIcon *icon)
   return icon->priv->orientation;
 }
 
+gint
+_gtk_tray_icon_get_padding (GtkTrayIcon *icon)
+{
+  g_return_val_if_fail (GTK_IS_TRAY_ICON (icon), 0);
+
+  return icon->priv->padding;
+}
+
 
 #define __GTK_TRAY_ICON_X11_C__
 #include "gtkaliasdef.c"
-

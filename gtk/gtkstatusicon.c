@@ -171,8 +171,10 @@ static void     gtk_status_icon_screen_changed   (GtkStatusIcon  *status_icon,
 						  GdkScreen      *old_screen);
 static void     gtk_status_icon_embedded_changed (GtkStatusIcon *status_icon);
 static void     gtk_status_icon_orientation_changed (GtkStatusIcon *status_icon);
+static void     gtk_status_icon_padding_changed  (GtkStatusIcon *status_icon);
+static void     gtk_status_icon_update_padding   (GtkStatusIcon *status_icon);
 static gboolean gtk_status_icon_scroll           (GtkStatusIcon  *status_icon,
-						  GdkEventScroll *event);
+                                                  GdkEventScroll *event);
 static gboolean gtk_status_icon_query_tooltip    (GtkStatusIcon *status_icon,
 						  gint           x,
 						  gint           y,
@@ -876,11 +878,13 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
   g_signal_connect_swapped (priv->tray_icon, "popup-menu",
 			    G_CALLBACK (gtk_status_icon_popup_menu), status_icon);
   g_signal_connect_swapped (priv->tray_icon, "notify::embedded",
-			    G_CALLBACK (gtk_status_icon_embedded_changed), status_icon);
+                            G_CALLBACK (gtk_status_icon_embedded_changed), status_icon);
   g_signal_connect_swapped (priv->tray_icon, "notify::orientation",
-			    G_CALLBACK (gtk_status_icon_orientation_changed), status_icon);
+                            G_CALLBACK (gtk_status_icon_orientation_changed), status_icon);
+  g_signal_connect_swapped (priv->tray_icon, "notify::padding",
+                            G_CALLBACK (gtk_status_icon_padding_changed), status_icon);
   g_signal_connect_swapped (priv->tray_icon, "button-press-event",
-			    G_CALLBACK (gtk_status_icon_button_press), status_icon);
+                            G_CALLBACK (gtk_status_icon_button_press), status_icon);
   g_signal_connect_swapped (priv->tray_icon, "button-release-event",
 			    G_CALLBACK (gtk_status_icon_button_release), status_icon);
   g_signal_connect_swapped (priv->tray_icon, "scroll-event",
@@ -893,6 +897,8 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
   gtk_widget_set_can_focus (priv->image, TRUE);
   gtk_container_add (GTK_CONTAINER (priv->tray_icon), priv->image);
   gtk_widget_show (priv->image);
+
+  gtk_status_icon_update_padding (status_icon);
 
   g_signal_connect_swapped (priv->image, "size-allocate",
 			    G_CALLBACK (gtk_status_icon_size_allocate), status_icon);
@@ -1009,21 +1015,19 @@ gtk_status_icon_finalize (GObject *object)
 
 #ifdef GDK_WINDOWING_X11
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_key_press, status_icon);
+                                        gtk_status_icon_embedded_changed, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_popup_menu, status_icon);
+                                        gtk_status_icon_orientation_changed, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_embedded_changed, status_icon);
+                                        gtk_status_icon_padding_changed, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_orientation_changed, status_icon);
+                                        gtk_status_icon_button_press, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_button_press, status_icon);
+                                        gtk_status_icon_button_release, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_button_release, status_icon);
+                                        gtk_status_icon_scroll, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_scroll, status_icon);
-  g_signal_handlers_disconnect_by_func (priv->tray_icon,
-			                gtk_status_icon_query_tooltip, status_icon);
+                                        gtk_status_icon_query_tooltip, status_icon);
   g_signal_handlers_disconnect_by_func (priv->tray_icon,
 		    	                gtk_status_icon_screen_changed, status_icon);
   gtk_widget_destroy (priv->image);
@@ -1729,12 +1733,35 @@ gtk_status_icon_embedded_changed (GtkStatusIcon *status_icon)
 static void
 gtk_status_icon_orientation_changed (GtkStatusIcon *status_icon)
 {
+  gtk_status_icon_update_padding (status_icon);
   g_object_notify (G_OBJECT (status_icon), "orientation");
+}
+
+static void
+gtk_status_icon_padding_changed (GtkStatusIcon *status_icon)
+{
+  gtk_status_icon_update_padding (status_icon);
+}
+
+static void
+gtk_status_icon_update_padding (GtkStatusIcon *status_icon)
+{
+  GtkStatusIconPrivate *priv = status_icon->priv;
+  GtkOrientation orientation;
+  gint padding;
+
+  orientation = _gtk_tray_icon_get_orientation (GTK_TRAY_ICON (priv->tray_icon));
+  padding = _gtk_tray_icon_get_padding (GTK_TRAY_ICON (priv->tray_icon));
+
+  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+    gtk_misc_set_padding (GTK_MISC (priv->image), padding, 0);
+  else
+    gtk_misc_set_padding (GTK_MISC (priv->image), 0, padding);
 }
 
 static gboolean
 gtk_status_icon_key_press (GtkStatusIcon  *status_icon,
-			   GdkEventKey    *event)
+                           GdkEventKey    *event)
 {
   guint state, keyval;
 
