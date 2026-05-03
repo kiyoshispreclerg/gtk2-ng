@@ -6,7 +6,7 @@ future improvements:
 
 ## What has already been done
 - Added the two GTK2 patches currently used by the AUR maintainers
-- Implemented several modernizations from stefan11111’s GTK2 fork
+- Implemented several modernizations from stefan11111's GTK2 fork
 - Fixed all compiler warnings with modern toolchains
 - Made GTK2 compile cleanly with GCC 14/15 and Clang 21
 - Tested on Devuan, Arch, and Gentoo
@@ -16,11 +16,11 @@ future improvements:
   - Easy switching between list and icon view
   - Better thumbnail and icon handling
   - Keeps responsiveness and avoids unnecessary overhead
-- Conservative approach — no ABI breaks where possible
+- Conservative approach - no ABI breaks where possible
 
 ## Future plans
-- Backport further improvements from stefan11111’s GTK2 fork (Xlibre contributor)
-- Backport useful new features from Ardour’s GTK2 fork (YTK) without breaking ABI
+- Backport further improvements from stefan11111's GTK2 fork (Xlibre contributor)
+- Backport useful new features from Ardour's GTK2 fork (YTK) without breaking ABI
 - Continue fixing bugs and modern compiler issues
 - Improve performance and responsiveness
 - Further file chooser improvements:
