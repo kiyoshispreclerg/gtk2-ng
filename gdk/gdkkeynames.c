@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -81,7 +81,7 @@ gdk_keyval_name (guint keyval)
       while ((found > gdk_keys_by_keyval) &&
              ((found - 1)->keyval == keyval))
         found--;
-	    
+
       return (gchar *) (keynames + found->offset);
     }
   else if (keyval != 0)
@@ -96,7 +96,7 @@ gdk_keyval_name (guint keyval)
 static int
 gdk_keys_name_compare (const void *pkey, const void *pbase)
 {
-  return strcmp ((const char *) pkey, 
+  return strcmp ((const char *) pkey,
 		 (const char *) (keynames + ((const gdk_key *) pbase)->offset));
 }
 
@@ -119,7 +119,7 @@ gdk_keyval_from_name (const gchar *keyval_name)
   gdk_key *found;
 
   g_return_val_if_fail (keyval_name != NULL, 0);
-  
+
   found = bsearch (keyval_name, gdk_keys_by_name,
 		   GDK_NUM_KEYS, sizeof (gdk_key),
 		   gdk_keys_name_compare);

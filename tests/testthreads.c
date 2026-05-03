@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include <stdio.h>
@@ -55,7 +55,7 @@ counter (void *data)
   gint flag = 0;
   gint counter = 0;
   gchar buffer[32];
-  
+
   GtkWidget *window;
   GtkWidget *vbox;
   GtkWidget *label;
@@ -98,7 +98,7 @@ counter (void *data)
        * releasing the lock.
        */
       sleep(0);
-      
+
       gdk_threads_enter();
     }
 
@@ -117,7 +117,7 @@ counter (void *data)
 
 #endif
 
-int 
+int
 main (int argc, char **argv)
 {
 #ifdef USE_PTHREADS
@@ -137,7 +137,7 @@ main (int argc, char **argv)
     {
       char buffer[5][10];
       pthread_t thread;
-      
+
       sprintf(buffer[i], "Thread %i", i);
       if (pthread_create (&thread, NULL, counter, buffer[i]))
 	{
@@ -156,7 +156,7 @@ main (int argc, char **argv)
 #else /* !USE_PTHREADS */
   fprintf (stderr, "GTK+ not compiled with threads support\n");
   exit (1);
-#endif /* USE_PTHREADS */  
+#endif /* USE_PTHREADS */
 
   return 0;
 }

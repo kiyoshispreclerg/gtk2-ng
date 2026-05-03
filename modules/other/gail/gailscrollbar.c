@@ -31,7 +31,7 @@ static gint gail_scrollbar_get_index_in_parent (AtkObject *accessible);
 
 G_DEFINE_TYPE (GailScrollbar, gail_scrollbar, GAIL_TYPE_RANGE)
 
-static void	 
+static void
 gail_scrollbar_class_init (GailScrollbarClass *klass)
 {
   AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
@@ -83,18 +83,18 @@ gail_scrollbar_get_index_in_parent (AtkObject *accessible)
 
   if (GTK_IS_HSCROLLBAR (widget))
   {
-    if (!scrolled_window->hscrollbar_visible) 
+    if (!scrolled_window->hscrollbar_visible)
     {
       n_children = -1;
     }
   }
   else if (GTK_IS_VSCROLLBAR (widget))
   {
-    if (!scrolled_window->vscrollbar_visible) 
+    if (!scrolled_window->vscrollbar_visible)
     {
       n_children = -1;
     }
-    else if (scrolled_window->hscrollbar_visible) 
+    else if (scrolled_window->hscrollbar_visible)
     {
       n_children++;
     }
@@ -104,4 +104,4 @@ gail_scrollbar_get_index_in_parent (AtkObject *accessible)
     n_children = -1;
   }
   return n_children;
-} 
+}

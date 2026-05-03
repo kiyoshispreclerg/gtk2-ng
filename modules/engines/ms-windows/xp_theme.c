@@ -247,7 +247,7 @@ xp_theme_init (void)
 
   buf = g_malloc (n + 1 + strlen (UXTHEME_DLL));
   k = GetSystemDirectory (buf, n);
-  
+
   if (k == 0 || k > n)
     {
       g_free (buf);
@@ -903,9 +903,9 @@ get_window_dc (GtkStyle *style,
   GdkDrawable *drawable = NULL;
   GdkGC *gc = style->dark_gc[state_type];
   gint x_offset, y_offset;
-  
+
   dc_info_out->data = NULL;
-  
+
   drawable = gdk_win32_begin_direct_draw_libgtk_only (window,
 						      gc, &dc_info_out->data,
 						      &x_offset, &y_offset);
@@ -916,12 +916,12 @@ get_window_dc (GtkStyle *style,
   rect_out->top = y - y_offset;
   rect_out->right = rect_out->left + width;
   rect_out->bottom = rect_out->top + height;
-  
+
   dc_info_out->drawable = drawable;
   dc_info_out->gc = gc;
   dc_info_out->x_offset = x_offset;
   dc_info_out->y_offset = y_offset;
-  
+
   return gdk_win32_hdc_get (drawable, gc, 0);
 }
 

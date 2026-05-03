@@ -156,7 +156,7 @@ horizontal_gradient (GdkPixbuf    *src,
 	  dv[k] = (((gint)p2[k] - (gint)p1[k]) << 16) / (width + 1);
 	  v[k] = (p1[k] << 16) + dv[k] + 0x8000;
 	}
-      
+
       for (j = width; j; j--)
 	{
 	  for (k = 0; k < n_channels; k++)
@@ -254,7 +254,7 @@ replicate_single (GdkPixbuf    *src,
 
   dest_rowstride = gdk_pixbuf_get_rowstride (result);
   dest_pixels = gdk_pixbuf_get_pixels (result);
-  
+
   for (i = 0; i < height; i++)
     {
       guchar *p = dest_pixels + dest_rowstride *i;
@@ -342,7 +342,7 @@ replicate_cols (GdkPixbuf    *src,
       guchar g = *(q++);
       guchar b = *(q++);
       guchar a = 0;
-      
+
       if (n_channels == 4)
 	a = *(q++);
 
@@ -417,22 +417,22 @@ pixbuf_render (GdkPixbuf    *src,
     }
   else if (src_width == 0 && src_height == 0)
     {
-      tmp_pixbuf = bilinear_gradient (src, src_x, src_y, dest_width, dest_height);      
-      
+      tmp_pixbuf = bilinear_gradient (src, src_x, src_y, dest_width, dest_height);
+
       x_offset = rect.x - dest_x;
       y_offset = rect.y - dest_y;
     }
   else if (src_width == 0 && dest_height == src_height)
     {
-      tmp_pixbuf = horizontal_gradient (src, src_x, src_y, dest_width, dest_height);      
-      
+      tmp_pixbuf = horizontal_gradient (src, src_x, src_y, dest_width, dest_height);
+
       x_offset = rect.x - dest_x;
       y_offset = rect.y - dest_y;
     }
   else if (src_height == 0 && dest_width == src_width)
     {
       tmp_pixbuf = vertical_gradient (src, src_x, src_y, dest_width, dest_height);
-      
+
       x_offset = rect.x - dest_x;
       y_offset = rect.y - dest_y;
     }
@@ -463,7 +463,7 @@ pixbuf_render (GdkPixbuf    *src,
       double y_scale = (double)dest_height / src_height;
       guchar *pixels;
       GdkPixbuf *partial_src;
-      
+
       pixels = (gdk_pixbuf_get_pixels (src)
 		+ src_y * src_rowstride
 		+ src_x * src_n_channels);
@@ -473,14 +473,14 @@ pixbuf_render (GdkPixbuf    *src,
 					      8, src_width, src_height,
 					      src_rowstride,
 					      NULL, NULL);
-						  
+
       tmp_pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
 				   has_alpha, 8,
 				   rect.width, rect.height);
 
       gdk_pixbuf_scale (partial_src, tmp_pixbuf,
 			0, 0, rect.width, rect.height,
-			dest_x - rect.x, dest_y - rect.y, 
+			dest_x - rect.x, dest_y - rect.y,
 			x_scale, y_scale,
 			GDK_INTERP_BILINEAR);
 
@@ -493,13 +493,13 @@ pixbuf_render (GdkPixbuf    *src,
   if (tmp_pixbuf)
     {
       cairo_t *cr;
-      
+
       if (mask)
 	{
           cr = gdk_cairo_create (mask);
 
           gdk_cairo_set_source_pixbuf (cr, tmp_pixbuf,
-                                       -x_offset + rect.x, 
+                                       -x_offset + rect.x,
                                        -y_offset + rect.y);
           gdk_cairo_rectangle (cr, &rect);
           cairo_fill (cr);
@@ -508,9 +508,9 @@ pixbuf_render (GdkPixbuf    *src,
 	}
 
       cr = gdk_cairo_create (window);
-      gdk_cairo_set_source_pixbuf (cr, 
+      gdk_cairo_set_source_pixbuf (cr,
                                    tmp_pixbuf,
-                                   -x_offset + rect.x, 
+                                   -x_offset + rect.x,
                                    -y_offset + rect.y);
       gdk_cairo_rectangle (cr, &rect);
       cairo_fill (cr);
@@ -603,7 +603,7 @@ compute_hint (GdkPixbuf *pixbuf,
   int i, j;
   int hints = THEME_CONSTANT_ROWS | THEME_CONSTANT_COLS | THEME_MISSING;
   int n_channels = gdk_pixbuf_get_n_channels (pixbuf);
-  
+
   guchar *data = gdk_pixbuf_get_pixels (pixbuf);
   int rowstride = gdk_pixbuf_get_rowstride (pixbuf);
 
@@ -617,7 +617,7 @@ compute_hint (GdkPixbuf *pixbuf,
       guchar g = p[1];
       guchar b = p[2];
       guchar a = 0;
-      
+
       if (n_channels == 4)
 	a = p[3];
 
@@ -629,7 +629,7 @@ compute_hint (GdkPixbuf *pixbuf,
 	      if (!(hints & THEME_CONSTANT_ROWS))
 		goto cols;
 	    }
-	  
+
 	  if (r != *(p++) ||
 	      g != *(p++) ||
 	      b != *(p++) ||
@@ -682,7 +682,7 @@ theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
 	  theme_pb->border_bottom = (height + 1) / 2;
 	}
     }
-  
+
   for (i = 0; i < 3; i++)
     {
       gint y0, y1;
@@ -702,11 +702,11 @@ theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
 	  y1 = height;
 	  break;
 	}
-      
+
       for (j = 0; j < 3; j++)
 	{
 	  gint x0, x1;
-	  
+
 	  switch (j)
 	    {
 	    case 0:
@@ -726,7 +726,7 @@ theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
 	  theme_pb->hints[i][j] = compute_hint (theme_pb->pixbuf, x0, x1, y0, y1);
 	}
     }
-  
+
 }
 
 void
@@ -872,12 +872,12 @@ theme_pixbuf_render (ThemePixbuf  *theme_pb,
       src_x[1] = theme_pb->border_left;
       src_x[2] = pixbuf_width - theme_pb->border_right;
       src_x[3] = pixbuf_width;
-      
+
       src_y[0] = 0;
       src_y[1] = theme_pb->border_top;
       src_y[2] = pixbuf_height - theme_pb->border_bottom;
       src_y[3] = pixbuf_height;
-      
+
       dest_x[0] = x;
       dest_x[1] = x + theme_pb->border_left;
       dest_x[2] = x + width - theme_pb->border_right;
@@ -908,7 +908,7 @@ theme_pixbuf_render (ThemePixbuf  *theme_pb,
 		       src_x[X2] - src_x[X1], src_y[Y2] - src_y[Y1],	         \
 		       dest_x[X1], dest_y[Y1],				         \
 		       dest_x[X2] - dest_x[X1], dest_y[Y2] - dest_y[Y1]);
-      
+
       if (component_mask & COMPONENT_NORTH_WEST)
 	RENDER_COMPONENT (0, 1, 0, 1);
 
@@ -942,7 +942,7 @@ theme_pixbuf_render (ThemePixbuf  *theme_pb,
 	{
 	  x += (width - pixbuf_width) / 2;
 	  y += (height - pixbuf_height) / 2;
-	  
+
 	  pixbuf_render (pixbuf, 0, window, NULL, clip_rect,
 			 0, 0,
 			 pixbuf_width, pixbuf_height,
@@ -960,7 +960,7 @@ theme_pixbuf_render (ThemePixbuf  *theme_pb,
 	    gdk_cairo_rectangle (cr, clip_rect);
 	  else
 	    cairo_rectangle (cr, x, y, width, height);
-	  
+
           cairo_fill (cr);
 
           cairo_destroy (cr);

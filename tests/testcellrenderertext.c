@@ -112,16 +112,16 @@ create_list_store (void)
   int i;
 
   list_store = gtk_list_store_new (NUM_COLS,
-				   G_TYPE_STRING,		/* 0 */ 
-				   G_TYPE_STRING,		/* 1 */ 
-				   G_TYPE_INT,			/* 2 */ 
-				   G_TYPE_INT,			/* 3 */ 
-				   G_TYPE_DOUBLE,		/* 4 */ 
-				   G_TYPE_DOUBLE,		/* 5 */ 
-				   G_TYPE_BOOLEAN,		/* 6 */ 
-				   G_TYPE_INT,			/* 7 */ 
-				   G_TYPE_INT,			/* 8 */ 
-				   G_TYPE_INT,			/* 9 */ 
+				   G_TYPE_STRING,		/* 0 */
+				   G_TYPE_STRING,		/* 1 */
+				   G_TYPE_INT,			/* 2 */
+				   G_TYPE_INT,			/* 3 */
+				   G_TYPE_DOUBLE,		/* 4 */
+				   G_TYPE_DOUBLE,		/* 5 */
+				   G_TYPE_BOOLEAN,		/* 6 */
+				   G_TYPE_INT,			/* 7 */
+				   G_TYPE_INT,			/* 8 */
+				   G_TYPE_INT,			/* 9 */
 				   G_TYPE_INT,			/* 10 */
 				   PANGO_TYPE_WRAP_MODE,	/* 11 */
 				   G_TYPE_BOOLEAN,		/* 12 */

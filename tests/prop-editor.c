@@ -35,7 +35,7 @@ static void
 disconnect_func (gpointer data)
 {
   DisconnectData *dd = data;
-  
+
   g_signal_handler_disconnect (dd->instance, dd->id);
 }
 
@@ -58,7 +58,7 @@ is_child_property (GParamSpec *pspec)
 static void
 mark_child_property (GParamSpec *pspec)
 {
-  g_param_spec_set_qdata (pspec, g_quark_from_string ("is-child-prop"), 
+  g_param_spec_set_qdata (pspec, g_quark_from_string ("is-child-prop"),
 			  GINT_TO_POINTER (TRUE));
 }
 
@@ -89,16 +89,16 @@ g_object_connect_property (GObject     *object,
 
   dd->instance = object;
   dd->alive_object = alive_object;
-  
+
   g_object_set_data_full (G_OBJECT (alive_object),
                           "alive-object-data",
                           dd,
                           disconnect_func);
-  
+
   g_free (with_detail);
 }
 
-typedef struct 
+typedef struct
 {
   GObject *obj;
   GParamSpec *spec;
@@ -158,7 +158,7 @@ int_modified (GtkAdjustment *adj, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, (int) adj->value, NULL);
     }
   else
@@ -184,7 +184,7 @@ static void
 int_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkAdjustment *adj = GTK_ADJUSTMENT (data);
-  GValue val = { 0, };  
+  GValue val = { 0, };
 
   g_value_init (&val, G_TYPE_INT);
 
@@ -210,7 +210,7 @@ uint_modified (GtkAdjustment *adj, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, (guint) adj->value, NULL);
     }
   else
@@ -221,7 +221,7 @@ static void
 uint_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkAdjustment *adj = GTK_ADJUSTMENT (data);
-  GValue val = { 0, };  
+  GValue val = { 0, };
 
   g_value_init (&val, G_TYPE_UINT);
   get_property_value (object, pspec, &val);
@@ -246,7 +246,7 @@ float_modified (GtkAdjustment *adj, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, (float) adj->value, NULL);
     }
   else
@@ -257,7 +257,7 @@ static void
 float_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkAdjustment *adj = GTK_ADJUSTMENT (data);
-  GValue val = { 0, };  
+  GValue val = { 0, };
 
   g_value_init (&val, G_TYPE_FLOAT);
   get_property_value (object, pspec, &val);
@@ -282,7 +282,7 @@ double_modified (GtkAdjustment *adj, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, (double) adj->value, NULL);
     }
   else
@@ -293,7 +293,7 @@ static void
 double_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkAdjustment *adj = GTK_ADJUSTMENT (data);
-  GValue val = { 0, };  
+  GValue val = { 0, };
 
   g_value_init (&val, G_TYPE_DOUBLE);
   get_property_value (object, pspec, &val);
@@ -321,7 +321,7 @@ string_modified (GtkEntry *entry, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, text, NULL);
     }
   else
@@ -332,10 +332,10 @@ static void
 string_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkEntry *entry = GTK_ENTRY (data);
-  GValue val = { 0, };  
+  GValue val = { 0, };
   const gchar *str;
   const gchar *text;
-  
+
   g_value_init (&val, G_TYPE_STRING);
   get_property_value (object, pspec, &val);
 
@@ -350,7 +350,7 @@ string_changed (GObject *object, GParamSpec *pspec, gpointer data)
       gtk_entry_set_text (entry, str);
       unblock_controller (G_OBJECT (entry));
     }
-  
+
   g_value_unset (&val);
 }
 
@@ -364,7 +364,7 @@ bool_modified (GtkToggleButton *tb, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, (int) tb->active, NULL);
     }
   else
@@ -375,8 +375,8 @@ static void
 bool_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkToggleButton *tb = GTK_TOGGLE_BUTTON (data);
-  GValue val = { 0, };  
-  
+  GValue val = { 0, };
+
   g_value_init (&val, G_TYPE_BOOLEAN);
   get_property_value (object, pspec, &val);
 
@@ -389,7 +389,7 @@ bool_changed (GObject *object, GParamSpec *pspec, gpointer data)
 
   gtk_label_set_text (GTK_LABEL (GTK_BIN (tb)->child), g_value_get_boolean (&val) ?
                       "TRUE" : "FALSE");
-  
+
   g_value_unset (&val);
 }
 
@@ -400,7 +400,7 @@ enum_modified (GtkComboBox *cb, gpointer data)
   ObjectProperty *p = data;
   gint i;
   GEnumClass *eclass;
-  
+
   eclass = G_ENUM_CLASS (g_type_class_peek (p->spec->value_type));
 
   i = gtk_combo_box_get_active (cb);
@@ -410,7 +410,7 @@ enum_modified (GtkComboBox *cb, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, eclass->values[i].value, NULL);
     }
   else
@@ -421,12 +421,12 @@ static void
 enum_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GtkComboBox *cb = GTK_COMBO_BOX (data);
-  GValue val = { 0, };  
+  GValue val = { 0, };
   GEnumClass *eclass;
   gint i;
 
   eclass = G_ENUM_CLASS (g_type_class_peek (pspec->value_type));
-  
+
   g_value_init (&val, pspec->value_type);
   get_property_value (object, pspec, &val);
 
@@ -437,14 +437,14 @@ enum_changed (GObject *object, GParamSpec *pspec, gpointer data)
         break;
       ++i;
     }
-  
+
   if (gtk_combo_box_get_active (cb) != i)
     {
       block_controller (G_OBJECT (cb));
       gtk_combo_box_set_active (cb, i);
       unblock_controller (G_OBJECT (cb));
     }
-  
+
   g_value_unset (&val);
 
 }
@@ -457,9 +457,9 @@ flags_modified (GtkCheckButton *button, gpointer data)
   GFlagsClass *fclass;
   guint flags;
   gint i;
-  
+
   fclass = G_FLAGS_CLASS (g_type_class_peek (p->spec->value_type));
-  
+
   active = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
   i = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "index"));
 
@@ -468,14 +468,14 @@ flags_modified (GtkCheckButton *button, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_get (GTK_CONTAINER (parent), 
+      gtk_container_child_get (GTK_CONTAINER (parent),
 			       widget, p->spec->name, &flags, NULL);
       if (active)
         flags |= fclass->values[i].value;
       else
         flags &= ~fclass->values[i].value;
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, flags, NULL);
     }
   else
@@ -495,13 +495,13 @@ static void
 flags_changed (GObject *object, GParamSpec *pspec, gpointer data)
 {
   GList *children, *c;
-  GValue val = { 0, };  
+  GValue val = { 0, };
   GFlagsClass *fclass;
   guint flags;
   gint i;
 
   fclass = G_FLAGS_CLASS (g_type_class_peek (pspec->value_type));
-  
+
   g_value_init (&val, pspec->value_type);
   get_property_value (object, pspec, &val);
   flags = g_value_get_flags (&val);
@@ -524,7 +524,7 @@ static gunichar
 unichar_get_value (GtkEntry *entry)
 {
   const gchar *text = gtk_entry_get_text (entry);
-  
+
   if (text[0])
     return g_utf8_get_char (text);
   else
@@ -542,7 +542,7 @@ unichar_modified (GtkEntry *entry, gpointer data)
       GtkWidget *widget = GTK_WIDGET (p->obj);
       GtkWidget *parent = gtk_widget_get_parent (widget);
 
-      gtk_container_child_set (GTK_CONTAINER (parent), 
+      gtk_container_child_set (GTK_CONTAINER (parent),
 			       widget, p->spec->name, val, NULL);
     }
   else
@@ -558,7 +558,7 @@ unichar_changed (GObject *object, GParamSpec *pspec, gpointer data)
   GValue val = { 0, };
   gchar buf[7];
   gint len;
-  
+
   g_value_init (&val, pspec->value_type);
   get_property_value (object, pspec, &val);
   new_val = (gunichar)g_value_get_uint (&val);
@@ -569,9 +569,9 @@ unichar_changed (GObject *object, GParamSpec *pspec, gpointer data)
 	len = 0;
       else
 	len = g_unichar_to_utf8 (new_val, buf);
-      
+
       buf[len] = '\0';
-      
+
       block_controller (G_OBJECT (entry));
       gtk_entry_set_text (entry, buf);
       unblock_controller (G_OBJECT (entry));
@@ -584,7 +584,7 @@ pointer_changed (GObject *object, GParamSpec *pspec, gpointer data)
   GtkLabel *label = GTK_LABEL (data);
   gchar *str;
   gpointer ptr;
-  
+
   g_object_get (object, pspec->name, &ptr, NULL);
 
   str = g_strdup_printf ("Pointer: %p", ptr);
@@ -612,15 +612,15 @@ object_changed (GObject *object, GParamSpec *pspec, gpointer data)
   GtkWidget *label, *button;
   gchar *str;
   GObject *obj;
-  
-  GList *children = gtk_container_get_children (GTK_CONTAINER (data)); 
+
+  GList *children = gtk_container_get_children (GTK_CONTAINER (data));
   label = GTK_WIDGET (children->data);
   button = GTK_WIDGET (children->next->data);
   g_object_get (object, pspec->name, &obj, NULL);
   g_list_free (children);
 
   str = object_label (obj, pspec);
-  
+
   gtk_label_set_text (GTK_LABEL (label), str);
   gtk_widget_set_sensitive (button, G_IS_OBJECT (obj));
 
@@ -644,7 +644,7 @@ window_destroy (gpointer data)
 }
 
 static void
-object_properties (GtkWidget *button, 
+object_properties (GtkWidget *button,
 		   GObject   *object)
 {
   gchar *name;
@@ -652,10 +652,10 @@ object_properties (GtkWidget *button,
 
   name = (gchar *) g_object_get_data (G_OBJECT (button), "property-name");
   g_object_get (object, name, &obj, NULL);
-  if (G_IS_OBJECT (obj)) 
+  if (G_IS_OBJECT (obj))
     create_prop_editor (obj, 0);
 }
- 
+
 static void
 color_modified (GtkColorButton *cb, gpointer data)
 {
@@ -701,8 +701,8 @@ color_changed (GObject *object, GParamSpec *pspec, gpointer data)
 }
 
 static GtkWidget *
-property_widget (GObject    *object, 
-		 GParamSpec *spec, 
+property_widget (GObject    *object,
+		 GParamSpec *spec,
 		 gboolean    can_modify)
 {
   GtkWidget *prop_edit;
@@ -719,13 +719,13 @@ property_widget (GObject    *object,
 						MAX ((G_PARAM_SPEC_INT (spec)->maximum -
 						      G_PARAM_SPEC_INT (spec)->minimum) / 10, 1),
 						0.0));
-      
+
       prop_edit = gtk_spin_button_new (adj, 1.0, 0);
-      
-      g_object_connect_property (object, spec, 
-				 G_CALLBACK (int_changed), 
+
+      g_object_connect_property (object, spec,
+				 G_CALLBACK (int_changed),
 				 adj, G_OBJECT (adj));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (adj), "value_changed",
 			    object, spec, G_CALLBACK (int_modified));
@@ -740,13 +740,13 @@ property_widget (GObject    *object,
 						MAX ((G_PARAM_SPEC_UINT (spec)->maximum -
 						      G_PARAM_SPEC_UINT (spec)->minimum) / 10, 1),
 						0.0));
-      
+
       prop_edit = gtk_spin_button_new (adj, 1.0, 0);
-      
-      g_object_connect_property (object, spec, 
-				 G_CALLBACK (uint_changed), 
+
+      g_object_connect_property (object, spec,
+				 G_CALLBACK (uint_changed),
 				 adj, G_OBJECT (adj));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (adj), "value_changed",
 			    object, spec, G_CALLBACK (uint_modified));
@@ -761,13 +761,13 @@ property_widget (GObject    *object,
 						MAX ((G_PARAM_SPEC_FLOAT (spec)->maximum -
 						      G_PARAM_SPEC_FLOAT (spec)->minimum) / 10, 0.1),
 						0.0));
-      
+
       prop_edit = gtk_spin_button_new (adj, 0.1, 2);
-      
-      g_object_connect_property (object, spec, 
-				 G_CALLBACK (float_changed), 
+
+      g_object_connect_property (object, spec,
+				 G_CALLBACK (float_changed),
 				 adj, G_OBJECT (adj));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (adj), "value_changed",
 			    object, spec, G_CALLBACK (float_modified));
@@ -781,13 +781,13 @@ property_widget (GObject    *object,
 						MAX ((G_PARAM_SPEC_DOUBLE (spec)->maximum -
 						      G_PARAM_SPEC_DOUBLE (spec)->minimum) / 10, 0.1),
 						0.0));
-      
+
       prop_edit = gtk_spin_button_new (adj, 0.1, 2);
-      
-      g_object_connect_property (object, spec, 
-				 G_CALLBACK (double_changed), 
+
+      g_object_connect_property (object, spec,
+				 G_CALLBACK (double_changed),
 				 adj, G_OBJECT (adj));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (adj), "value_changed",
 			    object, spec, G_CALLBACK (double_modified));
@@ -795,11 +795,11 @@ property_widget (GObject    *object,
   else if (type == G_TYPE_PARAM_STRING)
     {
       prop_edit = gtk_entry_new ();
-      
-      g_object_connect_property (object, spec, 
+
+      g_object_connect_property (object, spec,
 				 G_CALLBACK (string_changed),
 				 prop_edit, G_OBJECT (prop_edit));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (prop_edit), "changed",
 			    object, spec, G_CALLBACK (string_modified));
@@ -807,11 +807,11 @@ property_widget (GObject    *object,
   else if (type == G_TYPE_PARAM_BOOLEAN)
     {
       prop_edit = gtk_toggle_button_new_with_label ("");
-      
-      g_object_connect_property (object, spec, 
+
+      g_object_connect_property (object, spec,
 				 G_CALLBACK (bool_changed),
 				 prop_edit, G_OBJECT (prop_edit));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (prop_edit), "toggled",
 			    object, spec, G_CALLBACK (bool_modified));
@@ -821,11 +821,11 @@ property_widget (GObject    *object,
       {
 	GEnumClass *eclass;
 	gint j;
-	
+
 	prop_edit = gtk_combo_box_text_new ();
-	
+
 	eclass = G_ENUM_CLASS (g_type_class_ref (spec->value_type));
-	
+
 	j = 0;
 	while (j < eclass->n_values)
 	  {
@@ -833,13 +833,13 @@ property_widget (GObject    *object,
 	                                    eclass->values[j].value_name);
 	    ++j;
 	  }
-	
+
 	g_type_class_unref (eclass);
-	
+
 	g_object_connect_property (object, spec,
 				   G_CALLBACK (enum_changed),
 				   prop_edit, G_OBJECT (prop_edit));
-	
+
 	if (can_modify)
 	  connect_controller (G_OBJECT (prop_edit), "changed",
 			      object, spec, G_CALLBACK (enum_modified));
@@ -850,26 +850,26 @@ property_widget (GObject    *object,
       {
 	GFlagsClass *fclass;
 	gint j;
-	
+
 	prop_edit = gtk_vbox_new (FALSE, 0);
-	
+
 	fclass = G_FLAGS_CLASS (g_type_class_ref (spec->value_type));
-	
+
 	for (j = 0; j < fclass->n_values; j++)
 	  {
 	    GtkWidget *b;
-	    
+
 	    b = gtk_check_button_new_with_label (fclass->values[j].value_name);
             g_object_set_data (G_OBJECT (b), "index", GINT_TO_POINTER (j));
 	    gtk_widget_show (b);
 	    gtk_box_pack_start (GTK_BOX (prop_edit), b, FALSE, FALSE, 0);
-	    if (can_modify) 
+	    if (can_modify)
 	      connect_controller (G_OBJECT (b), "toggled",
 	     	                  object, spec, G_CALLBACK (flags_modified));
 	  }
-	
+
 	g_type_class_unref (fclass);
-	
+
 	g_object_connect_property (object, spec,
 				   G_CALLBACK (flags_changed),
 				   prop_edit, G_OBJECT (prop_edit));
@@ -879,11 +879,11 @@ property_widget (GObject    *object,
     {
       prop_edit = gtk_entry_new ();
       gtk_entry_set_max_length (GTK_ENTRY (prop_edit), 1);
-      
+
       g_object_connect_property (object, spec,
 				 G_CALLBACK (unichar_changed),
 				 prop_edit, G_OBJECT (prop_edit));
-      
+
       if (can_modify)
 	connect_controller (G_OBJECT (prop_edit), "changed",
 			    object, spec, G_CALLBACK (unichar_modified));
@@ -891,8 +891,8 @@ property_widget (GObject    *object,
   else if (type == G_TYPE_PARAM_POINTER)
     {
       prop_edit = gtk_label_new ("");
-      
-      g_object_connect_property (object, spec, 
+
+      g_object_connect_property (object, spec,
 				 G_CALLBACK (pointer_changed),
 				 prop_edit, G_OBJECT (prop_edit));
     }
@@ -911,7 +911,7 @@ property_widget (GObject    *object,
 
       gtk_container_add (GTK_CONTAINER (prop_edit), label);
       gtk_container_add (GTK_CONTAINER (prop_edit), button);
-      
+
       g_object_connect_property (object, spec,
 				 G_CALLBACK (object_changed),
 				 prop_edit, G_OBJECT (label));
@@ -930,14 +930,14 @@ property_widget (GObject    *object,
 			    object, spec, G_CALLBACK (color_modified));
     }
   else
-    {  
+    {
       msg = g_strdup_printf ("uneditable property type: %s",
 			     g_type_name (G_PARAM_SPEC_TYPE (spec)));
-      prop_edit = gtk_label_new (msg);            
+      prop_edit = gtk_label_new (msg);
       g_free (msg);
       gtk_misc_set_alignment (GTK_MISC (prop_edit), 0.0, 0.5);
     }
-  
+
   return prop_edit;
 }
 
@@ -964,12 +964,12 @@ properties_from_type (GObject *object,
       GObjectClass *class = G_OBJECT_CLASS (g_type_class_peek (type));
       specs = g_object_class_list_properties (class, &n_specs);
     }
-        
+
   if (n_specs == 0) {
     g_free (specs);
     return NULL;
   }
-  
+
   table = gtk_table_new (n_specs, 2, FALSE);
   gtk_table_set_col_spacing (GTK_TABLE (table), 0, 10);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
@@ -979,19 +979,19 @@ properties_from_type (GObject *object,
     {
       GParamSpec *spec = specs[i];
       gboolean can_modify;
-      
+
       prop_edit = NULL;
 
       can_modify = ((spec->flags & G_PARAM_WRITABLE) != 0 &&
                     (spec->flags & G_PARAM_CONSTRUCT_ONLY) == 0);
-      
+
       if ((spec->flags & G_PARAM_READABLE) == 0)
         {
           /* can't display unreadable properties */
           ++i;
           continue;
         }
-      
+
       if (spec->owner_type != type)
 	{
 	  /* we're only interested in params of type */
@@ -1002,7 +1002,7 @@ properties_from_type (GObject *object,
       label = gtk_label_new (g_param_spec_get_nick (spec));
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, i, i + 1);
-      
+
       prop_edit = property_widget (object, spec, can_modify);
       gtk_table_attach_defaults (GTK_TABLE (table), prop_edit, 1, 2, i, i + 1);
 
@@ -1017,7 +1017,7 @@ properties_from_type (GObject *object,
           /* set initial value */
           g_object_notify (object, spec->name);
         }
-      
+
       ++i;
     }
 
@@ -1028,7 +1028,7 @@ properties_from_type (GObject *object,
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  
+
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), vbox);
 
   g_free (specs);
@@ -1068,23 +1068,23 @@ child_properties_from_object (GObject *object)
     {
       GParamSpec *spec = specs[i];
       gboolean can_modify;
-      
+
       prop_edit = NULL;
 
       can_modify = ((spec->flags & G_PARAM_WRITABLE) != 0 &&
                     (spec->flags & G_PARAM_CONSTRUCT_ONLY) == 0);
-      
+
       if ((spec->flags & G_PARAM_READABLE) == 0)
         {
           /* can't display unreadable properties */
           ++i;
           continue;
         }
-      
+
       label = gtk_label_new (g_param_spec_get_nick (spec));
       gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
       gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, i, i + 1);
-      
+
       mark_child_property (spec);
       prop_edit = property_widget (object, spec, can_modify);
       gtk_table_attach_defaults (GTK_TABLE (table), prop_edit, 1, 2, i, i + 1);
@@ -1100,7 +1100,7 @@ child_properties_from_object (GObject *object)
           /* set initial value */
           gtk_widget_child_notify (GTK_WIDGET (object), spec->name);
         }
-      
+
       ++i;
     }
 
@@ -1110,7 +1110,7 @@ child_properties_from_object (GObject *object)
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  
+
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), vbox);
 
   g_free (specs);
@@ -1119,7 +1119,7 @@ child_properties_from_object (GObject *object)
 }
 
 static void
-child_properties (GtkWidget *button, 
+child_properties (GtkWidget *button,
 		  GObject   *object)
 {
   create_prop_editor (object, 0);
@@ -1141,7 +1141,7 @@ children_from_object (GObject *object)
   table = gtk_table_new (g_list_length (children), 2, FALSE);
   gtk_table_set_col_spacing (GTK_TABLE (table), 0, 10);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
- 
+
   for (c = children, i = 0; c; c = c->next, i++)
     {
       object = c->data;
@@ -1172,7 +1172,7 @@ children_from_object (GObject *object)
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  
+
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), vbox);
 
   g_list_free (children);
@@ -1196,7 +1196,7 @@ cells_from_object (GObject *object)
   table = gtk_table_new (g_list_length (cells), 2, FALSE);
   gtk_table_set_col_spacing (GTK_TABLE (table), 0, 10);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3);
- 
+
   for (c = cells, i = 0; c; c = c->next, i++)
     {
       object = c->data;
@@ -1227,7 +1227,7 @@ cells_from_object (GObject *object)
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  
+
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), vbox);
 
   g_list_free (cells);
@@ -1247,7 +1247,7 @@ create_prop_editor (GObject   *object,
   gchar *title;
   GType *ifaces;
   guint n_ifaces;
-  
+
   if ((win = g_object_get_data (G_OBJECT (object), "prop-editor-win")))
     {
       gtk_window_present (GTK_WINDOW (win));
@@ -1267,15 +1267,15 @@ create_prop_editor (GObject   *object,
     {
       notebook = gtk_notebook_new ();
       gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), GTK_POS_LEFT);
-      
+
       gtk_container_add (GTK_CONTAINER (win), notebook);
-      
+
       type = G_TYPE_FROM_INSTANCE (object);
 
       title = g_strdup_printf ("Properties of %s widget", g_type_name (type));
       gtk_window_set_title (GTK_WINDOW (win), title);
       g_free (title);
-      
+
       while (type)
 	{
 	  properties = properties_from_type (object, type);
@@ -1285,7 +1285,7 @@ create_prop_editor (GObject   *object,
 	      gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
 					properties, label);
 	    }
-	  
+
 	  type = g_type_parent (type);
 	}
 
@@ -1335,9 +1335,9 @@ create_prop_editor (GObject   *object,
       gtk_window_set_title (GTK_WINDOW (win), title);
       g_free (title);
     }
-  
+
   gtk_window_set_default_size (GTK_WINDOW (win), -1, 400);
-  
+
   gtk_widget_show_all (win);
 
   return win;

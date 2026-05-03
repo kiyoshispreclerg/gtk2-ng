@@ -35,7 +35,7 @@ accel_edited_callback (GtkCellRendererText *cell,
   gtk_tree_model_get_iter (model, &iter, path);
 
   g_print ("%u %d %u\n", keyval, mask, hardware_keycode);
-  
+
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, (gint)mask,
 		      1, keyval,
@@ -64,9 +64,9 @@ key_test (void)
 	gtk_container_add (GTK_CONTAINER (sw), tv);
 	column = gtk_tree_view_column_new ();
 	rend = gtk_cell_renderer_accel_new ();
-	g_object_set (G_OBJECT (rend), 
-		      "accel-mode", GTK_CELL_RENDERER_ACCEL_MODE_GTK, 
-                      "editable", TRUE, 
+	g_object_set (G_OBJECT (rend),
+		      "accel-mode", GTK_CELL_RENDERER_ACCEL_MODE_GTK,
+                      "editable", TRUE,
 		      NULL);
 	g_signal_connect (G_OBJECT (rend),
 			  "accel-edited",
@@ -96,7 +96,7 @@ gint
 main (gint argc, gchar **argv)
 {
   GtkWidget *dialog;
-  
+
   gtk_init (&argc, &argv);
 
   dialog = key_test ();

@@ -29,7 +29,7 @@ static void      gail_renderer_cell_finalize            (GObject               *
 
 G_DEFINE_TYPE (GailRendererCell, gail_renderer_cell, GAIL_TYPE_CELL)
 
-static void 
+static void
 gail_renderer_cell_class_init (GailRendererCellClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -56,7 +56,7 @@ gail_renderer_cell_finalize (GObject  *object)
 }
 
 gboolean
-gail_renderer_cell_update_cache (GailRendererCell *cell, 
+gail_renderer_cell_update_cache (GailRendererCell *cell,
                                  gboolean         emit_change_signal)
 {
   GailRendererCellClass *class = GAIL_RENDERER_CELL_GET_CLASS(cell);

@@ -126,9 +126,9 @@ gdk_font_equal (const GdkFont *fonta,
   return FALSE;
 }
 
-GdkDisplay* 
+GdkDisplay*
 gdk_font_get_display (GdkFont* font)
 {
-  /* FIXME: Implement */ 
+  /* FIXME: Implement */
   return NULL;
 }

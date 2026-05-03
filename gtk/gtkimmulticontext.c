@@ -97,7 +97,7 @@ gtk_im_multicontext_class_init (GtkIMMulticontextClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
-  
+
   im_context_class->set_client_window = gtk_im_multicontext_set_client_window;
   im_context_class->get_preedit_string = gtk_im_multicontext_get_preedit_string;
   im_context_class->filter_keypress = gtk_im_multicontext_filter_keypress;
@@ -116,7 +116,7 @@ static void
 gtk_im_multicontext_init (GtkIMMulticontext *multicontext)
 {
   multicontext->slave = NULL;
-  
+
   multicontext->priv = gtk_im_multicontext_get_instance_private (multicontext);
   multicontext->priv->use_preedit = TRUE;
   multicontext->priv->have_cursor_location = FALSE;
@@ -140,7 +140,7 @@ static void
 gtk_im_multicontext_finalize (GObject *object)
 {
   GtkIMMulticontext *multicontext = GTK_IM_MULTICONTEXT (object);
-  
+
   gtk_im_multicontext_set_slave (multicontext, NULL, TRUE);
   g_free (multicontext->context_id);
   g_free (multicontext->priv->context_id);
@@ -155,12 +155,12 @@ gtk_im_multicontext_set_slave (GtkIMMulticontext *multicontext,
 {
   GtkIMMulticontextPrivate *priv = multicontext->priv;
   gboolean need_preedit_changed = FALSE;
-  
+
   if (multicontext->slave)
     {
       if (!finalizing)
 	gtk_im_context_reset (multicontext->slave);
-      
+
       g_signal_handlers_disconnect_by_func (multicontext->slave,
 					    gtk_im_multicontext_preedit_start_cb,
 					    multicontext);
@@ -180,7 +180,7 @@ gtk_im_multicontext_set_slave (GtkIMMulticontext *multicontext,
       if (!finalizing)
 	need_preedit_changed = TRUE;
     }
-  
+
   multicontext->slave = slave;
 
   if (multicontext->slave)
@@ -205,7 +205,7 @@ gtk_im_multicontext_set_slave (GtkIMMulticontext *multicontext,
       g_signal_connect (multicontext->slave, "delete-surrounding",
 			G_CALLBACK (gtk_im_multicontext_delete_surrounding_cb),
 			multicontext);
-      
+
       if (!priv->use_preedit)	/* Default is TRUE */
 	gtk_im_context_set_use_preedit (slave, FALSE);
       if (priv->client_window)
@@ -258,7 +258,7 @@ gtk_im_multicontext_get_slave (GtkIMMulticontext *multicontext)
 }
 
 static void
-im_module_setting_changed (GtkSettings *settings, 
+im_module_setting_changed (GtkSettings *settings,
                            gpointer     data)
 {
   global_context_id = NULL;
@@ -371,7 +371,7 @@ gtk_im_multicontext_focus_out (GtkIMContext   *context)
   GtkIMContext *slave = gtk_im_multicontext_get_slave (multicontext);
 
   multicontext->priv->focus_in = FALSE;
-  
+
   if (slave)
     gtk_im_context_focus_out (slave);
 }
@@ -483,7 +483,7 @@ gtk_im_multicontext_retrieve_surrounding_cb (GtkIMContext      *slave,
 					     GtkIMMulticontext *multicontext)
 {
   gboolean result;
-  
+
   g_signal_emit_by_name (multicontext, "retrieve-surrounding", &result);
 
   return result;
@@ -496,7 +496,7 @@ gtk_im_multicontext_delete_surrounding_cb (GtkIMContext      *slave,
 					   GtkIMMulticontext *multicontext)
 {
   gboolean result;
-  
+
   g_signal_emit_by_name (multicontext, "delete-surrounding",
 			 offset, n_chars, &result);
 
@@ -539,7 +539,7 @@ pathnamecmp (const char *a,
  * gtk_im_multicontext_append_menuitems:
  * @context: a #GtkIMMulticontext
  * @menushell: a #GtkMenuShell
- * 
+ *
  * Add menuitems for various available input methods to a menu;
  * the menuitems, when selected, will switch the input method
  * for the context and the global default input method.
@@ -552,8 +552,8 @@ gtk_im_multicontext_append_menuitems (GtkIMMulticontext *context,
   guint n_contexts, i;
   GSList *group = NULL;
   GtkWidget *menuitem, *system_menuitem;
-  const char *system_context_id; 
-  
+  const char *system_context_id;
+
   system_context_id = _gtk_im_module_get_default_context_id (context->priv->client_window);
   system_menuitem = menuitem = gtk_radio_menu_item_new_with_label (group, C_("input method menu", "System"));
   if (!context->priv->context_id)
@@ -573,7 +573,7 @@ gtk_im_multicontext_append_menuitems (GtkIMMulticontext *context,
   gtk_widget_show (menuitem);
   gtk_menu_shell_append (menushell, menuitem);
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
-  
+
   menuitem = gtk_separator_menu_item_new ();
   gtk_widget_show (menuitem);
   gtk_menu_shell_append (menushell, menuitem);
@@ -637,7 +637,7 @@ gtk_im_multicontext_append_menuitems (GtkIMMulticontext *context,
 #endif
       menuitem = gtk_radio_menu_item_new_with_label (group,
 						     translated_name);
-      
+
       if ((context->priv->context_id &&
            strcmp (contexts[i]->context_id, context->priv->context_id) == 0))
         gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), TRUE);
@@ -651,10 +651,10 @@ gtk_im_multicontext_append_menuitems (GtkIMMulticontext *context,
           text = g_strdup_printf (C_("input method menu", "System (%s)"), translated_name);
           gtk_label_set_text (GTK_LABEL (label), text);
           g_free (text);
-        }     
- 
+        }
+
       group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (menuitem));
-      
+
       g_object_set_data (G_OBJECT (menuitem), I_("gtk-context-id"),
 			 (char *)contexts[i]->context_id);
       g_signal_connect (menuitem, "activate",
@@ -686,7 +686,7 @@ gtk_im_multicontext_get_context_id (GtkIMMulticontext *context)
 /**
  * gtk_im_multicontext_set_context_id:
  * @context: a #GtkIMMulticontext
- * @context_id: the id to use 
+ * @context_id: the id to use
  *
  * Sets the context id for @context.
  *

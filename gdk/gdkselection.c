@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -37,14 +37,14 @@ gdk_selection_owner_set (GdkWindow *owner,
 			 gboolean   send_event)
 {
   return gdk_selection_owner_set_for_display (gdk_display_get_default (),
-					      owner, selection, 
+					      owner, selection,
 					      time, send_event);
 }
 
 GdkWindow*
 gdk_selection_owner_get (GdkAtom selection)
 {
-  return gdk_selection_owner_get_for_display (gdk_display_get_default (), 
+  return gdk_selection_owner_get_for_display (gdk_display_get_default (),
 					      selection);
 }
 
@@ -55,14 +55,14 @@ gdk_selection_send_notify (GdkNativeWindow requestor,
 			   GdkAtom         property,
 			   guint32         time)
 {
-  gdk_selection_send_notify_for_display (gdk_display_get_default (), 
-					 requestor, selection, 
+  gdk_selection_send_notify_for_display (gdk_display_get_default (),
+					 requestor, selection,
 					 target, property, time);
 }
 
 gint
 gdk_text_property_to_text_list (GdkAtom       encoding,
-				gint          format, 
+				gint          format,
 				const guchar *text,
 				gint          length,
 				gchar      ***list)
@@ -79,14 +79,14 @@ gdk_text_property_to_text_list (GdkAtom       encoding,
  * @length:   the length of @text, in bytes
  * @list: (allow-none):     location to store the list of strings or %NULL. The
  *            list should be freed with g_strfreev().
- * 
+ *
  * Convert a text property in the giving encoding to
- * a list of UTF-8 strings. 
- * 
+ * a list of UTF-8 strings.
+ *
  * Return value: the number of strings in the resulting
  *               list.
  **/
-gint 
+gint
 gdk_text_property_to_utf8_list (GdkAtom        encoding,
 				gint           format,
 				const guchar  *text,
@@ -105,7 +105,7 @@ gdk_string_to_compound_text (const gchar *str,
 			     gint        *length)
 {
   return gdk_string_to_compound_text_for_display (gdk_display_get_default (),
-						  str, encoding, format, 
+						  str, encoding, format,
 						  ctext, length);
 }
 
@@ -117,9 +117,9 @@ gdk_string_to_compound_text (const gchar *str,
  * @ctext:    location to store the data of the result
  * @length:   location to store the length of the data
  *            stored in @ctext
- * 
- * Convert from UTF-8 to compound text. 
- * 
+ *
+ * Convert from UTF-8 to compound text.
+ *
  * Return value: %TRUE if the conversion succeeded, otherwise
  *               false.
  **/
@@ -131,7 +131,7 @@ gdk_utf8_to_compound_text (const gchar *str,
 			   gint        *length)
 {
   return gdk_utf8_to_compound_text_for_display (gdk_display_get_default (),
-						str, encoding, format, 
+						str, encoding, format,
 						ctext, length);
 }
 

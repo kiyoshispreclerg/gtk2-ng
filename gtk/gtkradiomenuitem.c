@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -114,7 +114,7 @@ gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
 {
   GtkWidget *old_group_singleton = NULL;
   GtkWidget *new_group_singleton = NULL;
-  
+
   g_return_if_fail (GTK_IS_RADIO_MENU_ITEM (radio_menu_item));
   g_return_if_fail (!g_slist_find (group, radio_menu_item));
 
@@ -123,35 +123,35 @@ gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
       GSList *slist;
 
       radio_menu_item->group = g_slist_remove (radio_menu_item->group, radio_menu_item);
-      
+
       if (radio_menu_item->group && !radio_menu_item->group->next)
 	old_group_singleton = g_object_ref (radio_menu_item->group->data);
-	  
+
       for (slist = radio_menu_item->group; slist; slist = slist->next)
 	{
 	  GtkRadioMenuItem *tmp_item;
-	  
+
 	  tmp_item = slist->data;
-	  
+
 	  tmp_item->group = radio_menu_item->group;
 	}
     }
-  
+
   if (group && !group->next)
     new_group_singleton = g_object_ref (group->data);
-  
+
   radio_menu_item->group = g_slist_prepend (group, radio_menu_item);
-  
+
   if (group)
     {
       GSList *slist;
-      
+
       for (slist = group; slist; slist = slist->next)
 	{
 	  GtkRadioMenuItem *tmp_item;
-	  
+
 	  tmp_item = slist->data;
-	  
+
 	  tmp_item->group = radio_menu_item->group;
 	}
     }
@@ -252,12 +252,12 @@ GtkWidget *
 gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
 {
   GSList *list = NULL;
-  
+
   g_return_val_if_fail (GTK_IS_RADIO_MENU_ITEM (group), NULL);
 
   if (group)
     list = gtk_radio_menu_item_get_group (group);
-  
+
   return gtk_radio_menu_item_new (list);
 }
 
@@ -338,7 +338,7 @@ gtk_radio_menu_item_get_group (GtkRadioMenuItem *radio_menu_item)
 static void
 gtk_radio_menu_item_class_init (GtkRadioMenuItemClass *klass)
 {
-  GObjectClass *gobject_class;  
+  GObjectClass *gobject_class;
   GtkObjectClass *object_class;
   GtkMenuItemClass *menu_item_class;
 
@@ -351,9 +351,9 @@ gtk_radio_menu_item_class_init (GtkRadioMenuItemClass *klass)
 
   /**
    * GtkRadioMenuItem:group:
-   * 
+   *
    * The radio menu item whose group this widget belongs to.
-   * 
+   *
    * Since: 2.8
    */
   g_object_class_install_property (gobject_class,
@@ -407,7 +407,7 @@ gtk_radio_menu_item_destroy (GtkObject *object)
   gboolean was_in_group;
 
   was_in_group = radio_menu_item->group && radio_menu_item->group->next;
-  
+
   radio_menu_item->group = g_slist_remove (radio_menu_item->group,
 					   radio_menu_item);
   if (radio_menu_item->group && !radio_menu_item->group->next)
@@ -425,7 +425,7 @@ gtk_radio_menu_item_destroy (GtkObject *object)
 
   /* this radio menu item is no longer in the group */
   radio_menu_item->group = NULL;
-  
+
   if (old_group_singleton)
     g_signal_emit (old_group_singleton, group_changed_signal, 0);
   if (was_in_group)

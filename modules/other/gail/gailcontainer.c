@@ -87,10 +87,10 @@ gail_container_get_n_children (AtkObject* obj)
   count = g_list_length (children);
   g_list_free (children);
 
-  return count; 
+  return count;
 }
 
-static AtkObject* 
+static AtkObject*
 gail_container_ref_child (AtkObject *obj,
                           gint       i)
 {
@@ -110,12 +110,12 @@ gail_container_ref_child (AtkObject *obj,
     {
       g_list_free (children);
       return NULL;
-    }  
+    }
   accessible = gtk_widget_get_accessible (GTK_WIDGET (tmp_list->data));
 
   g_list_free (children);
   g_object_ref (accessible);
-  return accessible; 
+  return accessible;
 }
 
 static gint
@@ -133,7 +133,7 @@ gail_container_add_gtk (GtkContainer *container,
   else
     return 1;
 }
- 
+
 static gint
 gail_container_remove_gtk (GtkContainer *container,
                            GtkWidget    *widget,
@@ -149,7 +149,7 @@ gail_container_remove_gtk (GtkContainer *container,
   else
     return 1;
 }
- 
+
 static gint
 gail_container_real_add_gtk (GtkContainer *container,
                              GtkWidget    *widget,
@@ -165,7 +165,7 @@ gail_container_real_add_gtk (GtkContainer *container,
   g_list_free (gail_container->children);
   gail_container->children = gtk_container_get_children (container);
   index = g_list_index (gail_container->children, widget);
-  g_signal_emit_by_name (atk_parent, "children_changed::add", 
+  g_signal_emit_by_name (atk_parent, "children_changed::add",
                          index, atk_child, NULL);
 
   return 1;
@@ -189,7 +189,7 @@ gail_container_real_remove_gtk (GtkContainer       *container,
     {
       g_value_init (&values.old_value, G_TYPE_POINTER);
       g_value_set_pointer (&values.old_value, atk_parent);
-    
+
       values.property_name = "accessible-parent";
 
       g_object_ref (atk_child);
@@ -202,7 +202,7 @@ gail_container_real_remove_gtk (GtkContainer       *container,
   g_list_free (gail_container->children);
   gail_container->children = gtk_container_get_children (container);
   if (index >= 0 && index <= g_list_length (gail_container->children))
-    g_signal_emit_by_name (atk_parent, "children_changed::remove", 
+    g_signal_emit_by_name (atk_parent, "children_changed::remove",
 			   index, atk_child, NULL);
 
   return 1;
@@ -227,13 +227,13 @@ gail_container_real_initialize (AtkObject *obj,
                                  "add",
                                  G_CALLBACK (gail_container_add_gtk),
                                  obj);
-  g_object_set_data (G_OBJECT (obj), "gail-add-handler-id", 
+  g_object_set_data (G_OBJECT (obj), "gail-add-handler-id",
                      GUINT_TO_POINTER (handler_id));
   handler_id = g_signal_connect (data,
                                  "remove",
                                  G_CALLBACK (gail_container_remove_gtk),
                                  obj);
-  g_object_set_data (G_OBJECT (obj), "gail-remove-handler-id", 
+  g_object_set_data (G_OBJECT (obj), "gail-remove-handler-id",
                      GUINT_TO_POINTER (handler_id));
 
   if (GTK_IS_TOOLBAR (data))

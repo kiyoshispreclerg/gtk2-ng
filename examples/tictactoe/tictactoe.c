@@ -62,13 +62,13 @@ tictactoe_get_type (void)
 static void
 tictactoe_class_init (TictactoeClass *klass)
 {
-  
+
   tictactoe_signals[TICTACTOE_SIGNAL] = g_signal_new ("tictactoe",
 					 G_TYPE_FROM_CLASS (klass),
 	                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 	                                 G_STRUCT_OFFSET (TictactoeClass, tictactoe),
-                                         NULL, 
-                                         NULL,                
+                                         NULL,
+                                         NULL,
 					 g_cclosure_marshal_VOID__VOID,
                                          G_TYPE_NONE, 0);
 
@@ -79,14 +79,14 @@ static void
 tictactoe_init (Tictactoe *ttt)
 {
   gint i,j;
-  
+
   gtk_table_resize (GTK_TABLE (ttt), 3, 3);
   gtk_table_set_homogeneous (GTK_TABLE (ttt), TRUE);
 
   for (i=0;i<3; i++)
     for (j=0;j<3; j++)      {
 	ttt->buttons[i][j] = gtk_toggle_button_new ();
-	gtk_table_attach_defaults (GTK_TABLE (ttt), ttt->buttons[i][j], 
+	gtk_table_attach_defaults (GTK_TABLE (ttt), ttt->buttons[i][j],
 				   i, i+1, j, j+1);
 	g_signal_connect (G_OBJECT (ttt->buttons[i][j]), "toggled",
 			  G_CALLBACK (tictactoe_toggle), (gpointer) ttt);
@@ -101,7 +101,7 @@ tictactoe_new ()
   return GTK_WIDGET (g_object_new (tictactoe_get_type (), NULL));
 }
 
-void	       
+void
 tictactoe_clear (Tictactoe *ttt)
 {
   int i,j;
@@ -109,7 +109,7 @@ tictactoe_clear (Tictactoe *ttt)
   for (i = 0; i<3; i++)
     for (j = 0; j<3; j++)
       {
-	g_signal_handlers_block_matched (G_OBJECT (ttt->buttons[i][j]), 
+	g_signal_handlers_block_matched (G_OBJECT (ttt->buttons[i][j]),
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (ttt->buttons[i][j]),
@@ -141,15 +141,15 @@ tictactoe_toggle (GtkWidget *widget, Tictactoe *ttt)
 
       for (i = 0; i<3; i++)
 	{
-	  success = success && 
+	  success = success &&
 	    GTK_TOGGLE_BUTTON (ttt->buttons[rwins[k][i]][cwins[k][i]])->active;
 	  found = found ||
 	    ttt->buttons[rwins[k][i]][cwins[k][i]] == widget;
 	}
-      
+
       if (success && found)
 	{
-	  g_signal_emit (G_OBJECT (ttt), 
+	  g_signal_emit (G_OBJECT (ttt),
 	                 tictactoe_signals[TICTACTOE_SIGNAL], 0);
 	  break;
 	}

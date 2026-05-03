@@ -81,7 +81,7 @@ Example:
     vk = 0xde VK_OEM_7
     level = GDK_WIN32_LEVEL_NONE
     gdk_keycode = 0xfe51 GDK_KEY_dead_acute
-    combinations = 
+    combinations =
     {
       GdkWin32KeyNode
       {

@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -58,12 +58,12 @@ gdk_image_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) gdk_image_init,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkImage",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -89,7 +89,7 @@ gdk_image_finalize (GObject *object)
   GdkImage *image = GDK_IMAGE (object);
 
   gdk_win32_image_destroy (image);
-  
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -186,7 +186,7 @@ gdk_image_new_bitmap (GdkVisual *visual,
   bits = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
   image = _gdk_win32_new_image (visual, w, h, 1, bits);
   image->windowing_data = pixmap;
-  
+
   if (data_bpl != image->bpl)
     {
       for (i = 0; i < h; i++)
@@ -219,7 +219,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
   g_return_val_if_fail (!visual || GDK_IS_VISUAL (visual), NULL);
   g_return_val_if_fail (visual || depth != -1, NULL);
   g_return_val_if_fail (screen == gdk_screen_get_default (), NULL);
- 
+
   if (visual)
     depth = visual->depth;
 
@@ -230,11 +230,11 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 
   GDK_NOTE (IMAGE, g_print ("_gdk_image_new_for_depth: %dx%dx%d=%p\n",
 			    width, height, depth, GDK_PIXMAP_HBITMAP (pixmap)));
-  
+
   bits = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
   image = _gdk_win32_new_image (visual, width, height, depth, bits);
   image->windowing_data = pixmap;
-  
+
   return image;
 }
 
@@ -250,7 +250,7 @@ _gdk_win32_copy_to_image (GdkDrawable    *drawable,
 {
   GdkGC *gc;
   GdkScreen *screen = gdk_drawable_get_screen (drawable);
-  
+
   g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_WIN32 (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
 
@@ -296,18 +296,18 @@ gdk_image_get_pixel (GdkImage *image,
 
       return (*pixelp) >> 4;
     }
-    
+
   pixelp = (guchar *) image->mem + y * image->bpl + x * image->bpp;
-      
+
   switch (image->bpp)
     {
     case 1:
       return *pixelp;
-      
+
       /* Windows is always LSB, no need to check image->byte_order. */
     case 2:
       return pixelp[0] | (pixelp[1] << 8);
-      
+
     case 3:
       return pixelp[0] | (pixelp[1] << 8) | (pixelp[2] << 16);
 
@@ -357,7 +357,7 @@ gdk_image_put_pixel (GdkImage *image,
   else
     {
       pixelp = (guchar *) image->mem + y * image->bpl + x * image->bpp;
-      
+
       /* Windows is always LSB, no need to check image->byte_order. */
       switch (image->bpp)
 	{
@@ -388,7 +388,7 @@ gdk_win32_image_destroy (GdkImage *image)
 				 * _finalize()
 				 */
     return;
-  
+
   GDK_NOTE (IMAGE, g_print ("gdk_win32_image_destroy: %p\n",
 			    GDK_PIXMAP_HBITMAP (pixmap)));
 

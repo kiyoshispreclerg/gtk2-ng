@@ -42,21 +42,21 @@ gtk_print_win32_devnames_from_win32 (HGLOBAL global)
   LPDEVNAMES win = GlobalLock (global);
   gunichar2 *data = (gunichar2 *)win;
   GtkPrintWin32Devnames *devnames = g_new (GtkPrintWin32Devnames, 1);
-  
-  devnames->driver = g_utf16_to_utf8 (data + win->wDriverOffset, 
+
+  devnames->driver = g_utf16_to_utf8 (data + win->wDriverOffset,
 				      -1, NULL, NULL, NULL);
-  devnames->device = g_utf16_to_utf8 (data + win->wDeviceOffset, 
+  devnames->device = g_utf16_to_utf8 (data + win->wDeviceOffset,
 				      -1, NULL, NULL, NULL);
-  devnames->output = g_utf16_to_utf8 (data + win->wOutputOffset, 
+  devnames->output = g_utf16_to_utf8 (data + win->wOutputOffset,
 				      -1, NULL, NULL, NULL);
   devnames->flags = win->wDefault;
-  
+
   GlobalUnlock (global);
 
   return devnames;
 }
 
-HGLOBAL 
+HGLOBAL
 gtk_print_win32_devnames_to_win32 (const GtkPrintWin32Devnames *devnames)
 {
   HGLOBAL global;
@@ -70,9 +70,9 @@ gtk_print_win32_devnames_to_win32 (const GtkPrintWin32Devnames *devnames)
   device = g_utf8_to_utf16 (devnames->device, -1, NULL, &device_len, NULL);
   output = g_utf8_to_utf16 (devnames->output, -1, NULL, &output_len, NULL);
 
-  global = GlobalAlloc (GMEM_MOVEABLE, 
-			sizeof (DEVNAMES) + 
-			(driver_len + 1) * 2 + 
+  global = GlobalAlloc (GMEM_MOVEABLE,
+			sizeof (DEVNAMES) +
+			(driver_len + 1) * 2 +
 			(device_len + 1) * 2 +
 			(output_len + 1) * 2);
 
@@ -99,7 +99,7 @@ gtk_print_win32_devnames_to_win32 (const GtkPrintWin32Devnames *devnames)
   return global;
 }
 
-HGLOBAL 
+HGLOBAL
 gtk_print_win32_devnames_to_win32_from_printer_name (const char *printer_name)
 {
   HGLOBAL global;

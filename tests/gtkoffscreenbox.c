@@ -287,7 +287,7 @@ gtk_offscreen_box_realize (GtkWidget *widget)
 
   gdk_offscreen_window_set_embedder (offscreen_box->offscreen_window1,
 				     widget->window);
-  
+
   g_signal_connect (offscreen_box->offscreen_window1, "to-embedder",
 		    G_CALLBACK (offscreen_window_to_parent1), offscreen_box);
   g_signal_connect (offscreen_box->offscreen_window1, "from-embedder",

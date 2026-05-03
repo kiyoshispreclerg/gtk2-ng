@@ -296,7 +296,7 @@ AC_SUBST(gtktargetlib)
 
 if test "x$enable_debug" = "xyes"; then
   test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
-  GTK_DEBUG_FLAGS="-DG_ENABLE_DEBUG -DG_ERRORCHECK_MUTEXES" 
+  GTK_DEBUG_FLAGS="-DG_ENABLE_DEBUG -DG_ERRORCHECK_MUTEXES"
 else
   if test "x$enable_debug" = "xno"; then
     GTK_DEBUG_FLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
@@ -314,7 +314,7 @@ fi
 AC_DEFINE_UNQUOTED(GTK_COMPILED_WITH_DEBUGGING, "${enable_debug}",
                    [Define if debugging is enabled])
 
-			
+
 # Build time sanity check...
 AM_SANITY_CHECK
 
@@ -384,11 +384,11 @@ fi
 # Honor aclocal flags
 ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 
-## Initial sanity check, done here so that users get told they 
+## Initial sanity check, done here so that users get told they
 ## have the wrong dependencies as early in the process as possible.
 ## Later on we actually use the cflags/libs from separate pkg-config
-## calls. Oh, also the later pkg-config calls don't include 
-## the version requirements since those make the module lists 
+## calls. Oh, also the later pkg-config calls don't include
+## the version requirements since those make the module lists
 ## annoying to construct
 PKG_CHECK_MODULES(BASE_DEPENDENCIES,
   [glib-2.0 >= glib_required_version dnl
@@ -426,7 +426,7 @@ dnl ******************************************************
 dnl * See whether to include shared library dependencies *
 dnl ******************************************************
 
-AC_ARG_ENABLE(explicit-deps, 
+AC_ARG_ENABLE(explicit-deps,
               [AS_HELP_STRING([--enable-explicit-deps=@<:@yes/no/auto@:>@],
                               [use explicit dependencies in .pc files [default=auto]])],,
               [enable_explicit_deps=auto])
@@ -437,12 +437,12 @@ case $enable_explicit_deps in
     export SED
     deplibs_check_method=`(./libtool --config; echo 'eval echo \"$deplibs_check_method\"') | sh`
     if test "x$deplibs_check_method" '!=' xpass_all || test "x$enable_static" = xyes ; then
-      enable_explicit_deps=yes  
+      enable_explicit_deps=yes
     else
-      enable_explicit_deps=no  
+      enable_explicit_deps=no
     fi
   ;;
-  yes|no) 
+  yes|no)
   ;;
   *) AC_MSG_ERROR([Value given to --enable-explicit-deps must be one of yes, no or auto])
   ;;
@@ -825,7 +825,7 @@ if test x$enable_modules = xno; then
 else
     AC_MSG_RESULT(yes)
     AC_MSG_CHECKING(whether dynamic modules work)
-    ## for loop is to strip newline 
+    ## for loop is to strip newline
     tmp=`$PKG_CONFIG --variable=gmodule_supported gmodule-no-export-2.0`
     for I in $tmp; do
         dynworks=$I
@@ -869,7 +869,7 @@ AC_ARG_WITH(included_immodules,
 [  --with-included-immodules=MODULE1,MODULE2,...
                           build the specified input methods into gtk])
 
-if $dynworks; then 
+if $dynworks; then
    :
 else
    ## if the option was specified, leave it; otherwise disable included immodules
@@ -941,7 +941,7 @@ AC_HEADER_SYS_WAIT
 # support.
 #
 AC_CHECK_HEADER(sys/systeminfo.h,
-                AC_DEFINE(HAVE_SYS_SYSTEMINFO_H, 1, 
+                AC_DEFINE(HAVE_SYS_SYSTEMINFO_H, 1,
                           [Define to 1 if sys/systeminfo.h is available]))
 AC_CHECK_HEADER(sys/sysinfo.h,
                 AC_DEFINE(HAVE_SYS_SYSINFO_H, 1,
@@ -982,11 +982,11 @@ fi
 
 AC_PATH_PROG(GDK_PIXBUF_CSOURCE, gdk-pixbuf-csource, no)
 
-if test ! -f $srcdir/gtk/gtkbuiltincache.h && 
+if test ! -f $srcdir/gtk/gtkbuiltincache.h &&
    test "x$REBUILD_PNGS" = "x#" ; then
      AC_MSG_ERROR([
 *** gtkbuiltincache.h is not in the tree, and cannot be built
-*** because you don't have libpng, or (when cross-compiling) you 
+*** because you don't have libpng, or (when cross-compiling) you
 *** don't have a prebuilt gtk-update-icon-cache on the build system.])
 fi
 
@@ -996,7 +996,7 @@ fi
 
 GDK_EXTRA_LIBS="$GDK_WLIBS"
 GDK_EXTRA_CFLAGS=
-	
+
 # GTK+ uses some X calls, so needs to link against X directly
 GTK_DEP_PACKAGES_FOR_X=
 GTK_DEP_LIBS_FOR_X=
@@ -1021,12 +1021,12 @@ if test "x$gdktarget" = "xx11"; then
     X_PACKAGES="$X_PACKAGES x11 xext xrender"
     x_libs="`$PKG_CONFIG --libs x11 xext xrender`"
     X_CFLAGS="`$PKG_CONFIG --cflags x11 xext xrender`"
-    
+
     # Strip out any .la files that pkg-config might give us (this happens
     # with -uninstalled.pc files)
     x_libs_for_checks=
     for I in $x_libs ; do
-      case $I in 
+      case $I in
         *.la) ;;
         *) x_libs_for_checks="$x_libs_for_checks $I" ;;
       esac
@@ -1039,7 +1039,7 @@ if test "x$gdktarget" = "xx11"; then
     if test x$no_x = xyes ; then
       AC_MSG_ERROR([X development libraries not found])
     fi
-    
+
     x_cflags="$X_CFLAGS"
     x_libs_for_checks="$X_LIBS -lXext -lXrender -lX11 $X_EXTRA_LIBS"
 
@@ -1054,7 +1054,7 @@ if test "x$gdktarget" = "xx11"; then
 
   gtk_save_LIBS=$LIBS
   LIBS="$x_libs_for_checks $LIBS"
-  
+
   # Sanity check for the X11 and Xext libraries. While everything we need from
   # Xext is optional, the chances a system has *none* of these things is so
   # small that we just unconditionally require it.
@@ -1088,9 +1088,9 @@ if test "x$gdktarget" = "xx11"; then
 
   # Generic X11R6 check needed for XIM support; we could
   # probably use this to replace the above, but we'll
-  # leave the separate checks for XConvertCase and XInternAtoms 
+  # leave the separate checks for XConvertCase and XInternAtoms
   # for clarity
-  
+
   have_x11r6=false
   AC_CHECK_FUNC(XAddConnectionWatch,
       have_x11r6=true)
@@ -1120,7 +1120,7 @@ if test "x$gdktarget" = "xx11"; then
   # X SYNC check
   gtk_save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS $x_cflags"
-  
+
   AC_CHECK_FUNC(XSyncQueryExtension,
       [AC_CHECK_HEADER(X11/extensions/sync.h,
 	  AC_DEFINE(HAVE_XSYNC, 1, [Have the SYNC extension library]),
@@ -1135,9 +1135,9 @@ if test "x$gdktarget" = "xx11"; then
      AC_CHECK_FUNC(XShmAttach,
 	:,
 	# On AIX, it is in XextSam instead
-	[AC_CHECK_LIB(XextSam, XShmAttach, 
+	[AC_CHECK_LIB(XextSam, XShmAttach,
 	    [GTK_ADD_LIB(x_extra_libs,XextSam)])])
-  fi    
+  fi
 
   if test "x$enable_shm" = "xyes"; then
     # Check for shared memory
@@ -1151,7 +1151,7 @@ if test "x$gdktarget" = "xx11"; then
                     no_sys_shm=yes)
 
     # Check for the X shared memory extension header file
-    have_xshm=no 
+    have_xshm=no
     AC_MSG_CHECKING(X11/extensions/XShm.h)
     if test "x$no_xext_lib" = "xyes"; then
       :
@@ -1183,17 +1183,17 @@ if test "x$gdktarget" = "xx11"; then
     # Check for Xinerama extension (Solaris impl or Xfree impl)
     gtk_save_cppflags="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $x_cflags"
-  
+
     # Check for XFree
     AC_MSG_CHECKING(for Xinerama support on XFree86)
-	  
+
     have_xfree_xinerama=false
     if $PKG_CONFIG --exists xinerama ; then
        have_xfree_xinerama=true
        X_PACKAGES="$X_PACKAGES xinerama"
-    else    
+    else
        AC_CHECK_LIB(Xinerama, XineramaQueryExtension,
-	   [AC_CHECK_HEADER(X11/extensions/Xinerama.h, 
+	   [AC_CHECK_HEADER(X11/extensions/Xinerama.h,
 	   [GTK_ADD_LIB(x_extra_libs,Xinerama)
 	   have_xfree_xinerama=true], :,
            [#include <X11/Xlib.h>])])
@@ -1212,13 +1212,13 @@ if test "x$gdktarget" = "xx11"; then
         *-*-solaris*)
             # Check for solaris
 	    AC_MSG_CHECKING(for Xinerama support on Solaris)
-	  
+
 	    have_solaris_xinerama=false
 	    AC_CHECK_FUNC(XineramaGetInfo,
 	        [AC_CHECK_HEADER(X11/extensions/xinerama.h,
   	  	    [have_solaris_xinerama=true], :,
 		    [#include <X11/Xlib.h>])])
-		
+
             if $have_solaris_xinerama ; then
               AC_DEFINE(HAVE_SOLARIS_XINERAMA, 1,
                         [Define to 1 if solaris xinerama is available])
@@ -1234,13 +1234,13 @@ if test "x$gdktarget" = "xx11"; then
       esac
     fi
   fi
-  
+
   # set up things for XInput
 
   if test "x$with_xinput" = "xxfree" || test "x$with_xinput" = "xyes"; then
     AC_DEFINE(XINPUT_XFREE, 1,
               [Define to 1 if XFree XInput should be used])
-    
+
     if $PKG_CONFIG --exists xi ; then
       X_PACKAGES="$X_PACKAGES xi"
     else
@@ -1262,20 +1262,20 @@ if test "x$gdktarget" = "xx11"; then
      fi
      X_PACKAGES="$X_PACKAGES xrandr"
   fi
-       
+
   # Checks for Xcursor library
-  
+
   if $PKG_CONFIG --exists xcursor ; then
     AC_DEFINE(HAVE_XCURSOR, 1, [Have the Xcursor library])
-    
+
     X_PACKAGES="$X_PACKAGES xcursor"
   fi
 
   # Checks for XFixes extension
-  
+
   if test "x$enable_xfixes" != "xno" && $PKG_CONFIG --exists xfixes ; then
     AC_DEFINE(HAVE_XFIXES, 1, [Have the XFIXES X extension])
-    
+
     X_PACKAGES="$X_PACKAGES xfixes"
     GTK_PACKAGES_FOR_X="$GTK_PACKAGES_FOR_X xfixes"
   fi
@@ -1452,7 +1452,7 @@ if test "x$gdktarget" = "xx11"; then
   GTK_PACKAGES="$GTK_PACKAGES pangoft2"
 fi
 GTK_EXTRA_LIBS=
-GTK_EXTRA_CFLAGS= 
+GTK_EXTRA_CFLAGS=
 GTK_DEP_LIBS="$GDK_EXTRA_LIBS $GTK_DEP_LIBS_FOR_X `$PKG_CONFIG --libs $PANGO_PACKAGES $GTK_PACKAGES_FOR_X $GTK_PACKAGES` $GTK_EXTRA_LIBS $MATH_LIB"
 GTK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES $GTK_PACKAGES` $GDK_EXTRA_CFLAGS $GTK_EXTRA_CFLAGS"
 
@@ -1499,7 +1499,7 @@ AC_CHECK_MEMBER([struct sockaddr_un.sun_len],
 		[#include <sys/types.h>
 		 #include <sys/un.h>]
 		)
-case $struct_sockaddr_un_sun_len in 
+case $struct_sockaddr_un_sun_len in
 	true)
 		AC_DEFINE_UNQUOTED(HAVE_SOCKADDR_UN_SUN_LEN, 1,
 		                   [Have the sockaddr_un.sun_len member])
@@ -1544,7 +1544,7 @@ else
 
     if test $CUPS_API_MAJOR -gt 1 -o \
             $CUPS_API_MAJOR -eq 1 -a $CUPS_API_MINOR -ge 2; then
-      AC_DEFINE(HAVE_CUPS_API_1_2, 1, 
+      AC_DEFINE(HAVE_CUPS_API_1_2, 1,
                 [Define to 1 if CUPS 1.2 API is available])
     fi
     if test $CUPS_API_MAJOR -gt 1 -o \
@@ -1617,17 +1617,17 @@ AC_CHECK_HEADER(cairo-pdf.h,,AC_MSG_ERROR([
 
 if test "$os_win32" != "yes"; then
   AC_CHECK_HEADER(cairo-ps.h,,AC_MSG_ERROR([
-*** Can't find cairo-ps.h. You must build Cairo with the 
+*** Can't find cairo-ps.h. You must build Cairo with the
 *** postscript backend enabled.]))
 
   AC_CHECK_HEADER(cairo-svg.h,,AC_MSG_ERROR([
 *** Can't find cairo-svg.h. You must build Cairo with the
 *** svg backend enabled.]))
-fi   
+fi
 
 CPPFLAGS="$gtk_save_cppflags"
-     
-			  	
+
+
 AC_ARG_ENABLE(test-print-backend,
               [AS_HELP_STRING([--enable-test-print-backend],
                               [build test print backend])],,

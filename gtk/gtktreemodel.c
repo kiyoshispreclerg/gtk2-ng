@@ -157,7 +157,7 @@ gtk_tree_model_base_init (gpointer g_class)
       tree_model_signals[ROW_CHANGED] =
         g_signal_new (I_("row-changed"),
                       GTK_TYPE_TREE_MODEL,
-                      G_SIGNAL_RUN_LAST, 
+                      G_SIGNAL_RUN_LAST,
                       G_STRUCT_OFFSET (GtkTreeModelIface, row_changed),
                       NULL, NULL,
                       _gtk_marshal_VOID__BOXED_BOXED,
@@ -187,7 +187,7 @@ gtk_tree_model_base_init (gpointer g_class)
        * This signal is emitted when a new row has been inserted in the model.
        *
        * Note that the row may still be empty at this point, since
-       * it is a common pattern to first insert an empty row, and 
+       * it is a common pattern to first insert an empty row, and
        * then fill it with the desired values.
        */
       closure = g_closure_new_simple (sizeof (GClosure), NULL);
@@ -253,13 +253,13 @@ gtk_tree_model_base_init (gpointer g_class)
        * @tree_model: the #GtkTreeModel on which the signal is emitted
        * @path: a #GtkTreePath identifying the tree node whose children
        *        have been reordered
-       * @iter: a valid #GtkTreeIter pointing to the node whose 
+       * @iter: a valid #GtkTreeIter pointing to the node whose
        * @new_order: an array of integers mapping the current position of
        *             each child to its old position before the re-ordering,
        *             i.e. @new_order<literal>[newpos] = oldpos</literal>.
        *
        * This signal is emitted when the children of a node in the #GtkTreeModel
-       * have been reordered. 
+       * have been reordered.
        *
        * Note that this signal is <emphasis>not</emphasis> emitted
        * when rows are reordered by DND, since this is implemented
@@ -293,7 +293,7 @@ row_inserted_marshal (GClosure          *closure,
   void (* row_inserted_callback) (GtkTreeModel *tree_model,
                                   GtkTreePath *path,
                                   GtkTreeIter *iter) = NULL;
-            
+
   GObject *model = g_value_get_object (param_values + 0);
   GtkTreePath *path = (GtkTreePath *)g_value_get_boxed (param_values + 1);
   GtkTreeIter *iter = (GtkTreeIter *)g_value_get_boxed (param_values + 2);
@@ -301,14 +301,14 @@ row_inserted_marshal (GClosure          *closure,
   /* first, we need to update internal row references */
   gtk_tree_row_ref_inserted ((RowRefList *)g_object_get_data (model, ROW_REF_DATA_STRING),
                              path, iter);
-                               
+
   /* fetch the interface ->row_inserted implementation */
   iface = GTK_TREE_MODEL_GET_IFACE (model);
   row_inserted_callback = G_STRUCT_MEMBER (gpointer, iface,
                               G_STRUCT_OFFSET (GtkTreeModelIface,
                                                row_inserted));
 
-  /* Call that default signal handler, it if has been set */                                                         
+  /* Call that default signal handler, it if has been set */
   if (row_inserted_callback)
     row_inserted_callback (GTK_TREE_MODEL (model), path, iter);
 }
@@ -323,10 +323,10 @@ row_deleted_marshal (GClosure          *closure,
 {
   GtkTreeModelIface *iface;
   void (* row_deleted_callback) (GtkTreeModel *tree_model,
-                                 GtkTreePath  *path) = NULL;                                 
+                                 GtkTreePath  *path) = NULL;
   GObject *model = g_value_get_object (param_values + 0);
   GtkTreePath *path = (GtkTreePath *)g_value_get_boxed (param_values + 1);
- 
+
 
   /* first, we need to update internal row references */
   gtk_tree_row_ref_deleted ((RowRefList *)g_object_get_data (model, ROW_REF_DATA_STRING),
@@ -337,7 +337,7 @@ row_deleted_marshal (GClosure          *closure,
   row_deleted_callback = G_STRUCT_MEMBER (gpointer, iface,
                               G_STRUCT_OFFSET (GtkTreeModelIface,
                                                row_deleted));
-                              
+
   /* Call that default signal handler, it if has been set */
   if (row_deleted_callback)
     row_deleted_callback (GTK_TREE_MODEL (model), path);
@@ -356,12 +356,12 @@ rows_reordered_marshal (GClosure          *closure,
                                     GtkTreePath  *path,
                                     GtkTreeIter  *iter,
                                     gint         *new_order);
-            
+
   GObject *model = g_value_get_object (param_values + 0);
   GtkTreePath *path = (GtkTreePath *)g_value_get_boxed (param_values + 1);
   GtkTreeIter *iter = (GtkTreeIter *)g_value_get_boxed (param_values + 2);
   gint *new_order = (gint *)g_value_get_pointer (param_values + 3);
-  
+
   /* first, we need to update internal row references */
   gtk_tree_row_ref_reordered ((RowRefList *)g_object_get_data (model, ROW_REF_DATA_STRING),
                               path, iter, new_order);
@@ -506,7 +506,7 @@ gtk_tree_path_to_string (GtkTreePath *path)
   ptr = retval = g_new0 (gchar, n);
   end = ptr + n;
   g_snprintf (retval, end - ptr, "%d", path->indices[0]);
-  while (*ptr != '\000') 
+  while (*ptr != '\000')
     ptr++;
 
   for (i = 1; i < path->depth; i++)
@@ -686,7 +686,7 @@ GType
 gtk_tree_path_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (I_("GtkTreePath"),
 					     (GBoxedCopyFunc) gtk_tree_path_copy,
@@ -815,7 +815,7 @@ gtk_tree_path_next (GtkTreePath *path)
  * gtk_tree_path_prev:
  * @path: A #GtkTreePath.
  *
- * Moves the @path to point to the previous node at the current depth, 
+ * Moves the @path to point to the previous node at the current depth,
  * if it exists.
  *
  * Return value: %TRUE if @path has a previous node, and the move was made.
@@ -875,9 +875,9 @@ gtk_tree_path_down (GtkTreePath *path)
  * gtk_tree_iter_copy:
  * @iter: A #GtkTreeIter.
  *
- * Creates a dynamically allocated tree iterator as a copy of @iter.  
- * This function is not intended for use in applications, because you 
- * can just copy the structs by value 
+ * Creates a dynamically allocated tree iterator as a copy of @iter.
+ * This function is not intended for use in applications, because you
+ * can just copy the structs by value
  * (<literal>GtkTreeIter new_iter = iter;</literal>).
  * You must free this iter with gtk_tree_iter_free().
  *
@@ -915,7 +915,7 @@ GType
 gtk_tree_iter_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (I_("GtkTreeIter"),
 					     (GBoxedCopyFunc) gtk_tree_iter_copy,
@@ -1044,14 +1044,14 @@ gtk_tree_model_get_iter_from_string (GtkTreeModel *tree_model,
   g_return_val_if_fail (GTK_IS_TREE_MODEL (tree_model), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (path_string != NULL, FALSE);
-  
+
   path = gtk_tree_path_new_from_string (path_string);
-  
+
   g_return_val_if_fail (path != NULL, FALSE);
 
   retval = gtk_tree_model_get_iter (tree_model, iter, path);
   gtk_tree_path_free (path);
-  
+
   return retval;
 }
 
@@ -1092,10 +1092,10 @@ gtk_tree_model_get_string_from_iter (GtkTreeModel *tree_model,
  * gtk_tree_model_get_iter_first:
  * @tree_model: A #GtkTreeModel.
  * @iter: (out): The uninitialized #GtkTreeIter.
- * 
+ *
  * Initializes @iter with the first iterator in the tree (the one at the path
  * "0") and returns %TRUE.  Returns %FALSE if the tree is empty.
- * 
+ *
  * Return value: %TRUE, if @iter was set.
  **/
 gboolean
@@ -1148,7 +1148,7 @@ gtk_tree_model_get_path (GtkTreeModel *tree_model,
  * @value: (out) (transfer none): An empty #GValue to set.
  *
  * Initializes and sets @value to that at @column.
- * When done with @value, g_value_unset() needs to be called 
+ * When done with @value, g_value_unset() needs to be called
  * to free any allocated memory.
  */
 void
@@ -1333,7 +1333,7 @@ gtk_tree_model_iter_parent (GtkTreeModel *tree_model,
   g_return_val_if_fail (GTK_IS_TREE_MODEL (tree_model), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (child != NULL, FALSE);
-  
+
   iface = GTK_TREE_MODEL_GET_IFACE (tree_model);
   g_return_val_if_fail (iface->iter_parent != NULL, FALSE);
 
@@ -1350,8 +1350,8 @@ gtk_tree_model_iter_parent (GtkTreeModel *tree_model,
  * Lets the tree ref the node.  This is an optional method for models to
  * implement.  To be more specific, models may ignore this call as it exists
  * primarily for performance reasons.
- * 
- * This function is primarily meant as a way for views to let caching model 
+ *
+ * This function is primarily meant as a way for views to let caching model
  * know when nodes are being displayed (and hence, whether or not to cache that
  * node.)  For example, a file-system based model would not want to keep the
  * entire file-hierarchy in memory, just the sections that are currently being
@@ -1411,7 +1411,7 @@ gtk_tree_model_unref_node (GtkTreeModel *tree_model,
  * retrieved.  The list is terminated by a -1. For example, to get a
  * value from column 0 with type %G_TYPE_STRING, you would
  * write: <literal>gtk_tree_model_get (model, iter, 0, &amp;place_string_here, -1)</literal>,
- * where <literal>place_string_here</literal> is a <type>gchar*</type> to be 
+ * where <literal>place_string_here</literal> is a <type>gchar*</type> to be
  * filled with the string.
  *
  * Returned values with type %G_TYPE_OBJECT have to be unreferenced, values
@@ -1439,7 +1439,7 @@ gtk_tree_model_get (GtkTreeModel *tree_model,
  * @iter: a row in @tree_model
  * @var_args: <type>va_list</type> of column/return location pairs
  *
- * See gtk_tree_model_get(), this version takes a <type>va_list</type> 
+ * See gtk_tree_model_get(), this version takes a <type>va_list</type>
  * for language bindings to use.
  **/
 void
@@ -1490,7 +1490,7 @@ gtk_tree_model_get_valist (GtkTreeModel *tree_model,
  * @tree_model: A #GtkTreeModel
  * @path: A #GtkTreePath pointing to the changed row
  * @iter: A valid #GtkTreeIter pointing to the changed row
- * 
+ *
  * Emits the "row-changed" signal on @tree_model.
  **/
 void
@@ -1510,7 +1510,7 @@ gtk_tree_model_row_changed (GtkTreeModel *tree_model,
  * @tree_model: A #GtkTreeModel
  * @path: A #GtkTreePath pointing to the inserted row
  * @iter: A valid #GtkTreeIter pointing to the inserted row
- * 
+ *
  * Emits the "row-inserted" signal on @tree_model
  **/
 void
@@ -1530,7 +1530,7 @@ gtk_tree_model_row_inserted (GtkTreeModel *tree_model,
  * @tree_model: A #GtkTreeModel
  * @path: A #GtkTreePath pointing to the changed row
  * @iter: A valid #GtkTreeIter pointing to the changed row
- * 
+ *
  * Emits the "row-has-child-toggled" signal on @tree_model.  This should be
  * called by models after the child state of a node changes.
  **/
@@ -1550,10 +1550,10 @@ gtk_tree_model_row_has_child_toggled (GtkTreeModel *tree_model,
  * gtk_tree_model_row_deleted:
  * @tree_model: A #GtkTreeModel
  * @path: A #GtkTreePath pointing to the previous location of the deleted row.
- * 
+ *
  * Emits the "row-deleted" signal on @tree_model.  This should be called by
- * models after a row has been removed.  The location pointed to by @path 
- * should be the location that the row previously was at.  It may not be a 
+ * models after a row has been removed.  The location pointed to by @path
+ * should be the location that the row previously was at.  It may not be a
  * valid location anymore.
  **/
 void
@@ -1569,16 +1569,16 @@ gtk_tree_model_row_deleted (GtkTreeModel *tree_model,
 /**
  * gtk_tree_model_rows_reordered:
  * @tree_model: A #GtkTreeModel
- * @path: A #GtkTreePath pointing to the tree node whose children have been 
+ * @path: A #GtkTreePath pointing to the tree node whose children have been
  *      reordered
- * @iter: A valid #GtkTreeIter pointing to the node whose children have been 
+ * @iter: A valid #GtkTreeIter pointing to the node whose children have been
  *      reordered, or %NULL if the depth of @path is 0.
  * @new_order: an array of integers mapping the current position of each child
  *      to its old position before the re-ordering,
  *      i.e. @new_order<literal>[newpos] = oldpos</literal>.
- * 
+ *
  * Emits the "rows-reordered" signal on @tree_model.  This should be called by
- * models when their rows have been reordered.  
+ * models when their rows have been reordered.
  **/
 void
 gtk_tree_model_rows_reordered (GtkTreeModel *tree_model,
@@ -1668,7 +1668,7 @@ GType
 gtk_tree_row_reference_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (I_("GtkTreeRowReference"),
 					     (GBoxedCopyFunc) gtk_tree_row_reference_copy,
@@ -1897,7 +1897,7 @@ gtk_tree_row_reference_unref_path (GtkTreePath  *path,
 
   if (depth <= 0)
     return;
-  
+
   gtk_tree_model_iter_nth_child (model, &iter, NULL, path->indices[0]);
   gtk_tree_row_reference_unref_path_helper (path, model, &iter, depth, 1);
   gtk_tree_model_unref_node (model, &iter);
@@ -1907,12 +1907,12 @@ gtk_tree_row_reference_unref_path (GtkTreePath  *path,
  * gtk_tree_row_reference_new:
  * @model: A #GtkTreeModel
  * @path: A valid #GtkTreePath to monitor
- * 
- * Creates a row reference based on @path.  This reference will keep pointing 
+ *
+ * Creates a row reference based on @path.  This reference will keep pointing
  * to the node pointed to by @path, so long as it exists.  It listens to all
  * signals emitted by @model, and updates its path appropriately.  If @path
  * isn't a valid path in @model, then %NULL is returned.
- * 
+ *
  * Return value: A newly allocated #GtkTreeRowReference, or %NULL
  **/
 GtkTreeRowReference *
@@ -1925,7 +1925,7 @@ gtk_tree_row_reference_new (GtkTreeModel *model,
   /* We use the model itself as the proxy object; and call
    * gtk_tree_row_reference_inserted(), etc, in the
    * class closure (default handler) marshalers for the signal.
-   */  
+   */
   return gtk_tree_row_reference_new_proxy (G_OBJECT (model), model, path);
 }
 
@@ -1934,16 +1934,16 @@ gtk_tree_row_reference_new (GtkTreeModel *model,
  * @proxy: A proxy #GObject
  * @model: A #GtkTreeModel
  * @path: A valid #GtkTreePath to monitor
- * 
+ *
  * You do not need to use this function.  Creates a row reference based on
- * @path.  This reference will keep pointing to the node pointed to by @path, 
+ * @path.  This reference will keep pointing to the node pointed to by @path,
  * so long as it exists.  If @path isn't a valid path in @model, then %NULL is
  * returned.  However, unlike references created with
  * gtk_tree_row_reference_new(), it does not listen to the model for changes.
  * The creator of the row reference must do this explicitly using
  * gtk_tree_row_reference_inserted(), gtk_tree_row_reference_deleted(),
  * gtk_tree_row_reference_reordered().
- * 
+ *
  * These functions must be called exactly once per proxy when the
  * corresponding signal on the model is emitted. This single call
  * updates all row references for that proxy. Since built-in GTK+
@@ -2018,10 +2018,10 @@ gtk_tree_row_reference_new_proxy (GObject      *proxy,
 /**
  * gtk_tree_row_reference_get_path:
  * @reference: A #GtkTreeRowReference
- * 
+ *
  * Returns a path that the row reference currently points to, or %NULL if the
  * path pointed to is no longer valid.
- * 
+ *
  * Return value: A current path, or %NULL.
  **/
 GtkTreePath *
@@ -2059,10 +2059,10 @@ gtk_tree_row_reference_get_model (GtkTreeRowReference *reference)
 /**
  * gtk_tree_row_reference_valid:
  * @reference: (allow-none): A #GtkTreeRowReference, or %NULL
- * 
+ *
  * Returns %TRUE if the @reference is non-%NULL and refers to a current valid
  * path.
- * 
+ *
  * Return value: %TRUE if @reference points to a valid path.
  **/
 gboolean
@@ -2078,9 +2078,9 @@ gtk_tree_row_reference_valid (GtkTreeRowReference *reference)
 /**
  * gtk_tree_row_reference_copy:
  * @reference: a #GtkTreeRowReference
- * 
+ *
  * Copies a #GtkTreeRowReference.
- * 
+ *
  * Return value: a copy of @reference.
  *
  * Since: 2.2
@@ -2096,7 +2096,7 @@ gtk_tree_row_reference_copy (GtkTreeRowReference *reference)
 /**
  * gtk_tree_row_reference_free:
  * @reference: (allow-none): A #GtkTreeRowReference, or %NULL
- * 
+ *
  * Free's @reference. @reference may be %NULL.
  **/
 void
@@ -2139,7 +2139,7 @@ gtk_tree_row_reference_free (GtkTreeRowReference *reference)
  * gtk_tree_row_reference_inserted:
  * @proxy: A #GObject
  * @path: The row position that was inserted
- * 
+ *
  * Lets a set of row reference created by gtk_tree_row_reference_new_proxy()
  * know that the model emitted the "row_inserted" signal.
  **/
@@ -2156,7 +2156,7 @@ gtk_tree_row_reference_inserted (GObject     *proxy,
  * gtk_tree_row_reference_deleted:
  * @proxy: A #GObject
  * @path: The path position that was deleted
- * 
+ *
  * Lets a set of row reference created by gtk_tree_row_reference_new_proxy()
  * know that the model emitted the "row_deleted" signal.
  **/
@@ -2175,7 +2175,7 @@ gtk_tree_row_reference_deleted (GObject     *proxy,
  * @path: The parent path of the reordered signal
  * @iter: The iter pointing to the parent of the reordered
  * @new_order: The new order of rows
- * 
+ *
  * Lets a set of row reference created by gtk_tree_row_reference_new_proxy()
  * know that the model emitted the "rows_reordered" signal.
  **/

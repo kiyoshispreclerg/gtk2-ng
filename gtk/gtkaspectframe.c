@@ -26,7 +26,7 @@
  * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /**
@@ -78,10 +78,10 @@ gtk_aspect_frame_class_init (GtkAspectFrameClass *class)
 {
   GObjectClass *gobject_class;
   GtkFrameClass *frame_class;
-  
+
   gobject_class = (GObjectClass*) class;
   frame_class = (GtkFrameClass*) class;
-  
+
   gobject_class->set_property = gtk_aspect_frame_set_property;
   gobject_class->get_property = gtk_aspect_frame_get_property;
 
@@ -133,7 +133,7 @@ gtk_aspect_frame_set_property (GObject         *object,
 			       GParamSpec      *pspec)
 {
   GtkAspectFrame *aspect_frame = GTK_ASPECT_FRAME (object);
-  
+
   switch (prop_id)
     {
       /* g_object_notify is handled by the _frame_set function */
@@ -178,7 +178,7 @@ gtk_aspect_frame_get_property (GObject         *object,
 			       GParamSpec      *pspec)
 {
   GtkAspectFrame *aspect_frame = GTK_ASPECT_FRAME (object);
-  
+
   switch (prop_id)
     {
     case PROP_XALIGN:
@@ -260,12 +260,12 @@ gtk_aspect_frame_set (GtkAspectFrame *aspect_frame,
 		      gboolean        obey_child)
 {
   g_return_if_fail (GTK_IS_ASPECT_FRAME (aspect_frame));
-  
+
   xalign = CLAMP (xalign, 0.0, 1.0);
   yalign = CLAMP (yalign, 0.0, 1.0);
   ratio = CLAMP (ratio, MIN_RATIO, MAX_RATIO);
   obey_child = obey_child != FALSE;
-  
+
   if (   (aspect_frame->xalign != xalign)
       || (aspect_frame->yalign != yalign)
       || (aspect_frame->ratio != ratio)
@@ -310,7 +310,7 @@ gtk_aspect_frame_compute_child_allocation (GtkFrame      *frame,
   if (bin->child && gtk_widget_get_visible (bin->child))
     {
       GtkAllocation full_allocation;
-      
+
       if (aspect_frame->obey_child)
 	{
 	  GtkRequisition child_requisition;
@@ -332,7 +332,7 @@ gtk_aspect_frame_compute_child_allocation (GtkFrame      *frame,
 	ratio = aspect_frame->ratio;
 
       GTK_FRAME_CLASS (gtk_aspect_frame_parent_class)->compute_child_allocation (frame, &full_allocation);
-      
+
       if (ratio * full_allocation.height > full_allocation.width)
 	{
 	  child_allocation->width = full_allocation.width;
@@ -343,7 +343,7 @@ gtk_aspect_frame_compute_child_allocation (GtkFrame      *frame,
 	  child_allocation->width = ratio * full_allocation.height + 0.5;
 	  child_allocation->height = full_allocation.height;
 	}
-      
+
       child_allocation->x = full_allocation.x + aspect_frame->xalign * (full_allocation.width - child_allocation->width);
       child_allocation->y = full_allocation.y + aspect_frame->yalign * (full_allocation.height - child_allocation->height);
     }

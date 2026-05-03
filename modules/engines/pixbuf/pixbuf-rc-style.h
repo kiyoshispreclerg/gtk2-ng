@@ -37,7 +37,7 @@ extern G_GNUC_INTERNAL GType pixbuf_type_rc_style;
 struct _PixbufRcStyle
 {
   GtkRcStyle parent_instance;
-  
+
   GList *img_list;
 };
 

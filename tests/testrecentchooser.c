@@ -114,7 +114,7 @@ main (int   argc,
   GtkRecentFilter *filter;
   gint i;
   gboolean multiple = FALSE;
-  
+
   gtk_init (&argc, &argv);
 
   /* to test rtl layout, set RTL=1 in the environment */
@@ -137,7 +137,7 @@ main (int   argc,
 		  	  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 			  GTK_STOCK_OPEN, GTK_RESPONSE_OK,
 			  NULL);
-  
+
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
   g_signal_connect (dialog, "item-activated",
@@ -146,7 +146,7 @@ main (int   argc,
 		    G_CALLBACK (print_selected), NULL);
   g_signal_connect (dialog, "response",
 		    G_CALLBACK (response_cb), NULL);
-  
+
   /* filters */
   filter = gtk_recent_filter_new ();
   gtk_recent_filter_set_name (filter, "All Files");
@@ -192,11 +192,11 @@ main (int   argc,
 		            G_CALLBACK (gtk_recent_chooser_unselect_all), dialog);
 
   gtk_widget_show_all (control_window);
-  
+
   g_object_ref (control_window);
   g_signal_connect (dialog, "destroy",
 		    G_CALLBACK (kill_dependent), control_window);
-  
+
   g_object_ref (dialog);
   gtk_main ();
   gtk_widget_destroy (dialog);

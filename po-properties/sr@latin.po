@@ -1755,7 +1755,7 @@ msgid "Whether this tag affects the alignment mode"
 msgstr "Da li ove postavke utiču na režim poravnjanja"
 
 # Ovaj izraz se kod nas koristi za sve sto se ponasa kao "toggle",
-# koliko mi je bar poznato 
+# koliko mi je bar poznato
 #: gtk/gtkcellrenderertoggle.c:126
 msgid "Toggle state"
 msgstr "Stanje prekidača"

@@ -61,8 +61,8 @@ struct _GdkWindowImplQuartz
 
   GdkRegion *needs_display_region;
 };
- 
-struct _GdkWindowImplQuartzClass 
+
+struct _GdkWindowImplQuartzClass
 {
   GdkDrawableImplQuartzClass parent_class;
 };

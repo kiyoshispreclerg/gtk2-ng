@@ -613,7 +613,7 @@ signal_watcher_expect (SignalWatcher *watcher, const char *signal_name, char *un
   if (!conn->emitted)
     {
       guint timeout_id;
-      
+
       timeout_id = gdk_threads_add_timeout_full (G_MAXINT, 1000, sleep_timeout_cb, NULL, NULL);
 
       watcher->in_main_loop = TRUE;

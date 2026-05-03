@@ -49,7 +49,7 @@ typedef struct _GtkAboutDialogClass   GtkAboutDialogClass;
  * The <structname>GtkAboutDialog</structname> struct contains
  * only private fields and should not be directly accessed.
  */
-struct _GtkAboutDialog 
+struct _GtkAboutDialog
 {
   GtkDialog parent_instance;
 
@@ -57,7 +57,7 @@ struct _GtkAboutDialog
   gpointer GSEAL (private_data);
 };
 
-struct _GtkAboutDialogClass 
+struct _GtkAboutDialogClass
 {
   GtkDialogClass parent_class;
 

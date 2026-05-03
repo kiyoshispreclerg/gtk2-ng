@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_PIXMAP_X11_H__
@@ -54,8 +54,8 @@ struct _GdkPixmapImplX11
 
   guint is_foreign : 1;
 };
- 
-struct _GdkPixmapImplX11Class 
+
+struct _GdkPixmapImplX11Class
 {
   GdkDrawableImplX11Class parent_class;
 

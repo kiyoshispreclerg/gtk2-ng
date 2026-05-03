@@ -2,7 +2,7 @@
  * gtkrecentchooser.c - Abstract interface for recent file selectors GUIs
  *
  * Copyright (C) 2006, Emmanuele Bassi
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -56,7 +56,7 @@ GType
 gtk_recent_chooser_get_type (void)
 {
   static GType chooser_type = 0;
-  
+
   if (!chooser_type)
     {
       chooser_type = g_type_register_static_simple (G_TYPE_INTERFACE,
@@ -64,10 +64,10 @@ gtk_recent_chooser_get_type (void)
 						    sizeof (GtkRecentChooserIface),
 						    (GClassInitFunc) gtk_recent_chooser_class_init,
 						    0, NULL, 0);
-      
+
       g_type_interface_add_prerequisite (chooser_type, G_TYPE_OBJECT);
     }
-  
+
   return chooser_type;
 }
 
@@ -78,7 +78,7 @@ gtk_recent_chooser_class_init (gpointer g_iface)
 
   quark_gtk_related_action        = g_quark_from_static_string (gtk_related_action_key);
   quark_gtk_use_action_appearance = g_quark_from_static_string (gtk_use_action_appearance_key);
-  
+
   /**
    * GtkRecentChooser::selection-changed
    * @chooser: the object which received the signal
@@ -98,7 +98,7 @@ gtk_recent_chooser_class_init (gpointer g_iface)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-   
+
   /**
    * GtkRecentChooser::item-activated
    * @chooser: the object which received the signal
@@ -287,7 +287,7 @@ GtkRecentManager *
 _gtk_recent_chooser_get_recent_manager (GtkRecentChooser *chooser)
 {
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
-  
+
   return GTK_RECENT_CHOOSER_GET_IFACE (chooser)->get_recent_manager (chooser);
 }
 
@@ -305,7 +305,7 @@ gtk_recent_chooser_set_show_private (GtkRecentChooser *chooser,
 				     gboolean          show_private)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "show-private", show_private, NULL);
 }
 
@@ -325,11 +325,11 @@ gboolean
 gtk_recent_chooser_get_show_private (GtkRecentChooser *chooser)
 {
   gboolean show_private;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   g_object_get (chooser, "show-private", &show_private, NULL);
-  
+
   return show_private;
 }
 
@@ -348,7 +348,7 @@ gtk_recent_chooser_set_show_not_found (GtkRecentChooser *chooser,
 				       gboolean          show_not_found)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "show-not-found", show_not_found, NULL);
 }
 
@@ -368,11 +368,11 @@ gboolean
 gtk_recent_chooser_get_show_not_found (GtkRecentChooser *chooser)
 {
   gboolean show_not_found;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   g_object_get (chooser, "show-not-found", &show_not_found, NULL);
-  
+
   return show_not_found;
 }
 
@@ -391,7 +391,7 @@ gtk_recent_chooser_set_show_icons (GtkRecentChooser *chooser,
 				   gboolean          show_icons)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "show-icons", show_icons, NULL);
 }
 
@@ -409,11 +409,11 @@ gboolean
 gtk_recent_chooser_get_show_icons (GtkRecentChooser *chooser)
 {
   gboolean show_icons;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   g_object_get (chooser, "show-icons", &show_icons, NULL);
-  
+
   return show_icons;
 }
 
@@ -431,7 +431,7 @@ gtk_recent_chooser_set_select_multiple (GtkRecentChooser *chooser,
 					gboolean          select_multiple)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "select-multiple", select_multiple, NULL);
 }
 
@@ -449,11 +449,11 @@ gboolean
 gtk_recent_chooser_get_select_multiple (GtkRecentChooser *chooser)
 {
   gboolean select_multiple;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   g_object_get (chooser, "select-multiple", &select_multiple, NULL);
-  
+
   return select_multiple;
 }
 
@@ -461,7 +461,7 @@ gtk_recent_chooser_get_select_multiple (GtkRecentChooser *chooser)
  * gtk_recent_chooser_set_local_only:
  * @chooser: a #GtkRecentChooser
  * @local_only: %TRUE if only local files can be shown
- * 
+ *
  * Sets whether only local resources, that is resources using the file:// URI
  * scheme, should be shown in the recently used resources selector.  If
  * @local_only is %TRUE (the default) then the shown resources are guaranteed
@@ -516,7 +516,7 @@ gtk_recent_chooser_set_limit (GtkRecentChooser *chooser,
 			      gint              limit)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "limit", limit, NULL);
 }
 
@@ -536,11 +536,11 @@ gint
 gtk_recent_chooser_get_limit (GtkRecentChooser *chooser)
 {
   gint limit;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), 10);
-  
+
   g_object_get (chooser, "limit", &limit, NULL);
-  
+
   return limit;
 }
 
@@ -559,7 +559,7 @@ gtk_recent_chooser_set_show_tips (GtkRecentChooser *chooser,
 				  gboolean          show_tips)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "show-tips", show_tips, NULL);
 }
 
@@ -579,11 +579,11 @@ gboolean
 gtk_recent_chooser_get_show_tips (GtkRecentChooser *chooser)
 {
   gboolean show_tips;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   g_object_get (chooser, "show-tips", &show_tips, NULL);
-  
+
   return show_tips;
 }
 
@@ -591,7 +591,7 @@ static gboolean
 recent_chooser_has_show_numbers (GtkRecentChooser *chooser)
 {
   GParamSpec *pspec;
-  
+
   /* This is the result of a minor screw up: the "show-numbers" property
    * was removed from the GtkRecentChooser interface, but the accessors
    * remained in the interface API; now we need to check whether the
@@ -627,10 +627,10 @@ gtk_recent_chooser_set_show_numbers (GtkRecentChooser *chooser,
     {
       g_warning ("Choosers of type `%s' do not support showing numbers",
 		 G_OBJECT_TYPE_NAME (chooser));
-      
+
       return;
     }
-  
+
   g_object_set (chooser, "show-numbers", show_numbers, NULL);
 }
 
@@ -653,7 +653,7 @@ gtk_recent_chooser_get_show_numbers (GtkRecentChooser *chooser)
 {
   GParamSpec *pspec;
   gboolean show_numbers;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (chooser),
@@ -665,9 +665,9 @@ gtk_recent_chooser_get_show_numbers (GtkRecentChooser *chooser)
 
       return FALSE;
     }
-  
+
   g_object_get (chooser, "show-numbers", &show_numbers, NULL);
-  
+
   return show_numbers;
 }
 
@@ -685,9 +685,9 @@ gtk_recent_chooser_get_show_numbers (GtkRecentChooser *chooser)
 void
 gtk_recent_chooser_set_sort_type (GtkRecentChooser  *chooser,
 				  GtkRecentSortType  sort_type)
-{  
+{
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_object_set (chooser, "sort-type", sort_type, NULL);
 }
 
@@ -705,9 +705,9 @@ GtkRecentSortType
 gtk_recent_chooser_get_sort_type (GtkRecentChooser *chooser)
 {
   GtkRecentSortType sort_type;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), GTK_RECENT_SORT_NONE);
-  
+
   g_object_get (chooser, "sort-type", &sort_type, NULL);
 
   return sort_type;
@@ -738,7 +738,7 @@ gtk_recent_chooser_set_sort_func  (GtkRecentChooser  *chooser,
 				   GDestroyNotify     data_destroy)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   GTK_RECENT_CHOOSER_GET_IFACE (chooser)->set_sort_func (chooser,
   							 sort_func,
   							 sort_data,
@@ -763,7 +763,7 @@ gtk_recent_chooser_set_current_uri (GtkRecentChooser  *chooser,
 				    GError           **error)
 {
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   return GTK_RECENT_CHOOSER_GET_IFACE (chooser)->set_current_uri (chooser, uri, error);
 }
 
@@ -781,14 +781,14 @@ gchar *
 gtk_recent_chooser_get_current_uri (GtkRecentChooser *chooser)
 {
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
-  
+
   return GTK_RECENT_CHOOSER_GET_IFACE (chooser)->get_current_uri (chooser);
 }
 
 /**
  * gtk_recent_chooser_get_current_item:
  * @chooser: a #GtkRecentChooser
- * 
+ *
  * Gets the #GtkRecentInfo currently selected by @chooser.
  *
  * Return value: a #GtkRecentInfo.  Use gtk_recent_info_unref() when
@@ -802,17 +802,17 @@ gtk_recent_chooser_get_current_item (GtkRecentChooser *chooser)
   GtkRecentManager *manager;
   GtkRecentInfo *retval;
   gchar *uri;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
-  
+
   uri = gtk_recent_chooser_get_current_uri (chooser);
   if (!uri)
     return NULL;
-  
+
   manager = _gtk_recent_chooser_get_recent_manager (chooser);
   retval = gtk_recent_manager_lookup_item (manager, uri, NULL);
   g_free (uri);
-  
+
   return retval;
 }
 
@@ -834,7 +834,7 @@ gtk_recent_chooser_select_uri (GtkRecentChooser  *chooser,
 			       GError           **error)
 {
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), FALSE);
-  
+
   return GTK_RECENT_CHOOSER_GET_IFACE (chooser)->select_uri (chooser, uri, error);
 }
 
@@ -852,7 +852,7 @@ gtk_recent_chooser_unselect_uri (GtkRecentChooser *chooser,
 				 const gchar      *uri)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   GTK_RECENT_CHOOSER_GET_IFACE (chooser)->unselect_uri (chooser, uri);
 }
 
@@ -869,7 +869,7 @@ void
 gtk_recent_chooser_select_all (GtkRecentChooser *chooser)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   GTK_RECENT_CHOOSER_GET_IFACE (chooser)->select_all (chooser);
 }
 
@@ -878,14 +878,14 @@ gtk_recent_chooser_select_all (GtkRecentChooser *chooser)
  * @chooser: a #GtkRecentChooser
  *
  * Unselects all the items inside @chooser.
- * 
+ *
  * Since: 2.10
  */
 void
 gtk_recent_chooser_unselect_all (GtkRecentChooser *chooser)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   GTK_RECENT_CHOOSER_GET_IFACE (chooser)->unselect_all (chooser);
 }
 
@@ -909,7 +909,7 @@ GList *
 gtk_recent_chooser_get_items (GtkRecentChooser *chooser)
 {
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
-  
+
   return GTK_RECENT_CHOOSER_GET_IFACE (chooser)->get_items (chooser);
 }
 
@@ -924,7 +924,7 @@ gtk_recent_chooser_get_items (GtkRecentChooser *chooser)
  * properties of @chooser.
  *
  * Since the returned array is %NULL terminated, @length may be %NULL.
- * 
+ *
  * Return value: (array length=length zero-terminated=1) (transfer full):
  *     A newly allocated, %NULL-terminated array of strings. Use
  *     g_strfreev() to free it.
@@ -938,34 +938,34 @@ gtk_recent_chooser_get_uris (GtkRecentChooser *chooser,
   GList *items, *l;
   gchar **retval;
   gsize n_items, i;
-  
+
   items = gtk_recent_chooser_get_items (chooser);
-  
+
   n_items = g_list_length (items);
   retval = g_new0 (gchar *, n_items + 1);
-  
+
   for (l = items, i = 0; l != NULL; l = l->next)
     {
       GtkRecentInfo *info = (GtkRecentInfo *) l->data;
       const gchar *uri;
-      
+
       g_assert (info != NULL);
-      
+
       uri = gtk_recent_info_get_uri (info);
       g_assert (uri != NULL);
-      
+
       retval[i++] = g_strdup (uri);
     }
   retval[i] = NULL;
-  
+
   if (length)
     *length = i;
-  
+
   g_list_foreach (items,
   		  (GFunc) gtk_recent_info_unref,
   		  NULL);
   g_list_free (items);
-  
+
   return retval;
 }
 
@@ -987,7 +987,7 @@ gtk_recent_chooser_add_filter (GtkRecentChooser *chooser,
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
-  
+
   GTK_RECENT_CHOOSER_GET_IFACE (chooser)->add_filter (chooser, filter);
 }
 
@@ -1006,7 +1006,7 @@ gtk_recent_chooser_remove_filter (GtkRecentChooser *chooser,
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
-  
+
   GTK_RECENT_CHOOSER_GET_IFACE (chooser)->remove_filter (chooser, filter);
 }
 
@@ -1026,7 +1026,7 @@ GSList *
 gtk_recent_chooser_list_filters (GtkRecentChooser *chooser)
 {
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
-  
+
   return GTK_RECENT_CHOOSER_GET_IFACE (chooser)->list_filters (chooser);
 }
 
@@ -1046,7 +1046,7 @@ gtk_recent_chooser_set_filter (GtkRecentChooser *chooser,
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
-  
+
   g_object_set (G_OBJECT (chooser), "filter", filter, NULL);
 }
 
@@ -1065,18 +1065,18 @@ GtkRecentFilter *
 gtk_recent_chooser_get_filter (GtkRecentChooser *chooser)
 {
   GtkRecentFilter *filter;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
-  
+
   g_object_get (G_OBJECT (chooser), "filter", &filter, NULL);
-  
+
   /* we need this hack because g_object_get() increases the refcount
    * of the returned object; see also gtk_file_chooser_get_filter()
    * inside gtkfilechooser.c
    */
   if (filter)
     g_object_unref (filter);
-  
+
   return filter;
 }
 
@@ -1084,7 +1084,7 @@ void
 _gtk_recent_chooser_item_activated (GtkRecentChooser *chooser)
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (chooser));
-  
+
   g_signal_emit (chooser, chooser_signals[ITEM_ACTIVATED], 0);
 }
 
@@ -1137,7 +1137,7 @@ _gtk_recent_chooser_sync_action_properties (GtkActivatable *activatable,
     return;
 
   if (recent_chooser_has_show_numbers (recent_chooser))
-    g_object_set (recent_chooser, "show-numbers", 
+    g_object_set (recent_chooser, "show-numbers",
                   gtk_recent_action_get_show_numbers (GTK_RECENT_ACTION (action)),
                   NULL);
   gtk_recent_chooser_set_show_private (recent_chooser, gtk_recent_chooser_get_show_private (action_chooser));
@@ -1175,7 +1175,7 @@ _gtk_recent_chooser_get_related_action (GtkRecentChooser *recent_chooser)
  * qdata backwards for this case.
  */
 void
-_gtk_recent_chooser_set_use_action_appearance (GtkRecentChooser *recent_chooser, 
+_gtk_recent_chooser_set_use_action_appearance (GtkRecentChooser *recent_chooser,
 					       gboolean          use_appearance)
 {
   GtkAction *action;
@@ -1188,7 +1188,7 @@ _gtk_recent_chooser_set_use_action_appearance (GtkRecentChooser *recent_chooser,
     {
 
       g_object_set_qdata (G_OBJECT (recent_chooser), quark_gtk_use_action_appearance, GINT_TO_POINTER (!use_appearance));
- 
+
       gtk_activatable_sync_action_properties (GTK_ACTIVATABLE (recent_chooser), action);
     }
 }

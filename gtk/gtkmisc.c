@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -64,7 +64,7 @@ gtk_misc_class_init (GtkMiscClass *class)
 
   gobject_class->set_property = gtk_misc_set_property;
   gobject_class->get_property = gtk_misc_get_property;
-  
+
   widget_class->realize = gtk_misc_realize;
 
   g_object_class_install_property (gobject_class,
@@ -207,7 +207,7 @@ gtk_misc_set_alignment (GtkMisc *misc,
 
       misc->xalign = xalign;
       misc->yalign = yalign;
-      
+
       /* clear the area that was allocated before the change
        */
       widget = GTK_WIDGET (misc);
@@ -224,7 +224,7 @@ gtk_misc_set_alignment (GtkMisc *misc,
  * @xalign: (out) (allow-none): location to store X alignment of @misc, or %NULL
  * @yalign: (out) (allow-none): location to store Y alignment of @misc, or %NULL
  *
- * Gets the X and Y alignment of the widget within its allocation. 
+ * Gets the X and Y alignment of the widget within its allocation.
  * See gtk_misc_set_alignment().
  **/
 void
@@ -246,14 +246,14 @@ gtk_misc_set_padding (GtkMisc *misc,
 		      gint     ypad)
 {
   GtkRequisition *requisition;
-  
+
   g_return_if_fail (GTK_IS_MISC (misc));
-  
+
   if (xpad < 0)
     xpad = 0;
   if (ypad < 0)
     ypad = 0;
-  
+
   if ((xpad != misc->xpad) || (ypad != misc->ypad))
     {
       g_object_freeze_notify (G_OBJECT (misc));
@@ -266,13 +266,13 @@ gtk_misc_set_padding (GtkMisc *misc,
       requisition = &(GTK_WIDGET (misc)->requisition);
       requisition->width -= misc->xpad * 2;
       requisition->height -= misc->ypad * 2;
-      
+
       misc->xpad = xpad;
       misc->ypad = ypad;
-      
+
       requisition->width += misc->xpad * 2;
       requisition->height += misc->ypad * 2;
-      
+
       if (gtk_widget_is_drawable (GTK_WIDGET (misc)))
 	gtk_widget_queue_resize (GTK_WIDGET (misc));
 
@@ -288,7 +288,7 @@ gtk_misc_set_padding (GtkMisc *misc,
  * @ypad: (out) (allow-none): location to store padding in the Y
  *        direction, or %NULL
  *
- * Gets the padding in the X and Y directions of the widget. 
+ * Gets the padding in the X and Y directions of the widget.
  * See gtk_misc_set_padding().
  **/
 void

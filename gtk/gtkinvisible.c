@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -93,7 +93,7 @@ static void
 gtk_invisible_init (GtkInvisible *invisible)
 {
   GdkColormap *colormap;
-  
+
   gtk_widget_set_has_window (GTK_WIDGET (invisible), TRUE);
   _gtk_widget_set_is_toplevel (GTK_WIDGET (invisible), TRUE);
 
@@ -101,7 +101,7 @@ gtk_invisible_init (GtkInvisible *invisible)
 
   invisible->has_user_ref_count = TRUE;
   invisible->screen = gdk_screen_get_default ();
-  
+
   colormap = _gtk_widget_peek_colormap ();
   if (colormap)
     gtk_widget_set_colormap (GTK_WIDGET (invisible), colormap);
@@ -111,14 +111,14 @@ static void
 gtk_invisible_destroy (GtkObject *object)
 {
   GtkInvisible *invisible = GTK_INVISIBLE (object);
-  
+
   if (invisible->has_user_ref_count)
     {
       invisible->has_user_ref_count = FALSE;
       g_object_unref (invisible);
     }
 
-  GTK_OBJECT_CLASS (gtk_invisible_parent_class)->destroy (object);  
+  GTK_OBJECT_CLASS (gtk_invisible_parent_class)->destroy (object);
 }
 
 /**
@@ -132,19 +132,19 @@ gtk_invisible_destroy (GtkObject *object)
  *
  * Since: 2.2
  **/
-GtkWidget* 
+GtkWidget*
 gtk_invisible_new_for_screen (GdkScreen *screen)
 {
   g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
-  
+
   return g_object_new (GTK_TYPE_INVISIBLE, "screen", screen, NULL);
 }
 
 /**
  * gtk_invisible_new:
- * 
+ *
  * Creates a new #GtkInvisible.
- * 
+ *
  * Return value: a new #GtkInvisible.
  **/
 GtkWidget*
@@ -161,7 +161,7 @@ gtk_invisible_new (void)
  * Sets the #GdkScreen where the #GtkInvisible object will be displayed.
  *
  * Since: 2.2
- **/ 
+ **/
 void
 gtk_invisible_set_screen (GtkInvisible *invisible,
 			  GdkScreen    *screen)
@@ -169,7 +169,7 @@ gtk_invisible_set_screen (GtkInvisible *invisible,
   GtkWidget *widget;
   GdkScreen *previous_screen;
   gboolean was_realized;
-  
+
   g_return_if_fail (GTK_IS_INVISIBLE (invisible));
   g_return_if_fail (GDK_IS_SCREEN (screen));
 
@@ -183,12 +183,12 @@ gtk_invisible_set_screen (GtkInvisible *invisible,
 
   if (was_realized)
     gtk_widget_unrealize (widget);
-  
+
   invisible->screen = screen;
   if (screen != previous_screen)
     _gtk_widget_propagate_screen_changed (widget, previous_screen);
   g_object_notify (G_OBJECT (invisible), "screen");
-  
+
   if (was_realized)
     gtk_widget_realize (widget);
 }
@@ -207,7 +207,7 @@ GdkScreen *
 gtk_invisible_get_screen (GtkInvisible *invisible)
 {
   g_return_val_if_fail (GTK_IS_INVISIBLE (invisible), NULL);
-  
+
   return invisible->screen;
 }
 
@@ -236,9 +236,9 @@ gtk_invisible_realize (GtkWidget *widget)
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_NOREDIR;
 
   widget->window = gdk_window_new (parent, &attributes, attributes_mask);
-					      
+
   gdk_window_set_user_data (widget->window, widget);
-  
+
   widget->style = gtk_style_attach (widget->style, widget->window);
 }
 
@@ -261,17 +261,17 @@ gtk_invisible_size_allocate (GtkWidget     *widget,
 			    GtkAllocation *allocation)
 {
   widget->allocation = *allocation;
-} 
+}
 
 
-static void 
+static void
 gtk_invisible_set_property  (GObject      *object,
 			     guint         prop_id,
 			     const GValue *value,
 			     GParamSpec   *pspec)
 {
   GtkInvisible *invisible = GTK_INVISIBLE (object);
-  
+
   switch (prop_id)
     {
     case PROP_SCREEN:
@@ -283,7 +283,7 @@ gtk_invisible_set_property  (GObject      *object,
     }
 }
 
-static void 
+static void
 gtk_invisible_get_property  (GObject      *object,
 			     guint         prop_id,
 			     GValue	  *value,

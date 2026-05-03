@@ -4,8 +4,8 @@
 
 /*
  * This test modules tests the AtkImage interface. When the module is loaded
- * with testgtk , it also creates a dialog that contains GtkArrows and a 
- * GtkImage. 
+ * with testgtk , it also creates a dialog that contains GtkArrows and a
+ * GtkImage.
  *
  */
 
@@ -72,7 +72,7 @@ static void _check_arrows (AtkObject *obj)
 }
 
 
-static void 
+static void
 _print_image_info(AtkObject *obj) {
 
   gint height, width;
@@ -83,7 +83,7 @@ _print_image_info(AtkObject *obj) {
   height = width = 0;
 
 
-  if(!ATK_IS_IMAGE(obj)) 
+  if(!ATK_IS_IMAGE(obj))
 	return;
 
   g_print("atk_object_get_name : %s\n", name ? name : "<NULL>");

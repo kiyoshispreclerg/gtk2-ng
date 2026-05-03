@@ -173,13 +173,13 @@ gail_text_util_buffer_setup  (GailTextUtil  *textutil,
  * @function: An enumeration specifying whether to return the text before, at, or
  *   after the offset.
  * @boundary_type: The boundary type.
- * @offset: The offset of the text in the GailTextUtil 
+ * @offset: The offset of the text in the GailTextUtil
  * @start_offset: Address of location in which the start offset is returned
  * @end_offset: Address of location in which the end offset is returned
  *
  * This function gets the requested substring from the text in the GtkTextUtil.
- * The layout is used only for getting the text on a line. The value is NULL 
- * for a GtkTextView which is not wrapped, is a GtkTextView for a GtkTextView 
+ * The layout is used only for getting the text on a line. The value is NULL
+ * for a GtkTextView which is not wrapped, is a GtkTextView for a GtkTextView
  * which is wrapped and is a PangoLayout otherwise.
  *
  * Returns: the substring requested
@@ -215,7 +215,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
     }
   gtk_text_buffer_get_iter_at_offset (buffer, &start, offset);
 
-    
+
   end = start;
 
   switch (function)
@@ -345,7 +345,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
                       gtk_text_view_forward_display_line_end (view, &start);
                     }
                   gtk_text_view_forward_display_line_end (view, &end);
-                } 
+                }
               else
                 {
                   end = start;
@@ -364,7 +364,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
           break;
         }
       break;
- 
+
     case GAIL_AT_OFFSET:
       switch (boundary_type)
         {
@@ -485,7 +485,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
                 {
                   gtk_text_view_backward_display_line (view, &start);
                   gtk_text_view_forward_display_line_end (view, &start);
-                } 
+                }
               gtk_text_view_forward_display_line_end (view, &end);
             }
           else if PANGO_IS_LAYOUT (layout)
@@ -501,7 +501,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
           break;
         }
       break;
-  
+
     case GAIL_AFTER_OFFSET:
       switch (boundary_type)
         {
@@ -571,7 +571,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
               GtkTextView *view = GTK_TEXT_VIEW (layout);
 
               gtk_text_view_forward_display_line (view, &end);
-              start = end; 
+              start = end;
               gtk_text_view_forward_display_line (view, &end);
             }
           else if (PANGO_IS_LAYOUT (layout))
@@ -591,7 +591,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
               gtk_text_iter_forward_line (&start);
               end = start;
               if (!gtk_text_iter_is_end (&start))
-                { 
+                {
                   while (!gtk_text_iter_ends_line (&start))
                   {
                     if (!gtk_text_iter_backward_char (&start))
@@ -605,7 +605,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
               GtkTextView *view = GTK_TEXT_VIEW (layout);
 
               gtk_text_view_forward_display_line_end (view, &end);
-              start = end; 
+              start = end;
               gtk_text_view_forward_display_line (view, &end);
               gtk_text_view_forward_display_line_end (view, &end);
             }
@@ -641,7 +641,7 @@ gail_text_util_get_text (GailTextUtil    *textutil,
  **/
 gchar*
 gail_text_util_get_substring (GailTextUtil *textutil,
-                              gint         start_pos, 
+                              gint         start_pos,
                               gint         end_pos)
 {
   GtkTextIter start, end;
@@ -709,7 +709,7 @@ get_pango_text_offsets (PangoLayout         *layout,
                       break;
                     case ATK_TEXT_BOUNDARY_LINE_END:
                       if (prev_prev_line)
-                        start_index = prev_prev_line->start_index + 
+                        start_index = prev_prev_line->start_index +
                                   prev_prev_line->length;
                       end_index = prev_line->start_index + prev_line->length;
                       break;
@@ -729,7 +729,7 @@ get_pango_text_offsets (PangoLayout         *layout,
                   break;
                 case ATK_TEXT_BOUNDARY_LINE_END:
                   if (prev_line)
-                    start_index = prev_line->start_index + 
+                    start_index = prev_line->start_index +
                                   prev_line->length;
                   break;
                 default:
@@ -767,8 +767,8 @@ get_pango_text_offsets (PangoLayout         *layout,
           found = TRUE;
           break;
         }
-      prev_prev_line = prev_line; 
-      prev_line = line; 
+      prev_prev_line = prev_line;
+      prev_line = line;
     }
   while (pango_layout_iter_next_line (iter));
 
@@ -780,7 +780,7 @@ get_pango_text_offsets (PangoLayout         *layout,
   pango_layout_iter_free (iter);
   *start_offset = g_utf8_pointer_to_offset (text, text + start_index);
   *end_offset = g_utf8_pointer_to_offset (text, text + end_index);
- 
+
   gtk_text_buffer_get_iter_at_offset (buffer, start_iter, *start_offset);
   gtk_text_buffer_get_iter_at_offset (buffer, end_iter, *end_offset);
 }

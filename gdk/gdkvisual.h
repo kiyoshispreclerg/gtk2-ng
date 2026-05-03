@@ -77,7 +77,7 @@ typedef enum
 struct _GdkVisual
 {
   GObject parent_instance;
-  
+
   GdkVisualType GSEAL (type);
   gint GSEAL (depth);
   GdkByteOrder GSEAL (byte_order);

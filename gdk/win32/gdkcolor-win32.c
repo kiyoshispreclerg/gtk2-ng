@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -63,12 +63,12 @@ gdk_colormap_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) gdk_colormap_init,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkColormap",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -80,7 +80,7 @@ gdk_colormap_init (GdkColormap *colormap)
   private = g_new (GdkColormapPrivateWin32, 1);
 
   colormap->windowing_data = private;
-  
+
   private->hpal = NULL;
   private->current_size = 0;
   private->use = NULL;
@@ -111,11 +111,11 @@ gdk_colormap_finalize (GObject *object)
 
   if (private->hash)
     g_hash_table_destroy (private->hash);
-  
+
   g_free (private->info);
   g_free (colormap->colors);
   g_free (private);
-  
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -216,7 +216,7 @@ MODIFICATIONS.
 
 GOVERNMENT USE: If you are acquiring this software on behalf of the
 U.S. government, the Government shall have only "Restricted Rights"
-in the software and related documentation as defined in the Federal 
+in the software and related documentation as defined in the Federal
 Acquisition Regulations (FARs) in Clause 52.227.19 (c) (2).  If you
 are acquiring the software on behalf of the Department of Defense, the
 software shall be classified as "Commercial Computer Software" and the
@@ -239,7 +239,7 @@ alloc_color (GdkColormap  *cmap,
   UINT index;
   GdkColormapPrivateWin32 *cmapp = GDK_WIN32_COLORMAP_DATA (cmap);
   gint i;
-    
+
   entry = *color;
   entry.peFlags = 0;
 
@@ -377,7 +377,7 @@ free_colors (GdkColormap *cmap,
   cleared_entries = g_new0 (gboolean, cmap->size);
 
   /* We don't have to do anything for non-palette devices. */
-  
+
   switch (cmap->visual->type)
     {
     case GDK_VISUAL_GRAYSCALE:
@@ -467,7 +467,7 @@ create_colormap (GdkColormap *cmap,
 		       _gdk_win32_print_paletteentries (lp.pal.palPalEntry,
 						       lp.pal.palNumEntries)));
   DeleteObject (hpal);
-  
+
   /* For writeable colormaps, allow all 256 entries to be set. They won't
    * set all 256 system palette entries anyhow, of course, but we shouldn't
    * let the app see that, I think.
@@ -512,14 +512,14 @@ sync_colors (GdkColormap *colormap)
   GdkColormapPrivateWin32 *private = GDK_WIN32_COLORMAP_DATA (colormap);
   gint nlookup;
   gint i;
-  
+
   pe = g_new (PALETTEENTRY, colormap->size);
   nlookup = GetPaletteEntries (private->hpal, 0, colormap->size, pe);
-	  
+
   GDK_NOTE (COLORMAP, (g_print ("sync_colors: %p hpal=%p: %d entries\n",
 				private, private->hpal, nlookup),
 		       _gdk_win32_print_paletteentries (pe, nlookup)));
-	  
+
   for (i = 0; i < nlookup; i++)
     {
       colormap->colors[i].pixel = i;
@@ -527,7 +527,7 @@ sync_colors (GdkColormap *colormap)
       colormap->colors[i].green = (pe[i].peGreen * 65535) / 255;
       colormap->colors[i].blue = (pe[i].peBlue * 65535) / 255;
     }
-  
+
   for ( ; i < colormap->size; i++)
     {
       colormap->colors[i].pixel = i;
@@ -535,7 +535,7 @@ sync_colors (GdkColormap *colormap)
       colormap->colors[i].green = 0;
       colormap->colors[i].blue = 0;
     }
-  
+
   g_free (pe);
 }
 
@@ -561,10 +561,10 @@ gdk_colormap_new (GdkVisual *visual,
     case GDK_VISUAL_PSEUDO_COLOR:
       private->info = g_new0 (GdkColorInfo, colormap->size);
       colormap->colors = g_new (GdkColor, colormap->size);
-      
+
       private->hash = g_hash_table_new ((GHashFunc) gdk_color_hash,
 					(GEqualFunc) gdk_color_equal);
-      
+
       create_colormap (colormap, private_cmap);
 
       if (private_cmap)
@@ -734,13 +734,13 @@ gdk_colors_free (GdkColormap *colormap,
   if ((colormap->visual->type != GDK_VISUAL_PSEUDO_COLOR) &&
       (colormap->visual->type != GDK_VISUAL_GRAYSCALE))
     return;
-  
+
   pixels = g_new (gulong, in_npixels);
 
   for (i = 0; i < in_npixels; i++)
     {
       gulong pixel = in_pixels[i];
-      
+
       if (private->use[pixel] == GDK_WIN32_PE_STATIC)
 	continue;
 
@@ -796,7 +796,7 @@ gdk_colormap_free_colors (GdkColormap    *colormap,
 /* Try to allocate a single color using alloc_color. If it succeeds,
  * cache the result in our colormap, and store in ret.
  */
-static gboolean 
+static gboolean
 gdk_colormap_alloc1 (GdkColormap *colormap,
 		     GdkColor    *color,
 		     GdkColor    *ret)
@@ -815,7 +815,7 @@ gdk_colormap_alloc1 (GdkColormap *colormap,
       ret->red = (pe.peRed * 65535) / 255;
       ret->green = (pe.peGreen * 65535) / 255;
       ret->blue = (pe.peBlue * 65535) / 255;
-      
+
       if ((guint) ret->pixel < colormap->size)
 	{
 	  if (private->info[ret->pixel].ref_count) /* got a duplicate */
@@ -860,7 +860,7 @@ gdk_colormap_alloc_colors_writeable (GdkColormap *colormap,
 	  while ((index < colormap->size) &&
 		 (private->info[index].ref_count != 0))
 	    index++;
-	  
+
 	  if (index < colormap->size)
 	    {
 	      colors[i].pixel = index;
@@ -888,10 +888,10 @@ gdk_colormap_alloc_colors_writeable (GdkColormap *colormap,
 	      private->info[pixels[i]].flags |= GDK_COLOR_WRITEABLE;
 	    }
 	}
-      
+
       g_free (pixels);
 
-      return status ? ncolors : 0; 
+      return status ? ncolors : 0;
     }
 }
 
@@ -907,7 +907,7 @@ gdk_colormap_alloc_colors_private (GdkColormap *colormap,
   gint i, index;
   PALETTEENTRY pe;
   gint nremaining = 0;
-  
+
   cmapp = GDK_WIN32_COLORMAP_DATA (colormap);
   index = -1;
 
@@ -940,7 +940,7 @@ gdk_colormap_alloc_colors_private (GdkColormap *colormap,
 		  pe.peBlue = colors[i].blue >> 8;
 		  pe.peGreen = colors[i].green >> 8;
 		  pe.peFlags = 0;
-		  
+
 		  if (!SetPaletteEntries (cmapp->hpal, index, 1, &pe))
 		    {
 		      WIN32_GDI_FAILED ("SetPaletteEntries");
@@ -960,7 +960,7 @@ gdk_colormap_alloc_colors_private (GdkColormap *colormap,
 	    nremaining++;
 	}
     }
-  
+
   if (nremaining > 0 && best_match)
     {
       /* Get best matches for remaining colors */
@@ -973,8 +973,8 @@ gdk_colormap_alloc_colors_private (GdkColormap *colormap,
 	{
 	  if (!success[i])
 	    {
-	      index = gdk_colormap_match_color (colormap, 
-						&colors[i], 
+	      index = gdk_colormap_match_color (colormap,
+						&colors[i],
 						available);
 	      if (index != -1)
 		{
@@ -1044,7 +1044,7 @@ gdk_colormap_alloc_colors_shared (GdkColormap *colormap,
 			}
 		      else
 			{
-			  if (gdk_colormap_alloc1 (colormap, 
+			  if (gdk_colormap_alloc1 (colormap,
 						   &colormap->colors[index],
 						   &colors[i]))
 			    {
@@ -1078,7 +1078,7 @@ gdk_colormap_alloc_colors_shared (GdkColormap *colormap,
 	  success[i] = FALSE;
       nremaining = nfailed;
     }
-  
+
   return (ncolors - nremaining);
 }
 
@@ -1206,7 +1206,7 @@ gdk_colormap_query_color (GdkColormap *colormap,
   GdkVisual *visual;
 
   g_return_if_fail (GDK_IS_COLORMAP (colormap));
-  
+
   visual = gdk_colormap_get_visual (colormap);
 
   switch (visual->type)

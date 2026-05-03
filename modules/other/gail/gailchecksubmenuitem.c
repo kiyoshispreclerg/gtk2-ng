@@ -57,7 +57,7 @@ gail_check_sub_menu_item_init (GailCheckSubMenuItem *item)
 {
 }
 
-AtkObject* 
+AtkObject*
 gail_check_sub_menu_item_new (GtkWidget *widget)
 {
   GObject *object;
@@ -96,9 +96,9 @@ gail_check_sub_menu_item_toggled_gtk (GtkWidget       *widget)
   check_menu_item = GTK_CHECK_MENU_ITEM (widget);
 
   accessible = gtk_widget_get_accessible (widget);
-  atk_object_notify_state_change (accessible, ATK_STATE_CHECKED, 
+  atk_object_notify_state_change (accessible, ATK_STATE_CHECKED,
                                   check_menu_item->active);
-} 
+}
 
 static AtkStateSet*
 gail_check_sub_menu_item_ref_state_set (AtkObject *accessible)
@@ -109,7 +109,7 @@ gail_check_sub_menu_item_ref_state_set (AtkObject *accessible)
 
   state_set = ATK_OBJECT_CLASS (gail_check_sub_menu_item_parent_class)->ref_state_set (accessible);
   widget = GTK_ACCESSIBLE (accessible)->widget;
- 
+
   if (widget == NULL)
     return state_set;
 
@@ -123,7 +123,7 @@ gail_check_sub_menu_item_ref_state_set (AtkObject *accessible)
       atk_state_set_remove_state (state_set, ATK_STATE_ENABLED);
       atk_state_set_add_state (state_set, ATK_STATE_INDETERMINATE);
     }
- 
+
   return state_set;
 }
 

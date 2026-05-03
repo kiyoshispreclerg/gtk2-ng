@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -131,7 +131,7 @@ gtk_gc_release (GdkGC *gc)
   gtk_gc_entry_free (entry);
 }
 
-static void 
+static void
 free_gc_drawable (gpointer data)
 {
   GtkGCDrawable *drawable = data;
@@ -148,11 +148,11 @@ gtk_gc_get_drawable_ht (GdkScreen *screen)
       ht = g_hash_table_new_full ((GHashFunc) gtk_gc_drawable_hash,
 				  (GEqualFunc) gtk_gc_drawable_equal,
 				  NULL, free_gc_drawable);
-      g_object_set_qdata_full (G_OBJECT (screen), 
-			       quark_gtk_gc_drawable_ht, ht, 
+      g_object_set_qdata_full (G_OBJECT (screen),
+			       quark_gtk_gc_drawable_ht, ht,
 			       (GDestroyNotify)g_hash_table_destroy);
     }
-  
+
   return ht;
 }
 
@@ -218,14 +218,14 @@ gtk_gc_new (gpointer key)
 
   keyval = key;
   screen = gdk_colormap_get_screen (keyval->colormap);
-  
+
   ht = gtk_gc_get_drawable_ht (screen);
   drawable = g_hash_table_lookup (ht, &keyval->depth);
   if (!drawable)
     {
       drawable = g_slice_new (GtkGCDrawable);
       drawable->depth = keyval->depth;
-      drawable->drawable = gdk_pixmap_new (gdk_screen_get_root_window (screen), 
+      drawable->drawable = gdk_pixmap_new (gdk_screen_get_root_window (screen),
 					   1, 1, drawable->depth);
       g_hash_table_insert (ht, &drawable->depth, drawable);
     }

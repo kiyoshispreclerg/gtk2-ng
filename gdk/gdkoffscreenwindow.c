@@ -111,7 +111,7 @@ gdk_offscreen_window_destroy (GdkWindow *window,
   offscreen = GDK_OFFSCREEN_WINDOW (private->impl);
 
   gdk_offscreen_window_set_embedder (window, NULL);
-  
+
   if (!recursing)
     gdk_offscreen_window_hide (window);
 

@@ -1,7 +1,7 @@
 #include <atk/atk.h>
 #include "testtextlib.h"
 
-#define NUM_VALID_ROLES 6  
+#define NUM_VALID_ROLES 6
 
 static void _create_event_watcher (void);
 static void _check_text (AtkObject *obj);
@@ -33,7 +33,7 @@ static void _check_text (AtkObject *in_obj)
   valid_roles[3] = ATK_ROLE_PASSWORD_TEXT;
   valid_roles[4] = ATK_ROLE_TABLE_CELL;
   valid_roles[5] = ATK_ROLE_PANEL;
-  
+
   /* The following if/else grabs the windows name, or sets title to NULL if none. */
   if (in_obj->name)
   {
@@ -58,21 +58,21 @@ static void _check_text (AtkObject *in_obj)
       title = NULL;
   }
   /* If no window name, do nothing */
-  if (title == NULL) 
+  if (title == NULL)
     return;
-  /* 
-   * If testtext test program, find obj just by role since only one child 
+  /*
+   * If testtext test program, find obj just by role since only one child
    * with no name
    */
-  else if (g_ascii_strncasecmp(title, "testtext", 7) == 0) 
+  else if (g_ascii_strncasecmp(title, "testtext", 7) == 0)
   {
     obj = find_object_by_role(in_obj, valid_roles, NUM_VALID_ROLES);
   }
   /*
-   * Otherwise, get obj by name and role so you can specify exactly which 
-   * obj to run tests on 
+   * Otherwise, get obj by name and role so you can specify exactly which
+   * obj to run tests on
    */
-  else 
+  else
   {
     const gchar *test_accessible_name = g_getenv ("TEST_ACCESSIBLE_NAME");
 
@@ -98,8 +98,8 @@ static void _check_text (AtkObject *in_obj)
        obj = find_object_by_role(in_obj, valid_roles, NUM_VALID_ROLES - 1);
        if (obj != NULL)
           g_print("Found valid role in child\n");
-    }   
-  } 
+    }
+  }
   if (obj == NULL)
   {
      g_print("Object not found\n");

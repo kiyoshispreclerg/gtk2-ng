@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -94,7 +94,7 @@ gdk_gc_init (GdkGC *gc)
  * @drawable: a #GdkDrawable. The created GC must always be used
  *   with drawables of the same depth as this one.
  *
- * Create a new graphics context with default values. 
+ * Create a new graphics context with default values.
  *
  * Returns: the new graphics context.
  *
@@ -115,9 +115,9 @@ gdk_gc_new (GdkDrawable *drawable)
  * @values: a structure containing initial values for the GC.
  * @values_mask: a bit mask indicating which fields in @values
  *   are set.
- * 
+ *
  * Create a new GC with the given initial values.
- * 
+ *
  * Return value: the new graphics context.
  *
  * Deprecated: 2.22: Use Cairo for rendering.
@@ -141,7 +141,7 @@ gdk_gc_new_with_values (GdkDrawable	*drawable,
  * @values: a structure containing initial values for the GC.
  * @values_mask: a bit mask indicating which fields in @values
  *   are set.
- * 
+ *
  * Does initialization of the generic portions of a #GdkGC
  * created with the specified values and values_mask. This
  * should be called out of the implementation of
@@ -260,8 +260,8 @@ gdk_gc_unref (GdkGC *gc)
  * gdk_gc_get_values:
  * @gc:  a #GdkGC.
  * @values: the #GdkGCValues structure in which to store the results.
- * 
- * Retrieves the current values from a graphics context. Note that 
+ *
+ * Retrieves the current values from a graphics context. Note that
  * only the pixel values of the @values->foreground and @values->background
  * are filled, use gdk_colormap_query_color() to obtain the rgb values
  * if you need them.
@@ -309,7 +309,7 @@ gdk_gc_set_values (GdkGC           *gc,
       (values_mask & GDK_GC_CLIP_MASK) ||
       (values_mask & GDK_GC_SUBWINDOW))
     _gdk_gc_remove_drawable_clip (gc);
-  
+
   if (values_mask & GDK_GC_CLIP_X_ORIGIN)
     gc->clip_x_origin = values->clip_x_origin;
   if (values_mask & GDK_GC_CLIP_Y_ORIGIN)
@@ -327,7 +327,7 @@ gdk_gc_set_values (GdkGC           *gc,
 	}
       if (values->clip_mask)
 	priv->clip_mask = g_object_ref (values->clip_mask);
-      
+
       if (priv->clip_region)
 	{
 	  gdk_region_destroy (priv->clip_region);
@@ -366,7 +366,7 @@ gdk_gc_set_values (GdkGC           *gc,
     priv->subwindow_mode = values->subwindow_mode;
   if (values_mask & GDK_GC_EXPOSURES)
     priv->exposures = values->graphics_exposures;
-  
+
   GDK_GC_GET_CLASS (gc)->set_values (gc, values, values_mask);
 }
 
@@ -374,10 +374,10 @@ gdk_gc_set_values (GdkGC           *gc,
  * gdk_gc_set_foreground:
  * @gc: a #GdkGC.
  * @color: the new foreground color.
- * 
+ *
  * Sets the foreground color for a graphics context.
- * Note that this function uses @color->pixel, use 
- * gdk_gc_set_rgb_fg_color() to specify the foreground 
+ * Note that this function uses @color->pixel, use
+ * gdk_gc_set_rgb_fg_color() to specify the foreground
  * color as red, green, blue components.
  *
  * Deprecated: 2.22: Use gdk_cairo_set_source_color() to use a #GdkColor
@@ -400,10 +400,10 @@ gdk_gc_set_foreground (GdkGC	      *gc,
  * gdk_gc_set_background:
  * @gc: a #GdkGC.
  * @color: the new background color.
- * 
+ *
  * Sets the background color for a graphics context.
- * Note that this function uses @color->pixel, use 
- * gdk_gc_set_rgb_bg_color() to specify the background 
+ * Note that this function uses @color->pixel, use
+ * gdk_gc_set_rgb_bg_color() to specify the background
  * color as red, green, blue components.
  *
  * Deprecated: 2.22: Use gdk_cairo_set_source_color() to use a #GdkColor
@@ -427,8 +427,8 @@ gdk_gc_set_background (GdkGC	      *gc,
 /**
  * gdk_gc_set_font:
  * @gc: a #GdkGC.
- * @font: the new font. 
- * 
+ * @font: the new font.
+ *
  * Sets the font for a graphics context. (Note that
  * all text-drawing functions in GDK take a @font
  * argument; the value set here is used when that
@@ -451,7 +451,7 @@ gdk_gc_set_font (GdkGC	 *gc,
  * gdk_gc_set_function:
  * @gc: a #GdkGC.
  * @function: the #GdkFunction to use
- * 
+ *
  * Determines how the current pixel values and the
  * pixel values being drawn are combined to produce
  * the final pixel values.
@@ -474,7 +474,7 @@ gdk_gc_set_function (GdkGC	 *gc,
  * gdk_gc_set_fill:
  * @gc: a #GdkGC.
  * @fill: the new fill mode.
- * 
+ *
  * Set the fill mode for a graphics context.
  *
  * Deprecated: 2.22: You can achieve tiling in Cairo by using
@@ -497,7 +497,7 @@ gdk_gc_set_fill (GdkGC	 *gc,
  * gdk_gc_set_tile:
  * @gc:  a #GdkGC.
  * @tile:  the new tile pixmap.
- * 
+ *
  * Set a tile pixmap for a graphics context.
  * This will only be used if the fill mode
  * is %GDK_TILED.
@@ -523,7 +523,7 @@ gdk_gc_set_tile (GdkGC	   *gc,
  * gdk_gc_set_stipple:
  * @gc: a #GdkGC.
  * @stipple: the new stipple bitmap.
- * 
+ *
  * Set the stipple bitmap for a graphics context. The
  * stipple will only be used if the fill mode is
  * %GDK_STIPPLED or %GDK_OPAQUE_STIPPLED.
@@ -551,7 +551,7 @@ gdk_gc_set_stipple (GdkGC     *gc,
  * @gc:  a #GdkGC.
  * @x: the x-coordinate of the origin.
  * @y: the y-coordinate of the origin.
- * 
+ *
  * Set the origin when using tiles or stipples with
  * the GC. The tile or stipple will be aligned such
  * that the upper left corner of the tile or stipple
@@ -573,7 +573,7 @@ gdk_gc_set_ts_origin (GdkGC *gc,
 
   values.ts_x_origin = x;
   values.ts_y_origin = y;
-  
+
   gdk_gc_set_values (gc, &values,
 		     GDK_GC_TS_X_ORIGIN | GDK_GC_TS_Y_ORIGIN);
 }
@@ -583,7 +583,7 @@ gdk_gc_set_ts_origin (GdkGC *gc,
  * @gc: a #GdkGC.
  * @x: the x-coordinate of the origin.
  * @y: the y-coordinate of the origin.
- * 
+ *
  * Sets the origin of the clip mask. The coordinates are
  * interpreted relative to the upper-left corner of
  * the destination drawable of the current operation.
@@ -602,7 +602,7 @@ gdk_gc_set_clip_origin (GdkGC *gc,
 
   values.clip_x_origin = x;
   values.clip_y_origin = y;
-  
+
   gdk_gc_set_values (gc, &values,
 		     GDK_GC_CLIP_X_ORIGIN | GDK_GC_CLIP_Y_ORIGIN);
 }
@@ -611,7 +611,7 @@ gdk_gc_set_clip_origin (GdkGC *gc,
  * gdk_gc_set_clip_mask:
  * @gc: the #GdkGC.
  * @mask: a bitmap.
- * 
+ *
  * Sets the clip mask for a graphics context from a bitmap.
  * The clip mask is interpreted relative to the clip
  * origin. (See gdk_gc_set_clip_origin()).
@@ -623,9 +623,9 @@ gdk_gc_set_clip_mask (GdkGC	*gc,
 		      GdkBitmap *mask)
 {
   GdkGCValues values;
-  
+
   g_return_if_fail (GDK_IS_GC (gc));
-  
+
   values.clip_mask = mask;
   gdk_gc_set_values (gc, &values, GDK_GC_CLIP_MASK);
 }
@@ -643,7 +643,7 @@ _gdk_gc_set_clip_region_real (GdkGC     *gc,
       g_object_unref (priv->clip_mask);
       priv->clip_mask = NULL;
     }
-  
+
   if (priv->clip_region)
     gdk_region_destroy (priv->clip_region);
 
@@ -676,7 +676,7 @@ _gdk_gc_add_drawable_clip (GdkGC     *gc,
       offset_x == priv->region_tag_offset_x &&
       offset_y == priv->region_tag_offset_y)
     return; /* Already appied this drawable region */
-  
+
   if (priv->region_tag_applied)
     _gdk_gc_remove_drawable_clip (gc);
 
@@ -790,7 +790,7 @@ _gdk_gc_remove_drawable_clip (GdkGC *gc)
  * gdk_gc_set_clip_rectangle:
  * @gc: a #GdkGC.
  * @rectangle: the rectangle to clip to.
- * 
+ *
  * Sets the clip mask for a graphics context from a
  * rectangle. The clip mask is interpreted relative to the clip
  * origin. (See gdk_gc_set_clip_origin()).
@@ -802,11 +802,11 @@ gdk_gc_set_clip_rectangle (GdkGC              *gc,
 			   const GdkRectangle *rectangle)
 {
   GdkRegion *region;
-  
+
   g_return_if_fail (GDK_IS_GC (gc));
 
   _gdk_gc_remove_drawable_clip (gc);
-  
+
   if (rectangle)
     region = gdk_region_rectangle (rectangle);
   else
@@ -818,8 +818,8 @@ gdk_gc_set_clip_rectangle (GdkGC              *gc,
 /**
  * gdk_gc_set_clip_region:
  * @gc: a #GdkGC.
- * @region: the #GdkRegion. 
- * 
+ * @region: the #GdkRegion.
+ *
  * Sets the clip mask for a graphics context from a region structure.
  * The clip mask is interpreted relative to the clip origin. (See
  * gdk_gc_set_clip_origin()).
@@ -835,7 +835,7 @@ gdk_gc_set_clip_region (GdkGC           *gc,
   g_return_if_fail (GDK_IS_GC (gc));
 
   _gdk_gc_remove_drawable_clip (gc);
-  
+
   if (region)
     copy = gdk_region_copy (region);
   else
@@ -847,9 +847,9 @@ gdk_gc_set_clip_region (GdkGC           *gc,
 /**
  * _gdk_gc_get_clip_region:
  * @gc: a #GdkGC
- * 
+ *
  * Gets the current clip region for @gc, if any.
- * 
+ *
  * Return value: the clip region for the GC, or %NULL.
  *   (if a clip mask is set, the return will be %NULL)
  *   This value is owned by the GC and must not be freed.
@@ -883,9 +883,9 @@ _gdk_gc_get_clip_mask (GdkGC *gc)
 /**
  * _gdk_gc_get_fill:
  * @gc: a #GdkGC
- * 
+ *
  * Gets the current file style for the GC
- * 
+ *
  * Return value: the file style for the GC
  **/
 GdkFill
@@ -907,9 +907,9 @@ _gdk_gc_get_exposures (GdkGC *gc)
 /**
  * _gdk_gc_get_tile:
  * @gc: a #GdkGC
- * 
+ *
  * Gets the tile pixmap for @gc, if any
- * 
+ *
  * Return value: the tile set on the GC, or %NULL. The
  *   value is owned by the GC and must not be freed.
  **/
@@ -924,9 +924,9 @@ _gdk_gc_get_tile (GdkGC *gc)
 /**
  * _gdk_gc_get_stipple:
  * @gc: a #GdkGC
- * 
+ *
  * Gets the stipple pixmap for @gc, if any
- * 
+ *
  * Return value: the stipple set on the GC, or %NULL. The
  *   value is owned by the GC and must not be freed.
  **/
@@ -941,36 +941,36 @@ _gdk_gc_get_stipple (GdkGC *gc)
 /**
  * _gdk_gc_get_fg_pixel:
  * @gc: a #GdkGC
- * 
+ *
  * Gets the foreground pixel value for @gc. If the
  * foreground pixel has never been set, returns the
  * default value 0.
- * 
+ *
  * Return value: the foreground pixel value of the GC
  **/
 guint32
 _gdk_gc_get_fg_pixel (GdkGC *gc)
 {
   g_return_val_if_fail (GDK_IS_GC (gc), 0);
-  
+
   return GDK_GC_GET_PRIVATE (gc)->fg_pixel;
 }
 
 /**
  * _gdk_gc_get_bg_pixel:
  * @gc: a #GdkGC
- * 
+ *
  * Gets the background pixel value for @gc.If the
  * foreground pixel has never been set, returns the
  * default value 1.
- * 
+ *
  * Return value: the foreground pixel value of the GC
  **/
 guint32
 _gdk_gc_get_bg_pixel (GdkGC *gc)
 {
   g_return_val_if_fail (GDK_IS_GC (gc), 0);
-  
+
   return GDK_GC_GET_PRIVATE (gc)->bg_pixel;
 }
 
@@ -978,9 +978,9 @@ _gdk_gc_get_bg_pixel (GdkGC *gc)
  * gdk_gc_set_subwindow:
  * @gc: a #GdkGC.
  * @mode: the subwindow mode.
- * 
+ *
  * Sets how drawing with this GC on a window will affect child
- * windows of that window. 
+ * windows of that window.
  *
  * Deprecated: 2.22: There is no replacement. If you need to control
  * subwindows, you must use drawing operations of the underlying window
@@ -997,10 +997,10 @@ gdk_gc_set_subwindow (GdkGC	       *gc,
   g_return_if_fail (GDK_IS_GC (gc));
 
   /* This could get called a lot to reset the subwindow mode in
-     the client side clipping, so bail out early */ 
+     the client side clipping, so bail out early */
   if (priv->subwindow_mode == mode)
     return;
-  
+
   values.subwindow_mode = mode;
   gdk_gc_set_values (gc, &values, GDK_GC_SUBWINDOW);
 }
@@ -1017,7 +1017,7 @@ _gdk_gc_get_subwindow (GdkGC *gc)
  * gdk_gc_set_exposures:
  * @gc: a #GdkGC.
  * @exposures: if %TRUE, exposure events will be generated.
- * 
+ *
  * Sets whether copying non-visible portions of a drawable
  * using this graphics context generate exposure events
  * for the corresponding regions of the destination
@@ -1047,7 +1047,7 @@ gdk_gc_set_exposures (GdkGC     *gc,
  * @line_style: the dash-style for lines.
  * @cap_style: the manner in which the ends of lines are drawn.
  * @join_style: the in which lines are joined together.
- * 
+ *
  * Sets various attributes of how lines are drawn. See
  * the corresponding members of #GdkGCValues for full
  * explanations of the arguments.
@@ -1085,7 +1085,7 @@ gdk_gc_set_line_attributes (GdkGC	*gc,
  * @dash_offset: the phase of the dash pattern.
  * @dash_list: an array of dash lengths.
  * @n: the number of elements in @dash_list.
- * 
+ *
  * Sets the way dashed-lines are drawn. Lines will be
  * drawn with alternating on and off segments of the
  * lengths specified in @dash_list. The manner in
@@ -1093,8 +1093,8 @@ gdk_gc_set_line_attributes (GdkGC	*gc,
  * by the @line_style value of the GC. (This can
  * be changed with gdk_gc_set_line_attributes().)
  *
- * The @dash_offset defines the phase of the pattern, 
- * specifying how many pixels into the dash-list the pattern 
+ * The @dash_offset defines the phase of the pattern,
+ * specifying how many pixels into the dash-list the pattern
  * should actually begin.
  *
  * Deprecated: 2.22: Use cairo_set_dash() to set the dash in Cairo.
@@ -1116,7 +1116,7 @@ gdk_gc_set_dashes (GdkGC *gc,
  * @gc: a #GdkGC
  * @x_offset: amount by which to offset the GC in the X direction
  * @y_offset: amount by which to offset the GC in the Y direction
- * 
+ *
  * Offset attributes such as the clip and tile-stipple origins
  * of the GC so that drawing at x - x_offset, y - y_offset with
  * the offset GC  has the same effect as drawing at x, y with the original
@@ -1138,7 +1138,7 @@ gdk_gc_offset (GdkGC *gc,
       values.clip_y_origin = gc->clip_y_origin - y_offset;
       values.ts_x_origin = gc->ts_x_origin - x_offset;
       values.ts_y_origin = gc->ts_y_origin - y_offset;
-      
+
       gdk_gc_set_values (gc, &values,
 			 GDK_GC_CLIP_X_ORIGIN |
 			 GDK_GC_CLIP_Y_ORIGIN |
@@ -1151,7 +1151,7 @@ gdk_gc_offset (GdkGC *gc,
  * gdk_gc_copy:
  * @dst_gc: the destination graphics context.
  * @src_gc: the source graphics context.
- * 
+ *
  * Copy the set of values from one graphics context
  * onto another graphics context.
  *
@@ -1163,7 +1163,7 @@ gdk_gc_copy (GdkGC *dst_gc,
 	     GdkGC *src_gc)
 {
   GdkGCPrivate *dst_priv, *src_priv;
-  
+
   g_return_if_fail (GDK_IS_GC (dst_gc));
   g_return_if_fail (GDK_IS_GC (src_gc));
 
@@ -1194,7 +1194,7 @@ gdk_gc_copy (GdkGC *dst_gc,
     dst_priv->clip_region = NULL;
 
   dst_priv->region_tag_applied = src_priv->region_tag_applied;
-  
+
   if (dst_priv->old_clip_region)
     gdk_region_destroy (dst_priv->old_clip_region);
 
@@ -1207,20 +1207,20 @@ gdk_gc_copy (GdkGC *dst_gc,
     dst_priv->clip_mask = g_object_ref (src_priv->clip_mask);
   else
     dst_priv->clip_mask = NULL;
-  
+
   if (src_priv->old_clip_mask)
     dst_priv->old_clip_mask = g_object_ref (src_priv->old_clip_mask);
   else
     dst_priv->old_clip_mask = NULL;
-  
+
   dst_priv->fill = src_priv->fill;
-  
+
   if (dst_priv->stipple)
     g_object_unref (dst_priv->stipple);
   dst_priv->stipple = src_priv->stipple;
   if (dst_priv->stipple)
     g_object_ref (dst_priv->stipple);
-  
+
   if (dst_priv->tile)
     g_object_unref (dst_priv->tile);
   dst_priv->tile = src_priv->tile;
@@ -1237,7 +1237,7 @@ gdk_gc_copy (GdkGC *dst_gc,
  * gdk_gc_set_colormap:
  * @gc: a #GdkGC
  * @colormap: a #GdkColormap
- * 
+ *
  * Sets the colormap for the GC to the given colormap. The depth
  * of the colormap's visual must match the depth of the drawable
  * for which the GC was created.
@@ -1260,18 +1260,18 @@ gdk_gc_set_colormap (GdkGC       *gc,
       gc->colormap = colormap;
       g_object_ref (gc->colormap);
     }
-    
+
 }
 
 /**
  * gdk_gc_get_colormap:
  * @gc: a #GdkGC
- * 
+ *
  * Retrieves the colormap for a given GC, if it exists.
  * A GC will have a colormap if the drawable for which it was created
  * has a colormap, or if a colormap was set explicitely with
  * gdk_gc_set_colormap.
- * 
+ *
  * Return value: the colormap of @gc, or %NULL if @gc doesn't have one.
  *
  * Deprecated: 2.22: There is no replacement. Cairo handles colormaps
@@ -1305,13 +1305,13 @@ gdk_gc_get_colormap_warn (GdkGC *gc)
  * gdk_gc_set_rgb_fg_color:
  * @gc: a #GdkGC
  * @color: an unallocated #GdkColor.
- * 
+ *
  * Set the foreground color of a GC using an unallocated color. The
  * pixel value for the color will be determined using GdkRGB. If the
  * colormap for the GC has not previously been initialized for GdkRGB,
  * then for pseudo-color colormaps (colormaps with a small modifiable
  * number of colors), a colorcube will be allocated in the colormap.
- * 
+ *
  * Calling this function for a GC without a colormap is an error.
  *
  * Deprecated: 2.22: Use gdk_cairo_set_source_color() instead.
@@ -1339,13 +1339,13 @@ gdk_gc_set_rgb_fg_color (GdkGC          *gc,
  * gdk_gc_set_rgb_bg_color:
  * @gc: a #GdkGC
  * @color: an unallocated #GdkColor.
- * 
+ *
  * Set the background color of a GC using an unallocated color. The
  * pixel value for the color will be determined using GdkRGB. If the
  * colormap for the GC has not previously been initialized for GdkRGB,
  * then for pseudo-color colormaps (colormaps with a small modifiable
  * number of colors), a colorcube will be allocated in the colormap.
- * 
+ *
  * Calling this function for a GC without a colormap is an error.
  *
  * Deprecated: 2.22: Use gdk_cairo_set_source_color() instead.
@@ -1376,23 +1376,23 @@ make_stipple_tile_surface (cairo_t   *cr,
 			   GdkColor  *background)
 {
   cairo_t *tmp_cr;
-  cairo_surface_t *surface; 
+  cairo_surface_t *surface;
   cairo_surface_t *alpha_surface;
   gint width, height;
 
   gdk_drawable_get_size (stipple,
 			 &width, &height);
-  
+
   alpha_surface = _gdk_drawable_ref_cairo_surface (stipple);
-  
+
   surface = cairo_surface_create_similar (cairo_get_target (cr),
 					  CAIRO_CONTENT_COLOR_ALPHA,
 					  width, height);
 
   tmp_cr = cairo_create (surface);
-  
+
   cairo_set_operator (tmp_cr, CAIRO_OPERATOR_SOURCE);
- 
+
   if (background)
       gdk_cairo_set_source_color (tmp_cr, background);
   else
@@ -1404,7 +1404,7 @@ make_stipple_tile_surface (cairo_t   *cr,
 
   gdk_cairo_set_source_color (tmp_cr, foreground);
   cairo_mask_surface (tmp_cr, alpha_surface, 0, 0);
-  
+
   cairo_destroy (tmp_cr);
   cairo_surface_destroy (alpha_surface);
 
@@ -1416,7 +1416,7 @@ gc_get_foreground (GdkGC    *gc,
 		   GdkColor *color)
 {
   GdkGCPrivate *priv = GDK_GC_GET_PRIVATE (gc);
-  
+
   color->pixel = priv->bg_pixel;
 
   if (gc->colormap)
@@ -1430,7 +1430,7 @@ gc_get_background (GdkGC    *gc,
 		   GdkColor *color)
 {
   GdkGCPrivate *priv = GDK_GC_GET_PRIVATE (gc);
-  
+
   color->pixel = priv->bg_pixel;
 
   if (gc->colormap)
@@ -1453,7 +1453,7 @@ gc_get_background (GdkGC    *gc,
  *     last call to this function
  * @target_drawable: The drawable you're drawing in. If passed in
  *     this is used for client side window clip emulation.
- * 
+ *
  * Set the attributes of a cairo context to match those of a #GdkGC
  * as far as possible. Some aspects of a #GdkGC, such as clip masks
  * and functions other than %GDK_COPY are not currently handled.
@@ -1511,12 +1511,12 @@ _gdk_gc_update_context (GdkGC          *gc,
 	stipple = override_stipple;
       else
 	stipple = priv->stipple;
-      
+
       if (!stipple)
 	fill = GDK_SOLID;
       break;
     }
-  
+
   switch (fill)
     {
     case GDK_SOLID:
@@ -1558,11 +1558,11 @@ _gdk_gc_update_context (GdkGC          *gc,
 				   - gc->ts_x_origin, - gc->ts_y_origin);
       cairo_matrix_multiply (&user_to_pattern,
 			     &user_to_device, &device_to_pattern);
-      
+
       cairo_pattern_set_matrix (pattern, &user_to_pattern);
       cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
       cairo_set_source (cr, pattern);
-      
+
       cairo_surface_destroy (tile_surface);
       cairo_pattern_destroy (pattern);
     }

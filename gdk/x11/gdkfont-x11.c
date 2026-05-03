@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GDK_DISABLE_DEPRECATED
@@ -79,7 +79,7 @@ gdk_fontset_name_hash_get (GdkDisplay *display)
 {
   GHashTable *result;
   static GQuark fontset_name_quark = 0;
-  
+
   if (!fontset_name_quark)
     fontset_name_quark = g_quark_from_static_string ("gdk-fontset-hash");
 
@@ -95,7 +95,7 @@ gdk_fontset_name_hash_get (GdkDisplay *display)
   return result;
 }
 
-/** 
+/**
  * gdk_font_get_display:
  * @font: the #GdkFont.
  *
@@ -105,15 +105,15 @@ gdk_fontset_name_hash_get (GdkDisplay *display)
  *
  * Since: 2.2
  **/
-GdkDisplay* 
+GdkDisplay*
 gdk_font_get_display (GdkFont* font)
 {
   return ((GdkFontPrivateX *)font)->display;
 }
 
 static void
-gdk_font_hash_insert (GdkFontType  type, 
-		      GdkFont     *font, 
+gdk_font_hash_insert (GdkFontType  type,
+		      GdkFont     *font,
 		      const gchar *font_name)
 {
   GdkFontPrivateX *private = (GdkFontPrivateX *)font;
@@ -125,7 +125,7 @@ gdk_font_hash_insert (GdkFontType  type,
 }
 
 static void
-gdk_font_hash_remove (GdkFontType type, 
+gdk_font_hash_remove (GdkFontType type,
 		      GdkFont    *font)
 {
   GdkFontPrivateX *private = (GdkFontPrivateX *)font;
@@ -138,7 +138,7 @@ gdk_font_hash_remove (GdkFontType type,
     {
       g_hash_table_remove (hash, tmp_list->data);
       g_free (tmp_list->data);
-      
+
       tmp_list = tmp_list->next;
     }
 
@@ -147,15 +147,15 @@ gdk_font_hash_remove (GdkFontType type,
 }
 
 static GdkFont *
-gdk_font_hash_lookup (GdkDisplay  *display, 
-		      GdkFontType  type, 
+gdk_font_hash_lookup (GdkDisplay  *display,
+		      GdkFontType  type,
 		      const gchar *font_name)
 {
   GdkFont *result;
   GHashTable *hash;
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
 
-  hash = (type == GDK_FONT_FONT) ? gdk_font_name_hash_get (display) : 
+  hash = (type == GDK_FONT_FONT) ? gdk_font_name_hash_get (display) :
 				   gdk_fontset_name_hash_get (display);
   if (!hash)
     return NULL;
@@ -164,7 +164,7 @@ gdk_font_hash_lookup (GdkDisplay  *display,
       result = g_hash_table_lookup (hash, font_name);
       if (result)
 	gdk_font_ref (result);
-      
+
       return result;
     }
 }
@@ -177,13 +177,13 @@ gdk_font_hash_lookup (GdkDisplay  *display,
  *
  * Loads a font for use on @display.
  *
- * The font may be newly loaded or looked up the font in a cache. 
+ * The font may be newly loaded or looked up the font in a cache.
  * You should make no assumptions about the initial reference count.
  *
  * Since: 2.2
  */
 GdkFont *
-gdk_font_load_for_display (GdkDisplay  *display, 
+gdk_font_load_for_display (GdkDisplay  *display,
 			   const gchar *font_name)
 {
   GdkFont *font;
@@ -192,7 +192,7 @@ gdk_font_load_for_display (GdkDisplay  *display,
 
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (font_name != NULL, NULL);
-  
+
   font = gdk_font_hash_lookup (display, GDK_FONT_FONT, font_name);
   if (font)
     return font;
@@ -202,7 +202,7 @@ gdk_font_load_for_display (GdkDisplay  *display,
     return NULL;
 
   font = gdk_font_lookup_for_display (display, xfont->fid);
-  if (font != NULL) 
+  if (font != NULL)
     {
       private = (GdkFontPrivateX *) font;
       if (xfont != private->xfont)
@@ -218,12 +218,12 @@ gdk_font_load_for_display (GdkDisplay  *display,
       private->base.ref_count = 1;
       private->names = NULL;
       private->xid = xfont->fid | XID_FONT_BIT;
- 
+
       font = (GdkFont*) private;
       font->type = GDK_FONT_FONT;
       font->ascent =  xfont->ascent;
       font->descent = xfont->descent;
-      
+
       _gdk_xid_table_insert (display, &private->xid, font);
     }
 
@@ -236,13 +236,13 @@ gdk_font_load_for_display (GdkDisplay  *display,
  * gdk_font_from_description_for_display:
  * @display: a #GdkDisplay
  * @font_desc: a #PangoFontDescription.
- * 
- * Loads a #GdkFont based on a Pango font description for use on @display. 
+ *
+ * Loads a #GdkFont based on a Pango font description for use on @display.
  * This font will only be an approximation of the Pango font, and
  * internationalization will not be handled correctly. This function
  * should only be used for legacy code that cannot be easily converted
  * to use Pango. Using Pango directly will produce better results.
- * 
+ *
  * Return value: the newly loaded font, or %NULL if the font
  * cannot be loaded.
  *
@@ -264,10 +264,10 @@ gdk_font_from_description_for_display (GdkDisplay           *display,
  * @fontset_name: a comma-separated list of XLFDs describing
  *   the component fonts of the fontset to load.
  * @returns: a #GdkFont, or %NULL if the fontset could not be loaded.
- * 
+ *
  * Loads a fontset for use on @display.
  *
- * The fontset may be newly loaded or looked up in a cache. 
+ * The fontset may be newly loaded or looked up in a cache.
  * You should make no assumptions about the initial reference count.
  *
  * Since: 2.2
@@ -284,7 +284,7 @@ gdk_fontset_load_for_display (GdkDisplay  *display,
   gchar *def_string;
 
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  
+
   font = gdk_font_hash_lookup (display, GDK_FONT_FONTSET, fontset_name);
   if (font)
     return font;
@@ -321,22 +321,22 @@ gdk_fontset_load_for_display (GdkDisplay  *display,
       gint i;
       XFontStruct **font_structs;
       gchar **font_names;
-      
+
       private->xfont = fontset;
       font->type = GDK_FONT_FONTSET;
       num_fonts = XFontsOfFontSet (fontset, &font_structs, &font_names);
 
       font->ascent = font->descent = 0;
-      
+
       for (i = 0; i < num_fonts; i++)
 	{
 	  font->ascent = MAX (font->ascent, font_structs[i]->ascent);
 	  font->descent = MAX (font->descent, font_structs[i]->descent);
 	}
- 
+
       private->names = NULL;
       gdk_font_hash_insert (GDK_FONT_FONTSET, font, fontset_name);
-      
+
       return font;
     }
 }
@@ -345,12 +345,12 @@ gdk_fontset_load_for_display (GdkDisplay  *display,
  * gdk_fontset_load:
  * @fontset_name: a comma-separated list of XLFDs describing
  *     the component fonts of the fontset to load.
- * 
+ *
  * Loads a fontset.
  *
- * The fontset may be newly loaded or looked up in a cache. 
+ * The fontset may be newly loaded or looked up in a cache.
  * You should make no assumptions about the initial reference count.
- * 
+ *
  * Return value: a #GdkFont, or %NULL if the fontset could not be loaded.
  **/
 GdkFont*
@@ -363,9 +363,9 @@ void
 _gdk_font_destroy (GdkFont *font)
 {
   GdkFontPrivateX *private = (GdkFontPrivateX *)font;
-  
+
   gdk_font_hash_remove (font->type, font);
-      
+
   switch (font->type)
     {
     case GDK_FONT_FONT:
@@ -406,7 +406,7 @@ _gdk_font_strlen (GdkFont     *font,
       else
 	{
 	  guint16 *string_2b = (guint16 *)str;
-	    
+
 	  while (*(string_2b++))
 	    length++;
 	}
@@ -424,9 +424,9 @@ _gdk_font_strlen (GdkFont     *font,
 /**
  * gdk_font_id:
  * @font: a #GdkFont.
- * 
- * Returns the X Font ID for the given font. 
- * 
+ *
+ * Returns the X Font ID for the given font.
+ *
  * Return value: the numeric X Font ID
  **/
 gint
@@ -452,11 +452,11 @@ gdk_font_id (const GdkFont *font)
  * gdk_font_equal:
  * @fonta: a #GdkFont.
  * @fontb: another #GdkFont.
- * 
+ *
  * Compares two fonts for equality. Single fonts compare equal
  * if they have the same X font ID. This operation does
  * not currently work correctly for fontsets.
- * 
+ *
  * Return value: %TRUE if the fonts are equal.
  **/
 gboolean
@@ -483,7 +483,7 @@ gdk_font_equal (const GdkFont *fonta,
 
       namea = XBaseFontNameListOfFontSet((XFontSet) privatea->xfont);
       nameb = XBaseFontNameListOfFontSet((XFontSet) privateb->xfont);
-      
+
       return (strcmp(namea, nameb) == 0);
     }
   else
@@ -496,9 +496,9 @@ gdk_font_equal (const GdkFont *fonta,
  * @font: a #GdkFont
  * @text: the text to measure.
  * @text_length: the length of the text in bytes.
- * 
+ *
  * Determines the width of a given string.
- * 
+ *
  * Return value: the width of the string in pixels.
  **/
 gint
@@ -544,9 +544,9 @@ gdk_text_width (GdkFont      *font,
  * @font: a #GdkFont
  * @text: the text to measure.
  * @text_length: the length of the text in characters.
- * 
+ *
  * Determines the width of a given wide-character string.
- * 
+ *
  * Return value: the width of the string in pixels.
  **/
 gint
@@ -617,7 +617,7 @@ gdk_text_width_wc (GdkFont	  *font,
  * @width: the width of the string.
  * @ascent: the ascent of the string.
  * @descent: the descent of the string.
- * 
+ *
  * Gets the metrics of a string.
  **/
 void
@@ -699,7 +699,7 @@ gdk_text_extents (GdkFont     *font,
  * @width: the width of the string.
  * @ascent: the ascent of the string.
  * @descent: the descent of the string.
- * 
+ *
  * Gets the metrics of a string of wide characters.
  **/
 void
@@ -737,14 +737,14 @@ gdk_text_extents_wc (GdkFont        *font,
 	g_return_if_fail ((xfont->min_byte1 == 0) && (xfont->max_byte1 == 0));
 
 	text_8bit = g_new (gchar, text_length);
-	for (i=0; i<text_length; i++) 
+	for (i=0; i<text_length; i++)
 	  text_8bit[i] = text[i];
 
 	XTextExtents (xfont, text_8bit, text_length,
 		      &direction, &font_ascent, &font_descent,
 		      &overall);
 	g_free (text_8bit);
-	
+
 	if (lbearing)
 	  *lbearing = overall.lbearing;
 	if (rbearing)
@@ -766,7 +766,7 @@ gdk_text_extents_wc (GdkFont        *font,
 	{
 	  wchar_t *text_wchar;
 	  gint i;
-	  
+
 	  text_wchar = g_new (wchar_t, text_length);
 	  for (i = 0; i < text_length; i++)
 	    text_wchar[i] = text[i];
@@ -791,9 +791,9 @@ gdk_text_extents_wc (GdkFont        *font,
 /**
  * gdk_x11_font_get_xdisplay:
  * @font: a #GdkFont.
- * 
+ *
  * Returns the display of a #GdkFont.
- * 
+ *
  * Return value:  an Xlib <type>Display*</type>.
  **/
 Display *
@@ -807,9 +807,9 @@ gdk_x11_font_get_xdisplay (GdkFont *font)
 /**
  * gdk_x11_font_get_xfont:
  * @font: a #GdkFont.
- * 
+ *
  * Returns the X font belonging to a #GdkFont.
- * 
+ *
  * Return value: an Xlib <type>XFontStruct*</type> or an <type>XFontSet</type>.
  **/
 gpointer
@@ -823,12 +823,12 @@ gdk_x11_font_get_xfont (GdkFont *font)
 /**
  * gdk_x11_font_get_name:
  * @font: a #GdkFont.
- * 
+ *
  * Return the X Logical Font Description (for font->type == GDK_FONT_FONT)
  * or comma separated list of XLFDs (for font->type == GDK_FONT_FONTSET)
  * that was used to load the font. If the same font was loaded
  * via multiple names, which name is returned is undefined.
- * 
+ *
  * Return value: the name of the font. This string is owned
  *   by GDK and must not be modified or freed.
  **/
@@ -843,6 +843,6 @@ gdk_x11_font_get_name (GdkFont *font)
 
   return private->names->data;
 }
-     
+
 #define __GDK_FONT_X11_C__
 #include "gdkaliasdef.c"

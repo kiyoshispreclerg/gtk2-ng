@@ -88,12 +88,12 @@ _gtk_win32_embed_send_focus_message (GdkWindow               *recipient,
 
   if (!recipient)
     return;
-  
+
   g_return_if_fail (GDK_IS_WINDOW (recipient));
   g_return_if_fail (message == GTK_WIN32_EMBED_FOCUS_IN ||
 		    message == GTK_WIN32_EMBED_FOCUS_NEXT ||
 		    message == GTK_WIN32_EMBED_FOCUS_PREV);
-		    
+
   if (current_messages)
     {
       MSG *msg = current_messages->data;
@@ -110,14 +110,14 @@ void
 _gtk_win32_embed_set_focus_wrapped (void)
 {
   MSG *msg;
-  
+
   g_return_if_fail (current_messages != NULL);
 
   msg = current_messages->data;
 
   g_return_if_fail (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_FOCUS_PREV) ||
 		    msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_FOCUS_NEXT));
-  
+
   msg->lParam |= GTK_WIN32_EMBED_FOCUS_WRAPAROUND;
 }
 
@@ -125,7 +125,7 @@ gboolean
 _gtk_win32_embed_get_focus_wrapped (void)
 {
   MSG *msg;
-  
+
   g_return_val_if_fail (current_messages != NULL, FALSE);
 
   msg = current_messages->data;

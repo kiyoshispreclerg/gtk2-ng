@@ -50,8 +50,8 @@ struct _GdkPixmapImplQuartz
   void *data;
   CGDataProviderRef data_provider;
 };
- 
-struct _GdkPixmapImplQuartzClass 
+
+struct _GdkPixmapImplQuartzClass
 {
   GdkDrawableImplQuartzClass parent_class;
 };

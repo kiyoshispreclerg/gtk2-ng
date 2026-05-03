@@ -88,7 +88,7 @@ gtk_file_chooser_widget_constructor (GType                  type,
 {
   GtkFileChooserWidgetPrivate *priv;
   GObject *object;
-  
+
   object = G_OBJECT_CLASS (gtk_file_chooser_widget_parent_class)->constructor (type,
 									       n_construct_properties,
 									       construct_params);
@@ -97,7 +97,7 @@ gtk_file_chooser_widget_constructor (GType                  type,
   gtk_widget_push_composite_child ();
 
   priv->impl = _gtk_file_chooser_default_new ();
-  
+
   gtk_box_pack_start (GTK_BOX (object), priv->impl, TRUE, TRUE, 0);
   gtk_widget_show (priv->impl);
 
@@ -106,7 +106,7 @@ gtk_file_chooser_widget_constructor (GType                  type,
 
   _gtk_file_chooser_embed_set_delegate (GTK_FILE_CHOOSER_EMBED (object),
 					GTK_FILE_CHOOSER_EMBED (priv->impl));
-  
+
   gtk_widget_pop_composite_child ();
 
   return object;
@@ -139,18 +139,18 @@ gtk_file_chooser_widget_get_property (GObject         *object,
 				      GParamSpec      *pspec)
 {
   GtkFileChooserWidgetPrivate *priv = GTK_FILE_CHOOSER_WIDGET_GET_PRIVATE (object);
-  
+
   g_object_get_property (G_OBJECT (priv->impl), pspec->name, value);
 }
 
 /**
  * gtk_file_chooser_widget_new:
  * @action: Open or save mode for the widget
- * 
+ *
  * Creates a new #GtkFileChooserWidget.  This is a file chooser widget that can
  * be embedded in custom windows, and it is the same widget that is used by
  * #GtkFileChooserDialog.
- * 
+ *
  * Return value: a new #GtkFileChooserWidget
  *
  * Since: 2.4
@@ -167,13 +167,13 @@ gtk_file_chooser_widget_new (GtkFileChooserAction action)
  * gtk_file_chooser_widget_new_with_backend:
  * @action: Open or save mode for the widget
  * @backend: The name of the specific filesystem backend to use.
- * 
+ *
  * Creates a new #GtkFileChooserWidget with a specified backend.  This is
  * especially useful if you use gtk_file_chooser_set_local_only() to allow
  * non-local files.  This is a file chooser widget that can be embedded in
  * custom windows and it is the same widget that is used by
  * #GtkFileChooserDialog.
- * 
+ *
  * Return value: a new #GtkFileChooserWidget
  *
  * Since: 2.4

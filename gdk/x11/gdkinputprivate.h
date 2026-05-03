@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_INPUTPRIVATE_H__
@@ -54,7 +54,7 @@ struct _GdkAxisInfo
   /* calibrated resolution (for aspect ration) - only relative values
      between axes used */
   gint resolution;
-  
+
   /* calibrated minimum/maximum values */
   gint min_value, max_value;
 };
@@ -68,7 +68,7 @@ struct _GdkDevicePrivate
   guint32 deviceid;
 
   GdkDisplay *display;
-  
+
 
 #ifndef XINPUT_NONE
   /* information about the axes */
@@ -79,10 +79,10 @@ struct _GdkDevicePrivate
   XDevice       *xdevice;
 
   /* minimum key code for device */
-  gint min_keycode;	       
+  gint min_keycode;
 
   int buttonpress_type, buttonrelease_type, keypress_type,
-      keyrelease_type, motionnotify_type, proximityin_type, 
+      keyrelease_type, motionnotify_type, proximityin_type,
       proximityout_type, changenotify_type, devicestatenotify_type;
 
   /* true if we need to select a different set of events, but

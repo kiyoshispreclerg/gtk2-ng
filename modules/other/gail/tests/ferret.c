@@ -284,7 +284,7 @@ _send_to_magnifier(gint x, gint y, gint w, gint h)
   mag_server.sun_len = SUN_LEN(&mag_server);
   client.sun_len = SUN_LEN(&client);
 #endif
-  
+
   if((desc=socket(AF_UNIX,SOCK_STREAM,0)) == -1){
     perror("socket");
     return;
@@ -350,7 +350,7 @@ static void _festival_say (const gchar *text)
   stretch = g_strdup (g_getenv ("FESTIVAL_STRETCH"));
   if (!stretch) stretch = "0.75";
   sprintf (prefix, "(audio_mode'shutup)\n (Parameter.set 'Duration_Stretch %s)\n (SayText \"", stretch);
-  
+
   strcpy(quoted, prefix);
   p = quoted + strlen (prefix);
   while (*text) {
@@ -376,7 +376,7 @@ static void _send_to_festival (const gchar *role_name,
   int i, j;
   gchar ch;
   const gchar *accel_name;
-  
+
   string = (gchar *) g_malloc (len * sizeof (gchar));
 
   i = 0;
@@ -520,7 +520,7 @@ static void _print_accessible (AtkObject *aobject)
     {
       gint x, y;
       gint w=0, h=0;
-      
+
       if (ATK_IS_TEXT (aobject))
         {
 	  gint x0, y0, w0, h0;
@@ -545,7 +545,7 @@ static void _print_accessible (AtkObject *aobject)
 	      x = x0;
 	      y = y0;
 	    }
-        } 
+        }
       else if (ATK_IS_COMPONENT (aobject))
         {
 	  atk_component_get_extents (ATK_COMPONENT(aobject),
@@ -591,10 +591,10 @@ ferret_get_name_from_container (AtkObject *aobject)
   gchar *s = NULL;
   gint n = atk_object_get_n_accessible_children (aobject);
   gint i = 0;
-  
+
   while (!s && (i < n))
     {
-      AtkObject *child;	    
+      AtkObject *child;
       child = atk_object_ref_accessible_child (aobject, i);
       if (ATK_IS_TEXT (child))
         {
@@ -604,14 +604,14 @@ ferret_get_name_from_container (AtkObject *aobject)
 				       count);
         }
       g_object_unref (child);
-      ++i;	    
+      ++i;
     }
-  
+
   if (!s)
     {
       s = g_strdup ("");
     }
-  return s;	
+  return s;
 }
 
 static gint
@@ -696,19 +696,19 @@ _print_object (AtkObject *aobject)
           {
 	    if (ATK_IS_TEXT (aobject) && !name)
 	      {
-		text = 
+		text =
 		  atk_text_get_text_at_offset (ATK_TEXT (aobject),
 					       (gint) 0,
 					       ATK_TEXT_BOUNDARY_SENTENCE_END,
 					       (gint *) NULL,
 					       (gint *) NULL);
 		fprintf (stderr, "first sentence: %s\n", text);
-		_send_to_festival (role_name, 
+		_send_to_festival (role_name,
 				   text, "");
 		if (!name) name = "no name";
 	      }
-            else 
-	      { 
+            else
+	      {
 		text = "";
 		if (!name)
 		  {
@@ -1093,7 +1093,7 @@ _print_selection (AtkSelection *aobject)
       g_return_val_if_fail (atk_object_get_role (object) == ATK_ROLE_LIST,
                             group_num);
       n_selectable = atk_object_get_n_accessible_children (object);
-      g_object_unref (G_OBJECT (object)); 
+      g_object_unref (G_OBJECT (object));
     }
     else
     {
@@ -1158,7 +1158,7 @@ _print_table (AtkTable *aobject)
         caption_name = atk_object_get_name (caption);
         if (caption_name)
           {
-            _print_key_value(tab_n, group_num, "Caption Name", 
+            _print_key_value(tab_n, group_num, "Caption Name",
                              (gpointer)caption_name, VALUE_STRING);
           }
       }
@@ -1512,11 +1512,11 @@ _button_watcher (GSignalInvocationHint *ihint,
           event = (GdkEventButton *) gp;
           aobject = gtk_widget_get_accessible (widget);
           aobject_x = aobject_y = 0;
-          atk_component_get_position (ATK_COMPONENT (aobject), 
-                                      &aobject_x, &aobject_y, 
+          atk_component_get_position (ATK_COMPONENT (aobject),
+                                      &aobject_x, &aobject_y,
                                       ATK_XY_WINDOW);
-          x = aobject_x + (gint) event->x; 
-          y = aobject_y + (gint) event->y; 
+          x = aobject_x + (gint) event->x;
+          y = aobject_y + (gint) event->y;
           child = atk_component_ref_accessible_at_point (ATK_COMPONENT (aobject),
                                                          x,
                                                          y,
@@ -1530,7 +1530,7 @@ _button_watcher (GSignalInvocationHint *ihint,
             {
               if (!GTK_IS_MENU_ITEM (widget))
                 {
-                  g_print ("No child at position %d %d for %s\n", 
+                  g_print ("No child at position %d %d for %s\n",
                            x,
                            y,
                            g_type_name (G_OBJECT_TYPE (widget)));
@@ -2100,7 +2100,7 @@ _print_key_value(TabNumber tab_n, gint group_number,
         }
       else
         {
-          g_print("\t%-30s\t%s\n", label, 
+          g_print("\t%-30s\t%s\n", label,
                   value ? (gchar *)value : "NULL");
         }
     }
@@ -2395,10 +2395,10 @@ _notify_object_child_removed (GObject *obj, gint index,
     g_free(output_str);
 }
 
-static void 
+static void
 _notify_object_state_change (GObject *obj, gchar *name, gboolean set)
 {
-    gchar *output_str = g_strdup_printf("name %s %s set", 
+    gchar *output_str = g_strdup_printf("name %s %s set",
                         name, set ? "is" : "was");
     _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
       "State Change", output_str);
@@ -2689,7 +2689,7 @@ void _toggle_trackfocus(GtkCheckMenuItem *checkmenuitem,
        focus_tracker_id = atk_add_focus_tracker (_print_accessible);
      }
    else
-     { 
+     {
        g_print ("No longer tracking focus.\n");
        track_focus = FALSE;
        atk_remove_focus_tracker (focus_tracker_id);

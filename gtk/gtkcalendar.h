@@ -105,22 +105,22 @@ typedef gchar* (*GtkCalendarDetailFunc) (GtkCalendar *calendar,
 struct _GtkCalendar
 {
   GtkWidget widget;
-  
+
   GtkStyle  *GSEAL (header_style);
   GtkStyle  *GSEAL (label_style);
-  
+
   gint GSEAL (month);
   gint GSEAL (year);
   gint GSEAL (selected_day);
-  
+
   gint GSEAL (day_month[6][7]);
   gint GSEAL (day[6][7]);
-  
+
   gint GSEAL (num_marked_dates);
   gint GSEAL (marked_date[31]);
   GtkCalendarDisplayOptions  GSEAL (display_flags);
   GdkColor GSEAL (marked_date_color[31]);
-  
+
   GdkGC *GSEAL (gc);			/* unused */
   GdkGC *GSEAL (xor_gc);		/* unused */
 
@@ -129,7 +129,7 @@ struct _GtkCalendar
 
   gint GSEAL (highlight_row);
   gint GSEAL (highlight_col);
-  
+
   GtkCalendarPrivate *GSEAL (priv);
   gchar GSEAL (grow_space [32]);
 
@@ -143,7 +143,7 @@ struct _GtkCalendar
 struct _GtkCalendarClass
 {
   GtkWidgetClass parent_class;
-  
+
   /* Signal handlers */
   void (* month_changed)		(GtkCalendar *calendar);
   void (* day_selected)			(GtkCalendar *calendar);
@@ -152,7 +152,7 @@ struct _GtkCalendarClass
   void (* next_month)			(GtkCalendar *calendar);
   void (* prev_year)			(GtkCalendar *calendar);
   void (* next_year)			(GtkCalendar *calendar);
-  
+
 };
 
 
@@ -181,7 +181,7 @@ void	   gtk_calendar_display_options (GtkCalendar		  *calendar,
 					 GtkCalendarDisplayOptions flags);
 #endif
 
-void	   gtk_calendar_get_date	(GtkCalendar *calendar, 
+void	   gtk_calendar_get_date	(GtkCalendar *calendar,
 					 guint	     *year,
 					 guint	     *month,
 					 guint	     *day);

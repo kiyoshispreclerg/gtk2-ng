@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Check that a theme engine does not export any 
+# Check that a theme engine does not export any
 # functions that may interfere with symbol resolution
 
 cat >expected-abi <<EOF

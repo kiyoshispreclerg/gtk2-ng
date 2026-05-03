@@ -67,7 +67,7 @@ static const guint32 mask_table[] = {
 
 /*
  * convert bitmap data to pixbuf without alpha,
- * without using a colormap 
+ * without using a colormap
  */
 static void
 bitmap1 (GdkImage    *image,
@@ -91,7 +91,7 @@ bitmap1 (GdkImage    *image,
   for (yy = y1; yy < y2; yy++)
     {
       o = orow;
-      
+
       for (xx = x1; xx < x2; xx ++)
 	{
           /* top 29 bits of xx (xx >> 3) indicate the byte the bit is inside,
@@ -123,7 +123,7 @@ bitmap1 (GdkImage    *image,
 
 /*
  * convert bitmap data to pixbuf with alpha,
- * without using a colormap 
+ * without using a colormap
  */
 static void
 bitmap1a (GdkImage    *image,
@@ -147,7 +147,7 @@ bitmap1a (GdkImage    *image,
   for (yy = y1; yy < y2; yy++)
     {
       o = orow;
-      
+
       for (xx = x1; xx < x2; xx ++)
 	{
           /* see comment in bitmap1() */
@@ -206,7 +206,7 @@ rgb1 (GdkImage    *image,
   for (yy = y1; yy < y2; yy++)
     {
       o = orow;
-      
+
       for (xx = x1; xx < x2; xx ++)
 	{
           /* see comment in bitmap1() */
@@ -242,7 +242,7 @@ rgb1a (GdkImage    *image,
   register guint8 data;
   guint8 *o;
   guint8 *srow = (guint8*)image->mem + y1 * image->bpl, *orow = pixels;
-  
+
   d (printf ("1 bits/pixel\n"));
 
   /* convert upto 8 pixels/time */
@@ -253,7 +253,7 @@ rgb1a (GdkImage    *image,
   for (yy = y1; yy < y2; yy++)
     {
       o = orow;
-      
+
       for (xx = x1; xx < x2; xx ++)
 	{
           /* see comment in bitmap1() */
@@ -440,7 +440,7 @@ rgb565lsb (GdkImage    *image,
 	  register guint32 data = *s++;
 #ifdef BIG
 	  data = SWAP16 (data);
-#endif	  
+#endif
 	  *o++ = R8fromRGB565 (data);
 	  *o++ = G8fromRGB565 (data);
 	  *o++ = B8fromRGB565 (data);
@@ -484,7 +484,7 @@ rgb565msb (GdkImage    *image,
 	  register guint32 data = *s++;
 #ifdef LITTLE
 	  data = SWAP16 (data);
-#endif	  
+#endif
 	  *o++ = R8fromRGB565 (data);
 	  *o++ = G8fromRGB565 (data);
 	  *o++ = B8fromRGB565 (data);
@@ -616,7 +616,7 @@ rgb555lsb (GdkImage     *image,
 	  register guint32 data = *s++;
 #ifdef BIG
 	  data = SWAP16 (data);
-#endif	  
+#endif
 	  *o++ = R8fromRGB555 (data);
 	  *o++ = G8fromRGB555 (data);
 	  *o++ = B8fromRGB555 (data);
@@ -660,7 +660,7 @@ rgb555msb (GdkImage    *image,
 	  register guint32 data = *s++;
 #ifdef LITTLE
 	  data = SWAP16 (data);
-#endif	  
+#endif
 	  *o++ = R8fromRGB555 (data);
 	  *o++ = G8fromRGB555 (data);
 	  *o++ = B8fromRGB555 (data);
@@ -941,8 +941,8 @@ convert_real_slow (GdkImage    *image,
                  "match the depth of the colormap passed in (%d).",
                  G_STRLOC, image->depth, v->depth);
       return;
-    } 
- 
+    }
+
   d(printf("rgb  mask/shift/prec = %x:%x:%x %d:%d:%d  %d:%d:%d\n",
 	   v->red_mask, v->green_mask, v->blue_mask,
 	   v->red_shift, v->green_shift, v->blue_shift,
@@ -961,7 +961,7 @@ convert_real_slow (GdkImage    *image,
 	    case GDK_VISUAL_GRAYSCALE:
 	    case GDK_VISUAL_STATIC_COLOR:
 	    case GDK_VISUAL_PSEUDO_COLOR:
-	      *o++ = cmap->colors[pixel].red   >> 8; 
+	      *o++ = cmap->colors[pixel].red   >> 8;
 	      *o++ = cmap->colors[pixel].green >> 8;
 	      *o++ = cmap->colors[pixel].blue  >> 8;
 	      break;
@@ -1037,22 +1037,22 @@ rgbconvert (GdkImage    *image,
 
   g_assert ((x + width) <= image->width);
   g_assert ((y + height) <= image->height);
-  
+
   if (cmap == NULL)
     {
       /* Only allowed for bitmaps */
       g_return_if_fail (image->depth == 1);
-      
+
       if (alpha)
         bitmap1a (image, pixels, rowstride,
                   x, y, x + width, y + height);
       else
         bitmap1 (image, pixels, rowstride,
                   x, y, x + width, y + height);
-      
+
       return;
     }
-  
+
   v = gdk_colormap_get_visual (cmap);
 
   if (image->depth != v->depth)
@@ -1061,14 +1061,14 @@ rgbconvert (GdkImage    *image,
                  "match the depth of the colormap passed in (%d).",
                  G_STRLOC, image->depth, v->depth);
       return;
-    } 
- 
+    }
+
   bank = 5; /* default fallback converter */
   index = (image->byte_order == GDK_MSB_FIRST) | (alpha != 0) << 1;
-  
+
   d(printf("masks = %x:%x:%x\n", v->red_mask, v->green_mask, v->blue_mask));
   d(printf("image depth = %d, bits per pixel = %d\n", image->depth, image->bits_per_pixel));
-  
+
   switch (v->type)
     {
 				/* I assume this is right for static & greyscale's too? */
@@ -1118,7 +1118,7 @@ rgbconvert (GdkImage    *image,
   if (bank == 5)
     {
       convert_real_slow (image, pixels, rowstride,
-                         x, y, x + width, y + height,                         
+                         x, y, x + width, y + height,
                          cmap, alpha);
     }
   else
@@ -1150,7 +1150,7 @@ rgbconvert (GdkImage    *image,
  * representation inside a #GdkPixbuf. In other words, copies
  * image data from a server-side drawable to a client-side RGB(A) buffer.
  * This allows you to efficiently read individual pixels on the client side.
- * 
+ *
  * If the drawable @src has no colormap (gdk_drawable_get_colormap()
  * returns %NULL), then a suitable colormap must be specified.
  * Typically a #GdkWindow or a pixmap created by passing a #GdkWindow
@@ -1184,7 +1184,7 @@ rgbconvert (GdkImage    *image,
  * If the window you're obtaining data from is partially obscured by
  * other windows, then the contents of the pixbuf areas corresponding
  * to the obscured regions are undefined.
- * 
+ *
  * If the target drawable is not mapped (typically because it's
  * iconified/minimized or not on the current workspace), then %NULL
  * will be returned.
@@ -1198,7 +1198,7 @@ rgbconvert (GdkImage    *image,
  * This function calls gdk_drawable_get_image() internally and
  * converts the resulting image to a #GdkPixbuf, so the
  * documentation for gdk_drawable_get_image() may also be relevant.
- * 
+ *
  * Return value: The same pixbuf as @dest if it was non-%NULL, or a newly-created
  * pixbuf with a reference count of 1 if no destination pixbuf was specified, or %NULL on error
  **/
@@ -1214,7 +1214,7 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
   GdkImage *image;
   int depth;
   int x0, y0;
-  
+
   /* General sanity checks */
 
   g_return_val_if_fail (src != NULL, NULL);
@@ -1241,7 +1241,7 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
     cmap = gdk_drawable_get_colormap (src);
 
   depth = gdk_drawable_get_depth (src);
-  
+
   if (depth != 1 && cmap == NULL)
     {
       g_warning ("%s: Source drawable has no colormap; either pass "
@@ -1249,17 +1249,17 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
                  "with gdk_drawable_set_colormap()", G_STRLOC);
       return NULL;
     }
-  
+
   if (cmap != NULL && depth != cmap->visual->depth)
     {
       g_warning ("%s: Depth of the source drawable is %d where as "
                  "the visual depth of the colormap passed is %d",
                  G_STRLOC, depth, cmap->visual->depth);
       return NULL;
-    } 
- 
+    }
+
   /* Coordinate sanity checks */
-  
+
   if (GDK_IS_PIXMAP (src))
     {
       gdk_drawable_get_size (src, &src_width, &src_height);
@@ -1267,7 +1267,7 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
         width = src_width;
       if (height < 0)
         height = src_height;
-      
+
       g_return_val_if_fail (src_x >= 0 && src_y >= 0, NULL);
       g_return_val_if_fail (src_x + width <= src_width && src_y + height <= src_height, NULL);
     }
@@ -1279,7 +1279,7 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
       if (dest == NULL)
         return NULL;
     }
-  
+
   if (dest)
     {
       g_return_val_if_fail (dest_x >= 0 && dest_y >= 0, NULL);
@@ -1293,10 +1293,10 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
       for (x0 = 0; x0 < width; x0 += GDK_SCRATCH_IMAGE_WIDTH)
 	{
 	  gint xs0, ys0;
-	  
+
 	  gint width1 = MIN (width - x0, GDK_SCRATCH_IMAGE_WIDTH);
-	  
-	  image = _gdk_image_get_scratch (gdk_drawable_get_screen (src), 
+
+	  image = _gdk_image_get_scratch (gdk_drawable_get_screen (src),
 					  width1, height1, depth, &xs0, &ys0);
 
 	  gdk_drawable_copy_to_image (src, image,
@@ -1308,10 +1308,10 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
 				     width1, height1);
 	}
     }
-  
+
   return dest;
 }
-        
+
 /**
  * gdk_pixbuf_get_from_image:
  * @dest: (allow-none): Destination pixbuf, or %NULL if a new pixbuf should be created.
@@ -1323,10 +1323,10 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
  * @dest_y: Destination Y coordinate in pixbuf, or 0 if @dest is NULL.
  * @width: Width in pixels of region to get.
  * @height: Height in pixels of region to get.
- * 
+ *
  * Same as gdk_pixbuf_get_from_drawable() but gets the pixbuf from
  * an image.
- * 
+ *
  * Return value: @dest, newly-created pixbuf if @dest was %NULL, %NULL on error
  **/
 GdkPixbuf*
@@ -1341,7 +1341,7 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
                            int          height)
 {
   int rowstride, bpp, alpha;
-  
+
   /* General sanity checks */
 
   g_return_val_if_fail (GDK_IS_IMAGE (src), NULL);
@@ -1358,7 +1358,7 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
 
   if (cmap == NULL)
     cmap = gdk_image_get_colormap (src);
-  
+
   if (src->depth != 1 && cmap == NULL)
     {
       g_warning ("%s: Source image has no colormap; either pass "
@@ -1366,15 +1366,15 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
                  "with gdk_image_set_colormap()", G_STRLOC);
       return NULL;
     }
-  
+
   if (cmap != NULL && src->depth != cmap->visual->depth)
     {
       g_warning ("%s: Depth of the Source image is %d where as "
                  "the visual depth of the colormap passed is %d",
                  G_STRLOC, src->depth, cmap->visual->depth);
       return NULL;
-    } 
- 
+    }
+
   /* Coordinate sanity checks */
 
   g_return_val_if_fail (src_x >= 0 && src_y >= 0, NULL);
@@ -1410,7 +1410,7 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
               width,
               height,
 	      cmap);
-  
+
   return dest;
 }
 

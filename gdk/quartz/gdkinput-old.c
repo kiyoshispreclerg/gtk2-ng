@@ -41,12 +41,12 @@ gdk_device_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkDevice",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 

@@ -49,8 +49,8 @@ gtk_radio_tool_button_class_init (GtkRadioToolButtonClass *klass)
   toolbutton_class = (GtkToolButtonClass *)klass;
 
   object_class->set_property = gtk_radio_tool_button_set_property;
-  
-  toolbutton_class->button_type = GTK_TYPE_RADIO_BUTTON;  
+
+  toolbutton_class->button_type = GTK_TYPE_RADIO_BUTTON;
 
   /**
    * GtkRadioToolButton:group:
@@ -92,7 +92,7 @@ gtk_radio_tool_button_set_property (GObject         *object,
       {
 	GtkRadioToolButton *arg;
 	GSList *slist = NULL;
-	if (G_VALUE_HOLDS_OBJECT (value)) 
+	if (G_VALUE_HOLDS_OBJECT (value))
 	  {
 	    arg = GTK_RADIO_TOOL_BUTTON (g_value_get_object (value));
 	    if (arg)
@@ -110,23 +110,23 @@ gtk_radio_tool_button_set_property (GObject         *object,
 /**
  * gtk_radio_tool_button_new:
  * @group: (allow-none): An existing radio button group, or %NULL if you are creating a new group
- * 
+ *
  * Creates a new #GtkRadioToolButton, adding it to @group.
- * 
+ *
  * Return value: The new #GtkRadioToolButton
- * 
+ *
  * Since: 2.4
  **/
 GtkToolItem *
 gtk_radio_tool_button_new (GSList *group)
 {
   GtkRadioToolButton *button;
-  
+
   button = g_object_new (GTK_TYPE_RADIO_TOOL_BUTTON,
 			 NULL);
 
   gtk_radio_tool_button_set_group (button, group);
-  
+
   return GTK_TOOL_ITEM (button);
 }
 
@@ -134,13 +134,13 @@ gtk_radio_tool_button_new (GSList *group)
  * gtk_radio_tool_button_new_from_stock:
  * @group: (allow-none): an existing radio button group, or %NULL if you are creating a new group
  * @stock_id: the name of a stock item
- * 
- * Creates a new #GtkRadioToolButton, adding it to @group. 
+ *
+ * Creates a new #GtkRadioToolButton, adding it to @group.
  * The new #GtkRadioToolButton will contain an icon and label from the
  * stock item indicated by @stock_id.
- * 
+ *
  * Return value: The new #GtkRadioToolItem
- * 
+ *
  * Since: 2.4
  **/
 GtkToolItem *
@@ -150,14 +150,14 @@ gtk_radio_tool_button_new_from_stock (GSList      *group,
   GtkRadioToolButton *button;
 
   g_return_val_if_fail (stock_id != NULL, NULL);
-  
+
   button = g_object_new (GTK_TYPE_RADIO_TOOL_BUTTON,
 			 "stock-id", stock_id,
 			 NULL);
 
 
   gtk_radio_tool_button_set_group (button, group);
-  
+
   return GTK_TOOL_ITEM (button);
 }
 
@@ -175,12 +175,12 @@ GtkToolItem *
 gtk_radio_tool_button_new_from_widget (GtkRadioToolButton *group)
 {
   GSList *list = NULL;
-  
+
   g_return_val_if_fail (GTK_IS_RADIO_TOOL_BUTTON (group), NULL);
 
   if (group)
     list = gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (group));
-  
+
   return gtk_radio_tool_button_new (list);
 }
 
@@ -202,12 +202,12 @@ gtk_radio_tool_button_new_with_stock_from_widget (GtkRadioToolButton *group,
 						  const gchar        *stock_id)
 {
   GSList *list = NULL;
-  
+
   g_return_val_if_fail (GTK_IS_RADIO_TOOL_BUTTON (group), NULL);
 
   if (group)
     list = gtk_radio_tool_button_get_group (group);
-  
+
   return gtk_radio_tool_button_new_from_stock (list, stock_id);
 }
 
@@ -239,9 +239,9 @@ gtk_radio_tool_button_get_group (GtkRadioToolButton *button)
  * gtk_radio_tool_button_set_group:
  * @button: a #GtkRadioToolButton
  * @group: an existing radio button group
- * 
+ *
  * Adds @button to @group, removing it from the group it belonged to before.
- * 
+ *
  * Since: 2.4
  **/
 void

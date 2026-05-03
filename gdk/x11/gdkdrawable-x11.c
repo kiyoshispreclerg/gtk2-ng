@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -131,7 +131,7 @@ static void gdk_x11_draw_pixbuf    (GdkDrawable     *drawable,
 				    gint             y_dither);
 
 static cairo_surface_t *gdk_x11_ref_cairo_surface (GdkDrawable *drawable);
-     
+
 static void gdk_x11_set_colormap   (GdkDrawable    *drawable,
                                     GdkColormap    *colormap);
 
@@ -151,9 +151,9 @@ _gdk_drawable_impl_x11_class_init (GdkDrawableImplX11Class *klass)
 {
   GdkDrawableClass *drawable_class = GDK_DRAWABLE_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  
+
   object_class->finalize = gdk_drawable_impl_x11_finalize;
-  
+
   drawable_class->create_gc = _gdk_x11_gc_new;
   drawable_class->draw_rectangle = gdk_x11_draw_rectangle;
   drawable_class->draw_arc = gdk_x11_draw_arc;
@@ -166,7 +166,7 @@ _gdk_drawable_impl_x11_class_init (GdkDrawableImplX11Class *klass)
   drawable_class->draw_lines = gdk_x11_draw_lines;
   drawable_class->draw_image = gdk_x11_draw_image;
   drawable_class->draw_pixbuf = gdk_x11_draw_pixbuf;
-  
+
   drawable_class->ref_cairo_surface = gdk_x11_ref_cairo_surface;
 
   drawable_class->set_colormap = gdk_x11_set_colormap;
@@ -175,7 +175,7 @@ _gdk_drawable_impl_x11_class_init (GdkDrawableImplX11Class *klass)
   drawable_class->get_depth = gdk_x11_get_depth;
   drawable_class->get_screen = gdk_x11_get_screen;
   drawable_class->get_visual = gdk_x11_get_visual;
-  
+
   drawable_class->_copy_to_image = _gdk_x11_copy_to_image;
 }
 
@@ -195,7 +195,7 @@ gdk_drawable_impl_x11_finalize (GObject *object)
 /**
  * _gdk_x11_drawable_finish:
  * @drawable: a #GdkDrawableImplX11.
- * 
+ *
  * Performs necessary cleanup prior to freeing a pixmap or
  * destroying a window.
  **/
@@ -203,14 +203,14 @@ void
 _gdk_x11_drawable_finish (GdkDrawable *drawable)
 {
   GdkDrawableImplX11 *impl = GDK_DRAWABLE_IMPL_X11 (drawable);
-  
+
   if (impl->picture)
     {
       XRenderFreePicture (GDK_SCREEN_XDISPLAY (impl->screen),
 			  impl->picture);
       impl->picture = None;
     }
-  
+
   if (impl->cairo_surface)
     {
       cairo_surface_finish (impl->cairo_surface);
@@ -222,7 +222,7 @@ _gdk_x11_drawable_finish (GdkDrawable *drawable)
 /**
  * _gdk_x11_drawable_update_size:
  * @drawable: a #GdkDrawableImplX11.
- * 
+ *
  * Updates the state of the drawable (in particular the drawable's
  * cairo surface) when its size has changed.
  **/
@@ -230,11 +230,11 @@ void
 _gdk_x11_drawable_update_size (GdkDrawable *drawable)
 {
   GdkDrawableImplX11 *impl = GDK_DRAWABLE_IMPL_X11 (drawable);
-  
+
   if (impl->cairo_surface)
     {
       int width, height;
-      
+
       gdk_drawable_get_size (drawable, &width, &height);
       cairo_xlib_surface_set_size (impl->cairo_surface, width, height);
     }
@@ -312,7 +312,7 @@ _gdk_x11_have_render (GdkDisplay *display)
 		      has_32 = TRUE;
 		    }
 		}
-	      
+
 	      if (!(has_8 && has_32))
 		{
 		  g_warning ("The X server advertises that RENDER support is present,\n"
@@ -332,12 +332,12 @@ static Picture
 gdk_x11_drawable_get_picture (GdkDrawable *drawable)
 {
   GdkDrawableImplX11 *impl = GDK_DRAWABLE_IMPL_X11 (drawable);
-  
+
   if (!impl->picture)
     {
       Display *xdisplay = GDK_SCREEN_XDISPLAY (impl->screen);
       XRenderPictFormat *format;
-      
+
       GdkVisual *visual = gdk_drawable_get_visual (GDK_DRAWABLE_IMPL_X11 (drawable)->wrapper);
       if (!visual)
 	return None;
@@ -347,12 +347,12 @@ gdk_x11_drawable_get_picture (GdkDrawable *drawable)
 	{
 	  XRenderPictureAttributes attributes;
 	  attributes.graphics_exposures = False;
-	  
+
 	  impl->picture = XRenderCreatePicture (xdisplay, impl->xid, format,
 						CPGraphicsExposure, &attributes);
 	}
     }
-  
+
   return impl->picture;
 }
 
@@ -379,10 +379,10 @@ gdk_x11_drawable_update_picture_clip (GdkDrawable *drawable,
 	  rects[i].width = CLAMP (boxes[i].x2 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT) - rects[i].x;
 	  rects[i].height = CLAMP (boxes[i].y2 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT) - rects[i].y;
 	}
-      
+
       XRenderSetPictureClipRectangles (xdisplay, picture,
 				       0, 0, rects, n_boxes);
-      
+
       g_free (rects);
     }
   else
@@ -431,7 +431,7 @@ gdk_x11_set_colormap (GdkDrawable *drawable,
 
   if (impl->colormap == colormap)
     return;
-  
+
   if (impl->colormap)
     g_object_unref (impl->colormap);
   impl->colormap = colormap;
@@ -454,7 +454,7 @@ gdk_x11_draw_rectangle (GdkDrawable *drawable,
   GdkDrawableImplX11 *impl;
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
-  
+
   if (filled)
     XFillRectangle (GDK_SCREEN_XDISPLAY (impl->screen), impl->xid,
 		    GDK_GC_GET_XGC (gc), x, y, width, height);
@@ -478,7 +478,7 @@ gdk_x11_draw_arc (GdkDrawable *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
-  
+
   if (filled)
     XFillArc (GDK_SCREEN_XDISPLAY (impl->screen), impl->xid,
 	      GDK_GC_GET_XGC (gc), x, y, width, height, angle1, angle2);
@@ -500,7 +500,7 @@ gdk_x11_draw_polygon (GdkDrawable *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
-  
+
   if (!filled &&
       (points[0].x != points[npoints-1].x || points[0].y != points[npoints-1].y))
     {
@@ -520,7 +520,7 @@ gdk_x11_draw_polygon (GdkDrawable *drawable,
       tmp_points[i].x = points[i].x;
       tmp_points[i].y = points[i].y;
     }
-  
+
   if (filled)
     XFillPolygon (GDK_SCREEN_XDISPLAY (impl->screen), impl->xid,
 		  GDK_GC_GET_XGC (gc), tmp_points, tmp_npoints, Complex, CoordModeOrigin);
@@ -551,7 +551,7 @@ gdk_x11_draw_text (GdkDrawable *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
   xdisplay = GDK_SCREEN_XDISPLAY (impl->screen);
-  
+
   if (font->type == GDK_FONT_FONT)
     {
       XFontStruct *xfont = (XFontStruct *) GDK_FONT_XFONT (font);
@@ -591,7 +591,7 @@ gdk_x11_draw_text_wc (GdkDrawable    *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
   xdisplay = GDK_SCREEN_XDISPLAY (impl->screen);
-  
+
   if (font->type == GDK_FONT_FONT)
     {
       XFontStruct *xfont = (XFontStruct *) GDK_FONT_XFONT (font);
@@ -644,7 +644,7 @@ gdk_x11_draw_drawable (GdkDrawable *drawable,
   int dest_depth = gdk_drawable_get_depth (drawable);
   GdkDrawableImplX11 *impl;
   GdkDrawableImplX11 *src_impl;
-  
+
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
   if (GDK_IS_DRAWABLE_IMPL_X11 (src))
@@ -666,7 +666,7 @@ gdk_x11_draw_drawable (GdkDrawable *drawable,
        * also happen for window to window copies, but I don't
        * think we generate any calls like that.
        *
-       * See: 
+       * See:
        * http://lists.freedesktop.org/archives/xorg/2009-February/043318.html
        */
       if (xsrc < 0)
@@ -675,7 +675,7 @@ gdk_x11_draw_drawable (GdkDrawable *drawable,
 	  xdest -= xsrc;
 	  xsrc = 0;
 	}
-      
+
       if (ysrc < 0)
 	{
 	  height += ysrc;
@@ -688,7 +688,7 @@ gdk_x11_draw_drawable (GdkDrawable *drawable,
       if (ysrc + height > src_pixmap->height)
 	height = src_pixmap->height - ysrc;
     }
-  
+
   if (src_depth == 1)
     {
       XCopyArea (GDK_SCREEN_XDISPLAY (impl->screen),
@@ -724,7 +724,7 @@ gdk_x11_draw_points (GdkDrawable *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
-  
+
   /* We special-case npoints == 1, because X will merge multiple
    * consecutive XDrawPoint requests into a PolyPoint request
    */
@@ -745,7 +745,7 @@ gdk_x11_draw_points (GdkDrawable *drawable,
 	  tmp_points[i].x = points[i].x;
 	  tmp_points[i].y = points[i].y;
 	}
-      
+
       XDrawPoints (GDK_SCREEN_XDISPLAY (impl->screen),
 		   impl->xid,
 		   GDK_GC_GET_XGC (gc),
@@ -767,7 +767,7 @@ gdk_x11_draw_segments (GdkDrawable *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
-  
+
   /* We special-case nsegs == 1, because X will merge multiple
    * consecutive XDrawLine requests into a PolySegment request
    */
@@ -789,7 +789,7 @@ gdk_x11_draw_segments (GdkDrawable *drawable,
 	  tmp_segs[i].y1 = segs[i].y1;
 	  tmp_segs[i].y2 = segs[i].y2;
 	}
-      
+
       XDrawSegments (GDK_SCREEN_XDISPLAY (impl->screen),
 		     impl->xid,
 		     GDK_GC_GET_XGC (gc),
@@ -811,13 +811,13 @@ gdk_x11_draw_lines (GdkDrawable *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
-  
+
   for (i=0; i<npoints; i++)
     {
       tmp_points[i].x = points[i].x;
       tmp_points[i].y = points[i].y;
     }
-      
+
   XDrawLines (GDK_SCREEN_XDISPLAY (impl->screen),
 	      impl->xid,
 	      GDK_GC_GET_XGC (gc),
@@ -842,7 +842,7 @@ gdk_x11_draw_image     (GdkDrawable     *drawable,
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
 
-#ifdef USE_SHM  
+#ifdef USE_SHM
   if (image->type == GDK_IMAGE_SHARED)
     XShmPutImage (GDK_SCREEN_XDISPLAY (impl->screen), impl->xid,
                   GDK_GC_GET_XGC (gc), GDK_IMAGE_XIMAGE (image),
@@ -894,9 +894,9 @@ gdk_x11_get_visual (GdkDrawable    *drawable)
 /**
  * gdk_x11_drawable_get_xdisplay:
  * @drawable: a #GdkDrawable.
- * 
+ *
  * Returns the display of a #GdkDrawable.
- * 
+ *
  * Return value: an Xlib <type>Display*</type>.
  **/
 Display *
@@ -911,20 +911,20 @@ gdk_x11_drawable_get_xdisplay (GdkDrawable *drawable)
 /**
  * gdk_x11_drawable_get_xid:
  * @drawable: a #GdkDrawable.
- * 
+ *
  * Returns the X resource (window or pixmap) belonging to a #GdkDrawable.
- * 
+ *
  * Return value: the ID of @drawable's X resource.
  **/
 XID
 gdk_x11_drawable_get_xid (GdkDrawable *drawable)
 {
   GdkDrawable *impl;
-  
+
   if (GDK_IS_WINDOW (drawable))
     {
       GdkWindow *window = (GdkWindow *)drawable;
-      
+
       /* Try to ensure the window has a native window */
       if (!_gdk_window_has_impl (window))
 	{
@@ -936,13 +936,13 @@ gdk_x11_drawable_get_xid (GdkDrawable *drawable)
 	   * connection to the Xserver */
 	  gdk_display_sync (gdk_drawable_get_display (window));
 	}
-      
+
       if (!GDK_WINDOW_IS_X11 (window))
         {
           g_warning (G_STRLOC " drawable is not a native X11 window");
           return None;
         }
-      
+
       impl = ((GdkWindowObject *)drawable)->impl;
     }
   else if (GDK_IS_PIXMAP (drawable))
@@ -983,7 +983,7 @@ select_format (GdkDisplay         *display,
 
   if (!_gdk_x11_have_render (display))
     return GDK_X11_FORMAT_NONE;
-  
+
   /* Look for a 32-bit xRGB and Axxx formats that exactly match the
    * in memory data format. We can use them as pixmap and mask
    * to deal with non-premultiplied data.
@@ -994,7 +994,7 @@ select_format (GdkDisplay         *display,
   pf.direct.redMask = 0xff;
   pf.direct.greenMask = 0xff;
   pf.direct.blueMask = 0xff;
-  
+
   pf.direct.alphaMask = 0;
   if (ImageByteOrder (xdisplay) == LSBFirst)
     {
@@ -1010,7 +1010,7 @@ select_format (GdkDisplay         *display,
       pf.direct.green = 16;
       pf.direct.blue = 8;
     }
-  
+
   *format = XRenderFindFormat (xdisplay,
 			       (PictFormatType | PictFormatDepth |
 				PictFormatRedMask | PictFormatRed |
@@ -1030,7 +1030,7 @@ select_format (GdkDisplay         *display,
     {
       pf.direct.alpha = 0;
     }
-  
+
   *mask = XRenderFindFormat (xdisplay,
 			     (PictFormatType | PictFormatDepth |
 			      PictFormatAlphaMask | PictFormatAlpha),
@@ -1048,7 +1048,7 @@ select_format (GdkDisplay         *display,
   pf.direct.red = 16;
   pf.direct.green = 8;
   pf.direct.blue = 0;
-  
+
   *format = XRenderFindFormat (xdisplay,
 			       (PictFormatType | PictFormatDepth |
 				PictFormatRedMask | PictFormatRed |
@@ -1060,7 +1060,7 @@ select_format (GdkDisplay         *display,
 
   pf.direct.alphaMask = 0xff;
   pf.direct.alpha = 24;
-  
+
   *mask = XRenderFindFormat (xdisplay,
 			     (PictFormatType | PictFormatDepth |
 			      PictFormatAlphaMask | PictFormatAlpha),
@@ -1103,7 +1103,7 @@ static void
 list_formats (XRenderPictFormat *pf)
 {
   gint i;
-  
+
   for (i=0 ;; i++)
     {
       XRenderPictFormat *pf = XRenderFindFormat (impl->xdisplay, 0, NULL, i);
@@ -1124,7 +1124,7 @@ list_formats (XRenderPictFormat *pf)
 	break;
     }
 }
-#endif  
+#endif
 
 void
 _gdk_x11_convert_to_format (guchar           *src_buf,
@@ -1171,11 +1171,11 @@ _gdk_x11_convert_to_format (guchar           *src_buf,
 		guint32 *q = (guint32 *)(dest_buf + i * dest_rowstride);
 		guint32 *end = p + width;
 
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN	    
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
 		if (dest_byteorder == GDK_LSB_FIRST)
 		  {
 		    /* ABGR => ARGB */
-		
+
 		    while (p < end)
 		      {
 			*q = ( (*p & 0xff00ff00) |
@@ -1188,7 +1188,7 @@ _gdk_x11_convert_to_format (guchar           *src_buf,
 		else
 		  {
 		    /* ABGR => BGRA */
-		
+
 		    while (p < end)
 		      {
 			*q = (((*p & 0xff000000) >> 24) |
@@ -1201,7 +1201,7 @@ _gdk_x11_convert_to_format (guchar           *src_buf,
 		if (dest_byteorder == GDK_LSB_FIRST)
 		  {
 		    /* RGBA => BGRA */
-		
+
 		    while (p < end)
 		      {
 			*q = ( (*p & 0x00ff00ff) |
@@ -1214,7 +1214,7 @@ _gdk_x11_convert_to_format (guchar           *src_buf,
 		else
 		  {
 		    /* RGBA => ARGB */
-		
+
 		    while (p < end)
 		      {
 			*q = (((*p & 0xffffff00) >> 8) |
@@ -1223,7 +1223,7 @@ _gdk_x11_convert_to_format (guchar           *src_buf,
 			p++;
 		      }
 		  }
-#endif /* G_BYTE_ORDER*/	    
+#endif /* G_BYTE_ORDER*/
 	      }
 	    break;
 	  }
@@ -1233,9 +1233,9 @@ _gdk_x11_convert_to_format (guchar           *src_buf,
 	    guchar *q = (dest_buf + i * dest_rowstride);
 	    guchar *end = p + 4 * width;
 	    guint t1,t2,t3;
-	    
+
 #define MULT(d,c,a,t) G_STMT_START { t = c * a; d = ((t >> 8) + t) >> 8; } G_STMT_END
-	    
+
 	    if (dest_byteorder == GDK_LSB_FIRST)
 	      {
 		while (p < end)
@@ -1294,17 +1294,17 @@ draw_with_images (GdkDrawable       *drawable,
   gint x0, y0;
 
   pix = gdk_pixmap_new (gdk_screen_get_root_window (screen), width, height, 32);
-						  
-  pict = XRenderCreatePicture (xdisplay, 
+
+  pict = XRenderCreatePicture (xdisplay,
 			       GDK_PIXMAP_XID (pix),
 			       format, 0, NULL);
   if (mask_format)
-    mask = XRenderCreatePicture (xdisplay, 
+    mask = XRenderCreatePicture (xdisplay,
 				 GDK_PIXMAP_XID (pix),
 				 mask_format, 0, NULL);
 
-  dest_pict = gdk_x11_drawable_get_picture (drawable);  
-  
+  dest_pict = gdk_x11_drawable_get_picture (drawable);
+
   pix_gc = _gdk_drawable_get_scratch_gc (pix, FALSE);
 
   for (y0 = 0; y0 < height; y0 += GDK_SCRATCH_IMAGE_HEIGHT)
@@ -1313,28 +1313,28 @@ draw_with_images (GdkDrawable       *drawable,
       for (x0 = 0; x0 < width; x0 += GDK_SCRATCH_IMAGE_WIDTH)
 	{
 	  gint xs0, ys0;
-	  
+
 	  gint width1 = MIN (width - x0, GDK_SCRATCH_IMAGE_WIDTH);
-	  
+
 	  image = _gdk_image_get_scratch (screen, width1, height1, 32, &xs0, &ys0);
-	  
+
 	  _gdk_x11_convert_to_format (src_rgb + y0 * src_rowstride + 4 * x0, src_rowstride,
                                       (guchar *)image->mem + ys0 * image->bpl + xs0 * image->bpp, image->bpl,
-                                      format_type, image->byte_order, 
+                                      format_type, image->byte_order,
                                       width1, height1);
 
 	  gdk_draw_image (pix, pix_gc,
 			  image, xs0, ys0, x0, y0, width1, height1);
 	}
     }
-  
-  XRenderComposite (xdisplay, PictOpOver, pict, mask, dest_pict, 
+
+  XRenderComposite (xdisplay, PictOpOver, pict, mask, dest_pict,
 		    0, 0, 0, 0, dest_x, dest_y, width, height);
 
   XRenderFreePicture (xdisplay, pict);
   if (mask)
     XRenderFreePicture (xdisplay, mask);
-  
+
   g_object_unref (pix);
 }
 
@@ -1374,22 +1374,22 @@ get_shm_pixmap_for_image (Display           *xdisplay,
 			  Picture           *mask)
 {
   ShmPixmapInfo *info;
-  
+
   if (image->type != GDK_IMAGE_SHARED)
     return FALSE;
-  
+
   info = g_object_get_data (G_OBJECT (image), "gdk-x11-shm-pixmap");
   if (!info)
     {
       *pix = _gdk_x11_image_get_shm_pixmap (image);
-      
+
       if (!*pix)
 	return FALSE;
-      
+
       info = g_new (ShmPixmapInfo, 1);
       info->display = xdisplay;
       info->pix = *pix;
-      
+
       info->pict = XRenderCreatePicture (xdisplay, info->pix,
 					 format, 0, NULL);
       if (mask_format)
@@ -1432,16 +1432,16 @@ draw_with_pixmaps (GdkDrawable       *drawable,
   gint x0, y0;
 
   dest_pict = gdk_x11_drawable_get_picture (drawable);
-  
+
   for (y0 = 0; y0 < height; y0 += GDK_SCRATCH_IMAGE_HEIGHT)
     {
       gint height1 = MIN (height - y0, GDK_SCRATCH_IMAGE_HEIGHT);
       for (x0 = 0; x0 < width; x0 += GDK_SCRATCH_IMAGE_WIDTH)
 	{
 	  gint xs0, ys0;
-	  
+
 	  gint width1 = MIN (width - x0, GDK_SCRATCH_IMAGE_WIDTH);
-	  
+
 	  image = _gdk_image_get_scratch (GDK_DRAWABLE_IMPL_X11 (drawable)->screen,
 					  width1, height1, 32, &xs0, &ys0);
 	  if (!get_shm_pixmap_for_image (xdisplay, image, format, mask_format, &pix, &pict, &mask))
@@ -1449,10 +1449,10 @@ draw_with_pixmaps (GdkDrawable       *drawable,
 
 	  _gdk_x11_convert_to_format (src_rgb + y0 * src_rowstride + 4 * x0, src_rowstride,
                                       (guchar *)image->mem + ys0 * image->bpl + xs0 * image->bpp, image->bpl,
-                                      format_type, image->byte_order, 
+                                      format_type, image->byte_order,
                                       width1, height1);
 
-	  XRenderComposite (xdisplay, PictOpOver, pict, mask, dest_pict, 
+	  XRenderComposite (xdisplay, PictOpOver, pict, mask, dest_pict,
 			    xs0, ys0, xs0, ys0, x0 + dest_x, y0 + dest_y,
 			    width1, height1);
 	}
@@ -1479,10 +1479,10 @@ gdk_x11_draw_pixbuf (GdkDrawable     *drawable,
   GdkX11FormatType format_type;
   XRenderPictFormat *format, *mask_format;
   gint rowstride;
-#ifdef USE_SHM  
+#ifdef USE_SHM
   gboolean use_pixmaps = TRUE;
 #endif /* USE_SHM */
-    
+
   format_type = select_format (gdk_drawable_get_display (drawable),
 			       &format, &mask_format);
 
@@ -1547,9 +1547,9 @@ _gdk_windowing_create_cairo_surface (GdkDrawable *drawable,
 {
   GdkDrawableImplX11 *impl = GDK_DRAWABLE_IMPL_X11 (drawable);
   GdkVisual *visual;
-    
+
   visual = gdk_drawable_get_visual (drawable);
-  if (visual) 
+  if (visual)
     return cairo_xlib_surface_create (GDK_SCREEN_XDISPLAY (impl->screen),
 				      impl->xid,
 				      GDK_VISUAL_XVISUAL (visual),
@@ -1568,7 +1568,7 @@ _gdk_windowing_create_cairo_surface (GdkDrawable *drawable,
 		 "a colormap must be set on them with gdk_drawable_set_colormap");
       return NULL;
     }
-  
+
 }
 
 static cairo_surface_t *
@@ -1583,11 +1583,11 @@ gdk_x11_ref_cairo_surface (GdkDrawable *drawable)
   if (!impl->cairo_surface)
     {
       int width, height;
-  
+
       gdk_drawable_get_size (impl->wrapper, &width, &height);
 
       impl->cairo_surface = _gdk_windowing_create_cairo_surface (drawable, width, height);
-      
+
       if (impl->cairo_surface)
 	cairo_surface_set_user_data (impl->cairo_surface, &gdk_x11_cairo_key,
 				     drawable, gdk_x11_cairo_surface_destroy);

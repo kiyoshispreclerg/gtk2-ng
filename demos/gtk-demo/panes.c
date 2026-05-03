@@ -63,26 +63,26 @@ create_pane_options (GtkPaned	 *paned,
   GtkWidget *check_button;
   GtkWidget *child1;
   GtkWidget *child2;
-  
+
   child1 = gtk_paned_get_child1 (paned);
   child2 = gtk_paned_get_child2 (paned);
-  
+
   frame = gtk_frame_new (frame_label);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
-  
+
   table = gtk_table_new (3, 2, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  
+
   label = gtk_label_new (label1);
   gtk_table_attach_defaults (GTK_TABLE (table), label,
 			     0, 1, 0, 1);
-  
+
   check_button = gtk_check_button_new_with_mnemonic ("_Resize");
   gtk_table_attach_defaults (GTK_TABLE (table), check_button,
 			     0, 1, 1, 2);
   g_signal_connect (check_button, "toggled",
 		    G_CALLBACK (toggle_resize), child1);
-  
+
   check_button = gtk_check_button_new_with_mnemonic ("_Shrink");
   gtk_table_attach_defaults (GTK_TABLE (table), check_button,
 			     0, 1, 2, 3);
@@ -90,11 +90,11 @@ create_pane_options (GtkPaned	 *paned,
 			       TRUE);
   g_signal_connect (check_button, "toggled",
 		    G_CALLBACK (toggle_shrink), child1);
-  
+
   label = gtk_label_new (label2);
   gtk_table_attach_defaults (GTK_TABLE (table), label,
 			     1, 2, 0, 1);
-  
+
   check_button = gtk_check_button_new_with_mnemonic ("_Resize");
   gtk_table_attach_defaults (GTK_TABLE (table), check_button,
 			     1, 2, 1, 2);
@@ -102,7 +102,7 @@ create_pane_options (GtkPaned	 *paned,
 			       TRUE);
   g_signal_connect (check_button, "toggled",
 		    G_CALLBACK (toggle_resize), child2);
-  
+
   check_button = gtk_check_button_new_with_mnemonic ("_Shrink");
   gtk_table_attach_defaults (GTK_TABLE (table), check_button,
 			     1, 2, 2, 3);
@@ -138,7 +138,7 @@ do_panes (GtkWidget *do_widget)
 
       vbox = gtk_vbox_new (FALSE, 0);
       gtk_container_add (GTK_CONTAINER (window), vbox);
-      
+
       vpaned = gtk_vpaned_new ();
       gtk_box_pack_start (GTK_BOX (vbox), vpaned, TRUE, TRUE, 0);
       gtk_container_set_border_width (GTK_CONTAINER(vpaned), 5);
@@ -150,7 +150,7 @@ do_panes (GtkWidget *do_widget)
       gtk_frame_set_shadow_type (GTK_FRAME(frame), GTK_SHADOW_IN);
       gtk_widget_set_size_request (frame, 60, 60);
       gtk_paned_add1 (GTK_PANED (hpaned), frame);
-      
+
       button = gtk_button_new_with_mnemonic ("_Hi there");
       gtk_container_add (GTK_CONTAINER(frame), button);
 

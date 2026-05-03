@@ -54,11 +54,11 @@ struct _GtkImContextMultipress
    * If this is NULL then we are not composing yet.
    */
   guint key_last_entered;
-  
+
   /* The position of the compose in the possible sequence.
    *  For instance, this is 2 if aa has been pressed to show b (from abc0).
    */
-  guint compose_count; 
+  guint compose_count;
   guint timeout_id;
 
   /* The character(s) that will be used if it the current character(s) is accepted: */

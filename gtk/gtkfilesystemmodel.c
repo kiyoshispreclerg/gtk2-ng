@@ -285,7 +285,7 @@ node_get_tree_row (GtkFileSystemModel *model, guint index)
   return get_node (model, index)->row - 1;
 }
 
-static void 
+static void
 node_invalidate_index (GtkFileSystemModel *model, guint id)
 {
   model->n_nodes_valid = MIN (model->n_nodes_valid, id);
@@ -350,7 +350,7 @@ node_set_visible_and_filtered_out (GtkFileSystemModel *model, guint id, gboolean
     }
 
   /* Visibility */
-  
+
   if (node->visible == visible ||
       node->frozen_add)
     return;
@@ -508,7 +508,7 @@ static gint
 gtk_file_system_model_get_n_columns (GtkTreeModel *tree_model)
 {
   GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
-  
+
   return model->n_columns;
 }
 
@@ -517,7 +517,7 @@ gtk_file_system_model_get_column_type (GtkTreeModel *tree_model,
 				       gint          i)
 {
   GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
-  
+
   g_return_val_if_fail (i >= 0 && (guint) i < model->n_columns, G_TYPE_NONE);
 
   return model->column_types[i];
@@ -556,7 +556,7 @@ gtk_file_system_model_iter_nth_child (GtkTreeModel *tree_model,
        *
        * First, find a node with the sought row number...*/
 
-      node = bsearch (GUINT_TO_POINTER (row_to_find), 
+      node = bsearch (GUINT_TO_POINTER (row_to_find),
                       model->files->data,
                       model->n_nodes_valid,
                       model->node_size,
@@ -596,9 +596,9 @@ gtk_file_system_model_get_iter (GtkTreeModel *tree_model,
   if (gtk_tree_path_get_depth (path) > 1)
     return FALSE;
 
-  return gtk_file_system_model_iter_nth_child (tree_model, 
+  return gtk_file_system_model_iter_nth_child (tree_model,
                                                iter,
-                                               NULL, 
+                                               NULL,
                                                gtk_tree_path_get_indices (path)[0]);
 }
 
@@ -607,7 +607,7 @@ gtk_file_system_model_get_path (GtkTreeModel *tree_model,
 				GtkTreeIter  *iter)
 {
   GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
-      
+
   g_return_val_if_fail (ITER_IS_VALID (model, iter), NULL);
 
   return tree_path_new_from_node (model, ITER_INDEX (iter));
@@ -621,7 +621,7 @@ gtk_file_system_model_get_value (GtkTreeModel *tree_model,
 {
   GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
   const GValue *original;
-  
+
   g_return_if_fail ((guint) column < model->n_columns);
   g_return_if_fail (ITER_IS_VALID (model, iter));
 
@@ -644,7 +644,7 @@ gtk_file_system_model_iter_next (GtkTreeModel *tree_model,
 
   g_return_val_if_fail (ITER_IS_VALID (model, iter), FALSE);
 
-  for (i = ITER_INDEX (iter) + 1; i < model->files->len; i++) 
+  for (i = ITER_INDEX (iter) + 1; i < model->files->len; i++)
     {
       FileModelNode *node = get_node (model, i);
 
@@ -654,7 +654,7 @@ gtk_file_system_model_iter_next (GtkTreeModel *tree_model,
           return TRUE;
         }
     }
-      
+
   return FALSE;
 }
 
@@ -891,7 +891,7 @@ gtk_file_system_model_set_sort_column_id (GtkTreeSortable  *sortable,
 	{
 	  GtkTreeDataSortHeader *header = NULL;
 
-	  header = _gtk_tree_data_list_get_header (model->sort_list, 
+	  header = _gtk_tree_data_list_get_header (model->sort_list,
 						   sort_column_id);
 
 	  /* We want to make sure that we have a function */
@@ -922,8 +922,8 @@ gtk_file_system_model_set_sort_func (GtkTreeSortable        *sortable,
 {
   GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (sortable);
 
-  model->sort_list = _gtk_tree_data_list_set_header (model->sort_list, 
-                                                     sort_column_id, 
+  model->sort_list = _gtk_tree_data_list_set_header (model->sort_list,
+                                                     sort_column_id,
                                                      func, data, destroy);
 
   if (model->sort_column_id == sort_column_id)
@@ -995,7 +995,7 @@ drag_source_drag_data_get (GtkTreeDragSource *drag_source,
   GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (drag_source);
   FileModelNode *node;
   GtkTreeIter iter;
-  char *uris[2]; 
+  char *uris[2];
 
   if (!gtk_file_system_model_get_iter (GTK_TREE_MODEL (model), &iter, path))
     return FALSE;
@@ -1180,7 +1180,7 @@ gtk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer da
           const char *name;
           GFileInfo *info;
           GFile *file;
-          
+
           info = walk->data;
           name = g_file_info_get_name (info);
           if (name == NULL)
@@ -1451,7 +1451,7 @@ _gtk_file_system_model_new (GtkFileSystemModelGetValue get_func,
  * and add all files inside the directory automatically. If supported,
  * it will also monitor the drectory and update the model's
  * contents to reflect changes, if the @directory supports monitoring.
- * 
+ *
  * Return value: the newly created #GtkFileSystemModel
  **/
 GtkFileSystemModel *
@@ -1503,7 +1503,7 @@ gtk_file_system_model_refilter_all (GtkFileSystemModel *model)
  * _gtk_file_system_model_set_show_hidden:
  * @model: a #GtkFileSystemModel
  * @show_hidden: whether hidden files should be displayed
- * 
+ *
  * Sets whether hidden files should be included in the #GtkTreeModel
  * for display.
  **/
@@ -1526,7 +1526,7 @@ _gtk_file_system_model_set_show_hidden (GtkFileSystemModel *model,
  * _gtk_file_system_model_set_show_folders:
  * @model: a #GtkFileSystemModel
  * @show_folders: whether folders should be displayed
- * 
+ *
  * Sets whether folders should be included in the #GtkTreeModel for
  * display.
  **/
@@ -1550,7 +1550,7 @@ _gtk_file_system_model_set_show_folders (GtkFileSystemModel *model,
  * @model: a #GtkFileSystemModel
  * @show_files: whether files (as opposed to folders) should
  *              be displayed.
- * 
+ *
  * Sets whether files (as opposed to folders) should be included
  * in the #GtkTreeModel for display.
  **/
@@ -1573,7 +1573,7 @@ _gtk_file_system_model_set_show_files (GtkFileSystemModel *model,
  * _gtk_file_system_model_set_filter_folders:
  * @model: a #GtkFileSystemModel
  * @filter_folders: whether the filter applies to folders
- * 
+ *
  * Sets whether the filter set by _gtk_file_system_model_set_filter()
  * applies to folders. By default, it does not and folders are always
  * visible.
@@ -1598,7 +1598,7 @@ _gtk_file_system_model_set_filter_folders (GtkFileSystemModel *model,
  * @model: the model
  *
  * Gets the cancellable used by the @model. This is the cancellable used
- * internally by the @model that will be cancelled when @model is 
+ * internally by the @model that will be cancelled when @model is
  * disposed. So you can use it for operations that should be cancelled
  * when the model goes away.
  *
@@ -1668,10 +1668,10 @@ _gtk_file_system_model_iter_is_filtered_out (GtkFileSystemModel *model,
  * _gtk_file_system_model_get_info:
  * @model: a #GtkFileSystemModel
  * @iter: a #GtkTreeIter pointing to a row of @model
- * 
+ *
  * Gets the #GFileInfo structure for a particular row
  * of @model.
- * 
+ *
  * Return value: a #GFileInfo structure. This structure
  *   is owned by @model and must not be modified or freed.
  *   If you want to keep the information for later use,
@@ -1699,8 +1699,8 @@ _gtk_file_system_model_get_info (GtkFileSystemModel *model,
  * _gtk_file_system_model_get_file:
  * @model: a #GtkFileSystemModel
  * @iter: a #GtkTreeIter pointing to a row of @model
- * 
- * Gets the file for a particular row in @model. 
+ *
+ * Gets the file for a particular row in @model.
  *
  * Return value: the file. This object is owned by @model and
  *   or freed. If you want to save the path for later use,
@@ -1728,9 +1728,9 @@ _gtk_file_system_model_get_file (GtkFileSystemModel *model,
  * Gets the value associated with the given row @iter and @column.
  * If no value is available yet and the default value should be used,
  * %NULL is returned.
- * This is a performance optimization for the calls 
- * gtk_tree_model_get() or gtk_tree_model_get_value(), which copy 
- * the value and spend a considerable amount of time in iterator 
+ * This is a performance optimization for the calls
+ * gtk_tree_model_get() or gtk_tree_model_get_value(), which copy
+ * the value and spend a considerable amount of time in iterator
  * lookups. Both of which are slow.
  *
  * Returns: a pointer to the actual value as stored in @model or %NULL
@@ -1747,14 +1747,14 @@ _gtk_file_system_model_get_value (GtkFileSystemModel *model,
   g_return_val_if_fail (column >= 0 && (guint) column < model->n_columns, NULL);
 
   node = get_node (model, ITER_INDEX (iter));
-    
+
   if (!G_VALUE_TYPE (&node->values[column]))
     {
       g_value_init (&node->values[column], model->column_types[column]);
-      if (!model->get_func (model, 
-                            node->file, 
-                            node->info, 
-                            column, 
+      if (!model->get_func (model,
+                            node->file,
+                            node->info,
+                            column,
                             &node->values[column],
                             model->get_data))
         {
@@ -1762,7 +1762,7 @@ _gtk_file_system_model_get_value (GtkFileSystemModel *model,
           return NULL;
         }
     }
-  
+
   return &node->values[column];
 }
 
@@ -1803,9 +1803,9 @@ node_get_for_file (GtkFileSystemModel *model,
  * @iter: the iterator to be initialized
  * @file: the file to look up
  *
- * Initializes @iter to point to the row used for @file, if @file is part 
- * of the model. Note that upon successful return, @iter may point to an 
- * invisible row in the @model. Use 
+ * Initializes @iter to point to the row used for @file, if @file is part
+ * of the model. Note that upon successful return, @iter may point to an
+ * invisible row in the @model. Use
  * _gtk_file_system_model_iter_is_visible() to make sure it is visible to
  * the tree view.
  *
@@ -1864,7 +1864,7 @@ adjust_file_lookup (GtkFileSystemModel *model, guint id, int increment)
  * @file: the file to add
  * @info: the information to associate with the file
  *
- * Adds the given @file with its associated @info to the @model. 
+ * Adds the given @file with its associated @info to the @model.
  * If the model is frozen, the file will only show up after it is thawn.
  **/
 static void
@@ -1873,7 +1873,7 @@ add_file (GtkFileSystemModel *model,
 	  GFileInfo          *info)
 {
   FileModelNode *node;
-  
+
   g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (G_IS_FILE (file));
   g_return_if_fail (G_IS_FILE_INFO (info));
@@ -1896,10 +1896,10 @@ add_file (GtkFileSystemModel *model,
 /**
  * remove_file:
  * @model: the model
- * @file: file to remove from the model. The file must have been 
+ * @file: file to remove from the model. The file must have been
  *        added to the model previously
  *
- * Removes the given file from the model. If the file is not part of 
+ * Removes the given file from the model. If the file is not part of
  * @model, this function does nothing.
  **/
 static void
@@ -1945,8 +1945,8 @@ remove_file (GtkFileSystemModel *model,
  * @file: the file
  * @info: the new file info
  *
- * Tells the file system model that the file changed and that the 
- * new @info should be used for it now.  If the file is not part of 
+ * Tells the file system model that the file changed and that the
+ * new @info should be used for it now.  If the file is not part of
  * @model, it will get added automatically.
  **/
 void
@@ -1991,7 +1991,7 @@ _gtk_file_system_model_update_file (GtkFileSystemModel *model,
  * _gtk_file_system_model_set_filter:
  * @mode: a #GtkFileSystemModel
  * @filter: (allow-none): %NULL or filter to use
- * 
+ *
  * Sets a filter to be used for deciding if a row should be visible or not.
  * Whether this filter applies to directories can be toggled with
  * _gtk_file_system_model_set_filter_folders().
@@ -2004,7 +2004,7 @@ _gtk_file_system_model_set_filter (GtkFileSystemModel      *model,
 
   g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (filter == NULL || GTK_IS_FILE_FILTER (filter));
-  
+
   if (filter)
     g_object_ref (filter);
 
@@ -2038,7 +2038,7 @@ freeze_updates (GtkFileSystemModel *model)
  * thaw_updates:
  * @model: a #GtkFileSystemModel
  *
- * Undoes the effect of a previous call to freeze_updates() 
+ * Undoes the effect of a previous call to freeze_updates()
  **/
 static void
 thaw_updates (GtkFileSystemModel *model)
@@ -2079,10 +2079,10 @@ thaw_updates (GtkFileSystemModel *model)
  * @model: a #GtkFileSystemModel
  * @column: the column to clear or -1 for all columns
  *
- * Clears the cached values in the model for the given @column. Use 
+ * Clears the cached values in the model for the given @column. Use
  * this function whenever your get_value function would return different
  * values for a column.
- * The file chooser uses this for example when the icon theme changes to 
+ * The file chooser uses this for example when the icon theme changes to
  * invalidate the cached pixbufs.
  **/
 void
@@ -2174,7 +2174,7 @@ _gtk_file_system_model_clear_cache_for_iter (GtkFileSystemModel *model,
  * @file: the file to add
  * @attributes: attributes to query before adding the file
  *
- * This is a conenience function that calls g_file_query_info_async() on 
+ * This is a conenience function that calls g_file_query_info_async() on
  * the given file, and when successful, adds it to the model.
  * Upon failure, the @file is discarded.
  **/
@@ -2200,7 +2200,7 @@ _gtk_file_system_model_add_and_query_file (GtkFileSystemModel *model,
  * _gtk_file_system_model_add_editable:
  * @model: a #GtkFileSystemModel
  * @iter: Location to return the iter corresponding to the editable row
- * 
+ *
  * Adds an “empty” row at the beginning of the model.  This does not refer to
  * any file, but is a temporary placeholder for a file name that the user will
  * type when a corresponding cell is made editable.  When your code is done
@@ -2224,7 +2224,7 @@ _gtk_file_system_model_add_editable (GtkFileSystemModel *model, GtkTreeIter *ite
 /**
  * _gtk_file_system_model_remove_editable:
  * @model: a #GtkFileSystemModel
- * 
+ *
  * Removes the “empty” row at the beginning of the model that was
  * created with _gtk_file_system_model_add_editable().  You should call
  * this function when your code is finished editing this temporary row.

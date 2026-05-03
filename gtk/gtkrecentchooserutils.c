@@ -77,26 +77,26 @@ void
 _gtk_recent_chooser_install_properties (GObjectClass *klass)
 {
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_RECENT_MANAGER,
-  				    "recent-manager");  				    
+				    GTK_RECENT_CHOOSER_PROP_RECENT_MANAGER,
+				    "recent-manager");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE,
-  				    "show-private");
+				    GTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE,
+				    "show-private");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_TIPS,
-  				    "show-tips");
+				    GTK_RECENT_CHOOSER_PROP_SHOW_TIPS,
+				    "show-tips");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_ICONS,
-  				    "show-icons");
+				    GTK_RECENT_CHOOSER_PROP_SHOW_ICONS,
+				    "show-icons");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND,
-  				    "show-not-found");
+				    GTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND,
+				    "show-not-found");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE,
-  				    "select-multiple");
+				    GTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE,
+				    "select-multiple");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_LIMIT,
-  				    "limit");
+				    GTK_RECENT_CHOOSER_PROP_LIMIT,
+				    "limit");
   g_object_class_override_property (klass,
 		  		    GTK_RECENT_CHOOSER_PROP_LOCAL_ONLY,
 				    "local-only");
@@ -104,8 +104,8 @@ _gtk_recent_chooser_install_properties (GObjectClass *klass)
 		  		    GTK_RECENT_CHOOSER_PROP_SORT_TYPE,
 				    "sort-type");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_FILTER,
-  				    "filter");
+				    GTK_RECENT_CHOOSER_PROP_FILTER,
+				    "filter");
 }
 
 /**
@@ -153,26 +153,26 @@ _gtk_recent_chooser_set_delegate (GtkRecentChooser *receiver,
 {
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (receiver));
   g_return_if_fail (GTK_IS_RECENT_CHOOSER (delegate));
-  
+
   g_object_set_data (G_OBJECT (receiver),
-  		    "gtk-recent-chooser-delegate", delegate);
-  
+		    "gtk-recent-chooser-delegate", delegate);
+
   g_signal_connect (delegate, "notify",
-  		    G_CALLBACK (delegate_notify), receiver);
+		    G_CALLBACK (delegate_notify), receiver);
   g_signal_connect (delegate, "selection-changed",
-  		    G_CALLBACK (delegate_selection_changed), receiver);
+		    G_CALLBACK (delegate_selection_changed), receiver);
   g_signal_connect (delegate, "item-activated",
-  		    G_CALLBACK (delegate_item_activated), receiver);
+		    G_CALLBACK (delegate_item_activated), receiver);
 }
 
 GQuark
 _gtk_recent_chooser_delegate_get_quark (void)
 {
   static GQuark quark = 0;
-  
+
   if (G_UNLIKELY (quark == 0))
     quark = g_quark_from_static_string ("gtk-recent-chooser-delegate");
-  
+
   return quark;
 }
 
@@ -180,7 +180,7 @@ static GtkRecentChooser *
 get_delegate (GtkRecentChooser *receiver)
 {
   return g_object_get_qdata (G_OBJECT (receiver),
-  			     GTK_RECENT_CHOOSER_DELEGATE_QUARK);
+			     GTK_RECENT_CHOOSER_DELEGATE_QUARK);
 }
 
 static void
@@ -301,7 +301,7 @@ sort_recent_items_mru (GtkRecentInfo *a,
 		       gpointer       unused)
 {
   g_assert (a != NULL && b != NULL);
-  
+
   return gtk_recent_info_get_modified (b) - gtk_recent_info_get_modified (a);
 }
 
@@ -311,7 +311,7 @@ sort_recent_items_lru (GtkRecentInfo *a,
 		       gpointer       unused)
 {
   g_assert (a != NULL && b != NULL);
-  
+
   return -1 * (gtk_recent_info_get_modified (b) - gtk_recent_info_get_modified (a));
 }
 
@@ -333,7 +333,7 @@ sort_recent_items_proxy (gpointer *a,
 
   if (sort_recent->func)
     return (* sort_recent->func) (info_a, info_b, sort_recent->data);
-  
+
   /* fallback */
   return 0;
 }
@@ -347,14 +347,14 @@ get_is_recent_filtered (GtkRecentFilter *filter,
   gboolean retval;
 
   g_assert (info != NULL);
-  
+
   needed = gtk_recent_filter_get_needed (filter);
-  
+
   filter_info.contains = GTK_RECENT_FILTER_URI | GTK_RECENT_FILTER_MIME_TYPE;
-  
+
   filter_info.uri = gtk_recent_info_get_uri (info);
   filter_info.mime_type = gtk_recent_info_get_mime_type (info);
-  
+
   if (needed & GTK_RECENT_FILTER_DISPLAY_NAME)
     {
       filter_info.display_name = gtk_recent_info_get_display_name (info);
@@ -362,7 +362,7 @@ get_is_recent_filtered (GtkRecentFilter *filter,
     }
   else
     filter_info.uri = NULL;
-  
+
   if (needed & GTK_RECENT_FILTER_APPLICATION)
     {
       filter_info.applications = (const gchar **) gtk_recent_info_get_applications (info, NULL);
@@ -386,15 +386,15 @@ get_is_recent_filtered (GtkRecentFilter *filter,
     }
   else
     filter_info.age = -1;
-  
+
   retval = gtk_recent_filter_filter (filter, &filter_info);
-  
+
   /* these we own */
   if (filter_info.applications)
     g_strfreev ((gchar **) filter_info.applications);
   if (filter_info.groups)
     g_strfreev ((gchar **) filter_info.groups);
-  
+
   return !retval;
 }
 
@@ -461,7 +461,7 @@ _gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
 
           if (get_is_recent_filtered (filter, info))
             remove_item = TRUE;
-          
+
           if (local_only && !gtk_recent_info_is_local (info))
             remove_item = TRUE;
 
@@ -470,13 +470,13 @@ _gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
 
           if (!show_not_found && !gtk_recent_info_exists (info))
             remove_item = TRUE;
-          
+
           if (!remove_item)
             filter_items = g_list_prepend (filter_items, info);
           else
             gtk_recent_info_unref (info);
         }
-      
+
       g_list_free (items);
       items = filter_items;
     }
@@ -513,19 +513,19 @@ _gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
 
       items = g_list_sort_with_data (items, compare_func, &sort_recent);
     }
-  
+
   length = g_list_length (items);
   if ((limit != -1) && (length > limit))
     {
       GList *clamp, *l;
-      
+
       clamp = g_list_nth (items, limit - 1);
       if (!clamp)
         return items;
-      
+
       l = clamp->next;
       clamp->next = NULL;
-    
+
       g_list_foreach (l, (GFunc) gtk_recent_info_unref, NULL);
       g_list_free (l);
     }

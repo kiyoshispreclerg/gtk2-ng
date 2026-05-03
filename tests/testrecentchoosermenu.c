@@ -47,7 +47,7 @@ item_activated_cb (GtkRecentChooser *chooser,
 
   label_text = g_string_free (text, FALSE);
   gtk_label_set_text (GTK_LABEL (label), label_text);
-  
+
   gtk_recent_info_unref (info);
   g_free (label_text);
 }
@@ -58,7 +58,7 @@ create_recent_chooser_menu (gint limit)
   GtkWidget *menu;
   GtkRecentFilter *filter;
   GtkWidget *menuitem;
-  
+
   menu = gtk_recent_chooser_menu_new_for_manager (manager);
 
   if (limit > 0)
@@ -163,7 +163,7 @@ main (int argc, char *argv[])
 
   accel_group = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
-  
+
   box = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (window), box);
   gtk_widget_show (box);

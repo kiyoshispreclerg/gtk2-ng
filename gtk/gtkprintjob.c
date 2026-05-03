@@ -51,7 +51,7 @@ struct _GtkPrintJobPrivate
   cairo_surface_t *surface;
 
   GtkPrintStatus status;
-  GtkPrintBackend *backend;  
+  GtkPrintBackend *backend;
   GtkPrinter *printer;
   GtkPrintSettings *settings;
   GtkPageSetup *page_setup;
@@ -150,7 +150,7 @@ gtk_print_job_class_init (GtkPrintJobClass *class)
 							    "has been sent to the printer or print server."),
 							 FALSE,
 							 GTK_PARAM_READWRITE));
-  
+
 
   /**
    * GtkPrintJob::status-changed:
@@ -190,7 +190,7 @@ gtk_print_job_init (GtkPrintJob *job)
   priv->page_setup_set = FALSE;
   priv->status = GTK_PRINT_STATUS_INITIAL;
   priv->track_print_status = FALSE;
-  
+
   job->print_pages = GTK_PRINT_PAGES_ALL;
   job->page_ranges = NULL;
   job->num_page_ranges = 0;
@@ -225,7 +225,7 @@ gtk_print_job_constructor (GType                  type,
   g_assert (priv->printer_set &&
 	    priv->settings_set &&
 	    priv->page_setup_set);
-  
+
   _gtk_printer_prepare_for_print (priv->printer,
 				  job,
 				  priv->settings,
@@ -246,7 +246,7 @@ gtk_print_job_finalize (GObject *object)
       g_io_channel_unref (priv->spool_io);
       priv->spool_io = NULL;
     }
-  
+
   if (priv->backend)
     g_object_unref (priv->backend);
 
@@ -258,13 +258,13 @@ gtk_print_job_finalize (GObject *object)
 
   if (priv->settings)
     g_object_unref (priv->settings);
-  
+
   if (priv->page_setup)
     g_object_unref (priv->page_setup);
 
   g_free (job->page_ranges);
   job->page_ranges = NULL;
-  
+
   g_free (priv->title);
   priv->title = NULL;
 
@@ -303,9 +303,9 @@ gtk_print_job_new (const gchar      *title,
 /**
  * gtk_print_job_get_settings:
  * @job: a #GtkPrintJob
- * 
+ *
  * Gets the #GtkPrintSettings of the print job.
- * 
+ *
  * Return value: (transfer none): the settings of @job
  *
  * Since: 2.10
@@ -314,16 +314,16 @@ GtkPrintSettings *
 gtk_print_job_get_settings (GtkPrintJob *job)
 {
   g_return_val_if_fail (GTK_IS_PRINT_JOB (job), NULL);
-  
+
   return job->priv->settings;
 }
 
 /**
  * gtk_print_job_get_printer:
  * @job: a #GtkPrintJob
- * 
+ *
  * Gets the #GtkPrinter of the print job.
- * 
+ *
  * Return value: (transfer none): the printer of @job
  *
  * Since: 2.10
@@ -332,16 +332,16 @@ GtkPrinter *
 gtk_print_job_get_printer (GtkPrintJob *job)
 {
   g_return_val_if_fail (GTK_IS_PRINT_JOB (job), NULL);
-  
+
   return job->priv->printer;
 }
 
 /**
  * gtk_print_job_get_title:
  * @job: a #GtkPrintJob
- * 
+ *
  * Gets the job title.
- * 
+ *
  * Return value: the title of @job
  *
  * Since: 2.10
@@ -350,16 +350,16 @@ const gchar *
 gtk_print_job_get_title (GtkPrintJob *job)
 {
   g_return_val_if_fail (GTK_IS_PRINT_JOB (job), NULL);
-  
+
   return job->priv->title;
 }
 
 /**
  * gtk_print_job_get_status:
  * @job: a #GtkPrintJob
- * 
+ *
  * Gets the status of the print job.
- * 
+ *
  * Return value: the status of @job
  *
  * Since: 2.10
@@ -368,7 +368,7 @@ GtkPrintStatus
 gtk_print_job_get_status (GtkPrintJob *job)
 {
   g_return_val_if_fail (GTK_IS_PRINT_JOB (job), GTK_PRINT_STATUS_FINISHED);
-  
+
   return job->priv->status;
 }
 
@@ -394,13 +394,13 @@ gtk_print_job_set_status (GtkPrintJob   *job,
  * @job: a #GtkPrintJob
  * @filename: the file to be printed
  * @error: return location for errors
- * 
- * Make the #GtkPrintJob send an existing document to the 
+ *
+ * Make the #GtkPrintJob send an existing document to the
  * printing system. The file can be in any format understood
  * by the platforms printing system (typically PostScript,
- * but on many platforms PDF may work too). See 
+ * but on many platforms PDF may work too). See
  * gtk_printer_accepts_pdf() and gtk_printer_accepts_ps().
- * 
+ *
  * Returns: %FALSE if an error occurred
  *
  * Since: 2.10
@@ -437,10 +437,10 @@ gtk_print_job_set_source_file (GtkPrintJob *job,
  * gtk_print_job_get_surface:
  * @job: a #GtkPrintJob
  * @error: (allow-none): return location for errors, or %NULL
- * 
+ *
  * Gets a cairo surface onto which the pages of
  * the print job should be rendered.
- * 
+ *
  * Return value: (transfer none): the cairo surface of @job
  *
  * Since: 2.10
@@ -464,11 +464,11 @@ gtk_print_job_get_surface (GtkPrintJob  *job,
 
   if (priv->surface)
     return priv->surface;
- 
+
   g_return_val_if_fail (priv->spool_io == NULL, NULL);
- 
-  fd = g_file_open_tmp ("gtkprint_XXXXXX", 
-			 &filename, 
+
+  fd = g_file_open_tmp ("gtkprint_XXXXXX",
+			 &filename,
 			 &tmp_error);
   if (fd == -1)
     {
@@ -478,8 +478,8 @@ gtk_print_job_get_surface (GtkPrintJob  *job,
     }
 
   fchmod (fd, S_IRUSR | S_IWUSR);
-  
-#ifdef G_ENABLE_DEBUG 
+
+#ifdef G_ENABLE_DEBUG
   /* If we are debugging printing don't delete the tmp files */
   if (!(gtk_debug_flags & GTK_DEBUG_PRINTING))
 #endif /* G_ENABLE_DEBUG */
@@ -489,11 +489,11 @@ gtk_print_job_get_surface (GtkPrintJob  *job,
   paper_size = gtk_page_setup_get_paper_size (priv->page_setup);
   width = gtk_paper_size_get_width (paper_size, GTK_UNIT_POINTS);
   height = gtk_paper_size_get_height (paper_size, GTK_UNIT_POINTS);
- 
+
   priv->spool_io = g_io_channel_unix_new (fd);
   g_io_channel_set_close_on_unref (priv->spool_io, TRUE);
   g_io_channel_set_encoding (priv->spool_io, NULL, &tmp_error);
-  
+
   if (tmp_error != NULL)
     {
       g_io_channel_unref (priv->spool_io);
@@ -506,7 +506,7 @@ gtk_print_job_get_surface (GtkPrintJob  *job,
 						     priv->settings,
 						     width, height,
 						     priv->spool_io);
-  
+
   return priv->surface;
 }
 
@@ -514,12 +514,12 @@ gtk_print_job_get_surface (GtkPrintJob  *job,
  * gtk_print_job_set_track_print_status:
  * @job: a #GtkPrintJob
  * @track_status: %TRUE to track status after printing
- * 
+ *
  * If track_status is %TRUE, the print job will try to continue report
  * on the status of the print job in the printer queues and printer. This
  * can allow your application to show things like "out of paper" issues,
  * and when the print job actually reaches the printer.
- * 
+ *
  * This function is often implemented using some form of polling, so it should
  * not be enabled unless needed.
  *
@@ -540,7 +540,7 @@ gtk_print_job_set_track_print_status (GtkPrintJob *job,
   if (priv->track_print_status != track_status)
     {
       priv->track_print_status = track_status;
-      
+
       g_object_notify (G_OBJECT (job), "track-print-status");
     }
 }
@@ -564,7 +564,7 @@ gtk_print_job_get_track_print_status (GtkPrintJob *job)
   g_return_val_if_fail (GTK_IS_PRINT_JOB (job), FALSE);
 
   priv = job->priv;
-  
+
   return priv->track_print_status;
 }
 
@@ -585,7 +585,7 @@ gtk_print_job_set_property (GObject      *object,
       g_free (priv->title);
       priv->title = g_value_dup_string (value);
       break;
-    
+
     case PROP_PRINTER:
       priv->printer = GTK_PRINTER (g_value_dup_object (value));
       priv->printer_set = TRUE;
@@ -596,7 +596,7 @@ gtk_print_job_set_property (GObject      *object,
       priv->page_setup = GTK_PAGE_SETUP (g_value_dup_object (value));
       priv->page_setup_set = TRUE;
       break;
-      
+
     case PROP_SETTINGS:
       /* We save a copy of the settings since we modify
        * if when preparing the printer job. */
@@ -653,9 +653,9 @@ gtk_print_job_get_property (GObject    *object,
  * @callback: function to call when the job completes or an error occurs
  * @user_data: user data that gets passed to @callback
  * @dnotify: destroy notify for @user_data
- * 
- * Sends the print job off to the printer.  
- * 
+ *
+ * Sends the print job off to the printer.
+ *
  * Since: 2.10
  **/
 void
@@ -670,11 +670,11 @@ gtk_print_job_send (GtkPrintJob             *job,
 
   priv = job->priv;
   g_return_if_fail (priv->spool_io != NULL);
-  
+
   gtk_print_job_set_status (job, GTK_PRINT_STATUS_SENDING_DATA);
-  
+
   g_io_channel_seek_position (priv->spool_io, 0, G_SEEK_SET, NULL);
-  
+
   gtk_print_backend_print_stream (priv->backend, job,
 				  priv->spool_io,
                                   callback, user_data, dnotify);

@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef GTK_DISABLE_DEPRECATED
@@ -48,15 +48,15 @@ typedef struct _GtkComboClass	GtkComboClass;
 /* you should access only the entry and list fields directly */
 struct _GtkCombo {
 	GtkHBox hbox;
-  
+
         /*< public >*/
 	GtkWidget *entry;
-	
+
         /*< private >*/
 	GtkWidget *button;
 	GtkWidget *popup;
 	GtkWidget *popwin;
-	
+
         /*< public >*/
 	GtkWidget *list;
 
@@ -88,17 +88,17 @@ GType      gtk_combo_get_type              (void) G_GNUC_CONST;
 
 GtkWidget* gtk_combo_new                   (void);
 /* the text in the entry must be or not be in the list */
-void       gtk_combo_set_value_in_list     (GtkCombo*    combo, 
+void       gtk_combo_set_value_in_list     (GtkCombo*    combo,
                                             gboolean     val,
                                             gboolean     ok_if_empty);
 /* set/unset arrows working for changing the value (can be annoying) */
-void       gtk_combo_set_use_arrows        (GtkCombo*    combo, 
+void       gtk_combo_set_use_arrows        (GtkCombo*    combo,
                                             gboolean     val);
 /* up/down arrows change value if current value not in list */
-void       gtk_combo_set_use_arrows_always (GtkCombo*    combo, 
+void       gtk_combo_set_use_arrows_always (GtkCombo*    combo,
                                             gboolean     val);
 /* perform case-sensitive compares */
-void       gtk_combo_set_case_sensitive    (GtkCombo*    combo, 
+void       gtk_combo_set_case_sensitive    (GtkCombo*    combo,
                                             gboolean     val);
 /* call this function on an item if it isn't a label or you
    want it to have a different value to be displayed in the entry */
@@ -106,7 +106,7 @@ void       gtk_combo_set_item_string       (GtkCombo*    combo,
                                             GtkItem*     item,
                                             const gchar* item_value);
 /* simple interface */
-void       gtk_combo_set_popdown_strings   (GtkCombo*    combo, 
+void       gtk_combo_set_popdown_strings   (GtkCombo*    combo,
                                             GList        *strings);
 
 void       gtk_combo_disable_activate      (GtkCombo*    combo);

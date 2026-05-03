@@ -82,7 +82,7 @@ GtkWidget::style_set
     style->bg. (e.g., GtkListItem)
   - the widget provides windows other than widget->window.
   - the widget has any other stored dependencies on the style.
-                   
+
 
 
 Flag indications:

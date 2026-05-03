@@ -137,7 +137,7 @@ int main (int argc,
     GdkBitmap *mask;
     GtkStyle *style;
     GdkGC *gc;
-    
+
     /* Create the main window, and attach delete_event signal to terminate
      * the application.  Note that the main window will not have a titlebar
      * since we're making it a popup. */
@@ -165,10 +165,10 @@ int main (int argc,
 
     /* This masks out everything except for the image itself */
     gtk_widget_shape_combine_mask (window, mask, 0, 0);
-    
+
     /* show the window */
     gtk_widget_show (window);
     gtk_main ();
-          
+
     return 0;
 }

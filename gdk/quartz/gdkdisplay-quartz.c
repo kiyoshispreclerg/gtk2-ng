@@ -118,7 +118,7 @@ gdk_display_beep (GdkDisplay *display)
   NSBeep();
 }
 
-gboolean 
+gboolean
 gdk_display_supports_selection_notification (GdkDisplay *display)
 {
   g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
@@ -127,7 +127,7 @@ gdk_display_supports_selection_notification (GdkDisplay *display)
   return FALSE;
 }
 
-gboolean 
+gboolean
 gdk_display_request_selection_notification (GdkDisplay *display,
                                             GdkAtom     selection)
 
@@ -143,14 +143,14 @@ gdk_display_supports_clipboard_persistence (GdkDisplay *display)
   return FALSE;
 }
 
-gboolean 
+gboolean
 gdk_display_supports_shapes (GdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
-gboolean 
+gboolean
 gdk_display_supports_input_shapes (GdkDisplay *display)
 {
   /* FIXME: Implement */

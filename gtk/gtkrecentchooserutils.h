@@ -23,7 +23,7 @@
  * Based on gtkfilechooserutils.h:
  *	Copyright (C) 2003 Red Hat, Inc.
  */
- 
+
 #ifndef __GTK_RECENT_CHOOSER_UTILS_H__
 #define __GTK_RECENT_CHOOSER_UTILS_H__
 

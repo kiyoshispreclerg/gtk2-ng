@@ -68,7 +68,7 @@ struct _GtkBindingEntry
    */
   guint			 keyval;
   GdkModifierType	 modifiers;
-  
+
   GtkBindingSet		*binding_set;
   guint			destroyed : 1;
   guint			in_emission : 1;

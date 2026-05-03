@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 2003.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -39,7 +39,7 @@
 #include "gtkprivate.h"
 #include "gtkalias.h"
 
-enum 
+enum
 {
   TOGGLED,
   LAST_SIGNAL
@@ -95,7 +95,7 @@ gtk_toggle_action_class_init (GtkToggleActionClass *klass)
    *
    * Whether the proxies for this action look like radio action proxies.
    *
-   * This is an appearance property and thus only applies if 
+   * This is an appearance property and thus only applies if
    * #GtkActivatable:use-action-appearance is %TRUE.
    */
   g_object_class_install_property (gobject_class,
@@ -178,7 +178,7 @@ get_property (GObject     *object,
 	      GParamSpec  *pspec)
 {
   GtkToggleAction *action = GTK_TOGGLE_ACTION (object);
-  
+
   switch (prop_id)
     {
     case PROP_DRAW_AS_RADIO:
@@ -200,7 +200,7 @@ set_property (GObject      *object,
 	      GParamSpec   *pspec)
 {
   GtkToggleAction *action = GTK_TOGGLE_ACTION (object);
-  
+
   switch (prop_id)
     {
     case PROP_DRAW_AS_RADIO:
@@ -257,7 +257,7 @@ gtk_toggle_action_toggled (GtkToggleAction *action)
  * Since: 2.4
  */
 void
-gtk_toggle_action_set_active (GtkToggleAction *action, 
+gtk_toggle_action_set_active (GtkToggleAction *action,
 			      gboolean         is_active)
 {
   g_return_if_fail (GTK_IS_TOGGLE_ACTION (action));
@@ -290,7 +290,7 @@ gtk_toggle_action_get_active (GtkToggleAction *action)
 /**
  * gtk_toggle_action_set_draw_as_radio:
  * @action: the action object
- * @draw_as_radio: whether the action should have proxies like a radio 
+ * @draw_as_radio: whether the action should have proxies like a radio
  *    action
  *
  * Sets whether the action should have proxies like a radio action.
@@ -298,7 +298,7 @@ gtk_toggle_action_get_active (GtkToggleAction *action)
  * Since: 2.4
  */
 void
-gtk_toggle_action_set_draw_as_radio (GtkToggleAction *action, 
+gtk_toggle_action_set_draw_as_radio (GtkToggleAction *action,
 				     gboolean         draw_as_radio)
 {
   g_return_if_fail (GTK_IS_TOGGLE_ACTION (action));
@@ -308,8 +308,8 @@ gtk_toggle_action_set_draw_as_radio (GtkToggleAction *action,
   if (action->private_data->draw_as_radio != draw_as_radio)
     {
       action->private_data->draw_as_radio = draw_as_radio;
-      
-      g_object_notify (G_OBJECT (action), "draw-as-radio");      
+
+      g_object_notify (G_OBJECT (action), "draw-as-radio");
     }
 }
 
@@ -336,7 +336,7 @@ create_menu_item (GtkAction *action)
 {
   GtkToggleAction *toggle_action = GTK_TOGGLE_ACTION (action);
 
-  return g_object_new (GTK_TYPE_CHECK_MENU_ITEM, 
+  return g_object_new (GTK_TYPE_CHECK_MENU_ITEM,
 		       "draw-as-radio", toggle_action->private_data->draw_as_radio,
 		       NULL);
 }

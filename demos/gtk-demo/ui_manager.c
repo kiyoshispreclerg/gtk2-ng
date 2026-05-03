@@ -15,7 +15,7 @@ activate_action (GtkAction *action)
 static void
 activate_radio_action (GtkAction *action, GtkRadioAction *current)
 {
-  g_message ("Radio action \"%s\" selected", 
+  g_message ("Radio action \"%s\" selected",
 	     gtk_action_get_name (GTK_ACTION (current)));
 }
 
@@ -27,30 +27,30 @@ static GtkActionEntry entries[] = {
   { "HelpMenu", NULL, "_Help" },               /* name, stock id, label */
   { "New", GTK_STOCK_NEW,                      /* name, stock id */
     "_New", "<control>N",                      /* label, accelerator */
-    "Create a new file",                       /* tooltip */ 
-    G_CALLBACK (activate_action) },      
+    "Create a new file",                       /* tooltip */
+    G_CALLBACK (activate_action) },
   { "Open", GTK_STOCK_OPEN,                    /* name, stock id */
-    "_Open","<control>O",                      /* label, accelerator */     
+    "_Open","<control>O",                      /* label, accelerator */
     "Open a file",                             /* tooltip */
-    G_CALLBACK (activate_action) }, 
+    G_CALLBACK (activate_action) },
   { "Save", GTK_STOCK_SAVE,                    /* name, stock id */
-    "_Save","<control>S",                      /* label, accelerator */     
+    "_Save","<control>S",                      /* label, accelerator */
     "Save current file",                       /* tooltip */
     G_CALLBACK (activate_action) },
   { "SaveAs", GTK_STOCK_SAVE,                  /* name, stock id */
-    "Save _As...", NULL,                       /* label, accelerator */     
+    "Save _As...", NULL,                       /* label, accelerator */
     "Save to a file",                          /* tooltip */
     G_CALLBACK (activate_action) },
   { "Quit", GTK_STOCK_QUIT,                    /* name, stock id */
-    "_Quit", "<control>Q",                     /* label, accelerator */     
+    "_Quit", "<control>Q",                     /* label, accelerator */
     "Quit",                                    /* tooltip */
     G_CALLBACK (activate_action) },
   { "About", NULL,                             /* name, stock id */
-    "_About", "<control>A",                    /* label, accelerator */     
-    "About",                                   /* tooltip */  
+    "_About", "<control>A",                    /* label, accelerator */
+    "About",                                   /* tooltip */
     G_CALLBACK (activate_action) },
   { "Logo", "demo-gtk-logo",                   /* name, stock id */
-     NULL, NULL,                               /* label, accelerator */     
+     NULL, NULL,                               /* label, accelerator */
     "GTK+",                                    /* tooltip */
     G_CALLBACK (activate_action) },
 };
@@ -59,9 +59,9 @@ static guint n_entries = G_N_ELEMENTS (entries);
 
 static GtkToggleActionEntry toggle_entries[] = {
   { "Bold", GTK_STOCK_BOLD,                    /* name, stock id */
-     "_Bold", "<control>B",                    /* label, accelerator */     
+     "_Bold", "<control>B",                    /* label, accelerator */
     "Bold",                                    /* tooltip */
-    G_CALLBACK (activate_action), 
+    G_CALLBACK (activate_action),
     TRUE },                                    /* is_active */
 };
 static guint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
@@ -74,13 +74,13 @@ enum {
 
 static GtkRadioActionEntry color_entries[] = {
   { "Red", NULL,                               /* name, stock id */
-    "_Red", "<control>R",                      /* label, accelerator */     
+    "_Red", "<control>R",                      /* label, accelerator */
     "Blood", COLOR_RED },                      /* tooltip, value */
   { "Green", NULL,                             /* name, stock id */
-    "_Green", "<control>G",                    /* label, accelerator */     
+    "_Green", "<control>G",                    /* label, accelerator */
     "Grass", COLOR_GREEN },                    /* tooltip, value */
   { "Blue", NULL,                              /* name, stock id */
-    "_Blue", "<control>B",                     /* label, accelerator */     
+    "_Blue", "<control>B",                     /* label, accelerator */
     "Sky", COLOR_BLUE },                       /* tooltip, value */
 };
 static guint n_color_entries = G_N_ELEMENTS (color_entries);
@@ -93,18 +93,18 @@ enum {
 
 static GtkRadioActionEntry shape_entries[] = {
   { "Square", NULL,                            /* name, stock id */
-    "_Square", "<control>S",                   /* label, accelerator */     
+    "_Square", "<control>S",                   /* label, accelerator */
     "Square",  SHAPE_SQUARE },                 /* tooltip, value */
   { "Rectangle", NULL,                         /* name, stock id */
-    "_Rectangle", "<control>R",                /* label, accelerator */     
+    "_Rectangle", "<control>R",                /* label, accelerator */
     "Rectangle", SHAPE_RECTANGLE },            /* tooltip, value */
   { "Oval", NULL,                              /* name, stock id */
-    "_Oval", "<control>O",                     /* label, accelerator */     
-    "Egg", SHAPE_OVAL },                       /* tooltip, value */  
+    "_Oval", "<control>O",                     /* label, accelerator */
+    "Egg", SHAPE_OVAL },                       /* tooltip, value */
 };
 static guint n_shape_entries = G_N_ELEMENTS (shape_entries);
 
-static const gchar *ui_info = 
+static const gchar *ui_info =
 "<ui>"
 "  <menubar name='MenuBar'>"
 "    <menu action='FileMenu'>"
@@ -144,7 +144,7 @@ GtkWidget *
 do_ui_manager (GtkWidget *do_widget)
 {
   static GtkWidget *window = NULL;
-  
+
   if (!window)
     {
       GtkWidget *box1;
@@ -159,7 +159,7 @@ do_ui_manager (GtkWidget *do_widget)
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
       gtk_window_set_screen (GTK_WINDOW (window),
 			     gtk_widget_get_screen (do_widget));
-      
+
       g_signal_connect (window, "destroy",
 			G_CALLBACK (gtk_widget_destroyed), &window);
       g_signal_connect (window, "delete-event",
@@ -167,29 +167,29 @@ do_ui_manager (GtkWidget *do_widget)
 
       actions = gtk_action_group_new ("Actions");
       gtk_action_group_add_actions (actions, entries, n_entries, NULL);
-      gtk_action_group_add_toggle_actions (actions, 
-					   toggle_entries, n_toggle_entries, 
+      gtk_action_group_add_toggle_actions (actions,
+					   toggle_entries, n_toggle_entries,
 					   NULL);
-      gtk_action_group_add_radio_actions (actions, 
-					  color_entries, n_color_entries, 
+      gtk_action_group_add_radio_actions (actions,
+					  color_entries, n_color_entries,
 					  COLOR_RED,
-					  G_CALLBACK (activate_radio_action), 
+					  G_CALLBACK (activate_radio_action),
 					  NULL);
-      gtk_action_group_add_radio_actions (actions, 
-					  shape_entries, n_shape_entries, 
+      gtk_action_group_add_radio_actions (actions,
+					  shape_entries, n_shape_entries,
 					  SHAPE_OVAL,
-					  G_CALLBACK (activate_radio_action), 
+					  G_CALLBACK (activate_radio_action),
 					  NULL);
 
       ui = gtk_ui_manager_new ();
       gtk_ui_manager_insert_action_group (ui, actions, 0);
       g_object_unref (actions);
-      gtk_window_add_accel_group (GTK_WINDOW (window), 
+      gtk_window_add_accel_group (GTK_WINDOW (window),
 				  gtk_ui_manager_get_accel_group (ui));
       gtk_window_set_title (GTK_WINDOW (window), "UI Manager");
       gtk_container_set_border_width (GTK_CONTAINER (window), 0);
 
-      
+
       if (!gtk_ui_manager_add_ui_from_string (ui, ui_info, -1, &error))
 	{
 	  g_message ("building menus failed: %s", error->message);
@@ -198,7 +198,7 @@ do_ui_manager (GtkWidget *do_widget)
 
       box1 = gtk_vbox_new (FALSE, 0);
       gtk_container_add (GTK_CONTAINER (window), box1);
-      
+
       gtk_box_pack_start (GTK_BOX (box1),
 			  gtk_ui_manager_get_widget (ui, "/MenuBar"),
 			  FALSE, FALSE, 0);

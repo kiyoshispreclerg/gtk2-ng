@@ -47,7 +47,7 @@ struct _GtkAccessible
   AtkObject parent;
 
   /*
-   * The GtkWidget whose properties and features are exported via this 
+   * The GtkWidget whose properties and features are exported via this
    * accessible instance.
    */
   GtkWidget *GSEAL (widget);
@@ -58,7 +58,7 @@ struct _GtkAccessibleClass
   AtkObjectClass parent_class;
 
   void (*connect_widget_destroyed)              (GtkAccessible     *accessible);
-  
+
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
   void (*_gtk_reserved2) (void);

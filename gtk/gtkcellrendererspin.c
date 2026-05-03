@@ -81,7 +81,7 @@ gtk_cell_renderer_spin_class_init (GtkCellRendererSpinClass *klass)
   /**
    * GtkCellRendererSpin:adjustment:
    *
-   * The adjustment that holds the value of the spinbutton. 
+   * The adjustment that holds the value of the spinbutton.
    * This must be non-%NULL for the cell renderer to be editable.
    *
    * Since: 2.10
@@ -108,7 +108,7 @@ gtk_cell_renderer_spin_class_init (GtkCellRendererSpinClass *klass)
 							P_("Climb rate"),
 							P_("The acceleration rate when you hold down a button"),
 							0.0, G_MAXDOUBLE, 0.0,
-							GTK_PARAM_READWRITE));  
+							GTK_PARAM_READWRITE));
   /**
    * GtkCellRendererSpin:digits:
    *
@@ -122,7 +122,7 @@ gtk_cell_renderer_spin_class_init (GtkCellRendererSpinClass *klass)
 						      P_("Digits"),
 						      P_("The number of decimal places to display"),
 						      0, 20, 0,
-						      GTK_PARAM_READWRITE));  
+						      GTK_PARAM_READWRITE));
 }
 
 static void
@@ -244,7 +244,7 @@ gtk_cell_renderer_spin_focus_out_event (GtkWidget *widget,
       new_text = gtk_entry_get_text (GTK_ENTRY (widget));
       g_signal_emit_by_name (data, "edited", path, new_text);
     }
-  
+
   return FALSE;
 }
 
@@ -336,7 +336,7 @@ gtk_cell_renderer_spin_start_editing (GtkCellRenderer     *cell,
 /**
  * gtk_cell_renderer_spin_new:
  *
- * Creates a new #GtkCellRendererSpin. 
+ * Creates a new #GtkCellRendererSpin.
  *
  * Returns: a new #GtkCellRendererSpin
  *

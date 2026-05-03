@@ -55,7 +55,7 @@ struct GtkPrinterOptionWidgetPrivate
 {
   GtkPrinterOption *source;
   gulong source_changed_handler;
-  
+
   GtkWidget *check;
   GtkWidget *combo;
   GtkWidget *entry;
@@ -127,7 +127,7 @@ gtk_printer_option_widget_class_init (GtkPrinterOptionWidgetClass *class)
 static void
 gtk_printer_option_widget_init (GtkPrinterOptionWidget *widget)
 {
-  widget->priv = GTK_PRINTER_OPTION_WIDGET_GET_PRIVATE (widget); 
+  widget->priv = GTK_PRINTER_OPTION_WIDGET_GET_PRIVATE (widget);
 
   gtk_box_set_spacing (GTK_BOX (widget), 12);
 }
@@ -137,13 +137,13 @@ gtk_printer_option_widget_finalize (GObject *object)
 {
   GtkPrinterOptionWidget *widget = GTK_PRINTER_OPTION_WIDGET (object);
   GtkPrinterOptionWidgetPrivate *priv = widget->priv;
-  
+
   if (priv->source)
     {
       g_object_unref (priv->source);
       priv->source = NULL;
     }
-  
+
   G_OBJECT_CLASS (gtk_printer_option_widget_parent_class)->finalize (object);
 }
 
@@ -154,7 +154,7 @@ gtk_printer_option_widget_set_property (GObject         *object,
 					GParamSpec      *pspec)
 {
   GtkPrinterOptionWidget *widget;
-  
+
   widget = GTK_PRINTER_OPTION_WIDGET (object);
 
   switch (prop_id)
@@ -233,7 +233,7 @@ gtk_printer_option_widget_set_source (GtkPrinterOptionWidget *widget,
 
   if (source)
     g_object_ref (source);
-  
+
   if (priv->source)
     {
       g_signal_handler_disconnect (priv->source,
@@ -305,7 +305,7 @@ combo_box_new (void)
 
   return combo_box;
 }
-  
+
 static void
 combo_box_append (GtkWidget   *combo,
 		  const gchar *display_text,
@@ -314,7 +314,7 @@ combo_box_append (GtkWidget   *combo,
   GtkTreeModel *model;
   GtkListStore *store;
   GtkTreeIter iter;
-  
+
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
   store = GTK_LIST_STORE (model);
 
@@ -331,19 +331,19 @@ struct ComboSet {
 };
 
 static gboolean
-set_cb (GtkTreeModel *model, 
-	GtkTreePath  *path, 
-	GtkTreeIter  *iter, 
+set_cb (GtkTreeModel *model,
+	GtkTreePath  *path,
+	GtkTreeIter  *iter,
 	gpointer      data)
 {
   struct ComboSet *set_data = data;
   gboolean found;
   char *value;
-  
+
   gtk_tree_model_get (model, iter, VALUE_COLUMN, &value, -1);
   found = (strcmp (value, set_data->value) == 0);
   g_free (value);
-  
+
   if (found)
     gtk_combo_box_set_active_iter (set_data->combo, iter);
 
@@ -356,7 +356,7 @@ combo_box_set (GtkWidget   *combo,
 {
   GtkTreeModel *model;
   struct ComboSet set_data;
-  
+
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
 
   set_data.combo = GTK_COMBO_BOX (combo);
@@ -425,13 +425,13 @@ deconstruct_widgets (GtkPrinterOptionWidget *widget)
       gtk_widget_destroy (priv->check);
       priv->check = NULL;
     }
-  
+
   if (priv->combo)
     {
       gtk_widget_destroy (priv->combo);
       priv->combo = NULL;
     }
-  
+
   if (priv->entry)
     {
       gtk_widget_destroy (priv->entry);
@@ -486,7 +486,7 @@ filesave_changed_cb (GtkWidget              *button,
     return;
 
   /* combine the value of the chooser with the value of the entry */
-  g_signal_handler_block (priv->source, priv->source_changed_handler);  
+  g_signal_handler_block (priv->source, priv->source_changed_handler);
 
   directory = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (priv->combo));
 
@@ -530,7 +530,7 @@ filesave_changed_cb (GtkWidget              *button,
             uri = g_filename_to_uri (file, NULL, NULL);
         }
     }
- 
+
   if (uri)
     gtk_printer_option_set (priv->source, uri);
 
@@ -562,7 +562,7 @@ filter_numeric (const gchar *val,
           filtered_val[j] = val[i];
 	  j++;
 	}
-      else if (allow_dec && !dec_set && 
+      else if (allow_dec && !dec_set &&
                (val[i] == '.' || val[i] == ','))
         {
 	  /* allow one period or comma
@@ -597,7 +597,7 @@ combo_changed_cb (GtkWidget              *combo,
   gboolean custom = TRUE;
 
   g_signal_handler_block (priv->source, priv->source_changed_handler);
-  
+
   value = combo_box_get (combo, &custom);
 
   /* Handle constraints if the user entered a custom value. */
@@ -626,7 +626,7 @@ combo_changed_cb (GtkWidget              *combo,
       if (changed)
         {
           GtkEntry *entry;
-	  
+
 	  entry = GTK_ENTRY (gtk_bin_get_child (GTK_BIN (combo)));
 
           gtk_entry_set_text (entry, filtered_val);
@@ -647,7 +647,7 @@ entry_changed_cb (GtkWidget              *entry,
 {
   GtkPrinterOptionWidgetPrivate *priv = widget->priv;
   const gchar *value;
-  
+
   g_signal_handler_block (priv->source, priv->source_changed_handler);
   value = gtk_entry_get_text (GTK_ENTRY (entry));
   if (value)
@@ -663,7 +663,7 @@ radio_changed_cb (GtkWidget              *button,
 {
   GtkPrinterOptionWidgetPrivate *priv = widget->priv;
   gchar *value;
-  
+
   g_signal_handler_block (priv->source, priv->source_changed_handler);
   value = g_object_get_data (G_OBJECT (button), "value");
   if (value)
@@ -673,11 +673,11 @@ radio_changed_cb (GtkWidget              *button,
 }
 
 static void
-select_maybe (GtkWidget   *widget, 
+select_maybe (GtkWidget   *widget,
 	      const gchar *value)
 {
   gchar *v = g_object_get_data (G_OBJECT (widget), "value");
-      
+
   if (strcmp (value, v) == 0)
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), TRUE);
 }
@@ -686,7 +686,7 @@ static void
 alternative_set (GtkWidget   *box,
 		 const gchar *value)
 {
-  gtk_container_foreach (GTK_CONTAINER (box), 
+  gtk_container_foreach (GTK_CONTAINER (box),
 			 (GtkCallback) select_maybe,
 			 (gpointer) value);
 }
@@ -705,7 +705,7 @@ alternative_append (GtkWidget              *box,
   gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 0);
 
   g_object_set_data (G_OBJECT (button), "value", (gpointer)value);
-  g_signal_connect (button, "toggled", 
+  g_signal_connect (button, "toggled",
 		    G_CALLBACK (radio_changed_cb), widget);
 
   return gtk_radio_button_get_group (GTK_RADIO_BUTTON (button));
@@ -721,9 +721,9 @@ construct_widgets (GtkPrinterOptionWidget *widget)
   GSList *group;
 
   source = priv->source;
-  
+
   deconstruct_widgets (widget);
-  
+
   gtk_widget_set_sensitive (GTK_WIDGET (widget), TRUE);
 
   if (source == NULL)
@@ -764,10 +764,10 @@ construct_widgets (GtkPrinterOptionWidget *widget)
 
 	      entry = GTK_ENTRY (gtk_bin_get_child (GTK_BIN (priv->combo)));
 
-              gtk_entry_set_visibility (entry, FALSE); 
+              gtk_entry_set_visibility (entry, FALSE);
 	    }
         }
-       
+
 
       for (i = 0; i < source->num_choices; i++)
 	  combo_box_append (priv->combo,
@@ -822,7 +822,7 @@ construct_widgets (GtkPrinterOptionWidget *widget)
     case GTK_PRINTER_OPTION_TYPE_FILESAVE:
       {
         GtkWidget *label;
-        
+
         priv->filechooser = gtk_table_new (2, 2, FALSE);
         gtk_table_set_row_spacings (GTK_TABLE (priv->filechooser), 6);
         gtk_table_set_col_spacings (GTK_TABLE (priv->filechooser), 12);
@@ -883,7 +883,7 @@ update_widgets (GtkPrinterOptionWidget *widget)
   GtkPrinterOption *source;
 
   source = priv->source;
-  
+
   if (source == NULL)
     {
       gtk_widget_hide (priv->image);
@@ -977,7 +977,7 @@ gtk_printer_option_widget_get_value (GtkPrinterOptionWidget *widget)
 
   if (priv->source)
     return priv->source->value;
-  
+
   return "";
 }
 

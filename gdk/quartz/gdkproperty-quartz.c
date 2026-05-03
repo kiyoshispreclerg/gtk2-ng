@@ -25,7 +25,7 @@
 static GHashTable *names_to_atoms;
 static GPtrArray *atoms_to_names;
 
-static const gchar xatoms_string[] = 
+static const gchar xatoms_string[] =
   /* These are all the standard predefined X atoms */
   "NONE\0"
   "PRIMARY\0"
@@ -102,11 +102,11 @@ static const gchar xatoms_string[] =
   "CLIPBOARD\0"			/* = 69 */;
 
 static const gint xatoms_offset[] = {
-    0,   5,  13,  23,  27,  32,  39,  48,  57,  64,  76,  88, 
-  100, 112, 124, 136, 148, 160, 169, 174, 182, 189, 195, 205, 
-  222, 236, 249, 262, 278, 291, 305, 317, 324, 333, 340, 351, 
-  360, 378, 391, 404, 412, 428, 442, 456, 466, 477, 487, 497, 
-  511, 525, 537, 549, 568, 588, 605, 623, 636, 645, 656, 663, 
+    0,   5,  13,  23,  27,  32,  39,  48,  57,  64,  76,  88,
+  100, 112, 124, 136, 148, 160, 169, 174, 182, 189, 195, 205,
+  222, 236, 249, 262, 278, 291, 305, 317, 324, 333, 340, 351,
+  360, 378, 391, 404, 412, 428, 442, 456, 466, 477, 487, 497,
+  511, 525, 537, 549, 568, 588, 605, 623, 636, 645, 656, 663,
   674, 685, 695, 702, 712, 724, 734, 745, 754, 771
 };
 
@@ -116,7 +116,7 @@ static void
 ensure_atom_tables (void)
 {
   int i;
-  
+
   if (names_to_atoms)
     return;
 
@@ -138,16 +138,16 @@ intern_atom_internal (const gchar *atom_name, gboolean allocate)
   g_return_val_if_fail (atom_name != NULL, GDK_NONE);
 
   ensure_atom_tables ();
-  
+
   if (g_hash_table_lookup_extended (names_to_atoms, atom_name, NULL, &result))
     return result;
-  
+
   result = GINT_TO_POINTER (atoms_to_names->len);
   name = allocate ? g_strdup (atom_name) : (gchar *)atom_name;
   g_hash_table_insert(names_to_atoms, name, result);
   g_ptr_array_add(atoms_to_names, name);
-  
-  return result;  
+
+  return result;
 }
 
 GdkAtom
@@ -168,10 +168,10 @@ gchar *
 gdk_atom_name (GdkAtom atom)
 {
   ensure_atom_tables ();
-    
+
   if (GPOINTER_TO_INT (atom) >= atoms_to_names->len)
     return NULL;
-    
+
   return g_strdup (g_ptr_array_index (atoms_to_names, GPOINTER_TO_INT (atom)));
 }
 

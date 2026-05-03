@@ -8,7 +8,7 @@
  * This module is used to test the accessible implementation for GtkOptionMenu
  *
  * When the GtkOption menu in the FileSelectionDialog is tabbed to, the menu
- * is opened and the second item in the menu is selected which causes the 
+ * is opened and the second item in the menu is selected which causes the
  * menu to be closed and the item in the GtkOptionMenu to be updated.
  */
 #define NUM_VALID_ROLES 1
@@ -18,7 +18,7 @@ static void _check_object (AtkObject *obj);
 static gint _do_menu_item_action (gpointer data);
 static gboolean doing_action = FALSE;
 
-static void 
+static void
 _check_object (AtkObject *obj)
 {
   AtkRole role;
@@ -89,7 +89,7 @@ _check_object (AtkObject *obj)
       parent = atk_object_get_parent (obj);
       parent_role = atk_object_get_role (parent);
       g_assert (parent_role == ATK_ROLE_MENU);
-    
+
       child = atk_object_ref_accessible_child (parent, 1);
       doing_action = TRUE;
       g_timeout_add (5000, _do_menu_item_action, child);
@@ -102,12 +102,12 @@ _check_object (AtkObject *obj)
       if (accessible_name)
         {
           g_print ("Name: %s\n", accessible_name);
-        } 
+        }
       else if (GTK_IS_ACCESSIBLE (obj))
         {
           GtkWidget *widget = GTK_ACCESSIBLE (obj)->widget;
           g_print ("Type: %s\n", g_type_name (G_OBJECT_TYPE (widget)));
-        } 
+        }
       if (role == ATK_ROLE_TABLE)
         {
           gint n_cols, i;
@@ -120,7 +120,7 @@ _check_object (AtkObject *obj)
               AtkObject *header;
 
               header = atk_table_get_column_header (ATK_TABLE (obj), i);
-              g_print ("header: %s %s\n", 
+              g_print ("header: %s %s\n",
                            g_type_name (G_OBJECT_TYPE (header)),
                            atk_object_get_name (header));
             }

@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -73,12 +73,12 @@ gdk_visual_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkVisual",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -117,7 +117,7 @@ _gdk_visual_init (void)
 
       if (max_colors != NULL)
 	_gdk_max_colors = atoi (max_colors);
-      
+
       map_entries = _gdk_max_colors;
 
       if (map_entries >= 16 && map_entries < sizepalette)

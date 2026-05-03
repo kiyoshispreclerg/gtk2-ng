@@ -28,7 +28,7 @@ static void gtk_printer_papi_finalize   (GObject             *object);
 static GtkPrinterClass *gtk_printer_papi_parent_class;
 static GType gtk_printer_papi_type = 0;
 
-void 
+void
 gtk_printer_papi_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
@@ -60,7 +60,7 @@ static void
 gtk_printer_papi_class_init (GtkPrinterPapiClass *class)
 {
   GObjectClass *object_class = (GObjectClass *) class;
-	
+
   gtk_printer_papi_parent_class = g_type_class_peek_parent (class);
 
   object_class->finalize = gtk_printer_papi_finalize;
@@ -101,7 +101,7 @@ gtk_printer_papi_new (const char      *name,
 {
   GObject *result;
   GtkPrinterPapi *pp;
-  
+
   result = g_object_new (GTK_TYPE_PRINTER_PAPI,
 			 "name", name,
 			 "backend", backend,

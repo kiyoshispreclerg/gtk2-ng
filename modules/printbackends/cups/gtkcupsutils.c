@@ -1,5 +1,5 @@
 /* GTK - The GIMP Toolkit
- * gtkcupsutils.h: Statemachine implementation of POST and GET 
+ * gtkcupsutils.h: Statemachine implementation of POST and GET
  * cups calls which can be used to create a non-blocking cups API
  * Copyright (C) 2006, 2007 Red Hat, Inc.
  *
@@ -54,7 +54,7 @@ struct _GtkCupsResult
   GtkCupsErrorType error_type;
 
   /* some error types like HTTP_ERROR have a status and a code */
-  int error_status;            
+  int error_status;
   int error_code;
 
   guint is_error : 1;
@@ -62,7 +62,7 @@ struct _GtkCupsResult
 };
 
 
-#define _GTK_CUPS_MAX_ATTEMPTS 10 
+#define _GTK_CUPS_MAX_ATTEMPTS 10
 #define _GTK_CUPS_MAX_CHUNK_SIZE 8192
 
 static GtkCupsRequestStateFunc post_states[] = {
@@ -109,7 +109,7 @@ static void
 gtk_cups_result_set_error (GtkCupsResult    *result,
                            GtkCupsErrorType  error_type,
                            int               error_status,
-                           int               error_code, 
+                           int               error_code,
                            const char       *error_msg,
 			   ...)
 {
@@ -128,7 +128,7 @@ gtk_cups_result_set_error (GtkCupsResult    *result,
 
 GtkCupsRequest *
 gtk_cups_request_new_with_username (http_t             *connection,
-                                    GtkCupsRequestType  req_type, 
+                                    GtkCupsRequestType  req_type,
                                     gint                operation_id,
                                     GIOChannel         *data_io,
                                     const char         *server,
@@ -137,7 +137,7 @@ gtk_cups_request_new_with_username (http_t             *connection,
 {
   GtkCupsRequest *request;
   cups_lang_t *language;
-  
+
   request = g_new0 (GtkCupsRequest, 1);
   request->result = g_new0 (GtkCupsResult, 1);
 
@@ -162,7 +162,7 @@ gtk_cups_request_new_with_username (http_t             *connection,
     request->resource = g_strdup (resource);
   else
     request->resource = g_strdup ("/");
- 
+
   if (connection != NULL)
     {
       request->http = connection;
@@ -171,13 +171,13 @@ gtk_cups_request_new_with_username (http_t             *connection,
   else
     {
       request->http = NULL;
-      request->http = httpConnectEncrypt (request->server, 
-                                          ippPort (), 
+      request->http = httpConnectEncrypt (request->server,
+                                          ippPort (),
                                           cupsEncryption ());
 
       if (request->http)
         httpBlocking (request->http, 0);
-        
+
       request->own_http = TRUE;
     }
 
@@ -193,11 +193,11 @@ gtk_cups_request_new_with_username (http_t             *connection,
   language = cupsLangDefault ();
 
   gtk_cups_request_ipp_add_string (request, IPP_TAG_OPERATION, IPP_TAG_CHARSET,
-                                   "attributes-charset", 
+                                   "attributes-charset",
                                    NULL, "utf-8");
-	
+
   gtk_cups_request_ipp_add_string (request, IPP_TAG_OPERATION, IPP_TAG_LANGUAGE,
-                                   "attributes-natural-language", 
+                                   "attributes-natural-language",
                                    NULL, language->language);
 
   if (username != NULL)
@@ -220,7 +220,7 @@ gtk_cups_request_new_with_username (http_t             *connection,
 
 GtkCupsRequest *
 gtk_cups_request_new (http_t             *connection,
-                      GtkCupsRequestType  req_type, 
+                      GtkCupsRequestType  req_type,
                       gint                operation_id,
                       GIOChannel         *data_io,
                       const char         *server,
@@ -254,7 +254,7 @@ gtk_cups_request_free (GtkCupsRequest *request)
       if (request->http)
         httpClose (request->http);
     }
-  
+
   if (request->ipp_request)
     ippDelete (request->ipp_request);
 
@@ -274,7 +274,7 @@ gtk_cups_request_free (GtkCupsRequest *request)
   g_free (request);
 }
 
-gboolean 
+gboolean
 gtk_cups_request_read_write (GtkCupsRequest *request, gboolean connect_only)
 {
   if (connect_only && request->state != GTK_CUPS_REQUEST_START)
@@ -317,7 +317,7 @@ gtk_cups_request_read_write (GtkCupsRequest *request, gboolean connect_only)
   return FALSE;
 }
 
-GtkCupsPollState 
+GtkCupsPollState
 gtk_cups_request_get_poll_state (GtkCupsRequest *request)
 {
   return request->poll_state;
@@ -331,7 +331,7 @@ gtk_cups_request_get_result (GtkCupsRequest *request)
   return request->result;
 }
 
-void            
+void
 gtk_cups_request_ipp_add_string (GtkCupsRequest *request,
                                  ipp_tag_t       group,
                                  ipp_tag_t       tag,
@@ -347,7 +347,7 @@ gtk_cups_request_ipp_add_string (GtkCupsRequest *request,
                 value);
 }
 
-void            
+void
 gtk_cups_request_ipp_add_strings (GtkCupsRequest    *request,
 				  ipp_tag_t          group,
 				  ipp_tag_t          tag,
@@ -438,7 +438,7 @@ _find_option_tag (const gchar *option)
 
   lower_bound = 0;
   upper_bound = num_options = (int) G_N_ELEMENTS (ipp_options) - 1;
-  
+
   while (1)
     {
       int match;
@@ -499,7 +499,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
           option_tag = IPP_TAG_BOOLEAN;
         }
     }
-        
+
   switch (option_tag)
     {
       case IPP_TAG_INTEGER:
@@ -514,10 +514,10 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
       case IPP_TAG_BOOLEAN:
         {
           char b;
-          
+
           if (strcasecmp (value, "true") == 0 ||
 	      strcasecmp (value, "on") == 0 ||
-	      strcasecmp (value, "yes") == 0) 
+	      strcasecmp (value, "yes") == 0)
 	    b = 1;
 	  else
             b = 0;
@@ -526,16 +526,16 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
                          IPP_TAG_JOB,
                          option,
                          b);
-        
+
           break;
         }
-        
+
       case IPP_TAG_RANGE:
         {
           char	*s;
           int lower;
           int upper;
-          
+
           if (*value == '-')
 	    {
 	      lower = 1;
@@ -553,7 +553,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
             }
 	  else
 	    upper = lower;
-         
+
           ippAddRange (request->ipp_request,
                        IPP_TAG_JOB,
                        option,
@@ -569,7 +569,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
           int xres;
           int yres;
           ipp_res_t units;
-          
+
           xres = strtol (value, &s, 0);
 
 	  if (*s == 'x')
@@ -581,7 +581,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
             units = IPP_RES_PER_CM;
           else
             units = IPP_RES_PER_INCH;
-          
+
           ippAddResolution (request->ipp_request,
                             IPP_TAG_JOB,
                             option,
@@ -599,7 +599,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
           int in_quotes;
           char *next;
           GPtrArray *strings;
-          
+
           values = g_strdup (value);
           strings = NULL;
 	  in_quotes = 0;
@@ -637,7 +637,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
                   s++;
                 }
             }
-          
+
           if (strings == NULL)
             {
               /* single value */
@@ -651,10 +651,10 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
           else
             {
               /* multiple values */
-              
+
               /* add last value */
               g_ptr_array_add (strings, next);
-              
+
               ippAddStrings (request->ipp_request,
                              IPP_TAG_JOB,
                              option_tag,
@@ -671,7 +671,7 @@ gtk_cups_request_encode_option (GtkCupsRequest *request,
         break;
     }
 }
-				
+
 
 void
 gtk_cups_request_set_ipp_version (GtkCupsRequest     *request,
@@ -689,8 +689,8 @@ _connect (GtkCupsRequest *request)
 
   if (request->http == NULL)
     {
-      request->http = httpConnectEncrypt (request->server, 
-                                          ippPort (), 
+      request->http = httpConnectEncrypt (request->server,
+                                          ippPort (),
                                           cupsEncryption ());
 
       if (request->http == NULL)
@@ -698,7 +698,7 @@ _connect (GtkCupsRequest *request)
 
       if (request->http)
         httpBlocking (request->http, 0);
-        
+
       request->own_http = TRUE;
     }
   else
@@ -712,7 +712,7 @@ _connect (GtkCupsRequest *request)
     }
 }
 
-static void 
+static void
 _post_send (GtkCupsRequest *request)
 {
   gchar length[255];
@@ -730,7 +730,7 @@ _post_send (GtkCupsRequest *request)
     }
   else
     sprintf (length, "%lu", (unsigned long) ippLength (request->ipp_request));
-	
+
   httpClearFields (request->http);
   httpSetField (request->http, HTTP_FIELD_CONTENT_LENGTH, length);
   httpSetField (request->http, HTTP_FIELD_CONTENT_TYPE, "application/ipp");
@@ -758,16 +758,16 @@ _post_send (GtkCupsRequest *request)
         }
 
       request->attempts++;
-      return;    
+      return;
     }
-        
+
     request->attempts = 0;
 
     request->state = GTK_CUPS_POST_WRITE_REQUEST;
     ippSetState (request->ipp_request, IPP_IDLE);
 }
 
-static void 
+static void
 _post_write_request (GtkCupsRequest *request)
 {
   ipp_state_t ipp_status;
@@ -776,7 +776,7 @@ _post_write_request (GtkCupsRequest *request)
             g_print ("CUPS Backend: %s\n", G_STRFUNC));
 
   request->poll_state = GTK_CUPS_HTTP_WRITE;
-  
+
   ipp_status = ippWrite (request->http, request->ipp_request);
 
   if (ipp_status == IPP_ERROR)
@@ -784,12 +784,12 @@ _post_write_request (GtkCupsRequest *request)
       int cups_error = cupsLastError ();
       request->state = GTK_CUPS_POST_DONE;
       request->poll_state = GTK_CUPS_HTTP_IDLE;
- 
-      gtk_cups_result_set_error (request->result, 
+
+      gtk_cups_result_set_error (request->result,
                                  GTK_CUPS_ERROR_IPP,
                                  ipp_status,
                                  cups_error,
-                                 "%s", 
+                                 "%s",
                                  ippErrorString (cups_error));
       return;
     }
@@ -806,7 +806,7 @@ _post_write_request (GtkCupsRequest *request)
     }
 }
 
-static void 
+static void
 _post_write_data (GtkCupsRequest *request)
 {
   gsize bytes;
@@ -817,7 +817,7 @@ _post_write_data (GtkCupsRequest *request)
             g_print ("CUPS Backend: %s\n", G_STRFUNC));
 
   request->poll_state = GTK_CUPS_HTTP_WRITE;
-  
+
   if (httpCheck (request->http))
     http_status = httpUpdate (request->http);
   else
@@ -835,8 +835,8 @@ _post_write_data (GtkCupsRequest *request)
 
       /* send data */
       io_status =
-        g_io_channel_read_chars (request->data_io, 
-	                         buffer, 
+        g_io_channel_read_chars (request->data_io,
+	                         buffer,
 				 _GTK_CUPS_MAX_CHUNK_SIZE,
 				 &bytes,
 				 &error);
@@ -845,11 +845,11 @@ _post_write_data (GtkCupsRequest *request)
         {
           request->state = GTK_CUPS_POST_DONE;
 	  request->poll_state = GTK_CUPS_HTTP_IDLE;
-     
+
           gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_IO,
                                      io_status,
-                                     error->code, 
+                                     error->code,
                                      "Error reading from cache file: %s",
                                      error->message);
 
@@ -878,12 +878,12 @@ _post_write_data (GtkCupsRequest *request)
 
           request->state = GTK_CUPS_POST_DONE;
 	  request->poll_state = GTK_CUPS_HTTP_IDLE;
-     
+
           gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_HTTP,
                                      http_status,
-                                     http_errno, 
-                                     "Error writing to socket in Post %s", 
+                                     http_errno,
+                                     "Error writing to socket in Post %s",
                                      g_strerror (http_errno));
           return;
         }
@@ -912,7 +912,7 @@ _post_auth (GtkCupsRequest *request)
           request->state = GTK_CUPS_POST_DONE;
           request->poll_state = GTK_CUPS_HTTP_IDLE;
 
-          gtk_cups_result_set_error (request->result, 
+          gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_AUTH,
                                      0,
                                      1,
@@ -933,7 +933,7 @@ _get_auth (GtkCupsRequest *request)
           request->state = GTK_CUPS_GET_DONE;
           request->poll_state = GTK_CUPS_HTTP_IDLE;
 
-          gtk_cups_result_set_error (request->result, 
+          gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_AUTH,
                                      0,
                                      1,
@@ -944,11 +944,11 @@ _get_auth (GtkCupsRequest *request)
     }
 }
 
-/* Very ugly hack: cups has a stupid synchronous password callback 
- * that doesn't even take the request or user data parameters, so 
+/* Very ugly hack: cups has a stupid synchronous password callback
+ * that doesn't even take the request or user data parameters, so
  * we have to use a static variable to pass the password to it.
  * Not threadsafe !
- * The callback sets cups_password to NULL to signal that the 
+ * The callback sets cups_password to NULL to signal that the
  * password has been used.
  */
 static char *cups_password = NULL;
@@ -965,7 +965,7 @@ passwordCB (const char *prompt)
   return pwd;
 }
 
-static void 
+static void
 _post_check (GtkCupsRequest *request)
 {
   http_status_t http_status;
@@ -979,7 +979,7 @@ _post_check (GtkCupsRequest *request)
 
   if (http_status == HTTP_CONTINUE)
     {
-      goto again; 
+      goto again;
     }
   else if (http_status == HTTP_UNAUTHORIZED)
     {
@@ -1014,9 +1014,9 @@ _post_check (GtkCupsRequest *request)
 
               if (auth_result != 0)
                 {
-                  /* move to AUTH state to let the backend 
+                  /* move to AUTH state to let the backend
                    * ask for a password
-                   */ 
+                   */
                   request->poll_state = GTK_CUPS_HTTP_IDLE;
                   request->state = GTK_CUPS_POST_AUTH;
                   request->need_password = TRUE;
@@ -1050,20 +1050,20 @@ _post_check (GtkCupsRequest *request)
         {
           /* if the password has been used, reset password_state
            * so that we ask for a new one next time around
-           */ 
+           */
           if (cups_password == NULL)
             request->password_state = GTK_CUPS_PASSWORD_NONE;
 
           request->state = GTK_CUPS_POST_DONE;
           request->poll_state = GTK_CUPS_HTTP_IDLE;
-          gtk_cups_result_set_error (request->result, 
+          gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_AUTH,
                                      0,
                                      0,
                                      "Not authorized");
           return;
         }
-      
+
       if (request->data_io != NULL)
         g_io_channel_seek_position (request->data_io, 0, G_SEEK_SET, NULL);
 
@@ -1076,7 +1076,7 @@ _post_check (GtkCupsRequest *request)
 #ifdef G_OS_WIN32
       if (error != WSAENETDOWN && error != WSAENETUNREACH)
 #else
-      if (error != ENETDOWN && error != ENETUNREACH)	  
+      if (error != ENETDOWN && error != ENETUNREACH)
 #endif /* G_OS_WIN32 */
         {
           request->attempts++;
@@ -1086,11 +1086,11 @@ _post_check (GtkCupsRequest *request)
         {
           request->state = GTK_CUPS_POST_DONE;
           request->poll_state = GTK_CUPS_HTTP_IDLE;
-     
+
           gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_HTTP,
                                      http_status,
-                                     error, 
+                                     error,
                                      "Unknown HTTP error");
 
           return;
@@ -1109,7 +1109,7 @@ _post_check (GtkCupsRequest *request)
 
       /* Upgrade with encryption... */
       httpEncryption (request->http, HTTP_ENCRYPT_REQUIRED);
- 
+
       request->attempts++;
       goto again;
     }
@@ -1127,23 +1127,23 @@ _post_check (GtkCupsRequest *request)
           gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_HTTP,
                                      http_status,
-                                     http_errno, 
-                                     "HTTP Error in POST %s", 
+                                     http_errno,
+                                     "HTTP Error in POST %s",
                                      g_strerror (http_errno));
           request->poll_state = GTK_CUPS_HTTP_IDLE;
- 
-          httpFlush (request->http); 
+
+          httpFlush (request->http);
           return;
         }
 
       request->poll_state = GTK_CUPS_HTTP_IDLE;
-       
-      httpFlush (request->http); 
-      
+
+      httpFlush (request->http);
+
       request->last_status = HTTP_CONTINUE;
       httpClose (request->http);
       request->http = NULL;
-      return;  
+      return;
     }
   else
     {
@@ -1160,7 +1160,7 @@ _post_check (GtkCupsRequest *request)
   request->last_status = http_status;
 }
 
-static void 
+static void
 _post_read_response (GtkCupsRequest *request)
 {
   ipp_state_t ipp_status;
@@ -1173,19 +1173,19 @@ _post_read_response (GtkCupsRequest *request)
   if (request->result->ipp_response == NULL)
     request->result->ipp_response = ippNew();
 
-  ipp_status = ippRead (request->http, 
+  ipp_status = ippRead (request->http,
                         request->result->ipp_response);
 
   if (ipp_status == IPP_ERROR)
     {
       int ipp_error = cupsLastError ();
-      gtk_cups_result_set_error (request->result,  
+      gtk_cups_result_set_error (request->result,
                                  GTK_CUPS_ERROR_IPP,
                                  ipp_status,
                                  ipp_error,
                                  "%s",
                                  ippErrorString (ipp_error));
-      
+
       ippDelete (request->result->ipp_response);
       request->result->ipp_response = NULL;
 
@@ -1199,7 +1199,7 @@ _post_read_response (GtkCupsRequest *request)
     }
 }
 
-static void 
+static void
 _get_send (GtkCupsRequest *request)
 {
   GTK_NOTE (PRINTING,
@@ -1212,7 +1212,7 @@ _get_send (GtkCupsRequest *request)
       gtk_cups_result_set_error (request->result,
                                  GTK_CUPS_ERROR_IO,
                                  G_IO_STATUS_ERROR,
-                                 G_IO_CHANNEL_ERROR_FAILED, 
+                                 G_IO_CHANNEL_ERROR_FAILED,
                                  "Get requires an open io channel");
 
       request->state = GTK_CUPS_GET_DONE;
@@ -1236,9 +1236,9 @@ _get_send (GtkCupsRequest *request)
         {
           request->state = GTK_CUPS_GET_DONE;
           request->poll_state = GTK_CUPS_HTTP_IDLE;
-	 
-          /* TODO: should add a status or error code for failed GET */ 
-          gtk_cups_result_set_error (request->result, 
+
+          /* TODO: should add a status or error code for failed GET */
+          gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_GENERAL,
                                      0,
                                      0,
@@ -1246,21 +1246,21 @@ _get_send (GtkCupsRequest *request)
         }
 
       request->attempts++;
-      return;    
+      return;
     }
 
   if (httpCheck (request->http))
     request->last_status = httpUpdate (request->http);
-        
+
   request->attempts = 0;
 
   request->state = GTK_CUPS_GET_CHECK;
   request->poll_state = GTK_CUPS_HTTP_READ;
-  
+
   ippSetState (request->ipp_request, IPP_IDLE);
 }
 
-static void 
+static void
 _get_check (GtkCupsRequest *request)
 {
   http_status_t http_status;
@@ -1274,7 +1274,7 @@ _get_check (GtkCupsRequest *request)
 
   if (http_status == HTTP_CONTINUE)
     {
-      goto again; 
+      goto again;
     }
   else if (http_status == HTTP_UNAUTHORIZED)
     {
@@ -1351,7 +1351,7 @@ _get_check (GtkCupsRequest *request)
 
           request->state = GTK_CUPS_GET_DONE;
           request->poll_state = GTK_CUPS_HTTP_IDLE;
-          gtk_cups_result_set_error (request->result, 
+          gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_AUTH,
                                      0,
                                      0,
@@ -1377,7 +1377,7 @@ _get_check (GtkCupsRequest *request)
 
       /* Upgrade with encryption... */
       httpEncryption (request->http, HTTP_ENCRYPT_REQUIRED);
- 
+
       request->attempts++;
       goto again;
     }
@@ -1395,8 +1395,8 @@ _get_check (GtkCupsRequest *request)
           gtk_cups_result_set_error (request->result,
                                      GTK_CUPS_ERROR_HTTP,
                                      http_status,
-                                     http_errno, 
-                                     "HTTP Error in GET %s", 
+                                     http_errno,
+                                     "HTTP Error in GET %s",
                                      g_strerror (http_errno));
           request->poll_state = GTK_CUPS_HTTP_IDLE;
           httpFlush (request->http);
@@ -1428,7 +1428,7 @@ _get_check (GtkCupsRequest *request)
 
 }
 
-static void 
+static void
 _get_read_data (GtkCupsRequest *request)
 {
   char buffer[_GTK_CUPS_MAX_CHUNK_SIZE];
@@ -1453,11 +1453,11 @@ _get_read_data (GtkCupsRequest *request)
 
   GTK_NOTE (PRINTING,
             g_print ("CUPS Backend: %" G_GSIZE_FORMAT " bytes read\n", bytes));
-  
+
   io_status =
-    g_io_channel_write_chars (request->data_io, 
-                              buffer, 
-			      bytes, 
+    g_io_channel_write_chars (request->data_io,
+                              buffer,
+			      bytes,
 			      &bytes_written,
 			      &error);
 
@@ -1465,11 +1465,11 @@ _get_read_data (GtkCupsRequest *request)
     {
       request->state = GTK_CUPS_GET_DONE;
       request->poll_state = GTK_CUPS_HTTP_IDLE;
-    
+
       gtk_cups_result_set_error (request->result,
                                  GTK_CUPS_ERROR_IO,
                                  io_status,
-                                 error->code, 
+                                 error->code,
                                  error->message);
       g_error_free (error);
     }
@@ -1527,7 +1527,7 @@ gtk_cups_result_get_error_code (GtkCupsResult *result)
 const char *
 gtk_cups_result_get_error_string (GtkCupsResult *result)
 {
-  return result->error_msg; 
+  return result->error_msg;
 }
 
 /* This function allocates new instance of GtkCupsConnectionTest() and creates
@@ -1574,7 +1574,7 @@ gtk_cups_connection_test_new (const char *server,
  *  - you need to check it more then once.
  * The connection is closed after a successful connection.
  */
-GtkCupsConnectionState 
+GtkCupsConnectionState
 gtk_cups_connection_test_get_state (GtkCupsConnectionTest *test)
 {
 #ifdef HAVE_CUPS_API_1_2
@@ -1618,9 +1618,9 @@ gtk_cups_connection_test_get_state (GtkCupsConnectionTest *test)
                     flags |= O_NONBLOCK;
 
                   fcntl (test->socket, F_SETFL, flags);
-              
+
                   test->current_addr = iter;
-              
+
                   break;
                 }
                iter = iter->next;
@@ -1665,7 +1665,7 @@ gtk_cups_connection_test_get_state (GtkCupsConnectionTest *test)
 
 /* This function frees memory used by the GtkCupsConnectionTest structure.
  */
-void 
+void
 gtk_cups_connection_test_free (GtkCupsConnectionTest *test)
 {
   if (test == NULL)

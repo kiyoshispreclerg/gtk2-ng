@@ -281,7 +281,7 @@ create_combo_box_entry (void)
   GtkWidget *align;
   GtkWidget *child;
   GtkTreeModel *model;
-  
+
   gtk_rc_parse_string ("style \"combo-box-entry-style\" {\n"
 		       "  GtkComboBox::appears-as-list = 1\n"
 		       "}\n"
@@ -308,7 +308,7 @@ create_combo_box (void)
 {
   GtkWidget *widget;
   GtkWidget *align;
-  
+
   gtk_rc_parse_string ("style \"combo-box-style\" {\n"
 		       "  GtkComboBox::appears-as-list = 0\n"
 		       "}\n"
@@ -333,9 +333,9 @@ create_recent_chooser_dialog (void)
 					  NULL,
 					  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					  GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-					  NULL); 
+					  NULL);
   gtk_window_set_default_size (GTK_WINDOW (widget), 505, 305);
-  
+
   info = new_widget_info ("recentchooserdialog", widget, ASIS);
   info->include_decorations = TRUE;
 
@@ -633,11 +633,11 @@ create_colorsel (void)
   color.blue  = 0x9595;
 
   gtk_color_selection_set_previous_color (colorsel, &color);
-  
+
   color.red   = 0x7d7d;
   color.green = 0x9393;
   color.blue  = 0xc3c3;
-  
+
   gtk_color_selection_set_current_color (colorsel, &color);
 
   info = new_widget_info ("colorsel", widget, ASIS);
@@ -670,9 +670,9 @@ create_filesel (void)
 					GTK_FILE_CHOOSER_ACTION_OPEN,
 					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
-					NULL); 
+					NULL);
   gtk_window_set_default_size (GTK_WINDOW (widget), 505, 305);
-  
+
   info = new_widget_info ("filechooser", widget, ASIS);
   info->include_decorations = TRUE;
 
@@ -685,7 +685,7 @@ create_print_dialog (void)
   WidgetInfo *info;
   GtkWidget *widget;
 
-  widget = gtk_print_unix_dialog_new ("Print Dialog", NULL);   
+  widget = gtk_print_unix_dialog_new ("Print Dialog", NULL);
   gtk_widget_set_size_request (widget, 505, 350);
   info = new_widget_info ("printdialog", widget, ASIS);
   info->include_decorations = TRUE;
@@ -703,7 +703,7 @@ create_page_setup_dialog (void)
 
   page_setup = gtk_page_setup_new ();
   settings = gtk_print_settings_new ();
-  widget = gtk_page_setup_unix_dialog_new ("Page Setup Dialog", NULL);   
+  widget = gtk_page_setup_unix_dialog_new ("Page Setup Dialog", NULL);
   gtk_page_setup_unix_dialog_set_page_setup (GTK_PAGE_SETUP_UNIX_DIALOG (widget),
 					     page_setup);
   gtk_page_setup_unix_dialog_set_print_settings (GTK_PAGE_SETUP_UNIX_DIALOG (widget),
@@ -845,7 +845,7 @@ create_notebook (void)
 
   widget = gtk_notebook_new ();
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (widget), 
+  gtk_notebook_append_page (GTK_NOTEBOOK (widget),
 			    gtk_label_new ("Notebook"),
 			    NULL);
   gtk_notebook_append_page (GTK_NOTEBOOK (widget), gtk_event_box_new (), NULL);
@@ -883,7 +883,7 @@ create_scrolledwindow (void)
   scrolledwin = gtk_scrolled_window_new (NULL, NULL);
   label = gtk_label_new ("Scrolled Window");
 
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolledwin), 
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolledwin),
 					 label);
 
   return new_widget_info ("scrolledwindow", scrolledwin, MEDIUM);
@@ -964,7 +964,7 @@ create_image (void)
   GtkWidget *widget;
   GtkWidget *align, *vbox;
 
-  widget = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, 
+  widget = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING,
 				     GTK_ICON_SIZE_DND);
 
   vbox = gtk_vbox_new (FALSE, 3);

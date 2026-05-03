@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_WINDOW_X11_H__
@@ -70,8 +70,8 @@ struct _GdkWindowImplX11
   Damage damage;
 #endif
 };
- 
-struct _GdkWindowImplX11Class 
+
+struct _GdkWindowImplX11Class
 {
   GdkDrawableImplX11Class parent_class;
 };
@@ -91,7 +91,7 @@ struct _GdkToplevelX11
    * for focus tracking)
    */
   guint has_pointer : 1;
-  
+
   /* Set if the window is a descendent of the focus window and the pointer is
    * inside it. (This is the case where the window will receive keystroke
    * events even window->has_focus_window is FALSE)
@@ -112,9 +112,9 @@ struct _GdkToplevelX11
   guint have_hidden : 1;	/* _NET_WM_STATE_HIDDEN */
 
   guint is_leader : 1;
-  
+
   gulong map_serial;	/* Serial of last transition from unmapped */
-  
+
   GdkPixmap *icon_pixmap;
   GdkPixmap *icon_mask;
   GdkPixmap *icon_window;
@@ -128,7 +128,7 @@ struct _GdkToplevelX11
    * that might not even be part of this app
    */
   Window focus_window;
- 
+
 #ifdef HAVE_XSYNC
   XID update_counter;
   XSyncValue pending_counter_value; /* latest _NET_WM_SYNC_REQUEST value received */

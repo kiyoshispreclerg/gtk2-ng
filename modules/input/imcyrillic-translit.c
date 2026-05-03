@@ -50,7 +50,7 @@ cyrillic_translit_register_type (GTypeModule *module)
     (GInstanceInitFunc) cyrillic_translit_init,
   };
 
-  type_cyrillic_translit = 
+  type_cyrillic_translit =
     g_type_module_register_type (module,
 				 GTK_TYPE_IM_CONTEXT_SIMPLE,
 				 "GtkIMContextCyrillicTranslit",
@@ -212,7 +212,7 @@ cyrillic_translit_init (GtkIMContextSimple *im_context)
 				   G_N_ELEMENTS (cyrillic_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo cyrillic_translit_info = { 
+static const GtkIMContextInfo cyrillic_translit_info = {
   "cyrillic_translit",		   /* ID */
   N_("Cyrillic (Transliterated)"), /* Human readable name */
   GETTEXT_PACKAGE,		   /* Translation domain */

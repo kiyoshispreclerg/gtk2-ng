@@ -78,7 +78,7 @@ GtkWidget* gtk_image_menu_item_get_image         (GtkImageMenuItem *image_menu_i
 void       gtk_image_menu_item_set_use_stock     (GtkImageMenuItem *image_menu_item,
 						  gboolean          use_stock);
 gboolean   gtk_image_menu_item_get_use_stock     (GtkImageMenuItem *image_menu_item);
-void       gtk_image_menu_item_set_accel_group   (GtkImageMenuItem *image_menu_item, 
+void       gtk_image_menu_item_set_accel_group   (GtkImageMenuItem *image_menu_item,
 						  GtkAccelGroup    *accel_group);
 
 G_END_DECLS

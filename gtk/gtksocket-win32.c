@@ -23,7 +23,7 @@
  * Modified by the GTK+ Team and others 1997-2005.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -72,7 +72,7 @@ _gtk_socket_windowing_size_request (GtkSocket *socket)
 
   socket->request_width = 1;
   socket->request_height = 1;
-  
+
   mmi.ptMaxSize.x = mmi.ptMaxSize.y = 16000; /* ??? */
   mmi.ptMinTrackSize.x = mmi.ptMinTrackSize.y = 1;
   mmi.ptMaxTrackSize.x = mmi.ptMaxTrackSize.y = 16000; /* ??? */
@@ -148,7 +148,7 @@ _gtk_socket_windowing_focus (GtkSocket       *socket,
       detail = GTK_WIN32_EMBED_FOCUS_FIRST;
       break;
     }
-  
+
   _gtk_win32_embed_send_focus_message (socket->plug_window,
 				       GTK_WIN32_EMBED_FOCUS_IN,
 				       detail);
@@ -227,10 +227,10 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	  if (!socket->plug_window)
 	    {
 	      _gtk_socket_add_window (socket, (GdkNativeWindow) msg->wParam, FALSE);
-	      
+
 	      if (socket->plug_window)
 		GTK_NOTE (PLUGSOCKET, g_printerr ("GtkSocket: window created"));
-	      
+
 	      return_val = GDK_FILTER_REMOVE;
 	    }
 	}

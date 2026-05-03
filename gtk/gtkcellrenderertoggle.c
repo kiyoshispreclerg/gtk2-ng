@@ -119,7 +119,7 @@ gtk_cell_renderer_toggle_class_init (GtkCellRendererToggleClass *class)
   cell_class->get_size = gtk_cell_renderer_toggle_get_size;
   cell_class->render = gtk_cell_renderer_toggle_render;
   cell_class->activate = gtk_cell_renderer_toggle_activate;
-  
+
   g_object_class_install_property (object_class,
 				   PROP_ACTIVE,
 				   g_param_spec_boolean ("active",
@@ -135,7 +135,7 @@ gtk_cell_renderer_toggle_class_init (GtkCellRendererToggleClass *class)
 							 P_("The inconsistent state of the button"),
 							 FALSE,
 							 GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
 				   PROP_ACTIVATABLE,
 				   g_param_spec_boolean ("activatable",
@@ -162,14 +162,14 @@ gtk_cell_renderer_toggle_class_init (GtkCellRendererToggleClass *class)
 						     TOGGLE_WIDTH,
 						     GTK_PARAM_READWRITE));
 
-  
+
   /**
    * GtkCellRendererToggle::toggled:
    * @cell_renderer: the object which received the signal
-   * @path: string representation of #GtkTreePath describing the 
+   * @path: string representation of #GtkTreePath describing the
    *        event location
    *
-   * The ::toggled signal is emitted when the cell is toggled. 
+   * The ::toggled signal is emitted when the cell is toggled.
    **/
   toggle_cell_signals[TOGGLED] =
     g_signal_new (I_("toggled"),
@@ -192,7 +192,7 @@ gtk_cell_renderer_toggle_get_property (GObject     *object,
   GtkCellRendererTogglePrivate *priv;
 
   priv = GTK_CELL_RENDERER_TOGGLE_GET_PRIVATE (object);
-  
+
   switch (param_id)
     {
     case PROP_ACTIVE:
@@ -398,7 +398,7 @@ gtk_cell_renderer_toggle_activate (GtkCellRenderer      *cell,
 				   GtkCellRendererState  flags)
 {
   GtkCellRendererToggle *celltoggle;
-  
+
   celltoggle = GTK_CELL_RENDERER_TOGGLE (cell);
   if (celltoggle->activatable)
     {
@@ -413,7 +413,7 @@ gtk_cell_renderer_toggle_activate (GtkCellRenderer      *cell,
  * gtk_cell_renderer_toggle_set_radio:
  * @toggle: a #GtkCellRendererToggle
  * @radio: %TRUE to make the toggle look like a radio button
- * 
+ *
  * If @radio is %TRUE, the cell renderer renders a radio toggle
  * (i.e. a toggle in a group of mutually-exclusive toggles).
  * If %FALSE, it renders a check toggle (a standalone boolean option).
@@ -435,8 +435,8 @@ gtk_cell_renderer_toggle_set_radio (GtkCellRendererToggle *toggle,
  * gtk_cell_renderer_toggle_get_radio:
  * @toggle: a #GtkCellRendererToggle
  *
- * Returns whether we're rendering radio toggles rather than checkboxes. 
- * 
+ * Returns whether we're rendering radio toggles rather than checkboxes.
+ *
  * Return value: %TRUE if we're rendering radio toggles rather than checkboxes
  **/
 gboolean

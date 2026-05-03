@@ -202,7 +202,7 @@ typedef enum
   GDK_WINDOW_EDGE_EAST,
   GDK_WINDOW_EDGE_SOUTH_WEST,
   GDK_WINDOW_EDGE_SOUTH,
-  GDK_WINDOW_EDGE_SOUTH_EAST  
+  GDK_WINDOW_EDGE_SOUTH_EAST
 } GdkWindowEdge;
 
 struct _GdkWindowAttr
@@ -238,7 +238,7 @@ struct _GdkGeometry
   GdkGravity win_gravity;
 };
 
-struct _GdkPointerHooks 
+struct _GdkPointerHooks
 {
   GdkWindow* (*get_pointer)       (GdkWindow	   *window,
 			           gint	           *x,
@@ -274,14 +274,14 @@ struct _GdkWindowObject
   GdkDrawable parent_instance;
 
   GdkDrawable *GSEAL (impl); /* window-system-specific delegate object */
-  
+
   GdkWindowObject *GSEAL (parent);
 
   gpointer GSEAL (user_data);
 
   gint GSEAL (x);
   gint GSEAL (y);
-  
+
   gint GSEAL (extension_events);
 
   GList *GSEAL (filters);
@@ -289,29 +289,29 @@ struct _GdkWindowObject
 
   GdkColor GSEAL (bg_color);
   GdkPixmap *GSEAL (bg_pixmap);
-  
+
   GSList *GSEAL (paint_stack);
-  
+
   GdkRegion *GSEAL (update_area);
   guint GSEAL (update_freeze_count);
-  
+
   guint8 GSEAL (window_type);
   guint8 GSEAL (depth);
   guint8 GSEAL (resize_count);
 
   GdkWindowState GSEAL (state);
-  
+
   guint GSEAL (guffaw_gravity) : 1;
   guint GSEAL (input_only) : 1;
   guint GSEAL (modal_hint) : 1;
   guint GSEAL (composited) : 1;
-  
+
   guint GSEAL (destroyed) : 2;
 
   guint GSEAL (accept_focus) : 1;
   guint GSEAL (focus_on_map) : 1;
   guint GSEAL (shaped) : 1;
-  
+
   GdkEventMask GSEAL (event_mask);
 
   guint GSEAL (update_and_descendants_freeze_count);
@@ -406,7 +406,7 @@ void	      gdk_window_move_region           (GdkWindow       *window,
 						gint             dy);
 gboolean      gdk_window_ensure_native        (GdkWindow       *window);
 
-/* 
+/*
  * This allows for making shaped (partially transparent) windows
  * - cool feature, needed for Drag and Drag for example.
  *  The shape_mask can be the mask
@@ -425,7 +425,7 @@ void gdk_window_shape_combine_region (GdkWindow	      *window,
  * This routine allows you to quickly take the shapes of all the child windows
  * of a window and use their shapes as the shape mask for this window - useful
  * for container windows that dont want to look like a big box
- * 
+ *
  * - Raster
  */
 void gdk_window_set_child_shapes (GdkWindow *window);
@@ -438,7 +438,7 @@ void gdk_window_set_composited   (GdkWindow *window,
  * This routine allows you to merge (ie ADD) child shapes to your
  * own window's shape keeping its current shape and ADDING the child
  * shapes to it.
- * 
+ *
  * - Raster
  */
 void gdk_window_merge_child_shapes         (GdkWindow       *window);
@@ -472,9 +472,9 @@ GdkWindowState gdk_window_get_state (GdkWindow *window);
  * window gravity on all children.
  */
 gboolean gdk_window_set_static_gravities (GdkWindow *window,
-					  gboolean   use_static);   
+					  gboolean   use_static);
 
-/* Functions to create/lookup windows from their native equivalents */ 
+/* Functions to create/lookup windows from their native equivalents */
 #if !defined(GDK_DISABLE_DEPRECATED) || defined(GDK_COMPILATION)
 #ifndef GDK_MULTIHEAD_SAFE
 GdkWindow*    gdk_window_foreign_new (GdkNativeWindow anid);
@@ -607,13 +607,13 @@ void	      gdk_window_set_events	 (GdkWindow	  *window,
 
 void          gdk_window_set_icon_list   (GdkWindow       *window,
 					  GList           *pixbufs);
-void	      gdk_window_set_icon	 (GdkWindow	  *window, 
+void	      gdk_window_set_icon	 (GdkWindow	  *window,
 					  GdkWindow	  *icon_window,
 					  GdkPixmap	  *pixmap,
 					  GdkBitmap	  *mask);
-void	      gdk_window_set_icon_name	 (GdkWindow	  *window, 
+void	      gdk_window_set_icon_name	 (GdkWindow	  *window,
 					  const gchar	  *name);
-void	      gdk_window_set_group	 (GdkWindow	  *window, 
+void	      gdk_window_set_group	 (GdkWindow	  *window,
 					  GdkWindow	  *leader);
 GdkWindow*    gdk_window_get_group	 (GdkWindow	  *window);
 void	      gdk_window_set_decorations (GdkWindow	  *window,
@@ -723,7 +723,7 @@ void       gdk_window_remove_redirection     (GdkWindow     *window);
 
 #ifndef GDK_DISABLE_DEPRECATED
 #ifndef GDK_MULTIHEAD_SAFE
-GdkPointerHooks *gdk_set_pointer_hooks (const GdkPointerHooks *new_hooks);   
+GdkPointerHooks *gdk_set_pointer_hooks (const GdkPointerHooks *new_hooks);
 #endif /* GDK_MULTIHEAD_SAFE */
 
 #define GDK_ROOT_PARENT()             (gdk_get_default_root_window ())

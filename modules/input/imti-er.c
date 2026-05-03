@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  *
  * Original author: Owen Taylor <otaylor@redhat.com>
- * 
+ *
  * Modified for Inuktitut - Robert Brady <robert@suse.co.uk>
- * 
+ *
  * Modified for Tigrigna - Daniel Yacob <locales@geez.org>
  *
  */
@@ -56,7 +56,7 @@ ti_er_register_type (GTypeModule *module)
     (GInstanceInitFunc) ti_er_init,
   };
 
-  type_ti_er_translit = 
+  type_ti_er_translit =
     g_type_module_register_type (module,
 				 GTK_TYPE_IM_CONTEXT_SIMPLE,
 				 "GtkIMContextTigrignaEritrea",
@@ -224,7 +224,7 @@ static guint16 ti_er_compose_seqs[] = {
   'O',  0,  0,  0,  0, 0, 0x12A6,
   'O','O',  0,  0,  0, 0, 0x12D6,
   SYLW('P', 0x1330)
-  SYLWW('Q', 0x1250) 
+  SYLWW('Q', 0x1250)
   SYLW1('R', 0x1228)
   'R', 'Y',   0,  0,  0, 0, 0x1358,
   'R', 'Y', 'A',  0,  0, 0, 0x1358,
@@ -448,7 +448,7 @@ ti_er_init (GtkIMContextSimple *im_context)
 				   G_N_ELEMENTS (ti_er_compose_seqs) / (5 + 2));
 }
 
-static const GtkIMContextInfo ti_er_info = { 
+static const GtkIMContextInfo ti_er_info = {
   "ti_er",		   /* ID */
   N_("Tigrigna-Eritrean (EZ+)"),         /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain */

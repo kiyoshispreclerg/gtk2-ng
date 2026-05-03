@@ -62,8 +62,8 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-enum 
-{ 
+enum
+{
   PROP_ZERO,
   PROP_STATUS
 };
@@ -91,7 +91,7 @@ static gpointer gtk_print_backend_get_instance_private (GtkPrintBackend *backend
 struct _GtkPrintBackendModule
 {
   GTypeModule parent_instance;
-  
+
   GModule *library;
 
   void             (*init)     (GTypeModule    *module);
@@ -115,27 +115,27 @@ static GSList *loaded_backends;
 static gboolean
 gtk_print_backend_module_load (GTypeModule *module)
 {
-  GtkPrintBackendModule *pb_module = GTK_PRINT_BACKEND_MODULE (module); 
+  GtkPrintBackendModule *pb_module = GTK_PRINT_BACKEND_MODULE (module);
   gpointer initp, exitp, createp;
- 
+
   pb_module->library = g_module_open (pb_module->path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
   if (!pb_module->library)
     {
       g_warning ("%s", g_module_error());
       return FALSE;
     }
-  
+
   /* extract symbols from the lib */
   if (!g_module_symbol (pb_module->library, "pb_module_init",
 			&initp) ||
-      !g_module_symbol (pb_module->library, "pb_module_exit", 
+      !g_module_symbol (pb_module->library, "pb_module_exit",
 			&exitp) ||
-      !g_module_symbol (pb_module->library, "pb_module_create", 
+      !g_module_symbol (pb_module->library, "pb_module_create",
 			&createp))
     {
       g_warning ("%s", g_module_error());
       g_module_close (pb_module->library);
-      
+
       return FALSE;
     }
 
@@ -154,7 +154,7 @@ static void
 gtk_print_backend_module_unload (GTypeModule *module)
 {
   GtkPrintBackendModule *pb_module = GTK_PRINT_BACKEND_MODULE (module);
-  
+
   pb_module->exit();
 
   g_module_close (pb_module->library);
@@ -190,7 +190,7 @@ _gtk_print_backend_module_class_init (GtkPrintBackendModuleClass *class)
   gobject_class->finalize = gtk_print_backend_module_finalize;
 }
 
-static void 
+static void
 gtk_print_backend_set_property (GObject      *object,
                                 guint         prop_id,
                                 const GValue *value,
@@ -212,7 +212,7 @@ gtk_print_backend_set_property (GObject      *object,
     }
 }
 
-static void 
+static void
 gtk_print_backend_get_property (GObject    *object,
                                 guint       prop_id,
                                 GValue     *value,
@@ -243,7 +243,7 @@ static GtkPrintBackend *
 _gtk_print_backend_module_create (GtkPrintBackendModule *pb_module)
 {
   GtkPrintBackend *pb;
-  
+
   if (g_type_module_use (G_TYPE_MODULE (pb_module)))
     {
       pb = pb_module->create ();
@@ -265,7 +265,7 @@ _gtk_print_backend_create (const gchar *backend_name)
   for (l = loaded_backends; l != NULL; l = l->next)
     {
       pb_module = l->data;
-      
+
       if (strcmp (G_TYPE_MODULE (pb_module)->name, backend_name) == 0)
 	return _gtk_print_backend_module_create (pb_module);
     }
@@ -291,11 +291,11 @@ _gtk_print_backend_create (const gchar *backend_name)
 
 	  /* Increase use-count so that we don't unload print backends.
 	   * There is a problem with module unloading in the cups module,
-	   * see cups_dispatch_watch_finalize for details. 
+	   * see cups_dispatch_watch_finalize for details.
 	   */
 	  g_type_module_use (G_TYPE_MODULE (pb_module));
 	}
-      
+
       g_free (module_path);
     }
 
@@ -332,7 +332,7 @@ gtk_print_backend_load_modules (void)
       g_strchug (backends[i]);
       g_strchomp (backends[i]);
       backend = _gtk_print_backend_create (backends[i]);
-      
+
       if (backend)
         result = g_list_append (result, backend);
     }
@@ -366,7 +366,7 @@ static void                 request_password                       (GtkPrintBack
                                                                     gpointer             auth_info_display,
                                                                     gpointer             auth_info_visible,
                                                                     const gchar         *prompt);
-  
+
 static void
 gtk_print_backend_class_init (GtkPrintBackendClass *class)
 {
@@ -374,7 +374,7 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
   object_class = (GObjectClass *) class;
 
   backend_parent_class = g_type_class_peek_parent (class);
-  
+
   object_class->dispose = gtk_print_backend_dispose;
   object_class->set_property = gtk_print_backend_set_property;
   object_class->get_property = gtk_print_backend_get_property;
@@ -386,8 +386,8 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
   class->printer_get_default_page_size = fallback_printer_get_default_page_size;
   class->printer_get_capabilities = fallback_printer_get_capabilities;
   class->request_password = request_password;
-  
-  g_object_class_install_property (object_class, 
+
+  g_object_class_install_property (object_class,
                                    PROP_STATUS,
                                    g_param_spec_int ("status",
                                                      "Status",
@@ -395,7 +395,7 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
                                                      GTK_PRINT_BACKEND_STATUS_UNKNOWN,
                                                      GTK_PRINT_BACKEND_STATUS_UNAVAILABLE,
                                                      GTK_PRINT_BACKEND_STATUS_UNKNOWN,
-                                                     GTK_PARAM_READWRITE)); 
+                                                     GTK_PARAM_READWRITE));
 
   signals[PRINTER_LIST_CHANGED] =
     g_signal_new (I_("printer-list-changed"),
@@ -454,7 +454,7 @@ gtk_print_backend_init (GtkPrintBackend *backend)
 
   priv = backend->priv = gtk_print_backend_get_instance_private (backend);
 
-  priv->printers = g_hash_table_new_full (g_str_hash, g_str_equal, 
+  priv->printers = g_hash_table_new_full (g_str_hash, g_str_equal,
 					  (GDestroyNotify) g_free,
 					  (GDestroyNotify) g_object_unref);
   priv->auth_info_required = NULL;
@@ -471,7 +471,7 @@ gtk_print_backend_dispose (GObject *object)
   priv = backend->priv;
 
   /* We unref the printers in dispose, not in finalize so that
-   * we can break refcount cycles with gtk_print_backend_destroy 
+   * we can break refcount cycles with gtk_print_backend_destroy
    */
   if (priv->printers)
     {
@@ -548,16 +548,16 @@ gtk_print_backend_add_printer (GtkPrintBackend *backend,
 			       GtkPrinter      *printer)
 {
   GtkPrintBackendPrivate *priv;
-  
+
   g_return_if_fail (GTK_IS_PRINT_BACKEND (backend));
 
   priv = backend->priv;
 
   if (!priv->printers)
     return;
-  
+
   g_hash_table_insert (priv->printers,
-		       g_strdup (gtk_printer_get_name (printer)), 
+		       g_strdup (gtk_printer_get_name (printer)),
 		       g_object_ref (printer));
 }
 
@@ -566,13 +566,13 @@ gtk_print_backend_remove_printer (GtkPrintBackend *backend,
 				  GtkPrinter      *printer)
 {
   GtkPrintBackendPrivate *priv;
-  
+
   g_return_if_fail (GTK_IS_PRINT_BACKEND (backend));
   priv = backend->priv;
 
   if (!priv->printers)
     return;
-  
+
   g_hash_table_remove (priv->printers,
 		       gtk_printer_get_name (printer));
 }
@@ -598,7 +598,7 @@ gtk_print_backend_get_printer_list (GtkPrintBackend *backend)
 {
   GtkPrintBackendPrivate *priv;
   GList *result;
-  
+
   g_return_val_if_fail (GTK_IS_PRINT_BACKEND (backend), NULL);
 
   priv = backend->priv;
@@ -633,7 +633,7 @@ gtk_print_backend_find_printer (GtkPrintBackend *backend,
 {
   GtkPrintBackendPrivate *priv;
   GtkPrinter *printer;
-  
+
   g_return_val_if_fail (GTK_IS_PRINT_BACKEND (backend), NULL);
 
   priv = backend->priv;
@@ -643,7 +643,7 @@ gtk_print_backend_find_printer (GtkPrintBackend *backend,
   else
     printer = NULL;
 
-  return printer;  
+  return printer;
 }
 
 void
@@ -664,7 +664,7 @@ gtk_print_backend_print_stream (GtkPrintBackend        *backend,
 						       dnotify);
 }
 
-void 
+void
 gtk_print_backend_set_password (GtkPrintBackend  *backend,
                                 gchar           **auth_info_required,
                                 gchar           **auth_info)
@@ -743,7 +743,7 @@ request_password (GtkPrintBackend  *backend,
   length = g_strv_length (ai_required);
   priv->auth_info = g_new0 (gchar *, length + 1);
 
-  dialog = gtk_dialog_new_with_buttons ( _("Authentication"), NULL, GTK_DIALOG_MODAL, 
+  dialog = gtk_dialog_new_with_buttons ( _("Authentication"), NULL, GTK_DIALOG_MODAL,
                                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                          GTK_STOCK_OK, GTK_RESPONSE_OK,
                                          NULL);
@@ -779,7 +779,7 @@ request_password (GtkPrintBackend  *backend,
   gtk_box_pack_start (GTK_BOX (main_box), vbox, FALSE, FALSE, 6);
 
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 6);
-  
+
   /* Right - 2. */
   for (i = 0; i < length; i++)
     {

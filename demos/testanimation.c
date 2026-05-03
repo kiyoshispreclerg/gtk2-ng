@@ -43,7 +43,7 @@ destroy_context (gpointer data)
   LoadContext *lc = data;
 
   g_free (lc->filename);
-  
+
   if (lc->load_timeout)
     g_source_remove (lc->load_timeout);
 
@@ -55,7 +55,7 @@ destroy_context (gpointer data)
       gdk_pixbuf_loader_close (lc->pixbuf_loader, NULL);
       g_object_unref (lc->pixbuf_loader);
     }
-  
+
   g_free (lc);
 }
 
@@ -70,7 +70,7 @@ get_load_context (GtkWidget *image)
     {
       lc = g_new0 (LoadContext, 1);
 
-      g_object_set_data_full (G_OBJECT (image),        
+      g_object_set_data_full (G_OBJECT (image),
                               "lc",
                               lc,
                               destroy_context);
@@ -87,7 +87,7 @@ progressive_prepared_callback (GdkPixbufLoader* loader,
   GtkWidget* image;
 
   image = GTK_WIDGET (data);
-    
+
   pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 
   /* Avoid displaying random memory contents, since the pixbuf
@@ -108,7 +108,7 @@ progressive_updated_callback (GdkPixbufLoader* loader,
                               gpointer data)
 {
   GtkWidget* image;
-  
+
   image = GTK_WIDGET (data);
 
   /* We know the pixbuf inside the GtkImage has changed, but the image
@@ -123,7 +123,7 @@ progressive_updated_callback (GdkPixbufLoader* loader,
    * is gdk_pixbuf_animation_iter_on_currently_loading_frame(), but
    * who cares.
    */
-  
+
   gtk_widget_queue_draw (image);
 }
 
@@ -132,27 +132,27 @@ progressive_timeout (gpointer data)
 {
   GtkWidget *image;
   LoadContext *lc;
-  
+
   image = GTK_WIDGET (data);
   lc = get_load_context (image);
-  
+
   /* This shows off fully-paranoid error handling, so looks scary.
    * You could factor out the error handling code into a nice separate
    * function to make things nicer.
    */
-  
+
   if (lc->image_stream)
     {
       size_t bytes_read;
       guchar buf[256];
       GError *error = NULL;
-      
+
       bytes_read = fread (buf, 1, 256, lc->image_stream);
 
       if (ferror (lc->image_stream))
         {
           GtkWidget *dialog;
-          
+
           dialog = gtk_message_dialog_new (GTK_WINDOW (lc->window),
                                            GTK_DIALOG_DESTROY_WITH_PARENT,
                                            GTK_MESSAGE_ERROR,
@@ -167,7 +167,7 @@ progressive_timeout (gpointer data)
           lc->image_stream = NULL;
 
           gtk_widget_show (dialog);
-          
+
           lc->load_timeout = 0;
 
           return FALSE; /* uninstall the timeout */
@@ -178,7 +178,7 @@ progressive_timeout (gpointer data)
                                     &error))
         {
           GtkWidget *dialog;
-          
+
           dialog = gtk_message_dialog_new (GTK_WINDOW (lc->window),
                                            GTK_DIALOG_DESTROY_WITH_PARENT,
                                            GTK_MESSAGE_ERROR,
@@ -187,13 +187,13 @@ progressive_timeout (gpointer data)
                                            error->message);
 
           g_error_free (error);
-          
+
           g_signal_connect (dialog, "response",
 			    G_CALLBACK (gtk_widget_destroy), NULL);
 
           fclose (lc->image_stream);
           lc->image_stream = NULL;
-          
+
           gtk_widget_show (dialog);
 
           lc->load_timeout = 0;
@@ -215,29 +215,29 @@ progressive_timeout (gpointer data)
                                         &error))
             {
               GtkWidget *dialog;
-              
+
               dialog = gtk_message_dialog_new (GTK_WINDOW (lc->window),
                                                GTK_DIALOG_DESTROY_WITH_PARENT,
                                                GTK_MESSAGE_ERROR,
                                                GTK_BUTTONS_CLOSE,
                                                "Failed to load image: %s",
                                                error->message);
-              
+
               g_error_free (error);
-              
+
               g_signal_connect (dialog, "response",
 				G_CALLBACK (gtk_widget_destroy), NULL);
-              
+
               gtk_widget_show (dialog);
 
               g_object_unref (lc->pixbuf_loader);
               lc->pixbuf_loader = NULL;
-              
+
               lc->load_timeout = 0;
-              
+
               return FALSE; /* uninstall the timeout */
             }
-          
+
           g_object_unref (lc->pixbuf_loader);
           lc->pixbuf_loader = NULL;
         }
@@ -249,7 +249,7 @@ progressive_timeout (gpointer data)
       if (lc->image_stream == NULL)
         {
           GtkWidget *dialog;
-          
+
           dialog = gtk_message_dialog_new (GTK_WINDOW (lc->window),
                                            GTK_DIALOG_DESTROY_WITH_PARENT,
                                            GTK_MESSAGE_ERROR,
@@ -260,7 +260,7 @@ progressive_timeout (gpointer data)
 
           g_signal_connect (dialog, "response",
 			    G_CALLBACK (gtk_widget_destroy), NULL);
-          
+
           gtk_widget_show (dialog);
 
           lc->load_timeout = 0;
@@ -274,9 +274,9 @@ progressive_timeout (gpointer data)
           g_object_unref (lc->pixbuf_loader);
           lc->pixbuf_loader = NULL;
         }
-      
+
       lc->pixbuf_loader = gdk_pixbuf_loader_new ();
-      
+
       g_signal_connect (lc->pixbuf_loader, "area_prepared",
 			G_CALLBACK (progressive_prepared_callback), image);
       g_signal_connect (lc->pixbuf_loader, "area_updated",
@@ -293,7 +293,7 @@ start_progressive_loading (GtkWidget *image)
   LoadContext *lc;
 
   lc = get_load_context (image);
-  
+
   /* This is obviously totally contrived (we slow down loading
    * on purpose to show how incremental loading works).
    * The real purpose of incremental loading is the case where
@@ -317,7 +317,7 @@ do_image (const char *filename)
   GtkWidget *window;
   gchar *str, *escaped;
   LoadContext *lc;
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Image Loading");
 
@@ -335,9 +335,9 @@ do_image (const char *filename)
                         str);
   g_free (escaped);
   g_free (str);
-  
+
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-      
+
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   /* The alignment keeps the frame from growing when users resize
@@ -345,7 +345,7 @@ do_image (const char *filename)
    */
   align = gtk_alignment_new (0.5, 0.5, 0, 0);
   gtk_container_add (GTK_CONTAINER (align), frame);
-  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);      
+  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
 
   image = gtk_image_new_from_pixbuf (NULL);
   gtk_container_add (GTK_CONTAINER (frame), image);
@@ -354,12 +354,12 @@ do_image (const char *filename)
 
   lc->window = window;
   lc->filename = g_strdup (filename);
-  
+
   start_progressive_loading (image);
 
   g_signal_connect (window, "destroy",
 		    G_CALLBACK (gtk_main_quit), NULL);
-  
+
   g_signal_connect (window, "delete_event",
 		    G_CALLBACK (gtk_main_quit), NULL);
 
@@ -378,7 +378,7 @@ do_nonprogressive (const gchar *filename)
   GtkWidget *align;
   GtkWidget *window;
   gchar *str, *escaped;
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Animation");
 
@@ -396,9 +396,9 @@ do_nonprogressive (const gchar *filename)
                         str);
   g_free (escaped);
   g_free (str);
-  
+
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-      
+
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   /* The alignment keeps the frame from growing when users resize
@@ -406,14 +406,14 @@ do_nonprogressive (const gchar *filename)
    */
   align = gtk_alignment_new (0.5, 0.5, 0, 0);
   gtk_container_add (GTK_CONTAINER (align), frame);
-  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);      
+  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
 
   image = gtk_image_new_from_file (filename);
   gtk_container_add (GTK_CONTAINER (frame), image);
 
   g_signal_connect (window, "destroy",
 		    G_CALLBACK (gtk_main_quit), NULL);
-  
+
   g_signal_connect (window, "delete_event",
 		    G_CALLBACK (gtk_main_quit), NULL);
 
@@ -425,7 +425,7 @@ main (int    argc,
       char **argv)
 {
   gint i;
-  
+
   gtk_init (&argc, &argv);
 
   i = 1;
@@ -433,12 +433,12 @@ main (int    argc,
     {
       do_image (argv[i]);
       do_nonprogressive (argv[i]);
-      
+
       ++i;
     }
 
   gtk_main ();
-  
+
   return 0;
 }
 

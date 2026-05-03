@@ -35,11 +35,11 @@ fill_model (GtkTreeModel *model)
   GtkTreeIter iter;
   GtkListStore *store = GTK_LIST_STORE (model);
   gint32 size;
-  
+
   pixbuf = gdk_pixbuf_new_from_file ("gnome-textfile.png", NULL);
 
   i = 0;
-  
+
   gtk_list_store_prepend (store, &iter);
 
   gtk_list_store_set (store, &iter,
@@ -57,7 +57,7 @@ fill_model (GtkTreeModel *model)
       pb = gdk_pixbuf_scale_simple (pixbuf, size, size, GDK_INTERP_NEAREST);
 
       str = g_strdup_printf ("Icon %d", i);
-      str2 = g_strdup_printf ("Icon <b>%d</b>", i);	
+      str2 = g_strdup_printf ("Icon <b>%d</b>", i);
       gtk_list_store_prepend (store, &iter);
       gtk_list_store_set (store, &iter,
 			  0, pb,
@@ -70,7 +70,7 @@ fill_model (GtkTreeModel *model)
       g_free (str2);
       i++;
     }
-  
+
   //  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), 2, GTK_SORT_ASCENDING);
 }
 
@@ -78,7 +78,7 @@ static GtkTreeModel *
 create_model (void)
 {
   GtkListStore *store;
-  
+
   store = gtk_list_store_new (5, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
   return GTK_TREE_MODEL (store);
@@ -95,17 +95,17 @@ foreach_selected_remove (GtkWidget *button, GtkIconView *icon_list)
 
   selected = gtk_icon_view_get_selected_items (icon_list);
   model = gtk_icon_view_get_model (icon_list);
-  
+
   for (list = selected; list; list = list->next)
     {
       GtkTreePath *path = list->data;
 
       gtk_tree_model_get_iter (model, &iter, path);
       gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-      
+
       gtk_tree_path_free (path);
-    } 
-  
+    }
+
   g_list_free (selected);
 }
 
@@ -143,7 +143,7 @@ add_n_items (GtkIconView *icon_list, gint n)
   for (i = 0; i < n; i++)
     {
       str = g_strdup_printf ("Icon %d", count);
-      str2 = g_strdup_printf ("Icon <b>%d</b>", count);	
+      str2 = g_strdup_printf ("Icon <b>%d</b>", count);
       gtk_list_store_prepend (store, &iter);
       gtk_list_store_set (store, &iter,
 			  0, pixbuf,
@@ -181,7 +181,7 @@ add_large (GtkWidget *button, GtkIconView *icon_list)
   store = GTK_LIST_STORE (gtk_icon_view_get_model (icon_list));
   pixbuf = gdk_pixbuf_new_from_file ("gnome-textfile.png", NULL);
 
-  pb = gdk_pixbuf_scale_simple (pixbuf, 
+  pb = gdk_pixbuf_scale_simple (pixbuf,
 				2 * gdk_pixbuf_get_width (pixbuf),
 				2 * gdk_pixbuf_get_height (pixbuf),
 				GDK_INTERP_BILINEAR);
@@ -196,8 +196,8 @@ add_large (GtkWidget *button, GtkIconView *icon_list)
 		      -1);
   g_object_unref (pb);
   g_free (str);
-  
-  pb = gdk_pixbuf_scale_simple (pixbuf, 
+
+  pb = gdk_pixbuf_scale_simple (pixbuf,
 				3 * gdk_pixbuf_get_width (pixbuf),
 				3 * gdk_pixbuf_get_height (pixbuf),
 				GDK_INTERP_BILINEAR);
@@ -214,7 +214,7 @@ add_large (GtkWidget *button, GtkIconView *icon_list)
   g_object_unref (pb);
   g_free (str);
 
-  pb = gdk_pixbuf_scale_simple (pixbuf, 
+  pb = gdk_pixbuf_scale_simple (pixbuf,
 				3 * gdk_pixbuf_get_width (pixbuf),
 				3 * gdk_pixbuf_get_height (pixbuf),
 				GDK_INTERP_BILINEAR);
@@ -241,7 +241,7 @@ select_all (GtkWidget *button, GtkIconView *icon_list)
 
 static void
 select_nonexisting (GtkWidget *button, GtkIconView *icon_list)
-{  
+{
   GtkTreePath *path = gtk_tree_path_new_from_indices (999999, -1);
   gtk_icon_view_select_path (icon_list, path);
   gtk_tree_path_free (path);
@@ -285,7 +285,7 @@ item_activated (GtkIconView *icon_view,
   gtk_tree_model_get (model, &iter, 1, &text, -1);
   g_print ("Item activated, text is %s\n", text);
   g_free (text);
-  
+
 }
 
 static void
@@ -331,10 +331,10 @@ item_cb (GtkWidget *menuitem,
 }
 
 static void
-do_popup_menu (GtkWidget      *icon_list, 
+do_popup_menu (GtkWidget      *icon_list,
 	       GdkEventButton *event)
 {
-  GtkIconView *icon_view = GTK_ICON_VIEW (icon_list); 
+  GtkIconView *icon_view = GTK_ICON_VIEW (icon_list);
   GtkWidget *menu;
   GtkWidget *menuitem;
   GtkTreePath *path = NULL;
@@ -382,13 +382,13 @@ do_popup_menu (GtkWidget      *icon_list,
       event_time = gtk_get_current_event_time ();
     }
 
-  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 
+  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
                   button, event_time);
 }
-	
+
 
 static gboolean
-button_press_event_handler (GtkWidget      *widget, 
+button_press_event_handler (GtkWidget      *widget,
 			    GdkEventButton *event)
 {
   /* Ignore double-clicks and triple-clicks */
@@ -411,7 +411,7 @@ popup_menu_handler (GtkWidget *widget)
 static const GtkTargetEntry item_targets[] = {
   { "GTK_TREE_MODEL_ROW", GTK_TARGET_SAME_APP, 0 }
 };
-	
+
 gint
 main (gint argc, gchar **argv)
 {
@@ -423,7 +423,7 @@ main (gint argc, gchar **argv)
   GtkTreeModel *model;
   GtkCellRenderer *cell;
   GtkTreeViewColumn *tvc;
-  
+
   gtk_init (&argc, &argv);
 
   /* to test rtl layout, set RTL=1 in the environment */
@@ -455,7 +455,7 @@ main (gint argc, gchar **argv)
 
   g_signal_connect (icon_list, "item_activated",
 		    G_CALLBACK (item_activated), NULL);
-  
+
   model = create_model ();
   gtk_icon_view_set_model (GTK_ICON_VIEW (icon_list), model);
   gtk_tree_view_set_model (GTK_TREE_VIEW (tv), model);
@@ -477,16 +477,16 @@ main (gint argc, gchar **argv)
 
   cell = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (icon_list), cell, FALSE);
-  g_object_set (cell, 
-		"follow-state", TRUE, 
+  g_object_set (cell,
+		"follow-state", TRUE,
 		NULL);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (icon_list),
 				  cell, "pixbuf", 0, NULL);
 
   cell = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (icon_list), cell, FALSE);
-  g_object_set (cell, 
-		"editable", TRUE, 
+  g_object_set (cell,
+		"editable", TRUE,
 		"xalign", 0.5,
 		"wrap-mode", PANGO_WRAP_WORD_CHAR,
 		"wrap-width", 100,
@@ -505,8 +505,8 @@ main (gint argc, gchar **argv)
 
   cell = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (tvc), cell, FALSE);
-  g_object_set (cell, 
-		"follow-state", TRUE, 
+  g_object_set (cell,
+		"follow-state", TRUE,
 		NULL);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (tvc),
 				  cell, "pixbuf", 0, NULL);
@@ -519,7 +519,7 @@ main (gint argc, gchar **argv)
   g_signal_connect (cell, "edited", G_CALLBACK (edited), model);
 #endif
   /* Allow DND between the icon view and the tree view */
-  
+
   gtk_icon_view_enable_model_drag_source (GTK_ICON_VIEW (icon_list),
 					  GDK_BUTTON1_MASK,
 					  item_targets,
@@ -540,10 +540,10 @@ main (gint argc, gchar **argv)
 					G_N_ELEMENTS (item_targets),
 					GDK_ACTION_MOVE);
 
-			      
+
   prop_editor = create_prop_editor (G_OBJECT (icon_list), 0);
   gtk_widget_show_all (prop_editor);
-  
+
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (scrolled_window), icon_list);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),

@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -66,9 +66,9 @@ gdk_colormap_unref (GdkColormap *cmap)
 /**
  * gdk_colormap_get_visual:
  * @colormap: a #GdkColormap.
- * 
+ *
  * Returns the visual for which a given colormap was created.
- * 
+ *
  * Return value: the visual of the colormap.
  **/
 GdkVisual *
@@ -84,11 +84,11 @@ gdk_colormap_get_visual (GdkColormap *colormap)
  * @colormap: a #GdkColormap.
  * @colors: the new color values.
  * @ncolors: the number of colors to change.
- * 
+ *
  * Changes the value of the first @ncolors colors in
  * a private colormap. This function is obsolete and
  * should not be used. See gdk_color_change().
- **/     
+ **/
 void
 gdk_colors_store (GdkColormap   *colormap,
 		  GdkColor      *colors,
@@ -110,17 +110,17 @@ gdk_colors_store (GdkColormap   *colormap,
 /**
  * gdk_color_copy:
  * @color: a #GdkColor.
- * 
+ *
  * Makes a copy of a color structure. The result
  * must be freed using gdk_color_free().
- * 
+ *
  * Return value: a copy of @color.
  **/
 GdkColor*
 gdk_color_copy (const GdkColor *color)
 {
   GdkColor *new_color;
-  
+
   g_return_val_if_fail (color != NULL, NULL);
 
   new_color = g_slice_new (GdkColor);
@@ -131,8 +131,8 @@ gdk_color_copy (const GdkColor *color)
 /**
  * gdk_color_free:
  * @color: a #GdkColor.
- * 
- * Frees a color structure created with 
+ *
+ * Frees a color structure created with
  * gdk_color_copy().
  **/
 void
@@ -147,10 +147,10 @@ gdk_color_free (GdkColor *color)
  * gdk_color_white:
  * @colormap: a #GdkColormap.
  * @color: the location to store the color.
- * 
+ *
  * Returns the white color for a given colormap. The resulting
- * value has already allocated been allocated. 
- * 
+ * value has already allocated been allocated.
+ *
  * Return value: %TRUE if the allocation succeeded.
  **/
 gboolean
@@ -179,10 +179,10 @@ gdk_color_white (GdkColormap *colormap,
  * gdk_color_black:
  * @colormap: a #GdkColormap.
  * @color: the location to store the color.
- * 
+ *
  * Returns the black color for a given colormap. The resulting
- * value has already been allocated. 
- * 
+ * value has already been allocated.
+ *
  * Return value: %TRUE if the allocation succeeded.
  **/
 gboolean
@@ -224,7 +224,7 @@ gdk_color_black (GdkColormap *colormap,
  *    existing colors if the color cannot be allocated as requested.
  *
  * Allocates a single color from a colormap.
- * 
+ *
  * Return value: %TRUE if the allocation succeeded.
  **/
 gboolean
@@ -244,11 +244,11 @@ gdk_colormap_alloc_color (GdkColormap *colormap,
 /**
  * gdk_color_alloc:
  * @colormap: a #GdkColormap.
- * @color: The color to allocate. On return, the 
+ * @color: The color to allocate. On return, the
  *    <structfield>pixel</structfield> field will be filled in.
- * 
+ *
  * Allocates a single color from a colormap.
- * 
+ *
  * Return value: %TRUE if the allocation succeeded.
  *
  * Deprecated: 2.2: Use gdk_colormap_alloc_color() instead.
@@ -267,10 +267,10 @@ gdk_color_alloc (GdkColormap *colormap,
 /**
  * gdk_color_hash:
  * @colora: a #GdkColor.
- * 
+ *
  * A hash function suitable for using for a hash
  * table that stores #GdkColor's.
- * 
+ *
  * Return value: The hash function applied to @colora
  **/
 guint
@@ -286,9 +286,9 @@ gdk_color_hash (const GdkColor *colora)
  * gdk_color_equal:
  * @colora: a #GdkColor.
  * @colorb: another #GdkColor.
- * 
- * Compares two colors. 
- * 
+ *
+ * Compares two colors.
+ *
  * Return value: %TRUE if the two colors compare equal
  **/
 gboolean
@@ -307,7 +307,7 @@ GType
 gdk_color_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (g_intern_static_string ("GdkColor"),
 					     (GBoxedCopyFunc)gdk_color_copy,
@@ -332,7 +332,7 @@ gdk_color_get_type (void)
  * red, green, and blue components of the color, respectively. (White
  * in the four forms is '&num;fff' '&num;ffffff' '&num;fffffffff' and
  * '&num;ffffffffffff')
- * 
+ *
  * Return value: %TRUE if the parsing succeeded.
  **/
 gboolean
@@ -382,10 +382,10 @@ gdk_color_to_string (const GdkColor *color)
 
 /**
  * gdk_colormap_get_system:
- * 
+ *
  * Gets the system's default colormap for the default screen. (See
  * gdk_colormap_get_system_for_screen ())
- * 
+ *
  * Return value: the default colormap.
  **/
 GdkColormap*

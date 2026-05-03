@@ -41,10 +41,10 @@ main (int argc, char **argv)
 							    1,
 							    (max + 1) / 10,
 							    0.0));
-     
+
 		GtkWidget *spin = gtk_spin_button_new (adj, 1.0, 0);
 		GtkWidget *hbox = gtk_hbox_new (FALSE, 2);
-		
+
 		gtk_box_pack_start (GTK_BOX (hbox),
 				    spin,
 				    FALSE,

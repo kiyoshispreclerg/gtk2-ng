@@ -166,7 +166,7 @@ gdk_pixmap_impl_quartz_class_init (GdkPixmapImplQuartzClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkDrawableClass *drawable_class = GDK_DRAWABLE_CLASS (klass);
   GdkDrawableImplQuartzClass *drawable_quartz_class = GDK_DRAWABLE_IMPL_QUARTZ_CLASS (klass);
-  
+
   parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize = gdk_pixmap_impl_quartz_finalize;
@@ -195,13 +195,13 @@ _gdk_pixmap_impl_quartz_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) gdk_pixmap_impl_quartz_init
       };
-      
+
       object_type = g_type_register_static (GDK_TYPE_DRAWABLE_IMPL_QUARTZ,
                                             "GdkPixmapImplQuartz",
                                             &object_info,
 					    0);
     }
-  
+
   return object_type;
 }
 
@@ -243,7 +243,7 @@ _gdk_pixmap_get_cgimage (GdkPixmap *pixmap)
                          bits_per_component, bits_per_pixel,
                          bytes_per_row, colorspace,
                          alpha_info,
-                         impl->data_provider, NULL, FALSE, 
+                         impl->data_provider, NULL, FALSE,
                          kCGRenderingIntentDefault);
   CGColorSpaceRelease (colorspace);
 
@@ -341,7 +341,7 @@ _gdk_bitmap_create_from_data (GdkDrawable *window,
   for (y = 0; y < height; y++)
     {
       guchar *dst = impl->data + y * width;
-      const gchar *src = data + (y * bpl);   
+      const gchar *src = data + (y * bpl);
       for (x = 0; x < width; x++)
 	{
 	  if ((src[x / 8] >> x % 8) & 1)
@@ -364,7 +364,7 @@ _gdk_pixmap_create_from_data (GdkDrawable    *drawable,
                               gint            depth,
                               const GdkColor *fg,
                               const GdkColor *bg)
-{	
+{
   /* FIXME: Implement */
   return NULL;
 }

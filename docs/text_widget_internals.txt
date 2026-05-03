@@ -32,7 +32,7 @@ the paragraph break char may be more than one byte.)
 
 The idea of the btree is something like:
 
- 
+
                ------ Node (lines = 6)
               /          Line 0
              /           Line 1
@@ -40,7 +40,7 @@ The idea of the btree is something like:
            /             Line 3
           /              Line 4
          /               Line 5
- Node (lines = 12)       
+ Node (lines = 12)
          \
           \---------- Node (lines = 6)
                          Line 6
@@ -49,7 +49,7 @@ The idea of the btree is something like:
                          Line 9
                          Line 10
                          Line 11
-   
+
 
 In addition to keeping aggregate line counts at each node, we count
 characters, and information about the tag toggles appearing below each
@@ -59,16 +59,16 @@ Structure of a GtkTextLine
 ===
 
 A GtkTextLine contains a single paragraph of text. It should probably
-be renamed GtkTextPara someday but ah well.  GtkTextLine is used for 
+be renamed GtkTextPara someday but ah well.  GtkTextLine is used for
 the leaf nodes of the BTree.
 
 A line is a list of GtkTextLineSegment. Line segments contain the
 actual data found in the text buffer.
- 
+
 Here are the types of line segment (see gtktextsegment.h,
 gtktextchild.h, etc.):
 
-  Character:         contains a block of UTF-8 text. 
+  Character:         contains a block of UTF-8 text.
 
   Mark:              marks a position in the buffer, such as a cursor.
 
@@ -78,13 +78,13 @@ gtktextchild.h, etc.):
                      range, and a toggle off at the end.  (and do any
                      necessary merging with existing toggles, so we
                      always have the minimum number possible)
- 
-  Child widget:      stores a child widget that behaves as a single 
+
+  Child widget:      stores a child widget that behaves as a single
                      Unicode character from an editing perspective.
-                     (well, stores a list of child widgets, one per 
+                     (well, stores a list of child widgets, one per
                      GtkTextView displaying the buffer)
 
-  Image:             stores a GdkPixbuf that behaves as a single 
+  Image:             stores a GdkPixbuf that behaves as a single
                      character from an editing perspective.
 
 
@@ -96,40 +96,40 @@ The functions in the class are:
 
  - DeleteFunc, finalizes the segment
 
- - CleanupFunc, after modifying a line by adding/removing segments, 
-   this function is used to try merging segments that can be merged, 
-   e.g. two adjacent character segments with no marks or toggles 
+ - CleanupFunc, after modifying a line by adding/removing segments,
+   this function is used to try merging segments that can be merged,
+   e.g. two adjacent character segments with no marks or toggles
    in between.
 
  - LineChangeFunc, called when a segment moves to a different line;
    according to comments in the code this function may not be needed
    anymore.
- 
- - SegCheckFunc, does sanity-checking when debugging is enabled. 
+
+ - SegCheckFunc, does sanity-checking when debugging is enabled.
    Basically equivalent to assert(segment is not broken).
 
 The segment class also contains two data fields:
- 
+
  - the name of the segment type, used for debugging
 
- - a boolean flag for whether the segment has right or left 
+ - a boolean flag for whether the segment has right or left
    gravity. A segment with right gravity ends up on the right of a
    newly-inserted segment that's placed at the same character offset,
    and a segment with left gravity ends up on the left of a
-   newly-inserted segment. For example the insertion cursor 
-   has right gravity, because as you type new text is inserted, 
+   newly-inserted segment. For example the insertion cursor
+   has right gravity, because as you type new text is inserted,
    and the cursor ends up on the right.
 
 The segment itself contains contains a header, plus some
-variable-length data that depends on the type of the segment. 
+variable-length data that depends on the type of the segment.
 The header contains the length of the segment in characters and in
 bytes. Some segments have a length of zero. Segments with nonzero
 length are referred to as "indexable" and would generally be
-user-visible; indexable segments include text, images, and widgets. 
+user-visible; indexable segments include text, images, and widgets.
 Segments with zero length occupy positions between characters, and
 include marks and tag toggles.
 
-The GtkText*Body structs are the type-specific portions of 
+The GtkText*Body structs are the type-specific portions of
 GtkTextSegment.
 
 Character segments have the actual character data allocated in the
@@ -174,14 +174,14 @@ there was some idea that a view could be any object, so there are some
 that all views had to be a GtkTextLayout and so the btree does assume
 that from time to time.
 
-The BTree maintains some per-line and per-node data that is specific 
+The BTree maintains some per-line and per-node data that is specific
 to each view. The per-line data is in GtkTextLineData and the per-node
 data is in another badly-named struct called NodeData (should be
 PerViewNodeData or something). The purpose of these is to store:
 
  - aggregate height, so we can calculate the Y position of each
-   paragraph in O(log N) time, and can get the full height 
-   of the buffer in O(1) time. The height is per-view since 
+   paragraph in O(log N) time, and can get the full height
+   of the buffer in O(1) time. The height is per-view since
    each GtkTextView may have a different size allocation.
 
  - maximum width (the longest line), so we can calculate the width of
@@ -216,13 +216,13 @@ chars_changed_stamp different from the current stamp of the BTree.
 That is, you can't use an iterator after adding/removing characters.
 
 The "segments_changed_stamp" is incremented any time we change any
-segments, and tells outstanding iterators that any pointers to 
-GtkTextSegment that they may be holding are now invalid. For example, 
+segments, and tells outstanding iterators that any pointers to
+GtkTextSegment that they may be holding are now invalid. For example,
 if you are iterating over a character segment, and insert a mark in
 the middle of the segment, the character segment will be split in half
 and the original segment will be freed. This increments
 segments_changed_stamp, causing your iterator to drop its current
-segment pointer and count from the beginning of the line again to find 
+segment pointer and count from the beginning of the line again to find
 the new segment.
 
 Iterators also cache some random information such as the current line
@@ -242,28 +242,28 @@ width and height) by converting the lines to a PangoLayout and using
 Pango functions. GtkTextLayout is also used for visual iteration, and
 mapping visual locations to logical buffer positions.
 
-Validating a line involves creating the GtkTextLineDisplay for that 
+Validating a line involves creating the GtkTextLineDisplay for that
 line. To save memory, GtkTextLineDisplay objects are always created
 transiently, we don't keep them around.
 
 The layout has three signals:
 
- - "invalidated" means some line was changed, so GtkTextView 
+ - "invalidated" means some line was changed, so GtkTextView
    needs to install idle handlers to revalidate.
 
  - "changed" means some lines were validated, so the aggregate
    width/height of the BTree is now different.
 
- - "allocate_child" means we need to size allocate a 
+ - "allocate_child" means we need to size allocate a
    child widget
 
 gtk_text_layout_get_line_display() is sort of the "heart" of
-GtkTextLayout. This function validates a line. 
+GtkTextLayout. This function validates a line.
 
 Line validation involves:
 
  - convert any GtkTextTag on the line to PangoAttrList
- 
+
  - add the preedit string
 
  - keep track of "visible marks" (the cursor)
@@ -271,7 +271,7 @@ Line validation involves:
 A given set of tags is composited to a GtkTextAttributes. (In the Tk
 code this was called a "style" and there are still relics of this in
 the code, such as "invalidate_cached_style()", that should be cleaned
-up.) 
+up.)
 
 There's a single-GtkTextAttributes cache, "layout->one_style_cache",
 which is used to avoid recomputing the mapping from tags to attributes
@@ -282,8 +282,8 @@ may change the current style (such as a tag toggle), the cache has to
 be dropped.
 
 To compute a GtkTextAttributes from the GtkTextTag that apply to a
-given segment, the function is _gtk_text_attributes_fill_from_tags(). 
-This "mashes" a list of tags into a single set of text attributes. 
+given segment, the function is _gtk_text_attributes_fill_from_tags().
+This "mashes" a list of tags into a single set of text attributes.
 If no tags affect a given attribute, a default set of attributes are
 used. These defaults sometimes come from widget->style on the
 GtkTextView, and sometimes come from a property of the GtkTextView
@@ -292,7 +292,7 @@ such as "pixels_above_lines"
 GtkTextView
 ===
 
-Once you get GtkTextLayout and GtkTextBTree the actual GtkTextView 
+Once you get GtkTextLayout and GtkTextBTree the actual GtkTextView
 widget is not that complicated.
 
 The main complexity is the interaction between scrolling and line

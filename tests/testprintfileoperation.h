@@ -22,7 +22,7 @@ struct _TestPrintFileOperation
   double font_size;
   int lines_per_page;
 
-  
+
   char **lines;
   int num_lines;
   int num_pages;

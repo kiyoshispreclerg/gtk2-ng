@@ -1,5 +1,5 @@
 /* GDK - The GIMP Drawing Kit
- * Copyright (C) 2000 Red Hat, Inc. 
+ * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,7 @@ struct _GdkPangoRendererPrivate
   /* GdkPangoRenderer specific state */
   PangoColor override_color[MAX_RENDER_PART + 1];
   gboolean override_color_set[MAX_RENDER_PART + 1];
-  
+
   GdkBitmap *stipple[MAX_RENDER_PART + 1];
   PangoColor emboss_color;
   gboolean embossed;
@@ -105,7 +105,7 @@ gdk_pango_renderer_constructor (GType                  type,
                                                                           construct_params);
 
   gdk_renderer = GDK_PANGO_RENDERER (object);
-  
+
   if (!gdk_renderer->priv->screen)
     {
       g_warning ("Screen must be specified at construct time for GdkPangoRenderer");
@@ -165,14 +165,14 @@ get_cairo_context (GdkPangoRenderer *gdk_renderer,
   if (!priv->cr)
     {
       const PangoMatrix *matrix;
-      
+
       priv->cr = gdk_cairo_create (priv->drawable);
 
       matrix = pango_renderer_get_matrix (renderer);
       if (matrix)
 	{
 	  cairo_matrix_t cairo_matrix;
-	  
+
 	  cairo_matrix_init (&cairo_matrix,
 			     matrix->xx, matrix->yx,
 			     matrix->xy, matrix->yy,
@@ -189,7 +189,7 @@ get_cairo_context (GdkPangoRenderer *gdk_renderer,
       gboolean changed;
 
       pango_color = pango_renderer_get_color (renderer, part);
-      
+
       if (priv->last_part != -1)
 	changed = priv->gc_changed ||
 	  priv->stipple[priv->last_part] != priv->stipple[part] ||
@@ -197,7 +197,7 @@ get_cairo_context (GdkPangoRenderer *gdk_renderer,
 			pango_renderer_get_color (renderer, priv->last_part));
       else
 	changed = TRUE;
-      
+
       if (changed)
 	{
 	  if (pango_color)
@@ -205,7 +205,7 @@ get_cairo_context (GdkPangoRenderer *gdk_renderer,
 	      tmp_color.red = pango_color->red;
 	      tmp_color.green = pango_color->green;
 	      tmp_color.blue = pango_color->blue;
-	      
+
 	      color = &tmp_color;
 	    }
 	  else
@@ -237,7 +237,7 @@ gdk_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
   cairo_t *cr;
 
-  cr = get_cairo_context (gdk_renderer, 
+  cr = get_cairo_context (gdk_renderer,
 			  PANGO_RENDER_PART_FOREGROUND);
 
   if (priv->embossed)
@@ -264,7 +264,7 @@ gdk_pango_renderer_draw_rectangle (PangoRenderer    *renderer,
   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
   cairo_t *cr;
-  
+
   cr = get_cairo_context (gdk_renderer, part);
 
   if (priv->embossed && part != PANGO_RENDER_PART_BACKGROUND)
@@ -295,9 +295,9 @@ gdk_pango_renderer_draw_error_underline (PangoRenderer    *renderer,
   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
   cairo_t *cr;
-  
+
   cr = get_cairo_context (gdk_renderer, PANGO_RENDER_PART_UNDERLINE);
-  
+
   if (priv->embossed)
     {
       cairo_save (cr);
@@ -339,7 +339,7 @@ gdk_pango_renderer_draw_shape (PangoRenderer  *renderer,
     return;
 
   cr = get_cairo_context (gdk_renderer, PANGO_RENDER_PART_FOREGROUND);
-  
+
   cairo_save (cr);
 
   if (priv->embossed)
@@ -374,7 +374,7 @@ gdk_pango_renderer_begin (PangoRenderer *renderer)
 {
   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
-  
+
   if (!priv->drawable || !priv->base_gc)
     {
       g_warning ("gdk_pango_renderer_set_drawable() and gdk_pango_renderer_set_drawable()"
@@ -418,7 +418,7 @@ gdk_pango_renderer_prepare_run (PangoRenderer  *renderer,
 
       /* stipple_type and embossed_type aren't necessarily
        * initialized, but they are 0, which is an
-       * invalid type so won't occur. 
+       * invalid type so won't occur.
        */
       if (attr->klass->type == gdk_pango_attr_stipple_type)
 	{
@@ -514,9 +514,9 @@ static void
 gdk_pango_renderer_class_init (GdkPangoRendererClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  
+
   PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
-  
+
   renderer_class->draw_glyphs = gdk_pango_renderer_draw_glyphs;
   renderer_class->draw_rectangle = gdk_pango_renderer_draw_rectangle;
   renderer_class->draw_error_underline = gdk_pango_renderer_draw_error_underline;
@@ -530,7 +530,7 @@ gdk_pango_renderer_class_init (GdkPangoRendererClass *klass)
   object_class->constructor = gdk_pango_renderer_constructor;
   object_class->set_property = gdk_pango_renderer_set_property;
   object_class->get_property = gdk_pango_renderer_get_property;
-  
+
   g_object_class_install_property (object_class,
                                    PROP_SCREEN,
                                    g_param_spec_object ("screen",
@@ -538,18 +538,18 @@ gdk_pango_renderer_class_init (GdkPangoRendererClass *klass)
                                                         P_("the GdkScreen for the renderer"),
                                                         GDK_TYPE_SCREEN,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | 
+							G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 							G_PARAM_STATIC_BLURB));
 }
 
 /**
  * gdk_pango_renderer_new:
  * @screen: a #GdkScreen
- * 
+ *
  * Creates a new #PangoRenderer for @screen. Normally you can use the
  * results of gdk_pango_renderer_get_default() rather than creating a new
  * renderer.
- * 
+ *
  * Return value: a newly created #PangoRenderer. Free with g_object_unref().
  *
  * Since: 2.6
@@ -558,7 +558,7 @@ PangoRenderer *
 gdk_pango_renderer_new (GdkScreen *screen)
 {
   g_return_val_if_fail (screen != NULL, NULL);
-  
+
   return g_object_new (GDK_TYPE_PANGO_RENDERER,
 		       "screen", screen,
 		       NULL);
@@ -579,7 +579,7 @@ on_renderer_display_closed (GdkDisplay       *display,
 /**
  * gdk_pango_renderer_get_default:
  * @screen: a #GdkScreen
- * 
+ *
  * Gets the default #PangoRenderer for a screen. This default renderer
  * is shared by all users of the display, so properties such as the color
  * or transformation matrix set for the renderer may be overwritten
@@ -588,7 +588,7 @@ on_renderer_display_closed (GdkDisplay       *display,
  * Before using the renderer, you need to call gdk_pango_renderer_set_drawable()
  * and gdk_pango_renderer_set_gc() to set the drawable and graphics context
  * to use for drawing.
- * 
+ *
  * Return value: the default #PangoRenderer for @screen. The
  *  renderer is owned by GTK+ and will be kept around until the
  *  screen is closed.
@@ -601,12 +601,12 @@ gdk_pango_renderer_get_default (GdkScreen *screen)
   PangoRenderer *renderer;
 
   g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
-  
+
   renderer = g_object_get_data (G_OBJECT (screen), "gdk-pango-renderer");
   if (!renderer)
     {
       renderer = gdk_pango_renderer_new (screen);
-      g_object_set_data_full (G_OBJECT (screen), 
+      g_object_set_data_full (G_OBJECT (screen),
                               g_intern_static_string ("gdk-pango-renderer"), renderer,
 			      (GDestroyNotify)g_object_unref);
 
@@ -621,7 +621,7 @@ gdk_pango_renderer_get_default (GdkScreen *screen)
  * gdk_pango_renderer_set_drawable:
  * @gdk_renderer: a #GdkPangoRenderer
  * @drawable: (allow-none): the new target drawable, or %NULL
- * 
+ *
  * Sets the drawable the renderer draws to.
  *
  * Since: 2.6
@@ -631,12 +631,12 @@ gdk_pango_renderer_set_drawable (GdkPangoRenderer *gdk_renderer,
 				 GdkDrawable      *drawable)
 {
   GdkPangoRendererPrivate *priv;
-  
+
   g_return_if_fail (GDK_IS_PANGO_RENDERER (gdk_renderer));
   g_return_if_fail (drawable == NULL || GDK_IS_DRAWABLE (drawable));
 
   priv = gdk_renderer->priv;
-  
+
   if (priv->drawable != drawable)
     {
       if (priv->drawable)
@@ -651,7 +651,7 @@ gdk_pango_renderer_set_drawable (GdkPangoRenderer *gdk_renderer,
  * gdk_pango_renderer_set_gc:
  * @gdk_renderer: a #GdkPangoRenderer
  * @gc: (allow-none): the new GC to use for drawing, or %NULL
- * 
+ *
  * Sets the GC the renderer draws with. Note that the GC must not be
  * modified until it is unset by calling the function again with
  * %NULL for the @gc parameter, since GDK may make internal copies
@@ -665,12 +665,12 @@ gdk_pango_renderer_set_gc (GdkPangoRenderer *gdk_renderer,
 			   GdkGC            *gc)
 {
   GdkPangoRendererPrivate *priv;
-  
+
   g_return_if_fail (GDK_IS_PANGO_RENDERER (gdk_renderer));
   g_return_if_fail (gc == NULL || GDK_IS_GC (gc));
 
   priv = gdk_renderer->priv;
-  
+
   if (priv->base_gc != gc)
     {
       if (priv->base_gc)
@@ -689,7 +689,7 @@ gdk_pango_renderer_set_gc (GdkPangoRenderer *gdk_renderer,
  * @gdk_renderer: a #GdkPangoRenderer
  * @part: the part to render with the stipple
  * @stipple: the new stipple value.
- * 
+ *
  * Sets the stipple for one render part (foreground, background, underline,
  * etc.) Note that this is overwritten when iterating through the individual
  * styled runs of a #PangoLayout or #PangoLayoutLine. This function is thus
@@ -715,7 +715,7 @@ gdk_pango_renderer_set_stipple (GdkPangoRenderer *gdk_renderer,
 	g_object_unref (gdk_renderer->priv->stipple[part]);
 
       gdk_renderer->priv->stipple[part] = stipple;
-      
+
       if (gdk_renderer->priv->stipple[part])
 	g_object_ref (gdk_renderer->priv->stipple[part]);
 
@@ -729,11 +729,11 @@ gdk_pango_renderer_set_stipple (GdkPangoRenderer *gdk_renderer,
  * @part: the part to render to set the color of
  * @color: (allow-none): the color to use, or %NULL to unset a previously
  *         set override color.
- * 
+ *
  * Sets the color for a particular render part (foreground,
  * background, underline, etc.), overriding any attributes on the layouts
  * renderered with this renderer.
- * 
+ *
  * Since: 2.6
  **/
 void
@@ -742,11 +742,11 @@ gdk_pango_renderer_set_override_color (GdkPangoRenderer *gdk_renderer,
 				       const GdkColor   *color)
 {
   GdkPangoRendererPrivate *priv;
-  
+
   g_return_if_fail (GDK_IS_PANGO_RENDERER (gdk_renderer));
 
   priv = gdk_renderer->priv;
-  
+
   if (part > MAX_RENDER_PART)	/* Silently ignore unknown parts */
     return;
 
@@ -795,7 +795,7 @@ get_renderer (GdkDrawable     *drawable,
   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
 
   gdk_pango_renderer_set_drawable (gdk_renderer, drawable);
-  gdk_pango_renderer_set_gc (gdk_renderer, gc);  
+  gdk_pango_renderer_set_gc (gdk_renderer, gc);
 
   gdk_pango_renderer_set_override_color (gdk_renderer,
 					 PANGO_RENDER_PART_FOREGROUND,
@@ -821,9 +821,9 @@ static void
 release_renderer (PangoRenderer *renderer)
 {
   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
-  
+
   pango_renderer_deactivate (renderer);
-  
+
   gdk_pango_renderer_set_override_color (gdk_renderer,
 					 PANGO_RENDER_PART_FOREGROUND,
 					 NULL);
@@ -836,7 +836,7 @@ release_renderer (PangoRenderer *renderer)
   gdk_pango_renderer_set_override_color (gdk_renderer,
 					 PANGO_RENDER_PART_BACKGROUND,
 					 NULL);
-  
+
   gdk_pango_renderer_set_drawable (gdk_renderer, NULL);
   gdk_pango_renderer_set_gc (gdk_renderer, NULL);
 }
@@ -860,10 +860,10 @@ release_renderer (PangoRenderer *renderer)
  * (left is in before-tranform user coordinates) in after-transform
  * device coordinates.
  */
-void 
+void
 gdk_draw_layout_line_with_colors (GdkDrawable      *drawable,
                                   GdkGC            *gc,
-                                  gint              x, 
+                                  gint              x,
                                   gint              y,
                                   PangoLayoutLine  *line,
                                   const GdkColor   *foreground,
@@ -871,7 +871,7 @@ gdk_draw_layout_line_with_colors (GdkDrawable      *drawable,
 {
   PangoRenderer *renderer;
   const PangoMatrix *matrix;
-  
+
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
   g_return_if_fail (GDK_IS_GC (gc));
   g_return_if_fail (line != NULL);
@@ -887,7 +887,7 @@ gdk_draw_layout_line_with_colors (GdkDrawable      *drawable,
   if (matrix)
     {
       PangoMatrix tmp_matrix;
-      
+
       tmp_matrix = *matrix;
       tmp_matrix.x0 += x;
       tmp_matrix.y0 += y;
@@ -939,10 +939,10 @@ gdk_draw_layout_line_with_colors (GdkDrawable      *drawable,
  * If you're using GTK+, the ususal way to obtain a #PangoLayout
  * is gtk_widget_create_pango_layout().
  */
-void 
+void
 gdk_draw_layout_with_colors (GdkDrawable     *drawable,
                              GdkGC           *gc,
-                             int              x, 
+                             int              x,
                              int              y,
                              PangoLayout     *layout,
                              const GdkColor  *foreground,
@@ -950,7 +950,7 @@ gdk_draw_layout_with_colors (GdkDrawable     *drawable,
 {
   PangoRenderer *renderer;
   const PangoMatrix *matrix;
-  
+
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
   g_return_if_fail (GDK_IS_GC (gc));
   g_return_if_fail (PANGO_IS_LAYOUT (layout));
@@ -971,12 +971,12 @@ gdk_draw_layout_with_colors (GdkDrawable     *drawable,
       pango_layout_get_extents (layout, NULL, &rect);
       pango_matrix_transform_rectangle (matrix, &rect);
       pango_extents_to_pixels (&rect, NULL);
-      
+
       tmp_matrix = *matrix;
       tmp_matrix.x0 += x - rect.x;
       tmp_matrix.y0 += y - rect.y;
       pango_renderer_set_matrix (renderer, &tmp_matrix);
-      
+
       x = 0;
       y = 0;
     }
@@ -994,7 +994,7 @@ gdk_draw_layout_with_colors (GdkDrawable     *drawable,
     pango_renderer_set_matrix (renderer, NULL);
 
   pango_renderer_draw_layout (renderer, layout, x * PANGO_SCALE, y * PANGO_SCALE);
-  
+
   release_renderer (renderer);
 }
 
@@ -1013,17 +1013,17 @@ gdk_draw_layout_with_colors (GdkDrawable     *drawable,
  * (left is in before-tranform user coordinates) in after-transform
  * device coordinates.
  */
-void 
+void
 gdk_draw_layout_line (GdkDrawable      *drawable,
 		      GdkGC            *gc,
-		      gint              x, 
+		      gint              x,
 		      gint              y,
 		      PangoLayoutLine  *line)
 {
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
   g_return_if_fail (GDK_IS_GC (gc));
   g_return_if_fail (line != NULL);
-  
+
   gdk_draw_layout_line_with_colors (drawable, gc, x, y, line, NULL, NULL);
 }
 
@@ -1044,10 +1044,10 @@ gdk_draw_layout_line (GdkDrawable      *drawable,
  * If you're using GTK+, the usual way to obtain a #PangoLayout
  * is gtk_widget_create_pango_layout().
  */
-void 
+void
 gdk_draw_layout (GdkDrawable     *drawable,
 		 GdkGC           *gc,
-		 int              x, 
+		 int              x,
 		 int              y,
 		 PangoLayout     *layout)
 {
@@ -1075,7 +1075,7 @@ gdk_pango_attr_stipple_destroy (PangoAttribute *attr)
 
   if (st->stipple)
     g_object_unref (st->stipple);
-  
+
   g_free (attr);
 }
 
@@ -1103,7 +1103,7 @@ PangoAttribute *
 gdk_pango_attr_stipple_new (GdkBitmap *stipple)
 {
   GdkPangoAttrStipple *result;
-  
+
   static PangoAttrClass klass = {
     0,
     gdk_pango_attr_stipple_copy,
@@ -1120,7 +1120,7 @@ gdk_pango_attr_stipple_new (GdkBitmap *stipple)
 
   if (stipple)
     g_object_ref (stipple);
-  
+
   result->stipple = stipple;
 
   return (PangoAttribute *)result;
@@ -1165,7 +1165,7 @@ PangoAttribute *
 gdk_pango_attr_embossed_new (gboolean embossed)
 {
   GdkPangoAttrEmbossed *result;
-  
+
   static PangoAttrClass klass = {
     0,
     gdk_pango_attr_embossed_copy,
@@ -1180,7 +1180,7 @@ gdk_pango_attr_embossed_new (gboolean embossed)
   result = g_new (GdkPangoAttrEmbossed, 1);
   result->attr.klass = &klass;
   result->embossed = embossed;
-  
+
   return (PangoAttribute *)result;
 }
 
@@ -1229,7 +1229,7 @@ PangoAttribute *
 gdk_pango_attr_emboss_color_new (const GdkColor *color)
 {
   GdkPangoAttrEmbossColor *result;
-  
+
   static PangoAttrClass klass = {
     0,
     gdk_pango_attr_emboss_color_copy,
@@ -1277,7 +1277,7 @@ layout_iter_get_line_clip_region (PangoLayoutIter *iter,
 
   i = 0;
   while (i < n_ranges)
-    {  
+    {
       gint *pixel_ranges = NULL;
       gint n_pixel_ranges = 0;
       gint j;
@@ -1290,12 +1290,12 @@ layout_iter_get_line_clip_region (PangoLayoutIter *iter,
 					index_ranges[i*2],
 					index_ranges[i*2+1],
 					&pixel_ranges, &n_pixel_ranges);
-  
+
       for (j = 0; j < n_pixel_ranges; j++)
         {
           GdkRectangle rect;
 	  int x_off, y_off;
-          
+
           x_off = PANGO_PIXELS (pixel_ranges[2*j] - logical_rect.x);
 	  y_off = PANGO_PIXELS (baseline - logical_rect.y);
 
@@ -1315,12 +1315,12 @@ layout_iter_get_line_clip_region (PangoLayoutIter *iter,
 
 /**
  * gdk_pango_layout_line_get_clip_region:
- * @line: a #PangoLayoutLine 
+ * @line: a #PangoLayoutLine
  * @x_origin: X pixel where you intend to draw the layout line with this clip
  * @y_origin: baseline pixel where you intend to draw the layout line with this clip
  * @index_ranges: array of byte indexes into the layout, where even members of array are start indexes and odd elements are end indexes
  * @n_ranges: number of ranges in @index_ranges, i.e. half the size of @index_ranges
- * 
+ *
  * Obtains a clip region which contains the areas where the given
  * ranges of text would be drawn. @x_origin and @y_origin are the same
  * position you would pass to gdk_draw_layout_line(). @index_ranges
@@ -1335,7 +1335,7 @@ layout_iter_get_line_clip_region (PangoLayoutIter *iter,
  * ranges, not ink extents. So the drawn line may in fact touch areas out of
  * the clip region.  The clip region is mainly useful for highlightling parts
  * of text, such as when text is selected.
- * 
+ *
  * Return value: a clip region containing the given ranges
  **/
 GdkRegion*
@@ -1347,14 +1347,14 @@ gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line,
 {
   GdkRegion *clip_region;
   PangoLayoutIter *iter;
-  
+
   g_return_val_if_fail (line != NULL, NULL);
   g_return_val_if_fail (index_ranges != NULL, NULL);
-  
+
   iter = pango_layout_get_iter (line->layout);
   while (pango_layout_iter_get_line_readonly (iter) != line)
     pango_layout_iter_next_line (iter);
-  
+
   clip_region = layout_iter_get_line_clip_region(iter, x_origin, y_origin, index_ranges, n_ranges);
 
   pango_layout_iter_free (iter);
@@ -1364,22 +1364,22 @@ gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line,
 
 /**
  * gdk_pango_layout_get_clip_region:
- * @layout: a #PangoLayout 
+ * @layout: a #PangoLayout
  * @x_origin: X pixel where you intend to draw the layout with this clip
  * @y_origin: Y pixel where you intend to draw the layout with this clip
  * @index_ranges: array of byte indexes into the layout, where even members of array are start indexes and odd elements are end indexes
  * @n_ranges: number of ranges in @index_ranges, i.e. half the size of @index_ranges
- * 
+ *
  * Obtains a clip region which contains the areas where the given ranges
  * of text would be drawn. @x_origin and @y_origin are the same position
  * you would pass to gdk_draw_layout_line(). @index_ranges should contain
  * ranges of bytes in the layout's text.
- * 
+ *
  * Note that the regions returned correspond to logical extents of the text
  * ranges, not ink extents. So the drawn layout may in fact touch areas out of
  * the clip region.  The clip region is mainly useful for highlightling parts
  * of text, such as when text is selected.
- * 
+ *
  * Return value: a clip region containing the given ranges
  **/
 GdkRegion*
@@ -1389,26 +1389,26 @@ gdk_pango_layout_get_clip_region (PangoLayout *layout,
                                   const gint  *index_ranges,
                                   gint         n_ranges)
 {
-  PangoLayoutIter *iter;  
+  PangoLayoutIter *iter;
   GdkRegion *clip_region;
-  
+
   g_return_val_if_fail (PANGO_IS_LAYOUT (layout), NULL);
   g_return_val_if_fail (index_ranges != NULL, NULL);
-  
+
   clip_region = gdk_region_new ();
-  
+
   iter = pango_layout_get_iter (layout);
-  
+
   do
     {
       PangoRectangle logical_rect;
       GdkRegion *line_region;
       gint baseline;
-      
-      pango_layout_iter_get_line_extents (iter, NULL, &logical_rect);
-      baseline = pango_layout_iter_get_baseline (iter);      
 
-      line_region = layout_iter_get_line_clip_region(iter, 
+      pango_layout_iter_get_line_extents (iter, NULL, &logical_rect);
+      baseline = pango_layout_iter_get_baseline (iter);
+
+      line_region = layout_iter_get_line_clip_region(iter,
 						     x_origin + PANGO_PIXELS (logical_rect.x),
 						     y_origin + PANGO_PIXELS (baseline),
 						     index_ranges,
@@ -1426,15 +1426,15 @@ gdk_pango_layout_get_clip_region (PangoLayout *layout,
 
 /**
  * gdk_pango_context_get:
- * 
+ *
  * Creates a #PangoContext for the default GDK screen.
  *
  * The context must be freed when you're finished with it.
- * 
+ *
  * When using GTK+, normally you should use gtk_widget_get_pango_context()
  * instead of this function, to get the appropriate context for
  * the widget you intend to render text onto.
- * 
+ *
  * The newly created context will have the default font options (see
  * #cairo_font_options_t) for the default screen; if these options
  * change it will not be updated. Using gtk_widget_get_pango_context()
@@ -1452,21 +1452,21 @@ gdk_pango_context_get (void)
 /**
  * gdk_pango_context_get_for_screen:
  * @screen: the #GdkScreen for which the context is to be created.
- * 
+ *
  * Creates a #PangoContext for @screen.
  *
  * The context must be freed when you're finished with it.
- * 
+ *
  * When using GTK+, normally you should use gtk_widget_get_pango_context()
  * instead of this function, to get the appropriate context for
  * the widget you intend to render text onto.
- * 
+ *
  * The newly created context will have the default font options
  * (see #cairo_font_options_t) for the screen; if these options
  * change it will not be updated. Using gtk_widget_get_pango_context()
  * is more convenient if you want to keep a context around and track
  * changes to the screen's font rendering settings.
- * 
+ *
  * Return value: a new #PangoContext for @screen
  *
  * Since: 2.2

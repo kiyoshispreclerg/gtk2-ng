@@ -1,4 +1,4 @@
-/* testmenus.c -- dynamically add and remove items to a menu 
+/* testmenus.c -- dynamically add and remove items to a menu
  * Copyright (C) 2002  Red Hat, Inc.
  * Author: Owen Taylor
  *
@@ -78,7 +78,7 @@ change_item (gpointer user_data)
 
       widget = gtk_menu_item_new_with_label ("Foo");
       gtk_widget_show (widget);
-  
+
       gtk_menu_shell_append (shell, widget);
     }
   else
@@ -86,16 +86,16 @@ change_item (gpointer user_data)
       GList *children = gtk_container_get_children (GTK_CONTAINER (shell));
 
       g_message ("Idle remove");
-      
+
       gtk_widget_destroy (g_list_last (children)->data);
 
       g_list_free (children);
     }
-  
+
   return TRUE;
 }
- 
-int 
+
+int
 main (int argc, char **argv)
 {
   static GtkWidget *window = NULL;
@@ -106,7 +106,7 @@ main (int argc, char **argv)
   GtkWidget *separator;
 
   gtk_init (&argc, &argv);
-  
+
   if (!window)
     {
       GtkWidget *menubar;
@@ -114,43 +114,43 @@ main (int argc, char **argv)
       GtkWidget *submenu;
       GtkWidget *menuitem;
       GtkAccelGroup *accel_group;
-      
+
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      
+
       g_signal_connect (window, "destroy",
 			G_CALLBACK(gtk_main_quit), NULL);
       g_signal_connect (window, "delete-event",
 			G_CALLBACK (gtk_true), NULL);
-      
+
       accel_group = gtk_accel_group_new ();
       gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
 
       gtk_window_set_title (GTK_WINDOW (window), "menus");
       gtk_container_set_border_width (GTK_CONTAINER (window), 0);
-      
-      
+
+
       box1 = gtk_vbox_new (FALSE, 0);
       gtk_container_add (GTK_CONTAINER (window), box1);
       gtk_widget_show (box1);
-      
+
       menubar = gtk_menu_bar_new ();
       gtk_box_pack_start (GTK_BOX (box1), menubar, FALSE, TRUE, 0);
       gtk_widget_show (menubar);
-      
+
       menu = create_menu (2, TRUE);
-      
+
       menuitem = gtk_menu_item_new_with_label ("test\nline2");
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu);
       gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
       gtk_widget_show (menuitem);
 
-      
+
       menuitem = gtk_menu_item_new_with_label ("dynamic");
       submenu = create_menu (3, TRUE);
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), submenu);
       gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
       gtk_widget_show (menuitem);
-      
+
       gdk_threads_add_timeout (250, change_item, submenu);
 
       menuitem = gtk_menu_item_new_with_label ("bar");
@@ -158,19 +158,19 @@ main (int argc, char **argv)
       gtk_menu_item_set_right_justified (GTK_MENU_ITEM (menuitem), TRUE);
       gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
       gtk_widget_show (menuitem);
-      
+
       box2 = gtk_vbox_new (FALSE, 10);
       gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
       gtk_box_pack_start (GTK_BOX (box1), box2, TRUE, TRUE, 0);
       gtk_widget_show (box2);
-      
+
       menu = create_menu (1, FALSE);
       gtk_menu_set_accel_group (GTK_MENU (menu), accel_group);
-      
+
       menuitem = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
       gtk_widget_show (menuitem);
-      
+
       menuitem = gtk_check_menu_item_new_with_label ("Accelerate Me");
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
       gtk_widget_show (menuitem);
@@ -204,7 +204,7 @@ main (int argc, char **argv)
 				  GDK_F3,
 				  0,
 				  GTK_ACCEL_VISIBLE);
-      
+
       optionmenu = gtk_option_menu_new ();
       gtk_option_menu_set_menu (GTK_OPTION_MENU (optionmenu), menu);
       gtk_option_menu_set_history (GTK_OPTION_MENU (optionmenu), 3);

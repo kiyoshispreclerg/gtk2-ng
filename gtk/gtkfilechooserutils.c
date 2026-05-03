@@ -194,7 +194,7 @@ _gtk_file_chooser_delegate_get_quark (void)
 
   if (G_UNLIKELY (quark == 0))
     quark = g_quark_from_static_string ("gtk-file-chooser-delegate");
-  
+
   return quark;
 }
 
@@ -375,7 +375,7 @@ get_parent_for_uri (const char *uri)
 
   g_object_unref (file);
   return parent;
-	
+
 }
 
 /* Extracts the parent folders out of the supplied list of GtkRecentInfo* items, and returns

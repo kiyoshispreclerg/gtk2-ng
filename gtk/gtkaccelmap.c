@@ -23,7 +23,7 @@
 
 #include "gtkmarshalers.h"
 #include "gtkwindow.h"  /* in lack of GtkAcceleratable */
-#include "gtkintl.h" 
+#include "gtkintl.h"
 #include "gtkalias.h"
 
 #include <glib/gstdio.h>
@@ -149,9 +149,9 @@ _gtk_accel_path_is_valid (const gchar *accel_path)
  * e.g. "File/Save As", "Image/View/Zoom" or "Edit/Select All".
  * So a full valid accelerator path may look like:
  * "&lt;Gimp-Toolbox&gt;/File/Dialogs/Tool Options...".
- * 
+ *
  * Note that @accel_path string will be stored in a #GQuark. Therefore, if you
- * pass a static string, you can save some memory by interning it first with 
+ * pass a static string, you can save some memory by interning it first with
  * g_intern_static_string().
  */
 void
@@ -286,7 +286,7 @@ internal_change_entry (const gchar    *accel_path,
       return simulate ? TRUE : FALSE;
     }
 
-  /* The no-change case has already been handled, so 
+  /* The no-change case has already been handled, so
    * simulate doesn't make a difference here.
    */
   if (entry->lock_count > 0)
@@ -332,7 +332,7 @@ internal_change_entry (const gchar    *accel_path,
       g_hash_table_insert (group_hm, node->data, node->data);
   group_list = g_hash_table_slist_values (group_hm);
   g_hash_table_destroy (group_hm);
-  
+
   /* 4) walk the acceleratables and figure whether they occupy accel_key&accel_mods */
   if (accel_key)
     for (slist = win_list; slist; slist = slist->next)
@@ -343,7 +343,7 @@ internal_change_entry (const gchar    *accel_path,
 	    break;
 	  }
   removable = !seen_accel;
-  
+
   /* 5) walk all accel groups and search for locks */
   if (removable)
     for (slist = group_list; slist; slist = slist->next)
@@ -351,7 +351,7 @@ internal_change_entry (const gchar    *accel_path,
 	GtkAccelGroup *group = slist->data;
 	GtkAccelGroupEntry *ag_entry;
 	guint i, n;
-	
+
 	n = 0;
 	ag_entry = entry->accel_key ? gtk_accel_group_query (group, entry->accel_key, entry->accel_mods, &n) : NULL;
 	for (i = 0; i < n; i++)
@@ -361,7 +361,7 @@ internal_change_entry (const gchar    *accel_path,
 	      if (!can_change)
 		goto break_loop_step5;
 	    }
-	
+
 	n = 0;
 	ag_entry = accel_key ? gtk_accel_group_query (group, accel_key, accel_mods, &n) : NULL;
 	for (i = 0; i < n; i++)
@@ -375,7 +375,7 @@ internal_change_entry (const gchar    *accel_path,
 	  }
       }
  break_loop_step5:
-  
+
   /* 6) check whether we can remove existing accelerators */
   if (removable && can_change)
     for (slist = replace_list; slist; slist = slist->next)
@@ -384,10 +384,10 @@ internal_change_entry (const gchar    *accel_path,
 	  removable = FALSE;
 	  break;
 	}
-  
+
   /* 7) check conditions and proceed if possible */
   change_accel = can_change && (!seen_accel || (removable && replace));
-  
+
   if (change_accel && !simulate)
     {
       /* ref accel groups */
@@ -433,9 +433,9 @@ internal_change_entry (const gchar    *accel_path,
  * conflicts. A change will only occur if all conflicts could be resolved (which
  * might not be the case if conflicting accelerators are locked). Successful
  * changes are indicated by a %TRUE return value.
- * 
+ *
  * Note that @accel_path string will be stored in a #GQuark. Therefore, if you
- * pass a static string, you can save some memory by interning it first with 
+ * pass a static string, you can save some memory by interning it first with
  * g_intern_static_string().
  */
 gboolean
@@ -455,7 +455,7 @@ accel_map_parse_accel_path (GScanner *scanner)
   guint accel_key = 0;
   GdkModifierType accel_mods = 0;
   gchar *path, *accel;
-  
+
   /* parse accel path */
   g_scanner_get_next_token (scanner);
   if (scanner->token != G_TOKEN_STRING)
@@ -548,7 +548,7 @@ gtk_accel_map_load_scanner (GScanner *scanner)
   gboolean symbol_2_token;
   gchar *cpair_comment_single;
   gpointer saved_symbol;
-  
+
   g_return_if_fail (scanner != NULL);
 
   /* configure scanner */
@@ -559,7 +559,7 @@ gtk_accel_map_load_scanner (GScanner *scanner)
   symbol_2_token = scanner->config->symbol_2_token;
   scanner->config->symbol_2_token = FALSE;
   saved_symbol = g_scanner_lookup_symbol (scanner, "gtk_accel_path");
-  g_scanner_scope_add_symbol (scanner, 0, "gtk_accel_path", 
+  g_scanner_scope_add_symbol (scanner, 0, "gtk_accel_path",
 			      accel_map_parse_accel_path);
 
   /* outer parsing loop
@@ -712,7 +712,7 @@ gtk_accel_map_save_fd (gint fd)
   g_string_append (gstring, ";\n");
 
   write_all (fd, gstring->str, gstring->len);
-  
+
   g_string_free (gstring, TRUE);
 
   gtk_accel_map_foreach (GINT_TO_POINTER (fd), accel_map_print);
@@ -750,9 +750,9 @@ gtk_accel_map_save (const gchar *file_name)
  * @foreach_func: function to be executed for each accel map entry which
  *                is not filtered out
  *
- * Loops over the entries in the accelerator map whose accel path 
- * doesn't match any of the filters added with gtk_accel_map_add_filter(), 
- * and execute @foreach_func on each. The signature of @foreach_func is 
+ * Loops over the entries in the accelerator map whose accel path
+ * doesn't match any of the filters added with gtk_accel_map_add_filter(),
+ * and execute @foreach_func on each. The signature of @foreach_func is
  * that of #GtkAccelMapForeach, the @changed parameter indicates whether
  * this accelerator was changed during runtime (thus, would need
  * saving during an accelerator map dump).
@@ -877,27 +877,27 @@ _gtk_accel_map_remove_group (const gchar   *accel_path,
 /**
  * gtk_accel_map_lock_path:
  * @accel_path: a valid accelerator path
- * 
+ *
  * Locks the given accelerator path. If the accelerator map doesn't yet contain
  * an entry for @accel_path, a new one is created.
  *
- * Locking an accelerator path prevents its accelerator from being changed 
- * during runtime. A locked accelerator path can be unlocked by 
- * gtk_accel_map_unlock_path(). Refer to gtk_accel_map_change_entry() 
+ * Locking an accelerator path prevents its accelerator from being changed
+ * during runtime. A locked accelerator path can be unlocked by
+ * gtk_accel_map_unlock_path(). Refer to gtk_accel_map_change_entry()
  * for information about runtime accelerator changes.
  *
  * If called more than once, @accel_path remains locked until
  * gtk_accel_map_unlock_path() has been called an equivalent number
  * of times.
  *
- * Note that locking of individual accelerator paths is independent from 
+ * Note that locking of individual accelerator paths is independent from
  * locking the #GtkAccelGroup containing them. For runtime accelerator
  * changes to be possible both the accelerator path and its #GtkAccelGroup
- * have to be unlocked. 
+ * have to be unlocked.
  *
  * Since: 2.4
  **/
-void 
+void
 gtk_accel_map_lock_path (const gchar *accel_path)
 {
   AccelEntry *entry;
@@ -905,7 +905,7 @@ gtk_accel_map_lock_path (const gchar *accel_path)
   g_return_if_fail (_gtk_accel_path_is_valid (accel_path));
 
   entry = accel_path_lookup (accel_path);
-  
+
   if (!entry)
     {
       gtk_accel_map_add_entry (accel_path, 0, 0);
@@ -918,13 +918,13 @@ gtk_accel_map_lock_path (const gchar *accel_path)
 /**
  * gtk_accel_map_unlock_path:
  * @accel_path: a valid accelerator path
- * 
+ *
  * Undoes the last call to gtk_accel_map_lock_path() on this @accel_path.
  * Refer to gtk_accel_map_lock_path() for information about accelerator path locking.
  *
  * Since: 2.4
  **/
-void 
+void
 gtk_accel_map_unlock_path (const gchar *accel_path)
 {
   AccelEntry *entry;
@@ -935,7 +935,7 @@ gtk_accel_map_unlock_path (const gchar *accel_path)
 
   g_return_if_fail (entry != NULL && entry->lock_count > 0);
 
-  entry->lock_count -= 1;  
+  entry->lock_count -= 1;
 }
 
 G_DEFINE_TYPE (GtkAccelMap, gtk_accel_map, G_TYPE_OBJECT)
@@ -974,12 +974,12 @@ gtk_accel_map_init (GtkAccelMap *accel_map)
 
 /**
  * gtk_accel_map_get:
- * 
+ *
  * Gets the singleton global #GtkAccelMap object. This object
  * is useful only for notification of changes to the accelerator
  * map via the ::changed signal; it isn't a parameter to the
  * other accelerator map functions.
- * 
+ *
  * Return value: the global #GtkAccelMap object
  *
  * Since: 2.4

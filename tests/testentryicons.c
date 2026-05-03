@@ -70,11 +70,11 @@ drag_data_get_cb (GtkWidget        *widget,
     {
 #if 0
       gint start, end;
-      
+
       if (gtk_editable_get_selection_bounds (GTK_EDITABLE (widget), &start, &end))
         {
           gchar *str;
-          
+
           str = gtk_editable_get_chars (GTK_EDITABLE (widget), start, end);
           gtk_selection_data_set_text (data, str, -1);
           g_free (str);
@@ -139,10 +139,10 @@ main (int argc, char **argv)
   button = gtk_button_new_with_label ("Properties");
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 0, 1,
 		    GTK_FILL, GTK_FILL, 0, 0);
-  g_signal_connect (button, "clicked", 
-                    G_CALLBACK (properties_cb), entry);                    
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (properties_cb), entry);
 
-  
+
   /*
    * Save File - sets the icon using a stock id.
    */
@@ -156,7 +156,7 @@ main (int argc, char **argv)
 		    GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
   gtk_entry_set_text (GTK_ENTRY (entry), "‏Right-to-left");
   gtk_widget_set_direction (entry, GTK_TEXT_DIR_RTL);
-  
+
   gtk_entry_set_icon_from_stock (GTK_ENTRY (entry),
 				 GTK_ENTRY_ICON_PRIMARY,
 				 GTK_STOCK_SAVE);
@@ -167,18 +167,18 @@ main (int argc, char **argv)
   gtk_target_list_add_text_targets (tlist, 0);
   gtk_entry_set_icon_drag_source (GTK_ENTRY (entry),
                                   GTK_ENTRY_ICON_PRIMARY,
-                                  tlist, GDK_ACTION_COPY); 
-  g_signal_connect_after (entry, "drag-begin", 
+                                  tlist, GDK_ACTION_COPY);
+  g_signal_connect_after (entry, "drag-begin",
                           G_CALLBACK (drag_begin_cb), NULL);
-  g_signal_connect (entry, "drag-data-get", 
+  g_signal_connect (entry, "drag-data-get",
                     G_CALLBACK (drag_data_get_cb), NULL);
   gtk_target_list_unref (tlist);
 
   button = gtk_button_new_with_label ("Properties");
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
 		    GTK_FILL, GTK_FILL, 0, 0);
-  g_signal_connect (button, "clicked", 
-                    G_CALLBACK (properties_cb), entry);                    
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (properties_cb), entry);
 
   /*
    * Search - Uses a helper function
@@ -205,8 +205,8 @@ main (int argc, char **argv)
   button = gtk_button_new_with_label ("Properties");
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 2, 3,
 		    GTK_FILL, GTK_FILL, 0, 0);
-  g_signal_connect (button, "clicked", 
-                    G_CALLBACK (properties_cb), entry);                    
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (properties_cb), entry);
 
   /*
    * Password - Sets the icon using a stock id
@@ -232,8 +232,8 @@ main (int argc, char **argv)
   button = gtk_button_new_with_label ("Properties");
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 3, 4,
 		    GTK_FILL, GTK_FILL, 0, 0);
-  g_signal_connect (button, "clicked", 
-                    G_CALLBACK (properties_cb), entry);                    
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (properties_cb), entry);
 
   /* Name - Does not set any icons. */
   label = gtk_label_new ("Name:");
@@ -248,8 +248,8 @@ main (int argc, char **argv)
   button = gtk_button_new_with_label ("Properties");
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 4, 5,
 		    GTK_FILL, GTK_FILL, 0, 0);
-  g_signal_connect (button, "clicked", 
-                    G_CALLBACK (properties_cb), entry);                    
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (properties_cb), entry);
 
   gtk_widget_show_all (window);
 

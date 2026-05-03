@@ -15,7 +15,7 @@ create_completion_model (void)
 {
   GtkListStore *store;
   GtkTreeIter iter;
-  
+
   store = gtk_list_store_new (1, G_TYPE_STRING);
 
   /* Append one word */
@@ -29,7 +29,7 @@ create_completion_model (void)
   /* And another word */
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter, 0, "totally", -1);
-  
+
   return GTK_TREE_MODEL (store);
 }
 
@@ -42,7 +42,7 @@ do_entry_completion (GtkWidget *do_widget)
   GtkWidget *entry;
   GtkEntryCompletion *completion;
   GtkTreeModel *completion_model;
-  
+
   if (!window)
   {
     window = gtk_dialog_new_with_buttons ("GtkEntryCompletion",
@@ -76,12 +76,12 @@ do_entry_completion (GtkWidget *do_widget)
     /* Assign the completion to the entry */
     gtk_entry_set_completion (GTK_ENTRY (entry), completion);
     g_object_unref (completion);
-    
+
     /* Create a tree model and use it as the completion model */
     completion_model = create_completion_model ();
     gtk_entry_completion_set_model (completion, completion_model);
     g_object_unref (completion_model);
-    
+
     /* Use model column 0 as the text column */
     gtk_entry_completion_set_text_column (completion, 0);
   }

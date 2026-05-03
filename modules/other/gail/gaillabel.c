@@ -99,7 +99,7 @@ static gint gail_label_get_offset_at_point         (AtkText           *text,
                                                     gint              x,
                                                     gint              y,
 			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_label_get_run_attributes 
+static AtkAttributeSet* gail_label_get_run_attributes
                                                    (AtkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
@@ -141,7 +141,7 @@ gail_label_real_initialize (AtkObject *obj,
   GailLabel *gail_label;
 
   ATK_OBJECT_CLASS (gail_label_parent_class)->initialize (obj, data);
-  
+
   gail_label = GAIL_LABEL (obj);
 
   gail_label->window_create_handler = 0;
@@ -150,7 +150,7 @@ gail_label_real_initialize (AtkObject *obj,
   gail_label->selection_bound = 0;
   gail_label->textutil = NULL;
   gail_label->label_length = 0;
-  
+
   widget = GTK_WIDGET (data);
 
   if (gtk_widget_get_mapped (widget))
@@ -161,7 +161,7 @@ gail_label_real_initialize (AtkObject *obj,
                       G_CALLBACK (gail_label_map_gtk),
                       gail_label);
 
-  /* 
+  /*
    * Check whether ancestor of GtkLabel is a GtkButton and if so
    * set accessible parent for GailLabel
    */
@@ -204,7 +204,7 @@ gail_label_init_text_util (GailLabel *gail_label,
   label = GTK_LABEL (widget);
   label_text = gtk_label_get_text (label);
   gail_text_util_text_setup (gail_label->textutil, label_text);
-  
+
   if (label_text == NULL)
     gail_label->label_length = 0;
   else
@@ -237,12 +237,12 @@ notify_name_change (AtkObject *atk_obj)
    * Check whether the label has actually changed before emitting
    * notification.
    */
-  if (gail_label->textutil->buffer) 
+  if (gail_label->textutil->buffer)
     {
       GtkTextIter start, end;
       const char *new_label;
       char *old_label;
-      int same;   
+      int same;
 
       gtk_text_buffer_get_start_iter (gail_label->textutil->buffer, &start);
       gtk_text_buffer_get_end_iter (gail_label->textutil->buffer, &end);
@@ -253,15 +253,15 @@ notify_name_change (AtkObject *atk_obj)
       if (same == 0)
         return;
     }
-   
+
   /* Create a delete text and an insert text signal */
- 
-  g_signal_emit_by_name (gail_obj, "text_changed::delete", 0, 
+
+  g_signal_emit_by_name (gail_obj, "text_changed::delete", 0,
                          gail_label->label_length);
 
   gail_label_init_text_util (gail_label, widget);
 
-  g_signal_emit_by_name (gail_obj, "text_changed::insert", 0, 
+  g_signal_emit_by_name (gail_obj, "text_changed::insert", 0,
                          gail_label->label_length);
 
   if (atk_obj->name == NULL)
@@ -279,7 +279,7 @@ window_created (GObject *obj,
 {
   g_return_if_fail (GAIL_LABEL (data));
 
-  notify_name_change (ATK_OBJECT (data)); 
+  notify_name_change (ATK_OBJECT (data));
 }
 
 static void
@@ -298,7 +298,7 @@ gail_label_real_notify_gtk (GObject           *obj,
 
   if (strcmp (pspec->name, "label") == 0)
     {
-     /* 
+     /*
       * We may get a label change for a label which is not attached to an
       * application. We wait until the toplevel window is created before
       * emitting the notification.
@@ -316,7 +316,7 @@ gail_label_real_notify_gtk (GObject           *obj,
             }
           if (atk_object_get_role (top_level) != ATK_ROLE_APPLICATION)
             {
-              if (gail_label->window_create_handler == 0 && 
+              if (gail_label->window_create_handler == 0 &&
                   GAIL_IS_WINDOW (top_level))
                 gail_label->window_create_handler = g_signal_connect_after (top_level, "create", G_CALLBACK (window_created), atk_obj);
             }
@@ -362,7 +362,7 @@ gail_label_real_notify_gtk (GObject           *obj,
                 selection_changed = TRUE;
             }
         }
-      else 
+      else
         {
           if (gail_label->cursor_position != gail_label->selection_bound)
             selection_changed = TRUE;
@@ -393,7 +393,7 @@ gail_label_real_notify_gtk (GObject           *obj,
 
         }
         if (text_caret_moved)
-          g_signal_emit_by_name (gail_obj, "text_caret_moved", 
+          g_signal_emit_by_name (gail_obj, "text_caret_moved",
                                  gail_label->cursor_position);
         if (selection_changed)
           g_signal_emit_by_name (gail_obj, "text_selection_changed");
@@ -467,7 +467,7 @@ gail_label_ref_relation_set (AtkObject *obj)
           if (!gtk_widget_get_can_focus (mnemonic_widget))
             {
             /*
-             * Handle the case where a GtkFileChooserButton is specified as the 
+             * Handle the case where a GtkFileChooserButton is specified as the
              * mnemonic widget. use the combobox which is a child of the
              * GtkFileChooserButton as the mnemonic widget. See bug #359843.
              */
@@ -487,7 +487,7 @@ gail_label_ref_relation_set (AtkObject *obj)
                   g_list_free (list);
                 }
             /*
-             * Handle the case where a GnomeIconEntry is specified as the 
+             * Handle the case where a GnomeIconEntry is specified as the
              * mnemonic widget. use the button which is a grandchild of the
              * GnomeIconEntry as the mnemonic widget. See bug #133967.
              */
@@ -607,14 +607,14 @@ gail_label_get_text (AtkText *text,
   label = GTK_LABEL (widget);
 
   label_text = gtk_label_get_text (label);
- 
+
   if (label_text == NULL)
     return NULL;
   else
   {
-    if (GAIL_LABEL (text)->textutil == NULL) 
+    if (GAIL_LABEL (text)->textutil == NULL)
       gail_label_init_text_util (GAIL_LABEL (text), widget);
-    return gail_text_util_get_substring (GAIL_LABEL(text)->textutil, 
+    return gail_text_util_get_substring (GAIL_LABEL(text)->textutil,
                                          start_pos, end_pos);
   }
 }
@@ -628,19 +628,19 @@ gail_label_get_text_before_offset (AtkText         *text,
 {
   GtkWidget *widget;
   GtkLabel *label;
-  
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = GTK_LABEL (widget);
 
   return gail_text_util_get_text (GAIL_LABEL (text)->textutil,
-                           gtk_label_get_layout (label), GAIL_BEFORE_OFFSET, 
-                           boundary_type, offset, start_offset, end_offset); 
+                           gtk_label_get_layout (label), GAIL_BEFORE_OFFSET,
+                           boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
@@ -652,18 +652,18 @@ gail_label_get_text_at_offset (AtkText         *text,
 {
   GtkWidget *widget;
   GtkLabel *label;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = GTK_LABEL (widget);
 
   return gail_text_util_get_text (GAIL_LABEL (text)->textutil,
-                              gtk_label_get_layout (label), GAIL_AT_OFFSET, 
+                              gtk_label_get_layout (label), GAIL_AT_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
 }
 
@@ -678,18 +678,18 @@ gail_label_get_text_after_offset (AtkText         *text,
   GtkLabel *label;
 
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
   {
     /* State is defunct */
     return NULL;
   }
-  
+
   /* Get label */
   label = GTK_LABEL (widget);
 
   return gail_text_util_get_text (GAIL_LABEL (text)->textutil,
-                           gtk_label_get_layout (label), GAIL_AFTER_OFFSET, 
+                           gtk_label_get_layout (label), GAIL_AFTER_OFFSET,
                            boundary_type, offset, start_offset, end_offset);
 }
 
@@ -715,7 +715,7 @@ gail_label_get_caret_offset (AtkText *text)
 }
 
 static gboolean
-gail_label_set_caret_offset (AtkText *text, 
+gail_label_set_caret_offset (AtkText *text,
                              gint    offset)
 {
   GtkWidget *widget;
@@ -758,7 +758,7 @@ gail_label_get_n_selections (AtkText *text)
 
   if (gtk_label_get_selection_bounds (label, &start, &end))
      return 1;
-  else 
+  else
      return 0;
 }
 
@@ -787,14 +787,14 @@ gail_label_get_selection (AtkText *text,
   if (gtk_label_get_selection_bounds (label, start_pos, end_pos))
     {
       const gchar* label_text = gtk_label_get_text (label);
-    
+
       if (label_text == NULL)
         return 0;
       else
-        return gail_text_util_get_substring (GAIL_LABEL (text)->textutil, 
+        return gail_text_util_get_substring (GAIL_LABEL (text)->textutil,
                                              *start_pos, *end_pos);
     }
-  else 
+  else
     return NULL;
 }
 
@@ -901,7 +901,7 @@ gail_label_get_character_extents (AtkText      *text,
   GtkLabel *label;
   PangoRectangle char_rect;
   gint index, x_layout, y_layout;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
@@ -909,21 +909,21 @@ gail_label_get_character_extents (AtkText      *text,
     return;
 
   label = GTK_LABEL (widget);
-  
+
   gtk_label_get_layout_offsets (label, &x_layout, &y_layout);
   index = g_utf8_offset_to_pointer (label->text, offset) - label->text;
   pango_layout_index_to_pos (gtk_label_get_layout (label), index, &char_rect);
-  
-  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect, 
-                    x_layout, y_layout, x, y, width, height, coords);
-} 
 
-static gint 
+  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect,
+                    x_layout, y_layout, x, y, width, height, coords);
+}
+
+static gint
 gail_label_get_offset_at_point (AtkText      *text,
                                 gint         x,
                                 gint         y,
 			        AtkCoordType coords)
-{ 
+{
   GtkWidget *widget;
   GtkLabel *label;
   gint index, x_layout, y_layout;
@@ -933,21 +933,21 @@ gail_label_get_offset_at_point (AtkText      *text,
     /* State is defunct */
     return -1;
   label = GTK_LABEL (widget);
-  
+
   gtk_label_get_layout_offsets (label, &x_layout, &y_layout);
-  
-  index = gail_misc_get_index_at_point_in_layout (widget, 
-                                              gtk_label_get_layout (label), 
+
+  index = gail_misc_get_index_at_point_in_layout (widget,
+                                              gtk_label_get_layout (label),
                                               x_layout, y_layout, x, y, coords);
   if (index == -1)
     {
       if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
         return g_utf8_strlen (label->text, -1);
 
-      return index;  
+      return index;
     }
   else
-    return g_utf8_pointer_to_offset (label->text, label->text + index);  
+    return g_utf8_pointer_to_offset (label->text, label->text + index);
 }
 
 static AtkAttributeSet*
@@ -968,19 +968,19 @@ gail_label_get_run_attributes (AtkText        *text,
     return NULL;
 
   label = GTK_LABEL (widget);
-  
+
   /* Get values set for entire label, if any */
   justify = gtk_label_get_justify (label);
   if (justify != GTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_JUSTIFICATION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
   dir = gtk_widget_get_direction (widget);
   if (dir == GTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_DIRECTION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
     }
@@ -1007,14 +1007,14 @@ gail_label_get_default_attributes (AtkText        *text)
     return NULL;
 
   label = GTK_LABEL (widget);
-  
+
   at_set = gail_misc_get_default_attributes (at_set,
                                              gtk_label_get_layout (label),
                                              widget);
   return at_set;
 }
 
-static gunichar 
+static gunichar
 gail_label_get_character_at_offset (AtkText	         *text,
                                     gint	         offset)
 {

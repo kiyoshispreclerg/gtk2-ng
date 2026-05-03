@@ -1,6 +1,6 @@
 /* GTK - The GIMP Toolkit
- * gtkprintbackendpapi.h: Default implementation of GtkPrintBackend 
- * for printing to papi 
+ * gtkprintbackendpapi.h: Default implementation of GtkPrintBackend
+ * for printing to papi
  * Copyright (C) 2003, Red Hat, Inc.
  * Copyright (C) 2009, Sun Microsystems, Inc.
  *

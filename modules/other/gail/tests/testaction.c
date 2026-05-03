@@ -11,7 +11,7 @@
 static void _create_event_watcher (void);
 static void _check_object (AtkObject *obj);
 
-static void 
+static void
 _check_object (AtkObject *obj)
 {
   const char *accessible_name;
@@ -39,7 +39,7 @@ _check_object (AtkObject *obj)
     const gchar *action_desc;
     const gchar *action_binding;
     const gchar *desc = "Test description";
- 
+
     n_actions = atk_action_get_n_actions (action);
     g_print ("AtkAction supported number of actions: %d\n", n_actions);
     for (i = 0; i < n_actions; i++)
@@ -49,7 +49,7 @@ _check_object (AtkObject *obj)
       action_binding = atk_action_get_keybinding (action, i);
       if (action_binding)
         g_print ("Name of Action Keybinding %d: %s\n", i, action_binding);
-     
+
       if (!atk_action_set_description (action, i, desc))
       {
         g_print ("atk_action_set_description failed\n");
@@ -62,7 +62,7 @@ _check_object (AtkObject *obj)
           g_print ("Problem with setting and getting action description\n");
         }
       }
-    } 
+    }
     if (atk_action_set_description (action, n_actions, desc))
     {
       g_print ("atk_action_set_description succeeded but should not have\n");

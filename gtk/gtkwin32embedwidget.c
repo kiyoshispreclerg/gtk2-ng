@@ -20,7 +20,7 @@
  * Modified by the GTK+ Team and others 1997-2006.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -70,7 +70,7 @@ gtk_win32_embed_widget_class_init (GtkWin32EmbedWidgetClass *class)
   widget_class->size_allocate = gtk_win32_embed_widget_size_allocate;
 
   widget_class->focus = gtk_win32_embed_widget_focus;
-  
+
   container_class->check_resize = gtk_win32_embed_widget_check_resize;
 
   window_class->set_focus = gtk_win32_embed_widget_set_focus;
@@ -95,16 +95,16 @@ _gtk_win32_embed_widget_new (GdkNativeWindow parent_id)
   GtkWin32EmbedWidget *embed_widget;
 
   embed_widget = g_object_new (GTK_TYPE_WIN32_EMBED_WIDGET, NULL);
-  
+
   embed_widget->parent_window =
     gdk_window_lookup_for_display (gdk_display_get_default (),
 				   parent_id);
-  
+
   if (!embed_widget->parent_window)
     embed_widget->parent_window =
       gdk_window_foreign_new_for_display (gdk_display_get_default (),
 					  parent_id);
-  
+
   return GTK_WIDGET (embed_widget);
 }
 
@@ -113,15 +113,15 @@ _gtk_win32_embed_widget_dialog_procedure (GtkWin32EmbedWidget *embed_widget,
 					  HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
   GtkWidget *widget = GTK_WIDGET (embed_widget);
-  
+
  if (message == WM_SIZE)
    {
      widget->allocation.width = LOWORD(lparam);
      widget->allocation.height = HIWORD(lparam);
-     
+
      gtk_widget_queue_resize (widget);
    }
-        
+
  return 0;
 }
 
@@ -131,7 +131,7 @@ gtk_win32_embed_widget_unrealize (GtkWidget *widget)
   GtkWin32EmbedWidget *embed_widget = GTK_WIN32_EMBED_WIDGET (widget);
 
   embed_widget->old_window_procedure = NULL;
-  
+
   if (embed_widget->parent_window != NULL)
     {
       gdk_window_set_user_data (embed_widget->parent_window, NULL);
@@ -194,7 +194,7 @@ gtk_win32_embed_widget_realize (GtkWidget *widget)
 	  allocation.height = requisition.height;
 	}
       gtk_widget_size_allocate (widget, &allocation);
-      
+
       _gtk_container_queue_resize (GTK_CONTAINER (widget));
 
       g_return_if_fail (!gtk_widget_get_realized (widget));
@@ -227,7 +227,7 @@ gtk_win32_embed_widget_realize (GtkWidget *widget)
   attributes_mask |= (window->title ? GDK_WA_TITLE : 0);
   attributes_mask |= (window->wmclass_name ? GDK_WA_WMCLASS : 0);
 
-  widget->window = gdk_window_new (embed_widget->parent_window, 
+  widget->window = gdk_window_new (embed_widget->parent_window,
 				   &attributes, attributes_mask);
 
   gdk_window_set_user_data (widget->window, window);
@@ -240,7 +240,7 @@ gtk_win32_embed_widget_realize (GtkWidget *widget)
   /* Enable tab to focus the widget */
   styles = GetWindowLongPtr(GDK_WINDOW_HWND (widget->window), GWL_STYLE);
   SetWindowLongPtrW(GDK_WINDOW_HWND (widget->window), GWL_STYLE, styles | WS_TABSTOP);
-  
+
   widget->style = gtk_style_attach (widget->style, widget->window);
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 }
@@ -249,7 +249,7 @@ static void
 gtk_win32_embed_widget_show (GtkWidget *widget)
 {
   GTK_WIDGET_SET_FLAGS (widget, GTK_VISIBLE);
-  
+
   gtk_widget_realize (widget);
   gtk_container_check_resize (GTK_CONTAINER (widget));
   gtk_widget_map (widget);
@@ -292,9 +292,9 @@ gtk_win32_embed_widget_size_allocate (GtkWidget     *widget,
 {
   GtkBin    *bin = GTK_BIN (widget);
   GtkWidget *child;
-  
+
   widget->allocation = *allocation;
-  
+
   if (gtk_widget_get_realized (widget))
     gdk_window_move_resize (widget->window,
 			    allocation->x, allocation->y,
@@ -304,14 +304,14 @@ gtk_win32_embed_widget_size_allocate (GtkWidget     *widget,
   if (child && gtk_widget_get_visible (child))
     {
       GtkAllocation child_allocation;
-      
+
       child_allocation.x = gtk_container_get_border_width (GTK_CONTAINER (widget));
       child_allocation.y = child_allocation.x;
       child_allocation.width =
 	MAX (1, (gint)allocation->width - child_allocation.x * 2);
       child_allocation.height =
 	MAX (1, (gint)allocation->height - child_allocation.y * 2);
-      
+
       gtk_widget_size_allocate (child, &child_allocation);
     }
 }
@@ -350,7 +350,7 @@ gtk_win32_embed_widget_focus (GtkWidget        *widget,
 	      gtk_container_set_focus_child (GTK_CONTAINER (parent), NULL);
 	      parent = GTK_WIDGET (parent)->parent;
 	    }
-	  
+
 	  gtk_window_set_focus (GTK_WINDOW (container), NULL);
 	}
     }
@@ -369,7 +369,7 @@ gtk_win32_embed_widget_focus (GtkWidget        *widget,
       if (direction == GTK_DIR_TAB_BACKWARD ||
 	  direction == GTK_DIR_LEFT)
 	backwards = TRUE;
-      
+
       PostMessage(GDK_WINDOW_HWND (embed_widget->parent_window),
 				   WM_NEXTDLGCTL,
 				   backwards, 0);

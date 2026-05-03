@@ -12,7 +12,7 @@
 #
 #   attribute -> egenskab
 #   colormap -> farvetabel
-#   directory -> mappe 
+#   directory -> mappe
 #   entry -> indtastningsfelt
 #   frame (i animation) -> billede
 #   (column) header -> (kolonne)overskrift

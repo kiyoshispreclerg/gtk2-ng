@@ -49,7 +49,7 @@ main (int argc, char *argv[])
 	  fprintf (stderr, "Invalid window id '%s'\n", argv[1]);
 	  exit (1);
 	}
-      
+
       create_child_plug (xid, FALSE);
     }
   else

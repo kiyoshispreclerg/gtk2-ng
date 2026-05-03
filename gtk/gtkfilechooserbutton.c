@@ -1903,7 +1903,7 @@ model_add_volumes (GtkFileChooserButton *button,
   gint pos;
   gboolean local_only;
   GSList *l;
-  
+
   if (!volumes)
     return;
 
@@ -2969,11 +2969,11 @@ gtk_file_chooser_button_new (const gchar          *title,
  * @title: the title of the browse dialog.
  * @action: the open mode for the widget.
  * @backend: the name of the #GtkFileSystem backend to use.
- * 
+ *
  * Creates a new file-selecting button widget using @backend.
- * 
+ *
  * Returns: a new button widget.
- * 
+ *
  * Since: 2.6
  * Deprecated: 2.14: Use gtk_file_chooser_button_new() instead.
  **/

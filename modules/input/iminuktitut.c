@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Original author: Owen Taylor <otaylor@redhat.com>
- * 
+ *
  * Modified for Inuktitut - Robert Brady <robert@suse.co.uk>
  *
  */
@@ -53,7 +53,7 @@ inuktitut_register_type (GTypeModule *module)
     (GInstanceInitFunc) inuktitut_init,
   };
 
-  type_inuktitut_translit = 
+  type_inuktitut_translit =
     g_type_module_register_type (module,
 				 GTK_TYPE_IM_CONTEXT_SIMPLE,
 				 "GtkIMContextInuktitut",
@@ -122,7 +122,7 @@ inuktitut_init (GtkIMContextSimple *im_context)
 				   G_N_ELEMENTS (inuktitut_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo inuktitut_info = { 
+static const GtkIMContextInfo inuktitut_info = {
   "inuktitut",		   /* ID */
   N_("Inuktitut (Transliterated)"),         /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain */

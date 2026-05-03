@@ -2,7 +2,7 @@
  * Recent chooser action for GtkUIManager
  *
  * Copyright (C) 2007, Emmanuele Bassi
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -139,7 +139,7 @@ gtk_recent_action_unselect_uri (GtkRecentChooser *chooser,
   for (l = priv->choosers; l; l = l->next)
     {
       GtkRecentChooser *chooser = l->data;
-      
+
       gtk_recent_chooser_unselect_uri (chooser, uri);
     }
 }
@@ -188,16 +188,16 @@ gtk_recent_action_set_sort_func (GtkRecentChooser  *chooser,
   GtkRecentAction *action = GTK_RECENT_ACTION (chooser);
   GtkRecentActionPrivate *priv = action->priv;
   GSList *l;
-  
+
   if (priv->data_destroy)
     {
       priv->data_destroy (priv->sort_data);
       priv->data_destroy = NULL;
     }
-      
+
   priv->sort_func = NULL;
   priv->sort_data = NULL;
-  
+
   if (sort_func)
     {
       priv->sort_func = sort_func;
@@ -208,7 +208,7 @@ gtk_recent_action_set_sort_func (GtkRecentChooser  *chooser,
   for (l = priv->choosers; l; l = l->next)
     {
       GtkRecentChooser *chooser_menu = l->data;
-      
+
       gtk_recent_chooser_set_sort_func (chooser_menu, priv->sort_func,
                                         priv->sort_data,
                                         priv->data_destroy);
@@ -385,7 +385,7 @@ gtk_recent_action_create_menu (GtkAction *action)
                          "filter", priv->current_filter,
                          "local-only", priv->local_only,
                          NULL);
-  
+
   if (priv->sort_func)
     {
       gtk_recent_chooser_set_sort_func (GTK_RECENT_CHOOSER (widget),
@@ -454,7 +454,7 @@ gtk_recent_action_finalize (GObject *gobject)
   GtkRecentActionPrivate *priv = action->priv;
 
   priv->manager = NULL;
-  
+
   if (priv->data_destroy)
     {
       priv->data_destroy (priv->sort_data);
@@ -687,7 +687,7 @@ gtk_recent_action_new (const gchar *name,
  * call gtk_action_group_add_action_with_accel().
  *
  * Return value: the newly created #GtkRecentAction
- * 
+ *
  * Since: 2.12
  */
 GtkAction *

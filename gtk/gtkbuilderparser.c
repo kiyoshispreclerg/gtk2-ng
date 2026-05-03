@@ -141,10 +141,10 @@ _gtk_builder_boolean_from_string (const gchar  *string,
 {
   gboolean retval = TRUE;
   int length;
-  
+
   g_assert (string != NULL);
   length = strlen (string);
-  
+
   if (length == 0)
     retval = FALSE;
   else if (length == 1)
@@ -160,7 +160,7 @@ _gtk_builder_boolean_from_string (const gchar  *string,
   else
     {
       gchar *lower = g_ascii_strdown (string, length);
-      
+
       if (strcmp (lower, "yes") == 0 || strcmp (lower, "true") == 0)
 	*value = TRUE;
       else if (strcmp (lower, "no") == 0 || strcmp (lower, "false") == 0)
@@ -169,7 +169,7 @@ _gtk_builder_boolean_from_string (const gchar  *string,
 	retval = FALSE;
       g_free (lower);
     }
-  
+
   if (!retval)
     g_set_error (error,
 		 GTK_BUILDER_ERROR,
@@ -211,13 +211,13 @@ _get_type_by_symbol (const gchar* symbol)
   static GModule *module = NULL;
   GTypeGetFunc func;
   GType type;
-  
+
   if (!module)
     module = g_module_open (NULL, 0);
 
   if (!g_module_symbol (module, symbol, (gpointer)&func))
     return NULL;
-  
+
   type = func ();
   if (type == G_TYPE_INVALID)
     return NULL;
@@ -255,7 +255,7 @@ parse_requires (ParserData   *data,
 
   if (!library || !version)
     {
-      error_missing_attribute (data, element_name, 
+      error_missing_attribute (data, element_name,
 			       version ? "lib" : "version", error);
       return;
     }
@@ -445,7 +445,7 @@ parse_child (ParserData   *data,
       error_invalid_tag (data, element_name, NULL, error);
       return;
     }
-  
+
   child_info = g_slice_new0 (ChildInfo);
   state_push (data, child_info);
   child_info->tag.name = element_name;
@@ -507,7 +507,7 @@ parse_property (ParserData   *data,
         {
           /* do nothing, comments are for translators */
         }
-      else if (strcmp (names[i], "context") == 0) 
+      else if (strcmp (names[i], "context") == 0)
         {
           context = g_strdup (values[i]);
         }
@@ -609,7 +609,7 @@ parse_signal (ParserData   *data,
   /* Swapped defaults to FALSE except when object is set */
   if (object && !swapped_set)
     swapped = TRUE;
-  
+
   info = g_slice_new0 (SignalInfo);
   info->name = name;
   info->handler = handler;
@@ -667,10 +667,10 @@ parse_interface (ParserData   *data,
 			   values[i],
 			   data->domain
 			   );
-	      
+
 	      g_free (data->domain);
 	    }
-	  
+
  	  data->domain = g_strdup (values[i]);
 	  gtk_builder_set_translation_domain (data->builder, data->domain);
 	}
@@ -740,23 +740,23 @@ subparser_end (GMarkupParseContext *context,
   if (data->subparser->parser->end_element)
     data->subparser->parser->end_element (context, element_name,
 					  data->subparser->data, error);
-  
+
   if (!strcmp (data->subparser->start, element_name) == 0)
     return;
-    
+
   gtk_buildable_custom_tag_end (GTK_BUILDABLE (data->subparser->object),
 				data->builder,
 				data->subparser->child,
 				element_name,
 				data->subparser->data);
   g_free (data->subparser->parser);
-      
+
   if (GTK_BUILDABLE_GET_IFACE (data->subparser->object)->custom_finished)
     data->custom_finalizers = g_slist_prepend (data->custom_finalizers,
 					       data->subparser);
   else
     free_subparser (data->subparser);
-  
+
   data->subparser = NULL;
 }
 
@@ -797,9 +797,9 @@ parse_custom (GMarkupParseContext *context,
   else if (strcmp (parent_info->tag.name, "child") == 0)
     {
       ChildInfo* child_info = (ChildInfo*)parent_info;
-      
+
       _gtk_builder_add (data->builder, child_info);
-      
+
       object = ((ObjectInfo*)child_info->parent)->object;
       child  = child_info->object;
     }
@@ -813,10 +813,10 @@ parse_custom (GMarkupParseContext *context,
 				       &parser,
 				       &subparser_data))
     return FALSE;
-      
+
   data->subparser = create_subparser (object, child, element_name,
 				      &parser, subparser_data);
-  
+
   if (parser.start_element)
     parser.start_element (context,
 			  element_name, names, values,
@@ -854,7 +854,7 @@ start_element (GMarkupParseContext *context,
 
   if (!data->last_element && strcmp (element_name, "interface") != 0)
     {
-      g_set_error (error, GTK_BUILDER_ERROR, 
+      g_set_error (error, GTK_BUILDER_ERROR,
 		   GTK_BUILDER_ERROR_UNHANDLED_TAG,
 		   _("Invalid root element: '%s'"),
 		   element_name);
@@ -893,7 +893,7 @@ start_element (GMarkupParseContext *context,
   else
     if (!parse_custom (context, element_name, names, values,
 		       data, error))
-      g_set_error (error, GTK_BUILDER_ERROR, 
+      g_set_error (error, GTK_BUILDER_ERROR,
 		   GTK_BUILDER_ERROR_UNHANDLED_TAG,
 		   _("Unhandled tag: '%s'"),
 		   element_name);
@@ -1014,7 +1014,7 @@ end_element (GMarkupParseContext *context,
           else
             {
               prop_info->data = g_string_free (prop_info->text, FALSE);
-              
+
             }
 
           object_info->properties =
@@ -1063,7 +1063,7 @@ text (GMarkupParseContext *context,
   if (data->subparser && data->subparser->start)
     {
       GError *tmp_error = NULL;
-      
+
       if (data->subparser->parser->text)
         data->subparser->parser->text (context, text, text_len,
                                        data->subparser->data, &tmp_error);
@@ -1089,17 +1089,17 @@ text (GMarkupParseContext *context,
 static void
 free_info (CommonInfo *info)
 {
-  if (strcmp (info->tag.name, "object") == 0) 
+  if (strcmp (info->tag.name, "object") == 0)
     free_object_info ((ObjectInfo *)info);
-  else if (strcmp (info->tag.name, "child") == 0) 
+  else if (strcmp (info->tag.name, "child") == 0)
     free_child_info ((ChildInfo *)info);
-  else if (strcmp (info->tag.name, "property") == 0) 
+  else if (strcmp (info->tag.name, "property") == 0)
     free_property_info ((PropertyInfo *)info);
-  else if (strcmp (info->tag.name, "signal") == 0) 
+  else if (strcmp (info->tag.name, "signal") == 0)
     _free_signal_info ((SignalInfo *)info, NULL);
-  else if (strcmp (info->tag.name, "requires") == 0) 
+  else if (strcmp (info->tag.name, "requires") == 0)
     _free_requires_info ((RequiresInfo *)info, NULL);
-  else 
+  else
     g_assert_not_reached ();
 }
 
@@ -1122,7 +1122,7 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
   const gchar* domain;
   ParserData *data;
   GSList *l;
-  
+
   /* Store the original domain so that interface domain attribute can be
    * applied for the builder and the original domain can be restored after
    * parsing has finished. This allows subparsers to translate elements with
@@ -1146,7 +1146,7 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
       for (i = 0; requested_objs[i]; ++i)
         {
           data->requested_objects = g_slist_prepend (data->requested_objects,
-                                                     g_strdup (requested_objs[i]));	
+                                                     g_strdup (requested_objs[i]));
         }
     }
   else
@@ -1155,8 +1155,8 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
       data->inside_requested_object = TRUE;
     }
 
-  data->ctx = g_markup_parse_context_new (&parser, 
-                                          G_MARKUP_TREAT_CDATA_AS_TEXT, 
+  data->ctx = g_markup_parse_context_new (&parser,
+                                          G_MARKUP_TREAT_CDATA_AS_TEXT,
                                           data, NULL);
 
   if (!g_markup_parse_context_parse (data->ctx, buffer, length, error))
@@ -1169,14 +1169,14 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
   for (l = data->custom_finalizers; l; l = l->next)
     {
       SubParser *sub = (SubParser*)l->data;
-      
+
       gtk_buildable_custom_finished (GTK_BUILDABLE (sub->object),
                                      builder,
                                      sub->child,
                                      sub->tagname,
                                      sub->data);
     }
-  
+
   /* Common parser_finished, for all created objects */
   data->finalizers = g_slist_reverse (data->finalizers);
   for (l = data->finalizers; l; l = l->next)

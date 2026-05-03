@@ -10,12 +10,12 @@ int main( int   argc,
 
   /* Initialise GTK */
   gtk_init (&argc, &argv);
-    
+
   /* Create a new window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Frame Example");
 
-  /* Here we connect the "destroy" event to a signal handler */ 
+  /* Here we connect the "destroy" event to a signal handler */
   g_signal_connect (G_OBJECT (window), "destroy",
 		    G_CALLBACK (gtk_main_quit), NULL);
 
@@ -37,12 +37,12 @@ int main( int   argc,
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
   gtk_widget_show (frame);
-  
+
   /* Display the window */
   gtk_widget_show (window);
-    
+
   /* Enter the event loop */
   gtk_main ();
-    
+
   return 0;
 }

@@ -31,7 +31,7 @@ reload_clicked (GtkWidget *widget)
 
   GdkEventClient sev;
   int i;
-  
+
   if (!atom_rcfiles)
     atom_rcfiles = gdk_atom_intern("_GTK_READ_RCFILES", FALSE);
 
@@ -82,7 +82,7 @@ set_toolbar_style_toggled (GtkCheckButton *button, GtkToolbar *toolbar)
 {
   GtkWidget *option_menu;
   int style;
-  
+
   option_menu = g_object_get_data (G_OBJECT (button), "option-menu");
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
@@ -243,9 +243,9 @@ create_items_list (GtkWidget **tree_view_p)
   GtkWidget *tree_view;
   GtkListStore *list_store;
   GtkCellRenderer *cell;
-  
+
   list_store = gtk_list_store_new (2, GTK_TYPE_TOOL_ITEM, G_TYPE_STRING);
-  
+
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
 
   gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree_view),
@@ -302,7 +302,7 @@ add_item_to_list (GtkListStore *store, GtkToolItem *item, const gchar *text)
 		      0, item,
 		      1, text,
 		      -1);
-  
+
 }
 
 static void
@@ -317,7 +317,7 @@ set_icon_size_toggled (GtkCheckButton *button, GtkToolbar *toolbar)
 {
   GtkWidget *option_menu;
   int icon_size;
-  
+
   option_menu = g_object_get_data (G_OBJECT (button), "option-menu");
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
@@ -407,7 +407,7 @@ static gboolean
 popup_context_menu (GtkToolbar *toolbar, gint x, gint y, gint button_number)
 {
   MenuPositionData position_data;
-  
+
   GtkMenu *menu = GTK_MENU (gtk_menu_new ());
   int i;
 
@@ -424,7 +424,7 @@ popup_context_menu (GtkToolbar *toolbar, gint x, gint y, gint button_number)
     {
       position_data.x = x;
       position_data.y = y;
-      
+
       gtk_menu_popup (menu, NULL, NULL, position_function,
 		      &position_data, button_number, gtk_get_current_event_time());
     }
@@ -445,19 +445,19 @@ toolbar_drag_motion (GtkToolbar     *toolbar,
 		     gpointer        null)
 {
   gint index;
-  
+
   if (!drag_item)
     {
       drag_item = gtk_tool_button_new (NULL, "A quite long button");
       gtk_object_sink (GTK_OBJECT (g_object_ref (drag_item)));
     }
-  
+
   gdk_drag_status (context, GDK_ACTION_MOVE, time);
 
   index = gtk_toolbar_get_drop_index (toolbar, x, y);
-  
+
   gtk_toolbar_set_drop_highlight_item (toolbar, drag_item, index);
-  
+
   return TRUE;
 }
 
@@ -472,7 +472,7 @@ toolbar_drag_leave (GtkToolbar     *toolbar,
       g_object_unref (drag_item);
       drag_item = NULL;
     }
-  
+
   gtk_toolbar_set_drop_highlight_item (toolbar, NULL, 0);
 }
 
@@ -480,11 +480,11 @@ static gboolean
 timeout_cb (GtkWidget *widget)
 {
   static gboolean sensitive = TRUE;
-  
+
   sensitive = !sensitive;
-  
+
   gtk_widget_set_sensitive (widget, sensitive);
-  
+
   return TRUE;
 }
 
@@ -513,7 +513,7 @@ main (gint argc, gchar **argv)
   GtkWidget *label;
   GIcon *gicon;
   GSList *group;
-  
+
   gtk_init (&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -553,9 +553,9 @@ main (gint argc, gchar **argv)
   gtk_box_pack_start (GTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
 
   option_menu = gtk_combo_box_text_new ();
-  gtk_widget_set_sensitive (option_menu, FALSE);  
+  gtk_widget_set_sensitive (option_menu, FALSE);
   g_object_set_data (G_OBJECT (checkbox), "option-menu", option_menu);
-  
+
   menu = gtk_menu_new();
   for (i = 0; i < G_N_ELEMENTS (toolbar_styles); i++)
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), toolbar_styles[i]);
@@ -565,7 +565,7 @@ main (gint argc, gchar **argv)
   g_signal_connect (option_menu, "changed",
 		    G_CALLBACK (change_toolbar_style), toolbar);
 
-  checkbox = gtk_check_button_new_with_mnemonic("_Set Icon Size:"); 
+  checkbox = gtk_check_button_new_with_mnemonic("_Set Icon Size:");
   g_signal_connect (checkbox, "toggled", G_CALLBACK (set_icon_size_toggled), toolbar);
   gtk_box_pack_start (GTK_BOX (hbox2), checkbox, FALSE, FALSE, 0);
 
@@ -578,7 +578,7 @@ main (gint argc, gchar **argv)
   gtk_box_pack_start (GTK_BOX (hbox2), option_menu, FALSE, FALSE, 0);
   g_signal_connect (option_menu, "changed",
 		    G_CALLBACK (icon_size_history_changed), toolbar);
-  
+
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -587,7 +587,7 @@ main (gint argc, gchar **argv)
 
   store = create_items_list (&treeview);
   gtk_container_add (GTK_CONTAINER (scrolled_window), treeview);
-  
+
   item = gtk_tool_button_new_from_stock (GTK_STOCK_NEW);
   gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), "Custom label");
   gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), NULL);
@@ -612,7 +612,7 @@ main (gint argc, gchar **argv)
   add_item_to_list (store, item, "Open");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
   gdk_threads_add_timeout (3000, (GSourceFunc) timeout_cb1, item);
- 
+
   menu = gtk_menu_new ();
   for (i = 0; i < 20; i++)
     {
@@ -628,11 +628,11 @@ main (gint argc, gchar **argv)
   gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (item), menu);
   add_item_to_list (store, item, "BackWithHistory");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
- 
+
   item = gtk_separator_tool_item_new ();
-  add_item_to_list (store, item, "-----");    
+  add_item_to_list (store, item, "-----");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  
+
   item = gtk_tool_button_new_from_stock (GTK_STOCK_REFRESH);
   add_item_to_list (store, item, "Refresh");
   g_signal_connect (item, "clicked", G_CALLBACK (reload_clicked), NULL);
@@ -642,40 +642,40 @@ main (gint argc, gchar **argv)
   item = gtk_tool_item_new ();
   gtk_widget_show (image);
   gtk_container_add (GTK_CONTAINER (item), image);
-  add_item_to_list (store, item, "(Custom Item)");    
+  add_item_to_list (store, item, "(Custom Item)");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  
+
   item = gtk_tool_button_new_from_stock (GTK_STOCK_GO_BACK);
-  add_item_to_list (store, item, "Back");    
+  add_item_to_list (store, item, "Back");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   item = gtk_separator_tool_item_new ();
-  add_item_to_list (store, item, "-----");  
+  add_item_to_list (store, item, "-----");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  
+
   item = gtk_tool_button_new_from_stock (GTK_STOCK_GO_FORWARD);
-  add_item_to_list (store, item, "Forward");  
+  add_item_to_list (store, item, "Forward");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   item = gtk_toggle_tool_button_new_from_stock (GTK_STOCK_BOLD);
   g_signal_connect (item, "toggled", G_CALLBACK (bold_toggled), NULL);
-  add_item_to_list (store, item, "Bold");  
+  add_item_to_list (store, item, "Bold");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
   gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
 
   item = gtk_separator_tool_item_new ();
-  add_item_to_list (store, item, "-----");  
+  add_item_to_list (store, item, "-----");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
   gtk_tool_item_set_expand (item, TRUE);
   gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
   g_assert (gtk_toolbar_get_nth_item (GTK_TOOLBAR (toolbar), 0) != 0);
-  
+
   item = gtk_radio_tool_button_new_from_stock (NULL, GTK_STOCK_JUSTIFY_LEFT);
   group = gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item));
   add_item_to_list (store, item, "Left");
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  
-  
+
+
   item = gtk_radio_tool_button_new_from_stock (group, GTK_STOCK_JUSTIFY_CENTER);
   make_prop_editor (G_OBJECT (item));
 
@@ -726,7 +726,7 @@ main (gint argc, gchar **argv)
   g_signal_connect (checkbox, "toggled", G_CALLBACK (rtl_toggled), NULL);
 
   gtk_box_pack_end (GTK_BOX (hbox), checkbox, FALSE, FALSE, 0);
-  
+
   gtk_drag_source_set (button, GDK_BUTTON1_MASK,
 		       target_table, G_N_ELEMENTS (target_table),
 		       GDK_ACTION_MOVE);
@@ -745,10 +745,10 @@ main (gint argc, gchar **argv)
   make_prop_editor (G_OBJECT (toolbar));
 
   g_signal_connect (window, "delete_event", G_CALLBACK (gtk_main_quit), NULL);
-  
+
   g_signal_connect (toolbar, "popup_context_menu", G_CALLBACK (popup_context_menu), NULL);
-  
+
   gtk_main ();
-  
+
   return 0;
 }

@@ -86,12 +86,12 @@ static gboolean	  gail_entry_set_selection	   (AtkText		 *text,
 						    gint		 start_offset,
 						    gint		 end_offset);
 static gint	  gail_entry_get_character_count   (AtkText		 *text);
-static AtkAttributeSet *  gail_entry_get_run_attributes 
+static AtkAttributeSet *  gail_entry_get_run_attributes
                                                    (AtkText              *text,
 						    gint		 offset,
         					    gint		 *start_offset,
 					       	    gint 		 *end_offset);
-static AtkAttributeSet *  gail_entry_get_default_attributes 
+static AtkAttributeSet *  gail_entry_get_default_attributes
                                                    (AtkText              *text);
 static void gail_entry_get_character_extents       (AtkText	         *text,
 						    gint 	         offset,
@@ -205,7 +205,7 @@ gail_entry_init (GailEntry *entry)
 }
 
 static void
-gail_entry_real_initialize (AtkObject *obj, 
+gail_entry_real_initialize (AtkObject *obj,
                             gpointer  data)
 {
   GtkEntry *entry;
@@ -215,7 +215,7 @@ gail_entry_real_initialize (AtkObject *obj,
 
   gail_entry = GAIL_ENTRY (obj);
   gail_entry->textutil = gail_text_util_new ();
-  
+
   g_assert (GTK_IS_ENTRY (data));
 
   entry = GTK_ENTRY (data);
@@ -261,7 +261,7 @@ gail_entry_real_notify_gtk (GObject		*obj,
       /*
        * The entry cursor position has moved so generate the signal.
        */
-      g_signal_emit_by_name (atk_obj, "text_caret_moved", 
+      g_signal_emit_by_name (atk_obj, "text_caret_moved",
                              entry->cursor_position);
     }
   else if (strcmp (pspec->name, "selection-bound") == 0)
@@ -318,7 +318,7 @@ text_setup (GailEntry *entry,
     {
       gunichar invisible_char;
       GString *tmp_string = g_string_new (NULL);
-      gint ch_len; 
+      gint ch_len;
       gchar buf[7];
       guint length;
       gint i;
@@ -337,7 +337,7 @@ text_setup (GailEntry *entry,
       gail_text_util_text_setup (entry->textutil, tmp_string->str);
       g_string_free (tmp_string, TRUE);
 
-    } 
+    }
 }
 
 static void
@@ -388,7 +388,7 @@ gail_entry_ref_state_set (AtkObject *accessible)
 
   state_set = ATK_OBJECT_CLASS (gail_entry_parent_class)->ref_state_set (accessible);
   widget = GTK_ACCESSIBLE (accessible)->widget;
-  
+
   if (widget == NULL)
     return state_set;
 
@@ -460,7 +460,7 @@ gail_entry_get_text_before_offset (AtkText	    *text,
   entry = GTK_ENTRY (widget);
 
   return gail_text_util_get_text (GAIL_ENTRY (text)->textutil,
-                          gtk_entry_get_layout (entry), GAIL_BEFORE_OFFSET, 
+                          gtk_entry_get_layout (entry), GAIL_BEFORE_OFFSET,
                           boundary_type, offset, start_offset, end_offset);
 }
 
@@ -483,7 +483,7 @@ gail_entry_get_text_at_offset (AtkText          *text,
   entry = GTK_ENTRY (widget);
 
   return gail_text_util_get_text (GAIL_ENTRY (text)->textutil,
-                            gtk_entry_get_layout (entry), GAIL_AT_OFFSET, 
+                            gtk_entry_get_layout (entry), GAIL_AT_OFFSET,
                             boundary_type, offset, start_offset, end_offset);
 }
 
@@ -506,7 +506,7 @@ gail_entry_get_text_after_offset  (AtkText	    *text,
   entry = GTK_ENTRY (widget);
 
   return gail_text_util_get_text (GAIL_ENTRY (text)->textutil,
-                           gtk_entry_get_layout (entry), GAIL_AFTER_OFFSET, 
+                           gtk_entry_get_layout (entry), GAIL_AFTER_OFFSET,
                            boundary_type, offset, start_offset, end_offset);
 }
 
@@ -575,7 +575,7 @@ gail_entry_get_run_attributes (AtkText *text,
     return NULL;
 
   entry = GTK_ENTRY (widget);
- 
+
   dir = gtk_widget_get_direction (widget);
   if (dir == GTK_TEXT_DIR_RTL)
     {
@@ -612,7 +612,7 @@ gail_entry_get_default_attributes (AtkText *text)
                                              widget);
   return at_set;
 }
-  
+
 static void
 gail_entry_get_character_extents (AtkText *text,
 				  gint    offset,
@@ -642,40 +642,40 @@ gail_entry_get_character_extents (AtkText *text,
   if (index > cursor_index)
     index += entry->preedit_length;
   pango_layout_index_to_pos (gtk_entry_get_layout(entry), index, &char_rect);
- 
-  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect, 
-                        x_layout, y_layout, x, y, width, height, coords);
-} 
 
-static gint 
+  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect,
+                        x_layout, y_layout, x, y, width, height, coords);
+}
+
+static gint
 gail_entry_get_offset_at_point (AtkText *text,
                                 gint x,
                                 gint y,
 			        AtkCoordType coords)
-{ 
+{
   GtkWidget *widget;
   GtkEntry *entry;
   gint index, cursor_index, x_layout, y_layout;
   const gchar *entry_text;
-  
+
   widget = GTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return -1;
 
   entry = GTK_ENTRY (widget);
-  
+
   gtk_entry_get_layout_offsets (entry, &x_layout, &y_layout);
   entry_text = gtk_entry_get_text (entry);
-  
-  index = gail_misc_get_index_at_point_in_layout (widget, 
+
+  index = gail_misc_get_index_at_point_in_layout (widget,
                gtk_entry_get_layout(entry), x_layout, y_layout, x, y, coords);
   if (index == -1)
     {
       if (coords == ATK_XY_SCREEN || coords == ATK_XY_WINDOW)
         return g_utf8_strlen (entry_text, -1);
 
-      return index;  
+      return index;
     }
   else
     {
@@ -705,7 +705,7 @@ gail_entry_get_n_selections (AtkText              *text)
 
   entry = GTK_ENTRY (widget);
 
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start,
                                      &select_end);
 
   if (select_start != select_end)
@@ -759,7 +759,7 @@ gail_entry_add_selection (AtkText *text,
 
   entry = GTK_ENTRY (widget);
 
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start,
                                      &select_end);
 
  /* If there is already a selection, then don't allow another to be added,
@@ -791,7 +791,7 @@ gail_entry_remove_selection (AtkText *text,
      return FALSE;
 
   entry = GTK_ENTRY (widget);
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start,
                                      &select_end);
 
   if (select_start != select_end)
@@ -830,7 +830,7 @@ gail_entry_set_selection (AtkText *text,
 
   entry = GTK_ENTRY (widget);
 
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start,
                                      &select_end);
 
   if (select_start != select_end)
@@ -1032,7 +1032,7 @@ gail_entry_notify_insert (GailEntry *entry)
 {
   if (entry->signal_name_insert)
     {
-      g_signal_emit_by_name (entry, 
+      g_signal_emit_by_name (entry,
                              entry->signal_name_insert,
                              entry->position_insert,
                              entry->length_insert);
@@ -1043,9 +1043,9 @@ gail_entry_notify_insert (GailEntry *entry)
 /* Note arg1 returns the character at the start of the insert.
  * arg2 returns the number of characters inserted.
  */
-static void 
-_gail_entry_insert_text_cb (GtkEntry *entry, 
-                            gchar    *arg1, 
+static void
+_gail_entry_insert_text_cb (GtkEntry *entry,
+                            gchar    *arg1,
                             gint     arg2,
                             gpointer arg3)
 {
@@ -1069,7 +1069,7 @@ _gail_entry_insert_text_cb (GtkEntry *entry,
      gail_entry->insert_idle_handler = gdk_threads_add_idle (gail_entry_idle_notify_insert, gail_entry);
 }
 
-static gunichar 
+static gunichar
 gail_entry_get_character_at_offset (AtkText *text,
                                     gint     offset)
 {
@@ -1106,7 +1106,7 @@ gail_entry_notify_delete (GailEntry *entry)
 {
   if (entry->signal_name_delete)
     {
-      g_signal_emit_by_name (entry, 
+      g_signal_emit_by_name (entry,
                              entry->signal_name_delete,
                              entry->position_delete,
                              entry->length_delete);
@@ -1115,11 +1115,11 @@ gail_entry_notify_delete (GailEntry *entry)
 }
 
 /* Note arg1 returns the start of the delete range, arg2 returns the
- * end of the delete range if multiple characters are deleted.	
+ * end of the delete range if multiple characters are deleted.
  */
-static void 
-_gail_entry_delete_text_cb (GtkEntry *entry, 
-                            gint      arg1, 
+static void
+_gail_entry_delete_text_cb (GtkEntry *entry,
+                            gint      arg1,
                             gint      arg2)
 {
   AtkObject *accessible;
@@ -1155,12 +1155,12 @@ _gail_entry_changed_cb (GtkEntry *entry)
   text_setup (gail_entry, entry);
 }
 
-static gboolean 
+static gboolean
 check_for_selection_change (GailEntry   *entry,
                             GtkEntry    *gtk_entry)
 {
   gboolean ret_val = FALSE;
- 
+
   if (gtk_entry->current_pos != gtk_entry->selection_bound)
     {
       if (gtk_entry->current_pos != entry->cursor_position ||
@@ -1168,13 +1168,13 @@ check_for_selection_change (GailEntry   *entry,
         /*
          * This check is here as this function can be called
          * for notification of selection_bound and current_pos.
-         * The values of current_pos and selection_bound may be the same 
+         * The values of current_pos and selection_bound may be the same
          * for both notifications and we only want to generate one
          * text_selection_changed signal.
          */
         ret_val = TRUE;
     }
-  else 
+  else
     {
       /* We had a selection */
       ret_val = (entry->cursor_position != entry->selection_bound);
@@ -1227,7 +1227,7 @@ gail_entry_do_action (AtkAction *action,
       return_value = FALSE;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static gboolean
@@ -1271,7 +1271,7 @@ gail_entry_get_description (AtkAction *action,
       return_value = NULL;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static const gchar*
@@ -1295,7 +1295,7 @@ gail_entry_get_keybinding (AtkAction *action,
         AtkRelation *relation;
         GPtrArray *target;
         gpointer target_object;
-        guint key_val; 
+        guint key_val;
 
         entry = GAIL_ENTRY (action);
         widget = GTK_ACCESSIBLE (entry)->widget;
@@ -1313,21 +1313,21 @@ gail_entry_get_keybinding (AtkAction *action,
         label = NULL;
         relation = atk_relation_set_get_relation_by_type (set, ATK_RELATION_LABELLED_BY);
         if (relation)
-          {              
+          {
             target = atk_relation_get_target (relation);
-          
+
             target_object = g_ptr_array_index (target, 0);
             if (GTK_IS_ACCESSIBLE (target_object))
               {
                 label = GTK_ACCESSIBLE (target_object)->widget;
-              } 
+              }
           }
 
         g_object_unref (set);
 
         if (GTK_IS_LABEL (label))
           {
-            key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label)); 
+            key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label));
             if (key_val != GDK_VoidSymbol)
               return_value = gtk_accelerator_name (key_val, GDK_MOD1_MASK);
           }
@@ -1338,7 +1338,7 @@ gail_entry_get_keybinding (AtkAction *action,
     default:
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static const gchar*
@@ -1356,7 +1356,7 @@ gail_entry_action_get_name (AtkAction *action,
       return_value = NULL;
       break;
   }
-  return return_value; 
+  return return_value;
 }
 
 static gboolean

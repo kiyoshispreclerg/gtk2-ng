@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_WINDOW_IMPL_H__
@@ -69,7 +69,7 @@ struct _GdkWindowImplIface
   GdkEventMask (* get_events)           (GdkWindow       *window);
   void         (* set_events)           (GdkWindow       *window,
                                          GdkEventMask     event_mask);
-  
+
   gboolean     (* reparent)             (GdkWindow       *window,
                                          GdkWindow       *new_parent,
                                          gint             x,
@@ -77,7 +77,7 @@ struct _GdkWindowImplIface
   void         (* clear_region)         (GdkWindow       *window,
 					 GdkRegion       *region,
 					 gboolean         send_expose);
-  
+
   void         (* set_cursor)           (GdkWindow       *window,
                                          GdkCursor       *cursor);
 
@@ -133,8 +133,8 @@ struct _GdkWindowImplIface
  *            was destroyed. This generally means that the call to the windowing system
  *            to destroy the window can be omitted, since it will be destroyed as a result
  *            of the parent being destroyed. Unless @foreign_destroy
- *            
- * foreign_destroy: If TRUE, the window or a parent was destroyed by some external 
+ *
+ * foreign_destroy: If TRUE, the window or a parent was destroyed by some external
  *            agency. The window has already been destroyed and no windowing
  *            system calls should be made. (This may never happen for some
  *            windowing systems.)

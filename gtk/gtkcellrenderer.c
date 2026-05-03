@@ -110,7 +110,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
    *
    * This signal gets emitted when the user cancels the process of editing a
    * cell.  For example, an editable cell renderer could be written to cancel
-   * editing when the user presses Escape. 
+   * editing when the user presses Escape.
    *
    * See also: gtk_cell_renderer_stop_editing().
    *
@@ -147,12 +147,12 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
    *                       const gchar     *path,
    *                       gpointer         data)
    * {
-   *   if (GTK_IS_ENTRY (editable)) 
+   *   if (GTK_IS_ENTRY (editable))
    *     {
    *       GtkEntry *entry = GTK_ENTRY (editable);
-   *       
+   *
    *       /&ast; ... create a GtkEntryCompletion &ast;/
-   *       
+   *
    *       gtk_entry_set_completion (entry, completion);
    *     }
    * }
@@ -483,12 +483,12 @@ set_cell_bg_color (GtkCellRenderer *cell,
  * @width: (out) (allow-none): location to return width needed to render a cell, or %NULL
  * @height: (out) (allow-none): location to return height needed to render a cell, or %NULL
  *
- * Obtains the width and height needed to render the cell. Used by view 
+ * Obtains the width and height needed to render the cell. Used by view
  * widgets to determine the appropriate size for the cell_area passed to
  * gtk_cell_renderer_render().  If @cell_area is not %NULL, fills in the
- * x and y offsets (if set) of the cell relative to this location. 
+ * x and y offsets (if set) of the cell relative to this location.
  *
- * Please note that the values set in @width and @height, as well as those 
+ * Please note that the values set in @width and @height, as well as those
  * in @x_offset and @y_offset are inclusive of the xpad and ypad properties.
  **/
 void
@@ -531,7 +531,7 @@ gtk_cell_renderer_get_size (GtkCellRenderer    *cell,
  * @cell: a #GtkCellRenderer
  * @window: a #GdkDrawable to draw to
  * @widget: the widget owning @window
- * @background_area: entire cell area (including tree expanders and maybe 
+ * @background_area: entire cell area (including tree expanders and maybe
  *    padding on the sides)
  * @cell_area: area normally rendered by a cell renderer
  * @expose_area: area that actually needs updating
@@ -569,7 +569,7 @@ gtk_cell_renderer_render (GtkCellRenderer      *cell,
       gdk_cairo_rectangle (cr, background_area);
       gdk_cairo_set_source_color (cr, &priv->cell_background);
       cairo_fill (cr);
-      
+
       cairo_destroy (cr);
     }
 
@@ -587,14 +587,14 @@ gtk_cell_renderer_render (GtkCellRenderer      *cell,
  * @cell: a #GtkCellRenderer
  * @event: a #GdkEvent
  * @widget: widget that received the event
- * @path: widget-dependent string representation of the event location; 
+ * @path: widget-dependent string representation of the event location;
  *    e.g. for #GtkTreeView, a string representation of #GtkTreePath
  * @background_area: background area as passed to gtk_cell_renderer_render()
  * @cell_area: cell area as passed to gtk_cell_renderer_render()
  * @flags: render flags
  *
- * Passes an activate event to the cell renderer for possible processing.  
- * Some cell renderers may use events; for example, #GtkCellRendererToggle 
+ * Passes an activate event to the cell renderer for possible processing.
+ * Some cell renderers may use events; for example, #GtkCellRendererToggle
  * toggles when it gets a mouse click.
  *
  * Return value: %TRUE if the event was consumed/handled
@@ -668,7 +668,7 @@ gtk_cell_renderer_start_editing (GtkCellRenderer      *cell,
 								(GdkRectangle *) cell_area,
 								flags);
 
-  g_signal_emit (cell, 
+  g_signal_emit (cell,
 		 cell_renderer_signals[EDITING_STARTED], 0,
 		 editable, path);
 
@@ -940,12 +940,12 @@ gtk_cell_renderer_get_sensitive (GtkCellRenderer *cell)
 /**
  * gtk_cell_renderer_editing_canceled:
  * @cell: A #GtkCellRenderer
- * 
- * Causes the cell renderer to emit the #GtkCellRenderer::editing-canceled 
- * signal.  
  *
- * This function is for use only by implementations of cell renderers that 
- * need to notify the client program that an editing process was canceled 
+ * Causes the cell renderer to emit the #GtkCellRenderer::editing-canceled
+ * signal.
+ *
+ * This function is for use only by implementations of cell renderers that
+ * need to notify the client program that an editing process was canceled
  * and the changes were not committed.
  *
  * Since: 2.4
@@ -963,13 +963,13 @@ gtk_cell_renderer_editing_canceled (GtkCellRenderer *cell)
  * gtk_cell_renderer_stop_editing:
  * @cell: A #GtkCellRenderer
  * @canceled: %TRUE if the editing has been canceled
- * 
- * Informs the cell renderer that the editing is stopped.
- * If @canceled is %TRUE, the cell renderer will emit the 
- * #GtkCellRenderer::editing-canceled signal. 
  *
- * This function should be called by cell renderer implementations 
- * in response to the #GtkCellEditable::editing-done signal of 
+ * Informs the cell renderer that the editing is stopped.
+ * If @canceled is %TRUE, the cell renderer will emit the
+ * #GtkCellRenderer::editing-canceled signal.
+ *
+ * This function should be called by cell renderer implementations
+ * in response to the #GtkCellEditable::editing-done signal of
  * #GtkCellEditable.
  *
  * Since: 2.6

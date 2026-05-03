@@ -48,7 +48,7 @@ static void _print_type (AtkObject *obj)
   const gchar * name = NULL;
   AtkRole role;
   static gboolean in_print_type = FALSE;
-   
+
   if (GTK_IS_ACCESSIBLE (obj))
     {
       GtkWidget* widget = NULL;
@@ -75,31 +75,31 @@ static void _print_type (AtkObject *obj)
         {
           AtkObject *parent;
 
-          atk_component_get_extents (ATK_COMPONENT (obj), 
-                                     &x, &y, &width, &height, 
+          atk_component_get_extents (ATK_COMPONENT (obj),
+                                     &x, &y, &width, &height,
                                      ATK_XY_SCREEN);
           g_print ("ATK_XY_SCREEN: x: %d y: %d width: %d height: %d\n",
                    x, y, width, height);
 
-          atk_component_get_extents (ATK_COMPONENT (obj), 
-                                     &x, &y, &width, &height, 
+          atk_component_get_extents (ATK_COMPONENT (obj),
+                                     &x, &y, &width, &height,
                                      ATK_XY_WINDOW);
-          g_print ("ATK_XY_WINDOW: x: %d y: %d width: %d height: %d\n", 
+          g_print ("ATK_XY_WINDOW: x: %d y: %d width: %d height: %d\n",
                    x, y, width, height);
           if (atk_state_set_contains_state (states, ATK_STATE_SHOWING) &&
               ATK_IS_TEXT (obj))
             {
               gint offset;
 
-              atk_text_get_character_extents (ATK_TEXT (obj), 1, 
-                                              &x, &y, &width, &height, 
+              atk_text_get_character_extents (ATK_TEXT (obj), 1,
+                                              &x, &y, &width, &height,
                                               ATK_XY_WINDOW);
-              g_print ("Character extents : %d %d %d %d\n", 
+              g_print ("Character extents : %d %d %d %d\n",
                        x, y, width, height);
               if (width != 0 && height != 0)
                 {
-                  offset = atk_text_get_offset_at_point (ATK_TEXT (obj), 
-                                                         x, y, 
+                  offset = atk_text_get_offset_at_point (ATK_TEXT (obj),
+                                                         x, y,
                                                          ATK_XY_WINDOW);
                   if (offset != 1)
                     {
@@ -144,7 +144,7 @@ static void _print_accessible (AtkObject *obj)
   if (first_time)
     {
       first_time = FALSE;
-      atk_add_global_event_listener (_children_changed, 
+      atk_add_global_event_listener (_children_changed,
                                      "Atk:AtkObject:children_changed");
     }
 
@@ -182,8 +182,8 @@ static void _print_accessible (AtkObject *obj)
           g_print ("Grandparent Object:\n");
           _print_type (parent_atk);
         }
-    } 
-  else 
+    }
+  else
     {
       g_print ("No parent\n");
     }
@@ -259,7 +259,7 @@ static void _check_children (AtkObject *obj)
             _print_type (parent);
         }
       g_object_unref (G_OBJECT (child));
-                 
+
       if (j != i)
         g_print ("*** Inconsistency between parent and children %d %d ***\n",
                  i, j);
@@ -287,7 +287,7 @@ _children_changed (GSignalInvocationHint *ihint,
         {
           target_name = atk_object_get_name (target);
         }
-      if (!target_name) 
+      if (!target_name)
         target_name = g_type_name (G_OBJECT_TYPE (G_OBJECT (target)));
     }
   else
@@ -304,7 +304,7 @@ _children_changed (GSignalInvocationHint *ihint,
             }
         }
     }
-  g_print ("_children_watched: %s %s %s index: %d\n", 
+  g_print ("_children_watched: %s %s %s index: %d\n",
            g_type_name (G_OBJECT_TYPE (object)),
            g_quark_to_string (ihint->detail),
            target_name, index);
@@ -321,10 +321,10 @@ _create_event_watcher (void)
   id = atk_add_focus_tracker (_print_accessible);
 }
 
-static void 
+static void
 _focus_handler (AtkObject *obj, gboolean focus_in)
 {
-  g_print ("In _focus_handler focus_in: %s\n", focus_in ? "true" : "false"); 
+  g_print ("In _focus_handler focus_in: %s\n", focus_in ? "true" : "false");
   _print_type (obj);
 }
 

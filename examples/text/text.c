@@ -44,34 +44,34 @@ int main( int argc,
   FILE *infile;
 
   gtk_init (&argc, &argv);
- 
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_size_request (window, 600, 500);
-  gtk_window_set_policy (GTK_WINDOW (window), TRUE, TRUE, FALSE);  
+  gtk_window_set_policy (GTK_WINDOW (window), TRUE, TRUE, FALSE);
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (close_application),
                     NULL);
   gtk_window_set_title (GTK_WINDOW (window), "Text Widget Example");
   gtk_container_set_border_width (GTK_CONTAINER (window), 0);
-  
-  
+
+
   box1 = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (window), box1);
   gtk_widget_show (box1);
-  
-  
+
+
   box2 = gtk_vbox_new (FALSE, 10);
   gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
   gtk_box_pack_start (GTK_BOX (box1), box2, TRUE, TRUE, 0);
   gtk_widget_show (box2);
-  
-  
+
+
   table = gtk_table_new (2, 2, FALSE);
   gtk_table_set_row_spacing (GTK_TABLE (table), 0, 2);
   gtk_table_set_col_spacing (GTK_TABLE (table), 0, 2);
   gtk_box_pack_start (GTK_BOX (box2), table, TRUE, TRUE, 0);
   gtk_widget_show (table);
-  
+
   /* Create the GtkText widget */
   text = gtk_text_new (NULL, NULL);
   gtk_text_set_editable (GTK_TEXT (text), TRUE);
@@ -104,7 +104,7 @@ int main( int argc,
 
   /* Freeze the text widget, ready for multiple updates */
   gtk_text_freeze (GTK_TEXT (text));
-  
+
   /* Insert some colored text */
   gtk_text_insert (GTK_TEXT (text), NULL, &text->style->black, NULL,
 		   "Supports ", -1);
@@ -114,31 +114,31 @@ int main( int argc,
 		   "text and different ", -1);
   gtk_text_insert (GTK_TEXT (text), fixed_font, &text->style->black, NULL,
 		   "fonts\n\n", -1);
-  
+
   /* Load the file text.c into the text window */
 
   infile = fopen ("text.c", "r");
-  
+
   if (infile) {
     char buffer[1024];
     int nchars;
-    
+
     while (1)
       {
 	nchars = fread (buffer, 1, 1024, infile);
 	gtk_text_insert (GTK_TEXT (text), fixed_font, NULL,
 			 NULL, buffer, nchars);
-	
+
 	if (nchars < 1024)
 	  break;
       }
-    
+
     fclose (infile);
   }
 
-  /* Thaw the text widget, allowing the updates to become visible */  
+  /* Thaw the text widget, allowing the updates to become visible */
   gtk_text_thaw (GTK_TEXT (text));
-  
+
   hbox = gtk_hbutton_box_new ();
   gtk_box_pack_start (GTK_BOX (box2), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
@@ -164,7 +164,7 @@ int main( int argc,
   gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
   gtk_box_pack_start (GTK_BOX (box1), box2, FALSE, TRUE, 0);
   gtk_widget_show (box2);
-  
+
   button = gtk_button_new_with_label ("close");
   g_signal_connect (G_OBJECT (button), "clicked",
 	            G_CALLBACK (close_application),
@@ -177,6 +177,6 @@ int main( int argc,
   gtk_widget_show (window);
 
   gtk_main ();
-  
-  return 0;       
+
+  return 0;
 }

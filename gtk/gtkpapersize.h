@@ -73,9 +73,9 @@ gdouble  gtk_paper_size_get_height       (GtkPaperSize *size, GtkUnit unit);
 gboolean gtk_paper_size_is_custom        (GtkPaperSize *size);
 
 /* Only for custom sizes: */
-void    gtk_paper_size_set_size                  (GtkPaperSize *size, 
-                                                  gdouble       width, 
-                                                  gdouble       height, 
+void    gtk_paper_size_set_size                  (GtkPaperSize *size,
+                                                  gdouble       width,
+                                                  gdouble       height,
                                                   GtkUnit       unit);
 
 gdouble gtk_paper_size_get_default_top_margin    (GtkPaperSize *size,

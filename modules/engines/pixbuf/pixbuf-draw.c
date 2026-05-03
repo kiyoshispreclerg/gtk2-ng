@@ -41,7 +41,7 @@ match_theme_image (GtkStyle       *style,
   GList *tmp_list;
 
   tmp_list = PIXBUF_RC_STYLE (style->rc_style)->img_list;
-  
+
   while (tmp_list)
     {
       guint flags;
@@ -52,7 +52,7 @@ match_theme_image (GtkStyle       *style,
 	continue;
 
       flags = match_data->flags & image->match_data.flags;
-      
+
       if (flags != image->match_data.flags) /* Required components not present */
 	continue;
 
@@ -63,7 +63,7 @@ match_theme_image (GtkStyle       *style,
       if ((flags & THEME_MATCH_SHADOW) &&
 	  match_data->shadow != image->match_data.shadow)
 	continue;
-      
+
       if ((flags & THEME_MATCH_ARROW_DIRECTION) &&
 	  match_data->arrow_direction != image->match_data.arrow_direction)
 	continue;
@@ -95,7 +95,7 @@ match_theme_image (GtkStyle       *style,
 
       return image;
     }
-  
+
   return NULL;
 }
 
@@ -113,7 +113,7 @@ draw_simple_image(GtkStyle       *style,
 		  gint            height)
 {
   ThemeImage *image;
-  
+
   if ((width == -1) && (height == -1))
     gdk_drawable_get_size(window, &width, &height);
   else if (width == -1)
@@ -124,7 +124,7 @@ draw_simple_image(GtkStyle       *style,
   if (!(match_data->flags & THEME_MATCH_ORIENTATION))
     {
       match_data->flags |= THEME_MATCH_ORIENTATION;
-      
+
       if (height > width)
 	match_data->orientation = GTK_ORIENTATION_VERTICAL;
       else
@@ -148,11 +148,11 @@ draw_simple_image(GtkStyle       *style,
 			       FALSE,
 			       x, y, width, height);
 	}
-      
+
       if (image->overlay && draw_center)
 	theme_pixbuf_render (image->overlay,
 			     window, NULL, area, COMPONENT_ALL,
-			     TRUE, 
+			     TRUE,
 			     x, y, width, height);
 
       return TRUE;
@@ -177,7 +177,7 @@ draw_gap_image(GtkStyle       *style,
 	       gint            gap_width)
 {
   ThemeImage *image;
-  
+
   if ((width == -1) && (height == -1))
     gdk_drawable_get_size(window, &width, &height);
   else if (width == -1)
@@ -188,7 +188,7 @@ draw_gap_image(GtkStyle       *style,
   if (!(match_data->flags & THEME_MATCH_ORIENTATION))
     {
       match_data->flags |= THEME_MATCH_ORIENTATION;
-      
+
       if (height > width)
 	match_data->orientation = GTK_ORIENTATION_VERTICAL;
       else
@@ -197,7 +197,7 @@ draw_gap_image(GtkStyle       *style,
 
   match_data->flags |= THEME_MATCH_GAP_SIDE;
   match_data->gap_side = gap_side;
-    
+
   image = match_theme_image (style, match_data);
   if (image)
     {
@@ -219,7 +219,7 @@ draw_gap_image(GtkStyle       *style,
 	    thickness = gdk_pixbuf_get_height (pixbuf);
 	  else
 	    thickness = style->ythickness;
-	  
+
 	  if (!draw_center)
 	    components |= COMPONENT_NORTH_WEST | COMPONENT_NORTH | COMPONENT_NORTH_EAST;
 
@@ -236,7 +236,7 @@ draw_gap_image(GtkStyle       *style,
 	  r3.width  = width - (gap_x + gap_width);
 	  r3.height = thickness;
 	  break;
-	  
+
 	case GTK_POS_BOTTOM:
 	  if (pixbuf)
 	    thickness = gdk_pixbuf_get_height (pixbuf);
@@ -259,7 +259,7 @@ draw_gap_image(GtkStyle       *style,
 	  r3.width  = width - (gap_x + gap_width);
 	  r3.height = thickness;
 	  break;
-	  
+
 	case GTK_POS_LEFT:
 	  if (pixbuf)
 	    thickness = gdk_pixbuf_get_width (pixbuf);
@@ -282,7 +282,7 @@ draw_gap_image(GtkStyle       *style,
 	  r3.width  = thickness;
 	  r3.height = height - (gap_x + gap_width);
 	  break;
-	  
+
 	case GTK_POS_RIGHT:
 	  if (pixbuf)
 	    thickness = gdk_pixbuf_get_width (pixbuf);
@@ -346,7 +346,7 @@ draw_hline (GtkStyle     *style,
 {
   ThemeImage *image;
   ThemeMatchData   match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -355,7 +355,7 @@ draw_hline (GtkStyle     *style,
   match_data.flags = THEME_MATCH_ORIENTATION | THEME_MATCH_STATE;
   match_data.state = state;
   match_data.orientation = GTK_ORIENTATION_HORIZONTAL;
-  
+
   image = match_theme_image (style, &match_data);
   if (image)
     {
@@ -382,7 +382,7 @@ draw_vline (GtkStyle     *style,
 {
   ThemeImage    *image;
   ThemeMatchData match_data;
-  
+
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
 
@@ -391,7 +391,7 @@ draw_vline (GtkStyle     *style,
   match_data.flags = THEME_MATCH_ORIENTATION | THEME_MATCH_STATE;
   match_data.state = state;
   match_data.orientation = GTK_ORIENTATION_VERTICAL;
-  
+
   image = match_theme_image (style, &match_data);
   if (image)
     {
@@ -419,7 +419,7 @@ draw_shadow(GtkStyle     *style,
 	    gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -453,7 +453,7 @@ reverse_engineer_stepper_box (GtkWidget    *range,
   gint slider_width = 14, stepper_size = 14;
   gint box_width;
   gint box_height;
-  
+
   if (range && GTK_IS_RANGE (range))
     {
       gtk_widget_style_get (range,
@@ -461,7 +461,7 @@ reverse_engineer_stepper_box (GtkWidget    *range,
 			    "stepper_size", &stepper_size,
 			    NULL);
     }
-	
+
   if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
     {
       box_width = slider_width;
@@ -495,7 +495,7 @@ draw_arrow (GtkStyle     *style,
 	    gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -505,7 +505,7 @@ draw_arrow (GtkStyle     *style,
       /* This is a hack to work around the fact that scrollbar steppers are drawn
        * as a box + arrow, so we never have
        *
-       *   The full bounding box of the scrollbar 
+       *   The full bounding box of the scrollbar
        *   The arrow direction
        *
        * At the same time. We simulate an extra paint function, "STEPPER", by doing
@@ -522,13 +522,13 @@ draw_arrow (GtkStyle     *style,
 
       match_data.function = TOKEN_D_STEPPER;
       match_data.detail = (gchar *)detail;
-      match_data.flags = (THEME_MATCH_SHADOW | 
-			  THEME_MATCH_STATE | 
+      match_data.flags = (THEME_MATCH_SHADOW |
+			  THEME_MATCH_STATE |
 			  THEME_MATCH_ARROW_DIRECTION);
       match_data.shadow = shadow;
       match_data.state = state;
       match_data.arrow_direction = arrow_direction;
-      
+
       if (draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			     box_x, box_y, box_width, box_height))
 	{
@@ -543,7 +543,7 @@ draw_arrow (GtkStyle     *style,
       match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
       match_data.shadow = shadow;
       match_data.state = state;
-      
+
       if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			      box_x, box_y, box_width, box_height))
 	parent_class->draw_box (style, window, state, shadow, area, widget, detail,
@@ -553,13 +553,13 @@ draw_arrow (GtkStyle     *style,
 
   match_data.function = TOKEN_D_ARROW;
   match_data.detail = (gchar *)detail;
-  match_data.flags = (THEME_MATCH_SHADOW | 
-		      THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_SHADOW |
+		      THEME_MATCH_STATE |
 		      THEME_MATCH_ARROW_DIRECTION);
   match_data.shadow = shadow;
   match_data.state = state;
   match_data.arrow_direction = arrow_direction;
-  
+
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			  x, y, width, height))
     parent_class->draw_arrow (style, window, state, shadow, area, widget, detail,
@@ -580,7 +580,7 @@ draw_diamond (GtkStyle     *style,
 	      gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -589,7 +589,7 @@ draw_diamond (GtkStyle     *style,
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
-  
+
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			  x, y, width, height))
     parent_class->draw_diamond (style, window, state, shadow, area, widget, detail,
@@ -619,7 +619,7 @@ draw_string (GtkStyle * style,
 	}
 
       gdk_draw_string(window, gtk_style_get_font (style), style->fg_gc[state], x, y, string);
-      
+
       if (area)
 	{
 	  gdk_gc_set_clip_rectangle(style->white_gc, NULL);
@@ -686,7 +686,7 @@ draw_flat_box (GtkStyle     *style,
 	       gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -716,7 +716,7 @@ draw_check (GtkStyle     *style,
 	    gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -725,7 +725,7 @@ draw_check (GtkStyle     *style,
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
-  
+
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			  x, y, width, height))
     parent_class->draw_check (style, window, state, shadow, area, widget, detail,
@@ -746,7 +746,7 @@ draw_option (GtkStyle      *style,
 	     gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -755,7 +755,7 @@ draw_option (GtkStyle      *style,
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
-  
+
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			  x, y, width, height))
     parent_class->draw_option (style, window, state, shadow, area, widget, detail,
@@ -776,7 +776,7 @@ draw_tab (GtkStyle     *style,
 	  gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
@@ -785,7 +785,7 @@ draw_tab (GtkStyle     *style,
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
-  
+
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, TRUE,
 			  x, y, width, height))
     parent_class->draw_tab (style, window, state, shadow, area, widget, detail,
@@ -809,16 +809,16 @@ draw_shadow_gap (GtkStyle       *style,
 		 gint            gap_width)
 {
   ThemeMatchData match_data;
-  
+
   match_data.function = TOKEN_D_SHADOW_GAP;
   match_data.detail = (gchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
-  match_data.flags = (THEME_MATCH_SHADOW | 
-		      THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_SHADOW |
+		      THEME_MATCH_STATE |
 		      THEME_MATCH_ORIENTATION);
   match_data.shadow = shadow;
   match_data.state = state;
-  
+
   if (!draw_gap_image (style, window, area, widget, &match_data, FALSE,
 		       x, y, width, height, gap_side, gap_x, gap_width))
     parent_class->draw_shadow_gap (style, window, state, shadow, area, widget, detail,
@@ -842,16 +842,16 @@ draw_box_gap (GtkStyle       *style,
 	      gint            gap_width)
 {
   ThemeMatchData match_data;
-  
+
   match_data.function = TOKEN_D_BOX_GAP;
   match_data.detail = (gchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
-  match_data.flags = (THEME_MATCH_SHADOW | 
-		      THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_SHADOW |
+		      THEME_MATCH_STATE |
 		      THEME_MATCH_ORIENTATION);
   match_data.shadow = shadow;
   match_data.state = state;
-  
+
   if (!draw_gap_image (style, window, area, widget, &match_data, TRUE,
 		       x, y, width, height, gap_side, gap_x, gap_width))
     parent_class->draw_box_gap (style, window, state, shadow, area, widget, detail,
@@ -873,7 +873,7 @@ draw_extension (GtkStyle       *style,
 		GtkPositionType gap_side)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
 
@@ -903,14 +903,14 @@ draw_focus (GtkStyle     *style,
 	    gint          height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_FOCUS;
   match_data.detail = (gchar *)detail;
   match_data.flags = 0;
-  
+
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, FALSE,
 			  x, y, width, height))
     parent_class->draw_focus (style, window, state_type, area, widget, detail,
@@ -932,14 +932,14 @@ draw_slider (GtkStyle      *style,
 	     GtkOrientation orientation)
 {
   ThemeMatchData           match_data;
-  
+
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_SLIDER;
   match_data.detail = (gchar *)detail;
-  match_data.flags = (THEME_MATCH_SHADOW | 
-		      THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_SHADOW |
+		      THEME_MATCH_STATE |
 		      THEME_MATCH_ORIENTATION);
   match_data.shadow = shadow;
   match_data.state = state;
@@ -967,14 +967,14 @@ draw_handle (GtkStyle      *style,
 	     GtkOrientation orientation)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_HANDLE;
   match_data.detail = (gchar *)detail;
-  match_data.flags = (THEME_MATCH_SHADOW | 
-		      THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_SHADOW |
+		      THEME_MATCH_STATE |
 		      THEME_MATCH_ORIENTATION);
   match_data.shadow = shadow;
   match_data.state = state;
@@ -1002,7 +1002,7 @@ draw_expander (GtkStyle      *style,
   ThemeMatchData match_data;
   gint expander_size;
   gint radius;
-  
+
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
 
@@ -1021,7 +1021,7 @@ draw_expander (GtkStyle      *style,
 
   match_data.function = TOKEN_D_EXPANDER;
   match_data.detail = (gchar *)detail;
-  match_data.flags = (THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_STATE |
 		      THEME_MATCH_EXPANDER_STYLE);
   match_data.state = state;
   match_data.expander_style = expander_style;
@@ -1046,13 +1046,13 @@ draw_resize_grip (GtkStyle      *style,
 		     gint           height)
 {
   ThemeMatchData match_data;
-  
+
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_RESIZE_GRIP;
   match_data.detail = (gchar *)detail;
-  match_data.flags = (THEME_MATCH_STATE | 
+  match_data.flags = (THEME_MATCH_STATE |
 		      THEME_MATCH_WINDOW_EDGE);
   match_data.state = state;
   match_data.window_edge = edge;
@@ -1065,8 +1065,8 @@ draw_resize_grip (GtkStyle      *style,
 
 GType pixbuf_type_style = 0;
 
-void 
-pixbuf_style_register_type (GTypeModule *module) 
+void
+pixbuf_style_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
     {
@@ -1080,7 +1080,7 @@ pixbuf_style_register_type (GTypeModule *module)
     0,              /* n_preallocs */
     (GInstanceInitFunc) pixbuf_style_init,
   };
-  
+
   pixbuf_type_style = g_type_module_register_type (module,
 						   GTK_TYPE_STYLE,
 						   "PixbufStyle",

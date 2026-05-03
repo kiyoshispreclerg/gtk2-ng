@@ -50,7 +50,7 @@ typedef struct _GdkEventNoExpose    GdkEventNoExpose;
 typedef struct _GdkEventVisibility  GdkEventVisibility;
 typedef struct _GdkEventMotion	    GdkEventMotion;
 typedef struct _GdkEventButton	    GdkEventButton;
-typedef struct _GdkEventScroll      GdkEventScroll;  
+typedef struct _GdkEventScroll      GdkEventScroll;
 typedef struct _GdkEventKey	    GdkEventKey;
 typedef struct _GdkEventFocus	    GdkEventFocus;
 typedef struct _GdkEventCrossing    GdkEventCrossing;
@@ -558,7 +558,7 @@ void gdk_add_client_message_filter (GdkAtom       message_type,
 				    gpointer      data);
 
 gboolean gdk_setting_get (const gchar *name,
-			  GValue      *value); 
+			  GValue      *value);
 #endif /* GDK_MULTIHEAD_SAFE */
 
 G_END_DECLS

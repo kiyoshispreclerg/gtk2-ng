@@ -32,7 +32,7 @@ structures, GDK is a drawing toolkit which provides a thin layer over
 Xlib to help automate things like dealing with different color depths,
 and GTK is a widget set for creating user interfaces.
 
-  
+
 %prep
 %setup -q -n gtk+-%{version}
 
@@ -98,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/gtk-2.0/%{binary_version}/*/*a
 %{_libdir}/gtk-2.0/include
 %{_libdir}/pkgconfig/*.pc
-%{_includedir}/gtk-2.0		
+%{_includedir}/gtk-2.0
 %{_datadir}/gtk-2.0
 %{_datadir}/aclocal/*
 %{_datadir}/gtk-doc/html/*
@@ -115,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 - glib2 package required.
 
 * Mon Aug 27 2001 Jens Finke <jens@gnome.org>
-- Updated spec file to match gpp standard and 
+- Updated spec file to match gpp standard and
   1.3.x files.
 - Removed all hardcoded paths, use rpm macros instead.
 - Added pango and atk Requires: and BuildRequires: statements.

@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 
@@ -66,7 +66,7 @@ testrgb_rgb_test (GtkWidget *drawing_area)
   GTimer *timer;
   GdkPixbuf *pixbuf;
   gboolean to_pixmap;
-  
+
   buf = g_malloc (WIDTH * HEIGHT * 8);
 
   val = 0;
@@ -145,7 +145,7 @@ testrgb_rgb_test (GtkWidget *drawing_area)
 	  GdkRectangle rect = { 0, 0, WIDTH, HEIGHT };
 	  gdk_window_begin_paint_rect (drawing_area->window, &rect);
 	}
-	
+
       start_time = g_timer_elapsed (timer, NULL);
       for (i = 0; i < NUM_ITERS; i++)
 	{
@@ -167,14 +167,14 @@ testrgb_rgb_test (GtkWidget *drawing_area)
 
       if (to_pixmap)
 	gdk_window_end_paint (drawing_area->window);
-      
+
       g_print ("Alpha test%s time elapsed: %.2fs, %.1f fps, %.2f megapixels/s\n",
 	       to_pixmap ? " (to pixmap)" : "",
 	       total_time,
 	       NUM_ITERS / total_time,
 	       NUM_ITERS * (WIDTH * HEIGHT * 1e-6) / total_time);
     }
-      
+
   g_print ("Please submit these results to http://www.levien.com/gdkrgb/survey.html\n");
 
 #if 1

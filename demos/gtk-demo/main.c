@@ -59,11 +59,11 @@ get_democodedir (void)
  * demo_find_file:
  * @base: base filename
  * @err:  location to store error, or %NULL.
- * 
+ *
  * Looks for @base first in the current directory, then in the
  * location GTK+ where it will be installed on make install,
  * returns the first file found.
- * 
+ *
  * Return value: the filename, if found or %NULL
  **/
 gchar *
@@ -71,7 +71,7 @@ demo_find_file (const char *base,
 		GError    **err)
 {
   g_return_val_if_fail (err == NULL || *err == NULL, NULL);
-  
+
   if (g_file_test ("gtk-logo-rgb.gif", G_FILE_TEST_EXISTS) &&
       g_file_test (base, G_FILE_TEST_EXISTS))
     return g_strdup (base);
@@ -113,17 +113,17 @@ gboolean
 read_line (FILE *stream, GString *str)
 {
   int n_read = 0;
-  
+
 #ifdef HAVE_FLOCKFILE
   flockfile (stream);
 #endif
 
   g_string_truncate (str, 0);
-  
+
   while (1)
     {
       int c;
-      
+
 #ifdef HAVE_FLOCKFILE
       c = getc_unlocked (stream);
 #else
@@ -145,12 +145,12 @@ read_line (FILE *stream, GString *str)
 #else
 	    int next_c = getc (stream);
 #endif
-	    
+
 	    if (!(next_c == EOF ||
 		  (c == '\r' && next_c == '\n') ||
 		  (c == '\n' && next_c == '\r')))
 	      ungetc (next_c, stream);
-	    
+
 	    goto done;
 	  }
 	default:
@@ -534,7 +534,7 @@ load_file (const gchar *filename)
 
   g_free (current_file);
   current_file = g_strdup (filename);
-  
+
   gtk_text_buffer_get_bounds (info_buffer, &start, &end);
   gtk_text_buffer_delete (info_buffer, &start, &end);
 
@@ -565,7 +565,7 @@ load_file (const gchar *filename)
       gchar *p = buffer->str;
       gchar *q;
       gchar *r;
-      
+
       switch (state)
 	{
 	case 0:
@@ -595,11 +595,11 @@ load_file (const gchar *filename)
 	      gtk_text_buffer_apply_tag_by_name (info_buffer, "title", &start, &end);
 
 	      start = end;
-	      
+
 	      state++;
 	    }
 	  break;
-	    
+
 	case 1:
 	  /* Reading body of info section */
 	  while (g_ascii_isspace (*p))
@@ -612,14 +612,14 @@ load_file (const gchar *filename)
 	  else
 	    {
 	      int len;
-	      
+
 	      while (*p == '*' || g_ascii_isspace (*p))
 		p++;
 
 	      len = strlen (p);
 	      while (g_ascii_isspace (*(p + len - 1)))
 		len--;
-	      
+
 	      if (len > 0)
 		{
 		  if (in_para)
@@ -649,7 +649,7 @@ load_file (const gchar *filename)
 	    }
 	  else
 	    break;
-	  
+
 	case 3:
 	  /* Reading program body */
 	  gtk_text_buffer_insert (source_buffer, &start, p, -1);
@@ -659,7 +659,7 @@ load_file (const gchar *filename)
     }
 
   fclose (file);
-  
+
   fontify ();
 
   g_string_free (buffer, TRUE);
@@ -677,7 +677,7 @@ row_activated_cb (GtkTreeView       *tree_view,
   GtkTreeModel *model;
 
   model = gtk_tree_view_get_model (tree_view);
-  
+
   gtk_tree_model_get_iter (model, &iter, path);
   gtk_tree_model_get (GTK_TREE_MODEL (model),
 		      &iter,
@@ -692,15 +692,15 @@ row_activated_cb (GtkTreeView       *tree_view,
 			  STYLE_COLUMN, (style == PANGO_STYLE_ITALIC ? PANGO_STYLE_NORMAL : PANGO_STYLE_ITALIC),
 			  -1);
       window = (func) (gtk_widget_get_toplevel (GTK_WIDGET (tree_view)));
-      
+
       if (window != NULL)
 	{
 	  CallbackData *cbdata;
-	  
+
 	  cbdata = g_new (CallbackData, 1);
 	  cbdata->model = model;
 	  cbdata->path = gtk_tree_path_copy (path);
-	  
+
 	  g_signal_connect (window, "destroy",
 			    G_CALLBACK (window_closed_cb), cbdata);
 	}
@@ -739,16 +739,16 @@ create_text (GtkTextBuffer **buffer,
 				  GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
 				       GTK_SHADOW_IN);
-  
+
   text_view = gtk_text_view_new ();
-  
+
   *buffer = gtk_text_buffer_new (NULL);
   gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), *buffer);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), FALSE);
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_view), FALSE);
 
   gtk_container_add (GTK_CONTAINER (scrolled_window), text_view);
-  
+
   if (is_source)
     {
       font_desc = pango_font_description_from_string ("monospace");
@@ -768,7 +768,7 @@ create_text (GtkTextBuffer **buffer,
       gtk_text_view_set_pixels_below_lines (GTK_TEXT_VIEW (text_view),
                                             2);
     }
-  
+
   return scrolled_window;
 }
 
@@ -815,13 +815,13 @@ create_tree (void)
 
       if (!children)
 	continue;
-      
+
       while (children->title)
 	{
 	  GtkTreeIter child_iter;
 
 	  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-	  
+
 	  gtk_tree_store_set (GTK_TREE_STORE (model),
 			      &child_iter,
 			      TITLE_COLUMN, children->title,
@@ -829,7 +829,7 @@ create_tree (void)
 			      FUNC_COLUMN, children->func,
 			      STYLE_COLUMN, PANGO_STYLE_NORMAL,
 			      -1);
-	  
+
 	  children++;
 	}
     }
@@ -841,7 +841,7 @@ create_tree (void)
 						     "text", TITLE_COLUMN,
 						     "style", STYLE_COLUMN,
 						     NULL);
-  
+
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view),
 			       GTK_TREE_VIEW_COLUMN (column));
 
@@ -853,7 +853,7 @@ create_tree (void)
 
   gtk_tree_view_collapse_all (GTK_TREE_VIEW (tree_view));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
-  				    
+
   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 				  GTK_POLICY_NEVER,
@@ -896,7 +896,7 @@ setup_default_icon (void)
   if (err)
     {
       GtkWidget *dialog;
-      
+
       dialog = gtk_message_dialog_new (NULL, 0,
 				       GTK_MESSAGE_ERROR,
 				       GTK_BUTTONS_CLOSE,
@@ -910,7 +910,7 @@ setup_default_icon (void)
 
   if (pixbuf)
     {
-      GList *list;      
+      GList *list;
       GdkPixbuf *transparent;
 
       /* The gtk-logo-rgb icon has a white background, make it transparent */
@@ -944,11 +944,11 @@ main (int argc, char **argv)
       g_setenv ("GTK_IM_MODULE_FILE", "../../modules/input/immodules.cache", TRUE);
     }
   /* -- End of hack -- */
-  
+
   gtk_init (&argc, &argv);
 
   setup_default_icon ();
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "GTK+ Code Demos");
   g_signal_connect_after (window, "destroy",
@@ -999,13 +999,13 @@ main (int argc, char **argv)
  			      "foreground", "DarkGoldenrod4",
                               NULL);
   g_object_unref (source_buffer);
-  
+
   gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
   gtk_widget_show_all (window);
-  
+
 
   load_file (testgtk_demos[0].filename);
-  
+
   gtk_main ();
 
   return 0;

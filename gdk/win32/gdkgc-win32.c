@@ -23,7 +23,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #define LINE_ATTRIBUTES (GDK_GC_LINE_WIDTH|GDK_GC_LINE_STYLE| \
@@ -72,12 +72,12 @@ _gdk_gc_win32_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (GDK_TYPE_GC,
                                             "GdkGCWin32",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -86,7 +86,7 @@ gdk_gc_win32_class_init (GdkGCWin32Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkGCClass *gc_class = GDK_GC_CLASS (klass);
-  
+
   parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize = gdk_gc_win32_finalize;
@@ -100,15 +100,15 @@ static void
 gdk_gc_win32_finalize (GObject *object)
 {
   GdkGCWin32 *win32_gc = GDK_GC_WIN32 (object);
-  
+
   if (win32_gc->hcliprgn != NULL)
     DeleteObject (win32_gc->hcliprgn);
-  
+
   if (win32_gc->values_mask & GDK_GC_FONT)
     gdk_font_unref (win32_gc->font);
-  
+
   g_free (win32_gc->pen_dashes);
-  
+
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -204,7 +204,7 @@ static void
 gdk_win32_gc_values_to_win32values (GdkGCValues    *values,
 				    GdkGCValuesMask mask,
 				    GdkGCWin32     *win32_gc)
-{				    
+{
 #ifdef G_ENABLE_DEBUG
   char *s = "";
 #endif
@@ -218,7 +218,7 @@ gdk_win32_gc_values_to_win32values (GdkGCValues    *values,
 			      _gdk_gc_get_fg_pixel (&win32_gc->parent_instance)),
 		     s = ","));
     }
-  
+
   if (mask & GDK_GC_BACKGROUND)
     {
       win32_gc->values_mask |= GDK_GC_BACKGROUND;
@@ -531,7 +531,7 @@ gdk_win32_gc_get_values (GdkGC       *gc,
   values->clip_y_origin = win32_gc->parent_instance.clip_y_origin;
   values->graphics_exposures = win32_gc->graphics_exposures;
   values->line_width = win32_gc->pen_width;
-  
+
   values->line_style = win32_gc->line_style;
   values->cap_style = win32_gc->cap_style;
   values->join_style = win32_gc->join_style;
@@ -623,7 +623,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
     gdk_font_unref (dst_win32_gc->font);
 
   g_free (dst_win32_gc->pen_dashes);
-  
+
   dst_win32_gc->hcliprgn = src_win32_gc->hcliprgn;
   if (dst_win32_gc->hcliprgn)
     {
@@ -634,7 +634,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
 		  NULL, RGN_COPY);
     }
 
-  dst_win32_gc->values_mask = src_win32_gc->values_mask; 
+  dst_win32_gc->values_mask = src_win32_gc->values_mask;
   dst_win32_gc->font = src_win32_gc->font;
   if (dst_win32_gc->font != NULL)
     gdk_font_ref (dst_win32_gc->font);
@@ -649,7 +649,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_win32_gc->cap_style = src_win32_gc->cap_style;
   dst_win32_gc->join_style = src_win32_gc->join_style;
   if (src_win32_gc->pen_dashes)
-    dst_win32_gc->pen_dashes = g_memdup (src_win32_gc->pen_dashes, 
+    dst_win32_gc->pen_dashes = g_memdup (src_win32_gc->pen_dashes,
                                          sizeof (DWORD) * src_win32_gc->pen_num_dashes);
   else
     dst_win32_gc->pen_dashes = NULL;
@@ -663,11 +663,11 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_win32_gc->pen_hbrbg = NULL;
 }
 
-GdkScreen *  
+GdkScreen *
 gdk_gc_get_screen (GdkGC *gc)
 {
   g_return_val_if_fail (GDK_IS_GC_WIN32 (gc), NULL);
-  
+
   return _gdk_screen;
 }
 
@@ -822,13 +822,13 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
   g_assert (win32_gc->hdc == NULL);
 
   impl = get_impl_drawable (drawable);
-  
+
   win32_gc->hdc = _gdk_win32_drawable_acquire_dc (GDK_DRAWABLE (impl));
   ok = win32_gc->hdc != NULL;
 
   if (ok && (win32_gc->saved_dc = SaveDC (win32_gc->hdc)) == 0)
     WIN32_GDI_FAILED ("SaveDC"), ok = FALSE;
-      
+
   if (ok && (usage & (GDK_GC_FOREGROUND | GDK_GC_BACKGROUND)))
       ok = predraw (gc, impl->colormap);
 
@@ -874,10 +874,10 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
 
 	  if ((hpen = ExtCreatePen (win32_gc->pen_style,
 				    MAX (win32_gc->pen_width, 1),
-				    &logbrush, 
+				    &logbrush,
 				    style_count, style)) == NULL)
 	    WIN32_GDI_FAILED ("ExtCreatePen"), ok = FALSE;
-	  
+
 	  if (ok && SelectObject (win32_gc->hdc, hpen) == NULL)
 	    WIN32_GDI_FAILED ("SelectObject"), ok = FALSE;
 	}
@@ -887,11 +887,11 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
     {
       if (SetBkMode (win32_gc->hdc, TRANSPARENT) == 0)
 	WIN32_GDI_FAILED ("SetBkMode"), ok = FALSE;
-  
+
       if (ok && SetTextAlign (win32_gc->hdc, TA_BASELINE|TA_LEFT|TA_NOUPDATECP) == GDI_ERROR)
 	WIN32_GDI_FAILED ("SetTextAlign"), ok = FALSE;
     }
-  
+
   if (ok && win32_gc->rop2 != R2_COPYPEN)
     if (SetROP2 (win32_gc->hdc, win32_gc->rop2) == 0)
       WIN32_GDI_FAILED ("SetROP2"), ok = FALSE;
@@ -948,7 +948,7 @@ gdk_win32_hdc_release (GdkDrawable    *drawable,
   if (win32_gc->holdpal != NULL)
     {
       gint k;
-      
+
       if (!SelectPalette (win32_gc->hdc, win32_gc->holdpal, FALSE))
 	WIN32_GDI_FAILED ("SelectPalette");
       else if ((k = RealizePalette (win32_gc->hdc)) == GDI_ERROR)
@@ -962,7 +962,7 @@ gdk_win32_hdc_release (GdkDrawable    *drawable,
   if (usage & LINE_ATTRIBUTES)
     if ((hpen = GetCurrentObject (win32_gc->hdc, OBJ_PEN)) == NULL)
       WIN32_GDI_FAILED ("GetCurrentObject");
-  
+
   if (usage & GDK_GC_FOREGROUND)
     if ((hbr = GetCurrentObject (win32_gc->hdc, OBJ_BRUSH)) == NULL)
       WIN32_GDI_FAILED ("GetCurrentObject");
@@ -973,7 +973,7 @@ gdk_win32_hdc_release (GdkDrawable    *drawable,
 
   if (hpen != NULL)
     GDI_CALL (DeleteObject, (hpen));
-  
+
   if (hbr != NULL)
     GDI_CALL (DeleteObject, (hbr));
 
@@ -1042,7 +1042,7 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 		break;
 	      x++;
 	    }
-	  
+
 	  if (x > x0)
 	    {
 	      RECT *pr;
@@ -1066,7 +1066,7 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 	      if (y+1 > pData->rdh.rcBound.bottom)
 		pData->rdh.rcBound.bottom = y+1;
 	      pData->rdh.nCount++;
-	      
+
 	      /* On Windows98, ExtCreateRegion() may fail if the
 	       * number of rectangles is too large (ie: >
 	       * 4000). Therefore, we have to create the region by
@@ -1088,7 +1088,7 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 	    }
 	}
     }
-  
+
   /* Create or extend the region with the remaining rectangles*/
   h = ExtCreateRegion (NULL, sizeof (RGNDATAHEADER)
 		       + (sizeof (RECT) * maxRects), pData);

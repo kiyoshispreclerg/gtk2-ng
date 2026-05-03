@@ -1,13 +1,13 @@
 # Occitan translation of gtk+.
 # Copyright (C) 1998-2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtk+ package.
-# 
+#
 # Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2006-2008
 # Cédric Valmary (Tot en òc) <cvalmary@yahoo.fr>, 2015.
-# 
+#
 # spin button : bouton compteur
 # spinner : indicateur d'activité
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gtk+_properties HEAD\n"
@@ -387,7 +387,7 @@ msgstr "Lo grop d'acceleradors que l'accion d'aqueste grop deuriá utilizar."
 msgid "Related Action"
 msgstr "Accion ligada"
 
-# For the author: this is unclear 
+# For the author: this is unclear
 #: gtk/deprecated/gtkactivatable.c:291
 msgid "The action this activatable will activate and receive updates from"
 msgstr ""

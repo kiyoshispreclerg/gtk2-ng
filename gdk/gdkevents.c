@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -55,10 +55,10 @@ GDestroyNotify _gdk_event_notify = NULL;
 /**
  * _gdk_event_queue_find_first:
  * @display: a #GdkDisplay
- * 
+ *
  * Find the first event on the queue that is not still
  * being filled in.
- * 
+ *
  * Return value: Pointer to the list node for that event, or NULL.
  **/
 GList*
@@ -101,7 +101,7 @@ _gdk_event_queue_prepend (GdkDisplay *display,
  * _gdk_event_queue_append:
  * @display: a #GdkDisplay
  * @event: Event to append.
- * 
+ *
  * Appends an event onto the tail of the event queue.
  *
  * Returns: the newly appended list node.
@@ -111,7 +111,7 @@ _gdk_event_queue_append (GdkDisplay *display,
 			 GdkEvent   *event)
 {
   display->queued_tail = g_list_append (display->queued_tail, event);
-  
+
   if (!display->queued_events)
     display->queued_events = display->queued_tail;
   else
@@ -181,7 +181,7 @@ _gdk_event_queue_insert_before (GdkDisplay *display,
  * _gdk_event_queue_remove_link:
  * @display: a #GdkDisplay
  * @node: node to remove
- * 
+ *
  * Removes a specified list node from the event queue.
  **/
 void
@@ -192,7 +192,7 @@ _gdk_event_queue_remove_link (GdkDisplay *display,
     node->prev->next = node->next;
   else
     display->queued_events = node->next;
-  
+
   if (node->next)
     node->next->prev = node->prev;
   else
@@ -202,10 +202,10 @@ _gdk_event_queue_remove_link (GdkDisplay *display,
 /**
  * _gdk_event_unqueue:
  * @display: a #GdkDisplay
- * 
+ *
  * Removes and returns the first event from the event
  * queue that is not still being filled in.
- * 
+ *
  * Return value: the event, or %NULL. Ownership is transferred
  * to the caller.
  **/
@@ -230,10 +230,10 @@ _gdk_event_unqueue (GdkDisplay *display)
 /**
  * gdk_event_handler_set:
  * @func: the function to call to handle events from GDK.
- * @data: user data to pass to the function. 
+ * @data: user data to pass to the function.
  * @notify: the function to call when the handler function is removed, i.e. when
  *          gdk_event_handler_set() is called with another event handler.
- * 
+ *
  * Sets the function to call to handle all events from GDK.
  *
  * Note that GTK+ uses this to install its own event handler, so it is
@@ -241,7 +241,7 @@ _gdk_event_unqueue (GdkDisplay *display)
  * can call this function then call gtk_main_do_event() to pass
  * events to GTK+.)
  **/
-void 
+void
 gdk_event_handler_set (GdkEventFunc   func,
 		       gpointer       data,
 		       GDestroyNotify notify)
@@ -256,11 +256,11 @@ gdk_event_handler_set (GdkEventFunc   func,
 
 /**
  * gdk_event_get:
- * 
+ *
  * Checks all open displays for a #GdkEvent to process,to be processed
  * on, fetching events from the windowing system if necessary.
  * See gdk_display_get_event().
- * 
+ *
  * Return value: the next #GdkEvent to be processed, or %NULL if no events
  * are pending. The returned #GdkEvent should be freed with gdk_event_free().
  **/
@@ -284,7 +284,7 @@ gdk_event_get (void)
  *
  * If there is an event waiting in the event queue of some open
  * display, returns a copy of it. See gdk_display_peek_event().
- * 
+ *
  * Return value: a copy of the first #GdkEvent on some event queue, or %NULL if no
  * events are in any queues. The returned #GdkEvent should be freed with
  * gdk_event_free().
@@ -316,7 +316,7 @@ void
 gdk_event_put (const GdkEvent *event)
 {
   GdkDisplay *display;
-  
+
   g_return_if_fail (event != NULL);
 
   if (event->any.window)
@@ -335,11 +335,11 @@ static GHashTable *event_hash = NULL;
 
 /**
  * gdk_event_new:
- * @type: a #GdkEventType 
- * 
+ * @type: a #GdkEventType
+ *
  * Creates a new event of the given type. All fields are set to 0.
- * 
- * Return value: a newly-allocated #GdkEvent. The returned #GdkEvent 
+ *
+ * Return value: a newly-allocated #GdkEvent. The returned #GdkEvent
  * should be freed with gdk_event_free().
  *
  * Since: 2.2
@@ -349,12 +349,12 @@ gdk_event_new (GdkEventType type)
 {
   GdkEventPrivate *new_private;
   GdkEvent *new_event;
-  
+
   if (!event_hash)
     event_hash = g_hash_table_new (g_direct_hash, NULL);
 
   new_private = g_slice_new0 (GdkEventPrivate);
-  
+
   new_private->flags = 0;
   new_private->screen = NULL;
 
@@ -365,7 +365,7 @@ gdk_event_new (GdkEventType type)
   new_event->any.type = type;
 
   /*
-   * Bytewise 0 initialization is reasonable for most of the 
+   * Bytewise 0 initialization is reasonable for most of the
    * current event types. Explicitely initialize double fields
    * since I trust bytewise 0 == 0. less than for integers
    * or pointers.
@@ -403,7 +403,7 @@ gdk_event_new (GdkEventType type)
     default:
       break;
     }
-  
+
   return new_event;
 }
 
@@ -415,14 +415,14 @@ gdk_event_is_allocated (const GdkEvent *event)
 
   return FALSE;
 }
- 
+
 /**
  * gdk_event_copy:
  * @event: a #GdkEvent
- * 
+ *
  * Copies a #GdkEvent, copying or incrementing the reference count of the
  * resources associated with it (e.g. #GdkWindow's and strings).
- * 
+ *
  * Return value: a copy of @event. The returned #GdkEvent should be freed with
  * gdk_event_free().
  **/
@@ -431,9 +431,9 @@ gdk_event_copy (const GdkEvent *event)
 {
   GdkEventPrivate *new_private;
   GdkEvent *new_event;
-  
+
   g_return_val_if_fail (event != NULL, NULL);
-  
+
   new_event = gdk_event_new (GDK_NOTHING);
   new_private = (GdkEventPrivate *)new_event;
 
@@ -447,20 +447,20 @@ gdk_event_copy (const GdkEvent *event)
 
       new_private->screen = private->screen;
     }
-  
+
   switch (event->any.type)
     {
     case GDK_KEY_PRESS:
     case GDK_KEY_RELEASE:
       new_event->key.string = g_strdup (event->key.string);
       break;
-      
+
     case GDK_ENTER_NOTIFY:
     case GDK_LEAVE_NOTIFY:
       if (event->crossing.subwindow != NULL)
 	g_object_ref (event->crossing.subwindow);
       break;
-      
+
     case GDK_DRAG_ENTER:
     case GDK_DRAG_LEAVE:
     case GDK_DRAG_MOTION:
@@ -469,45 +469,45 @@ gdk_event_copy (const GdkEvent *event)
     case GDK_DROP_FINISHED:
       g_object_ref (event->dnd.context);
       break;
-      
+
     case GDK_EXPOSE:
     case GDK_DAMAGE:
       if (event->expose.region)
 	new_event->expose.region = gdk_region_copy (event->expose.region);
       break;
-      
+
     case GDK_SETTING:
       new_event->setting.name = g_strdup (new_event->setting.name);
       break;
 
     case GDK_BUTTON_PRESS:
     case GDK_BUTTON_RELEASE:
-      if (event->button.axes) 
-	new_event->button.axes = g_memdup2 (event->button.axes, 
+      if (event->button.axes)
+	new_event->button.axes = g_memdup2 (event->button.axes,
 					     sizeof (gdouble) * event->button.device->num_axes);
       break;
 
     case GDK_MOTION_NOTIFY:
-      if (event->motion.axes) 
-	new_event->motion.axes = g_memdup2 (event->motion.axes, 
+      if (event->motion.axes)
+	new_event->motion.axes = g_memdup2 (event->motion.axes,
 					   sizeof (gdouble) * event->motion.device->num_axes);
-      
+
       break;
-      
+
     default:
       break;
     }
 
   if (gdk_event_is_allocated (event))
     _gdk_windowing_event_data_copy (event, new_event);
-  
+
   return new_event;
 }
 
 /**
  * gdk_event_free:
  * @event:  a #GdkEvent.
- * 
+ *
  * Frees a #GdkEvent, freeing or decrementing any resources associated with it.
  * Note that this function should only be called with events returned from
  * functions such as gdk_event_peek(), gdk_event_get(),
@@ -520,20 +520,20 @@ gdk_event_free (GdkEvent *event)
 
   if (event->any.window)
     g_object_unref (event->any.window);
-  
+
   switch (event->any.type)
     {
     case GDK_KEY_PRESS:
     case GDK_KEY_RELEASE:
       g_free (event->key.string);
       break;
-      
+
     case GDK_ENTER_NOTIFY:
     case GDK_LEAVE_NOTIFY:
       if (event->crossing.subwindow != NULL)
 	g_object_unref (event->crossing.subwindow);
       break;
-      
+
     case GDK_DRAG_ENTER:
     case GDK_DRAG_LEAVE:
     case GDK_DRAG_MOTION:
@@ -547,21 +547,21 @@ gdk_event_free (GdkEvent *event)
     case GDK_BUTTON_RELEASE:
       g_free (event->button.axes);
       break;
-      
+
     case GDK_EXPOSE:
     case GDK_DAMAGE:
       if (event->expose.region)
 	gdk_region_destroy (event->expose.region);
       break;
-      
+
     case GDK_MOTION_NOTIFY:
       g_free (event->motion.axes);
       break;
-      
+
     case GDK_SETTING:
       g_free (event->setting.name);
       break;
-      
+
     default:
       break;
     }
@@ -575,10 +575,10 @@ gdk_event_free (GdkEvent *event)
 /**
  * gdk_event_get_time:
  * @event: a #GdkEvent
- * 
+ *
  * Returns the time stamp from @event, if there is one; otherwise
  * returns #GDK_CURRENT_TIME. If @event is %NULL, returns #GDK_CURRENT_TIME.
- * 
+ *
  * Return value: time stamp field from @event
  **/
 guint32
@@ -638,7 +638,7 @@ gdk_event_get_time (const GdkEvent *event)
         /* return current time */
         break;
       }
-  
+
   return GDK_CURRENT_TIME;
 }
 
@@ -646,20 +646,20 @@ gdk_event_get_time (const GdkEvent *event)
  * gdk_event_get_state:
  * @event: a #GdkEvent or NULL
  * @state: (out): return location for state
- * 
+ *
  * If the event contains a "state" field, puts that field in @state. Otherwise
  * stores an empty state (0). Returns %TRUE if there was a state field
  * in the event. @event may be %NULL, in which case it's treated
  * as if the event had no state field.
- * 
- * Return value: %TRUE if there was a state field in the event 
+ *
+ * Return value: %TRUE if there was a state field in the event
  **/
 gboolean
 gdk_event_get_state (const GdkEvent        *event,
                      GdkModifierType       *state)
 {
   g_return_val_if_fail (state != NULL, FALSE);
-  
+
   if (event)
     switch (event->type)
       {
@@ -727,9 +727,9 @@ gdk_event_get_state (const GdkEvent        *event,
  * @event: a #GdkEvent
  * @x_win: (out): location to put event window x coordinate
  * @y_win: (out): location to put event window y coordinate
- * 
+ *
  * Extract the event window relative x/y coordinates from an event.
- * 
+ *
  * Return value: %TRUE if the event delivered event window coordinates
  **/
 gboolean
@@ -739,7 +739,7 @@ gdk_event_get_coords (const GdkEvent *event,
 {
   gdouble x = 0, y = 0;
   gboolean fetched = TRUE;
-  
+
   g_return_val_if_fail (event != NULL, FALSE);
 
   switch (event->type)
@@ -786,9 +786,9 @@ gdk_event_get_coords (const GdkEvent *event,
  * @event: a #GdkEvent
  * @x_root: (out): location to put root window x coordinate
  * @y_root: (out): location to put root window y coordinate
- * 
+ *
  * Extract the root window relative x/y coordinates from an event.
- * 
+ *
  * Return value: %TRUE if the event delivered root window coordinates
  **/
 gboolean
@@ -798,7 +798,7 @@ gdk_event_get_root_coords (const GdkEvent *event,
 {
   gdouble x = 0, y = 0;
   gboolean fetched = TRUE;
-  
+
   g_return_val_if_fail (event != NULL, FALSE);
 
   switch (event->type)
@@ -850,10 +850,10 @@ gdk_event_get_root_coords (const GdkEvent *event,
  * @event: a #GdkEvent
  * @axis_use: the axis use to look for
  * @value: (out): location to store the value found
- * 
+ *
  * Extract the axis value for a particular axis use from
  * an event structure.
- * 
+ *
  * Return value: %TRUE if the specified axis was found, otherwise %FALSE
  **/
 gboolean
@@ -863,13 +863,13 @@ gdk_event_get_axis (const GdkEvent *event,
 {
   gdouble *axes;
   GdkDevice *device;
-  
+
   g_return_val_if_fail (event != NULL, FALSE);
-  
+
   if (axis_use == GDK_AXIS_X || axis_use == GDK_AXIS_Y)
     {
       gdouble x, y;
-      
+
       switch (event->type)
 	{
 	case GDK_MOTION_NOTIFY:
@@ -890,7 +890,7 @@ gdk_event_get_axis (const GdkEvent *event,
 	  x = event->crossing.x;
 	  y = event->crossing.y;
 	  break;
-	  
+
 	default:
 	  return FALSE;
 	}
@@ -931,7 +931,7 @@ gdk_event_get_axis (const GdkEvent *event,
  * motion events from a %GDK_MOTION_NOTIFY event usually works like this:
  *
  * |[
- * { 
+ * {
  *   /&ast; motion_event handler &ast;/
  *   x = motion_event->x;
  *   y = motion_event->y;
@@ -946,13 +946,13 @@ void
 gdk_event_request_motions (const GdkEventMotion *event)
 {
   GdkDisplay *display;
-  
+
   g_return_if_fail (event != NULL);
-  
+
   if (event->type == GDK_MOTION_NOTIFY && event->is_hint)
     {
       gdk_device_get_state (event->device, event->window, NULL, NULL);
-      
+
       display = gdk_drawable_get_display (event->window);
       _gdk_display_enable_motion_hints (display);
     }
@@ -962,7 +962,7 @@ gdk_event_request_motions (const GdkEventMotion *event)
  * gdk_event_set_screen:
  * @event: a #GdkEvent
  * @screen: a #GdkScreen
- * 
+ *
  * Sets the screen for @event to @screen. The event must
  * have been allocated by GTK+, for instance, by
  * gdk_event_copy().
@@ -974,26 +974,26 @@ gdk_event_set_screen (GdkEvent  *event,
 		      GdkScreen *screen)
 {
   GdkEventPrivate *private;
-  
+
   g_return_if_fail (gdk_event_is_allocated (event));
 
   private = (GdkEventPrivate *)event;
-  
+
   private->screen = screen;
 }
 
 /**
  * gdk_event_get_screen:
  * @event: a #GdkEvent
- * 
+ *
  * Returns the screen for the event. The screen is
  * typically the screen for <literal>event->any.window</literal>, but
  * for events such as mouse events, it is the screen
  * where the pointer was when the event occurs -
- * that is, the screen which has the root window 
+ * that is, the screen which has the root window
  * to which <literal>event->motion.x_root</literal> and
  * <literal>event->motion.y_root</literal> are relative.
- * 
+ *
  * Return value: the screen for the event
  *
  * Since: 2.2
@@ -1018,7 +1018,7 @@ gdk_event_get_screen (const GdkEvent *event)
 /**
  * gdk_set_show_events:
  * @show_events:  %TRUE to output event debugging information.
- * 
+ *
  * Sets whether a trace of received events is output.
  * Note that GTK+ must be compiled with debugging (that is,
  * configured using the <option>--enable-debug</option> option)
@@ -1035,9 +1035,9 @@ gdk_set_show_events (gboolean show_events)
 
 /**
  * gdk_get_show_events:
- * 
+ *
  * Gets whether event debugging output is enabled.
- * 
+ *
  * Return value: %TRUE if event debugging output is enabled.
  **/
 gboolean
@@ -1063,7 +1063,7 @@ gdk_io_destroy (gpointer data)
 #define WRITE_CONDITION (G_IO_OUT | G_IO_ERR)
 #define EXCEPTION_CONDITION (G_IO_PRI)
 
-static gboolean  
+static gboolean
 gdk_io_invoke (GIOChannel   *source,
 	       GIOCondition  condition,
 	       gpointer      data)
@@ -1126,7 +1126,7 @@ gdk_input_add_full (gint	      source,
     cond |= EXCEPTION_CONDITION;
 
   channel = g_io_channel_unix_new (source);
-  result = g_io_add_watch_full (channel, G_PRIORITY_DEFAULT, cond, 
+  result = g_io_add_watch_full (channel, G_PRIORITY_DEFAULT, cond,
 				gdk_io_invoke,
 				closure, gdk_io_destroy);
   g_io_channel_unref (channel);
@@ -1171,9 +1171,9 @@ gdk_synthesize_click (GdkDisplay *display,
 {
   GdkEvent temp_event;
   GdkEvent *event_copy;
-  
+
   g_return_if_fail (event != NULL);
-  
+
   temp_event = *event;
   temp_event.type = (nclicks == 2) ? GDK_2BUTTON_PRESS : GDK_3BUTTON_PRESS;
 
@@ -1192,7 +1192,7 @@ _gdk_event_button_generate (GdkDisplay *display,
       (ABS (event->button.y - display->button_y[1]) <= display->double_click_distance))
 {
       gdk_synthesize_click (display, event, 3);
-            
+
       display->button_click_time[1] = 0;
       display->button_click_time[0] = 0;
       display->button_window[1] = NULL;
@@ -1209,7 +1209,7 @@ _gdk_event_button_generate (GdkDisplay *display,
 	   (ABS (event->button.y - display->button_y[0]) <= display->double_click_distance))
     {
       gdk_synthesize_click (display, event, 2);
-      
+
       display->button_click_time[1] = display->button_click_time[0];
       display->button_click_time[0] = event->button.time;
       display->button_window[1] = display->button_window[0];
@@ -1243,15 +1243,15 @@ gdk_synthesize_window_state (GdkWindow     *window,
 {
   GdkEvent temp_event;
   GdkWindowState old;
-  
+
   g_return_if_fail (window != NULL);
-  
+
   temp_event.window_state.window = window;
   temp_event.window_state.type = GDK_WINDOW_STATE;
   temp_event.window_state.send_event = FALSE;
-  
+
   old = ((GdkWindowObject*) temp_event.window_state.window)->state;
-  
+
   temp_event.window_state.new_window_state = old;
   temp_event.window_state.new_window_state |= set_flags;
   temp_event.window_state.new_window_state &= ~unset_flags;
@@ -1264,7 +1264,7 @@ gdk_synthesize_window_state (GdkWindow     *window,
    * place to do it, but seems like the safest since it ensures we expose no
    * inconsistent state to the user.
    */
-  
+
   ((GdkWindowObject*) window)->state = temp_event.window_state.new_window_state;
 
   if (temp_event.window_state.changed_mask & GDK_WINDOW_STATE_WITHDRAWN)
@@ -1282,7 +1282,7 @@ gdk_synthesize_window_state (GdkWindow     *window,
     case GDK_WINDOW_TEMP: /* ? */
       gdk_display_put_event (gdk_drawable_get_display (window), &temp_event);
       break;
-      
+
     case GDK_WINDOW_FOREIGN:
     case GDK_WINDOW_ROOT:
     case GDK_WINDOW_CHILD:
@@ -1293,11 +1293,11 @@ gdk_synthesize_window_state (GdkWindow     *window,
 /**
  * gdk_display_set_double_click_time:
  * @display: a #GdkDisplay
- * @msec: double click time in milliseconds (thousandths of a second) 
- * 
+ * @msec: double click time in milliseconds (thousandths of a second)
+ *
  * Sets the double click time (two clicks within this time interval
  * count as a double click and result in a #GDK_2BUTTON_PRESS event).
- * Applications should <emphasis>not</emphasis> set this, it is a global 
+ * Applications should <emphasis>not</emphasis> set this, it is a global
  * user-configured setting.
  *
  * Since: 2.2
@@ -1314,9 +1314,9 @@ gdk_display_set_double_click_time (GdkDisplay *display,
  * @msec: double click time in milliseconds (thousandths of a second)
  *
  * Set the double click time for the default display. See
- * gdk_display_set_double_click_time(). 
+ * gdk_display_set_double_click_time().
  * See also gdk_display_set_double_click_distance().
- * Applications should <emphasis>not</emphasis> set this, it is a 
+ * Applications should <emphasis>not</emphasis> set this, it is a
  * global user-configured setting.
  **/
 void
@@ -1329,11 +1329,11 @@ gdk_set_double_click_time (guint msec)
  * gdk_display_set_double_click_distance:
  * @display: a #GdkDisplay
  * @distance: distance in pixels
- * 
+ *
  * Sets the double click distance (two clicks within this distance
  * count as a double click and result in a #GDK_2BUTTON_PRESS event).
  * See also gdk_display_set_double_click_time().
- * Applications should <emphasis>not</emphasis> set this, it is a global 
+ * Applications should <emphasis>not</emphasis> set this, it is a global
  * user-configured setting.
  *
  * Since: 2.4
@@ -1349,7 +1349,7 @@ GType
 gdk_event_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (g_intern_static_string ("GdkEvent"),
 					     (GBoxedCopyFunc)gdk_event_copy,

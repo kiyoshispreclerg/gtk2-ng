@@ -66,7 +66,7 @@ gboolean _gdk_x11_get_window_child_info (GdkDisplay       *display,
 					 GdkChildInfoX11 **children,
 					 guint            *nchildren);
 
-void _gdk_x11_roundtrip_async           (GdkDisplay           *display, 
+void _gdk_x11_roundtrip_async           (GdkDisplay           *display,
 					 GdkRoundTripCallback callback,
 					 gpointer              data);
 

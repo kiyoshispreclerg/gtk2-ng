@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -130,12 +130,12 @@ get_child (GtkFixed  *fixed,
            GtkWidget *widget)
 {
   GList *children;
-  
+
   children = fixed->children;
   while (children)
     {
       GtkFixedChild *child;
-      
+
       child = children->data;
       children = children->next;
 
@@ -177,17 +177,17 @@ gtk_fixed_move_internal (GtkFixed       *fixed,
                          gint            y)
 {
   GtkFixedChild *child;
-  
+
   g_return_if_fail (GTK_IS_FIXED (fixed));
   g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (widget->parent == GTK_WIDGET (fixed));  
-  
+  g_return_if_fail (widget->parent == GTK_WIDGET (fixed));
+
   child = get_child (fixed, widget);
 
   g_assert (child);
 
   gtk_widget_freeze_child_notify (widget);
-  
+
   if (change_x)
     {
       child->x = x;
@@ -201,7 +201,7 @@ gtk_fixed_move_internal (GtkFixed       *fixed,
     }
 
   gtk_widget_thaw_child_notify (widget);
-  
+
   if (gtk_widget_get_visible (widget) &&
       gtk_widget_get_visible (GTK_WIDGET (fixed)))
     gtk_widget_queue_resize (GTK_WIDGET (fixed));
@@ -253,7 +253,7 @@ gtk_fixed_get_child_property (GtkContainer *container,
   GtkFixedChild *fixed_child;
 
   fixed_child = get_child (GTK_FIXED (container), child);
-  
+
   switch (property_id)
     {
     case CHILD_PROP_X:
@@ -290,13 +290,13 @@ gtk_fixed_realize (GtkWidget *widget)
       attributes.colormap = gtk_widget_get_colormap (widget);
       attributes.event_mask = gtk_widget_get_events (widget);
       attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK;
-      
+
       attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-      
-      widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, 
+
+      widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes,
 				       attributes_mask);
       gdk_window_set_user_data (widget->window, widget);
-      
+
       widget->style = gtk_style_attach (widget->style, widget->window);
       gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
     }
@@ -306,7 +306,7 @@ static void
 gtk_fixed_size_request (GtkWidget      *widget,
 			GtkRequisition *requisition)
 {
-  GtkFixed *fixed;  
+  GtkFixed *fixed;
   GtkFixedChild *child;
   GList *children;
   GtkRequisition child_requisition;
@@ -357,20 +357,20 @@ gtk_fixed_size_allocate (GtkWidget     *widget,
     {
       if (gtk_widget_get_realized (widget))
 	gdk_window_move_resize (widget->window,
-				allocation->x, 
+				allocation->x,
 				allocation->y,
-				allocation->width, 
+				allocation->width,
 				allocation->height);
     }
-      
+
   border_width = GTK_CONTAINER (fixed)->border_width;
-  
+
   children = fixed->children;
   while (children)
     {
       child = children->data;
       children = children->next;
-      
+
       if (gtk_widget_get_visible (child->widget))
 	{
 	  gtk_widget_get_child_requisition (child->widget, &child_requisition);
@@ -382,7 +382,7 @@ gtk_fixed_size_allocate (GtkWidget     *widget,
 	      child_allocation.x += widget->allocation.x;
 	      child_allocation.y += widget->allocation.y;
 	    }
-	  
+
 	  child_allocation.width = child_requisition.width;
 	  child_allocation.height = child_requisition.height;
 	  gtk_widget_size_allocate (child->widget, &child_allocation);
@@ -417,7 +417,7 @@ gtk_fixed_remove (GtkContainer *container,
       if (child->widget == widget)
 	{
 	  gboolean was_visible = gtk_widget_get_visible (widget);
-	  
+
 	  gtk_widget_unparent (widget);
 
 	  fixed->children = g_list_remove_link (fixed->children, children);
@@ -458,13 +458,13 @@ gtk_fixed_forall (GtkContainer *container,
  * gtk_fixed_set_has_window:
  * @fixed: a #GtkFixed
  * @has_window: %TRUE if a separate window should be created
- * 
+ *
  * Sets whether a #GtkFixed widget is created with a separate
  * #GdkWindow for @widget->window or not. (By default, it will be
  * created with no separate #GdkWindow). This function must be called
  * while the #GtkFixed is not realized, for instance, immediately after the
  * window is created.
- * 
+ *
  * This function was added to provide an easy migration path for
  * older applications which may expect #GtkFixed to have a separate window.
  *
@@ -486,10 +486,10 @@ gtk_fixed_set_has_window (GtkFixed *fixed,
 /**
  * gtk_fixed_get_has_window:
  * @fixed: a #GtkWidget
- * 
+ *
  * Gets whether the #GtkFixed has its own #GdkWindow.
  * See gtk_fixed_set_has_window().
- * 
+ *
  * Return value: %TRUE if @fixed has its own window.
  *
  * Deprecated: 2.20: Use gtk_widget_get_has_window() instead.

@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -120,15 +120,15 @@ G_DEFINE_TYPE (GtkLayout, gtk_layout, GTK_TYPE_CONTAINER)
  * gtk_layout_new:
  * @hadjustment: (allow-none): horizontal scroll adjustment, or %NULL
  * @vadjustment: (allow-none): vertical scroll adjustment, or %NULL
- * 
+ *
  * Creates a new #GtkLayout. Unless you have a specific adjustment
  * you'd like the layout to use for scrolling, pass %NULL for
  * @hadjustment and @vadjustment.
- * 
+ *
  * Return value: a new #GtkLayout
  **/
-  
-GtkWidget*    
+
+GtkWidget*
 gtk_layout_new (GtkAdjustment *hadjustment,
 		GtkAdjustment *vadjustment)
 {
@@ -207,7 +207,7 @@ new_default_adjustment (void)
   return GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
 }
 
-static void           
+static void
 gtk_layout_set_adjustments (GtkLayout     *layout,
 			    GtkAdjustment *hadj,
 			    GtkAdjustment *vadj)
@@ -224,7 +224,7 @@ gtk_layout_set_adjustments (GtkLayout     *layout,
     g_return_if_fail (GTK_IS_ADJUSTMENT (vadj));
   else if (layout->vadjustment)
     vadj = new_default_adjustment ();
-  
+
   if (layout->hadjustment && (layout->hadjustment != hadj))
     {
       g_signal_handlers_disconnect_by_func (layout->hadjustment,
@@ -232,7 +232,7 @@ gtk_layout_set_adjustments (GtkLayout     *layout,
 					    layout);
       g_object_unref (layout->hadjustment);
     }
-  
+
   if (layout->vadjustment && (layout->vadjustment != vadj))
     {
       g_signal_handlers_disconnect_by_func (layout->vadjustment,
@@ -240,25 +240,25 @@ gtk_layout_set_adjustments (GtkLayout     *layout,
 					    layout);
       g_object_unref (layout->vadjustment);
     }
-  
+
   if (layout->hadjustment != hadj)
     {
       layout->hadjustment = hadj;
       g_object_ref_sink (layout->hadjustment);
       gtk_layout_set_adjustment_upper (layout->hadjustment, layout->width, FALSE);
-      
+
       g_signal_connect (layout->hadjustment, "value-changed",
 			G_CALLBACK (gtk_layout_adjustment_changed),
 			layout);
       need_adjust = TRUE;
     }
-  
+
   if (layout->vadjustment != vadj)
     {
       layout->vadjustment = vadj;
       g_object_ref_sink (layout->vadjustment);
       gtk_layout_set_adjustment_upper (layout->vadjustment, layout->height, FALSE);
-      
+
       g_signal_connect (layout->vadjustment, "value-changed",
 			G_CALLBACK (gtk_layout_adjustment_changed),
 			layout);
@@ -290,9 +290,9 @@ gtk_layout_finalize (GObject *object)
  * Sets the horizontal scroll adjustment for the layout.
  *
  * See #GtkScrolledWindow, #GtkScrollbar, #GtkAdjustment for details.
- * 
+ *
  **/
-void           
+void
 gtk_layout_set_hadjustment (GtkLayout     *layout,
 			    GtkAdjustment *adjustment)
 {
@@ -301,7 +301,7 @@ gtk_layout_set_hadjustment (GtkLayout     *layout,
   gtk_layout_set_adjustments (layout, adjustment, layout->vadjustment);
   g_object_notify (G_OBJECT (layout), "hadjustment");
 }
- 
+
 /**
  * gtk_layout_set_vadjustment:
  * @layout: a #GtkLayout
@@ -310,14 +310,14 @@ gtk_layout_set_hadjustment (GtkLayout     *layout,
  * Sets the vertical scroll adjustment for the layout.
  *
  * See #GtkScrolledWindow, #GtkScrollbar, #GtkAdjustment for details.
- * 
+ *
  **/
-void           
+void
 gtk_layout_set_vadjustment (GtkLayout     *layout,
 			    GtkAdjustment *adjustment)
 {
   g_return_if_fail (GTK_IS_LAYOUT (layout));
-  
+
   gtk_layout_set_adjustments (layout, layout->hadjustment, adjustment);
   g_object_notify (G_OBJECT (layout), "vadjustment");
 }
@@ -327,12 +327,12 @@ get_child (GtkLayout  *layout,
            GtkWidget  *widget)
 {
   GList *children;
-  
+
   children = layout->children;
   while (children)
     {
       GtkLayoutChild *child;
-      
+
       child = children->data;
       children = children->next;
 
@@ -352,19 +352,19 @@ get_child (GtkLayout  *layout,
  *
  * Adds @child_widget to @layout, at position (@x,@y).
  * @layout becomes the new parent container of @child_widget.
- * 
+ *
  **/
-void           
-gtk_layout_put (GtkLayout     *layout, 
-		GtkWidget     *child_widget, 
-		gint           x, 
+void
+gtk_layout_put (GtkLayout     *layout,
+		GtkWidget     *child_widget,
+		gint           x,
 		gint           y)
 {
   GtkLayoutChild *child;
 
   g_return_if_fail (GTK_IS_LAYOUT (layout));
   g_return_if_fail (GTK_IS_WIDGET (child_widget));
-  
+
   child = g_new (GtkLayoutChild, 1);
 
   child->widget = child_widget;
@@ -372,7 +372,7 @@ gtk_layout_put (GtkLayout     *layout,
   child->y = y;
 
   layout->children = g_list_append (layout->children, child);
-  
+
   if (gtk_widget_get_realized (GTK_WIDGET (layout)))
     gtk_widget_set_parent_window (child->widget, layout->bin_window);
 
@@ -394,7 +394,7 @@ gtk_layout_move_internal (GtkLayout       *layout,
   g_assert (child);
 
   gtk_widget_freeze_child_notify (widget);
-  
+
   if (change_x)
     {
       child->x = x;
@@ -408,7 +408,7 @@ gtk_layout_move_internal (GtkLayout       *layout,
     }
 
   gtk_widget_thaw_child_notify (widget);
-  
+
   if (gtk_widget_get_visible (widget) &&
       gtk_widget_get_visible (GTK_WIDGET (layout)))
     gtk_widget_queue_resize (widget);
@@ -422,17 +422,17 @@ gtk_layout_move_internal (GtkLayout       *layout,
  * @y: Y position to move to
  *
  * Moves a current child of @layout to a new position.
- * 
+ *
  **/
-void           
-gtk_layout_move (GtkLayout     *layout, 
-		 GtkWidget     *child_widget, 
-		 gint           x, 
+void
+gtk_layout_move (GtkLayout     *layout,
+		 GtkWidget     *child_widget,
+		 gint           x,
 		 gint           y)
 {
   g_return_if_fail (GTK_IS_LAYOUT (layout));
   g_return_if_fail (GTK_IS_WIDGET (child_widget));
-  g_return_if_fail (child_widget->parent == GTK_WIDGET (layout));  
+  g_return_if_fail (child_widget->parent == GTK_WIDGET (layout));
 
   gtk_layout_move_internal (layout, child_widget, TRUE, x, TRUE, y);
 }
@@ -444,7 +444,7 @@ gtk_layout_set_adjustment_upper (GtkAdjustment *adj,
 {
   gboolean changed = FALSE;
   gboolean value_changed = FALSE;
-  
+
   gdouble min = MAX (0., upper - adj->page_size);
 
   if (upper != adj->upper)
@@ -452,13 +452,13 @@ gtk_layout_set_adjustment_upper (GtkAdjustment *adj,
       adj->upper = upper;
       changed = TRUE;
     }
-      
+
   if (adj->value > min)
     {
       adj->value = min;
       value_changed = TRUE;
     }
-  
+
   if (changed || always_emit_changed)
     gtk_adjustment_changed (adj);
   if (value_changed)
@@ -472,19 +472,19 @@ gtk_layout_set_adjustment_upper (GtkAdjustment *adj,
  * @height: height of entire scrollable area
  *
  * Sets the size of the scrollable area of the layout.
- * 
+ *
  **/
 void
-gtk_layout_set_size (GtkLayout     *layout, 
+gtk_layout_set_size (GtkLayout     *layout,
 		     guint          width,
 		     guint          height)
 {
   GtkWidget *widget;
-  
+
   g_return_if_fail (GTK_IS_LAYOUT (layout));
-  
+
   widget = GTK_WIDGET (layout);
-  
+
   g_object_freeze_notify (G_OBJECT (layout));
   if (width != layout->width)
      {
@@ -539,7 +539,7 @@ gtk_layout_get_size (GtkLayout *layout,
 /**
  * gtk_layout_freeze:
  * @layout: a #GtkLayout
- * 
+ *
  * This is a deprecated function, it doesn't do anything useful.
  **/
 void
@@ -553,7 +553,7 @@ gtk_layout_freeze (GtkLayout *layout)
 /**
  * gtk_layout_thaw:
  * @layout: a #GtkLayout
- * 
+ *
  * This is a deprecated function, it doesn't do anything useful.
  **/
 void
@@ -612,7 +612,7 @@ gtk_layout_class_init (GtkLayoutClass *class)
                                                                 G_MAXINT,
                                                                 0,
                                                                 GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class,
 				   PROP_HADJUSTMENT,
 				   g_param_spec_object ("hadjustment",
@@ -620,7 +620,7 @@ gtk_layout_class_init (GtkLayoutClass *class)
 							P_("The GtkAdjustment for the horizontal position"),
 							GTK_TYPE_ADJUSTMENT,
 							GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class,
 				   PROP_VADJUSTMENT,
 				   g_param_spec_object ("vadjustment",
@@ -689,7 +689,7 @@ gtk_layout_get_property (GObject     *object,
 			 GParamSpec  *pspec)
 {
   GtkLayout *layout = GTK_LAYOUT (object);
-  
+
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
@@ -717,15 +717,15 @@ gtk_layout_set_property (GObject      *object,
 			 GParamSpec   *pspec)
 {
   GtkLayout *layout = GTK_LAYOUT (object);
-  
+
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      gtk_layout_set_hadjustment (layout, 
+      gtk_layout_set_hadjustment (layout,
 				  (GtkAdjustment*) g_value_get_object (value));
       break;
     case PROP_VADJUSTMENT:
-      gtk_layout_set_vadjustment (layout, 
+      gtk_layout_set_vadjustment (layout,
 				  (GtkAdjustment*) g_value_get_object (value));
       break;
     case PROP_WIDTH:
@@ -779,7 +779,7 @@ gtk_layout_get_child_property (GtkContainer *container,
   GtkLayoutChild *layout_child;
 
   layout_child = get_child (GTK_LAYOUT (container), child);
-  
+
   switch (property_id)
     {
     case CHILD_PROP_X:
@@ -822,7 +822,7 @@ gtk_layout_constructor (GType                  type,
   GtkLayout *layout;
   GObject *object;
   GtkAdjustment *hadj, *vadj;
-  
+
   object = G_OBJECT_CLASS (gtk_layout_parent_class)->constructor (type,
 								  n_properties,
 								  properties);
@@ -841,7 +841,7 @@ gtk_layout_constructor (GType                  type,
 /* Widget methods
  */
 
-static void 
+static void
 gtk_layout_realize (GtkWidget *widget)
 {
   GtkLayout *layout = GTK_LAYOUT (widget);
@@ -872,7 +872,7 @@ gtk_layout_realize (GtkWidget *widget)
   attributes.y = - layout->vadjustment->value;
   attributes.width = MAX (layout->width, widget->allocation.width);
   attributes.height = MAX (layout->height, widget->allocation.height);
-  attributes.event_mask = GDK_EXPOSURE_MASK | GDK_SCROLL_MASK | 
+  attributes.event_mask = GDK_EXPOSURE_MASK | GDK_SCROLL_MASK |
                           gtk_widget_get_events (widget);
 
   layout->bin_window = gdk_window_new (widget->window,
@@ -929,7 +929,7 @@ gtk_layout_map (GtkWidget *widget)
   gdk_window_show (widget->window);
 }
 
-static void 
+static void
 gtk_layout_unrealize (GtkWidget *widget)
 {
   GtkLayout *layout = GTK_LAYOUT (widget);
@@ -941,7 +941,7 @@ gtk_layout_unrealize (GtkWidget *widget)
   GTK_WIDGET_CLASS (gtk_layout_parent_class)->unrealize (widget);
 }
 
-static void     
+static void
 gtk_layout_size_request (GtkWidget     *widget,
 			 GtkRequisition *requisition)
 {
@@ -957,14 +957,14 @@ gtk_layout_size_request (GtkWidget     *widget,
     {
       GtkLayoutChild *child = tmp_list->data;
       GtkRequisition child_requisition;
-      
+
       tmp_list = tmp_list->next;
 
       gtk_widget_size_request (child->widget, &child_requisition);
     }
 }
 
-static void     
+static void
 gtk_layout_size_allocate (GtkWidget     *widget,
 			  GtkAllocation *allocation)
 {
@@ -1007,7 +1007,7 @@ gtk_layout_size_allocate (GtkWidget     *widget,
   gtk_layout_set_adjustment_upper (layout->vadjustment, MAX (allocation->height, layout->height), TRUE);
 }
 
-static gint 
+static gint
 gtk_layout_expose (GtkWidget      *widget,
                    GdkEventExpose *event)
 {
@@ -1031,7 +1031,7 @@ gtk_layout_add (GtkContainer *container,
 }
 
 static void
-gtk_layout_remove (GtkContainer *container, 
+gtk_layout_remove (GtkContainer *container,
 		   GtkWidget    *widget)
 {
   GtkLayout *layout = GTK_LAYOUT (container);
@@ -1092,7 +1092,7 @@ gtk_layout_allocate_child (GtkLayout      *layout,
   gtk_widget_get_child_requisition (child->widget, &requisition);
   allocation.width = requisition.width;
   allocation.height = requisition.height;
-  
+
   gtk_widget_size_allocate (child->widget, &allocation);
 }
 
@@ -1110,7 +1110,7 @@ gtk_layout_adjustment_changed (GtkAdjustment *adjustment,
       gdk_window_move (layout->bin_window,
 		       - layout->hadjustment->value,
 		       - layout->vadjustment->value);
-      
+
       gdk_window_process_updates (layout->bin_window, TRUE);
     }
 }

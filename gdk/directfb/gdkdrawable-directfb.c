@@ -1201,14 +1201,14 @@ gdk_directfb_draw_pixbuf (GdkDrawable  *drawable,
   GdkDrawableImplDirectFB *impl = GDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-  
+
   pb_n_channels = gdk_pixbuf_get_n_channels (pixbuf);
   pb_bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
-  
+
   g_return_if_fail (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
   g_return_if_fail (pb_n_channels == 3 || pb_n_channels == 4);
   g_return_if_fail (pb_bits_per_sample == 8);
-  
+
   g_return_if_fail (drawable != NULL);
 
   pb_width = gdk_pixbuf_get_width (pixbuf);
@@ -1216,11 +1216,11 @@ gdk_directfb_draw_pixbuf (GdkDrawable  *drawable,
   pb_pixels = gdk_pixbuf_get_pixels (pixbuf);
   pb_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
 
-  if (width == -1) 
+  if (width == -1)
     width = pb_width;
   if (height == -1)
     height = pb_height;
-  
+
   g_return_if_fail (width >= 0 && height >= 0);
   g_return_if_fail (src_x >= 0 && src_x + width <= pb_width);
   g_return_if_fail (src_y >= 0 && src_y + height <= pb_height);
@@ -1422,7 +1422,7 @@ gdk_directfb_draw_pixbuf (GdkDrawable  *drawable,
       pb_pixels = gdk_pixbuf_get_pixels (pixbuf);
       pb_rowstride = gdk_pixbuf_get_rowstride (pixbuf);
     }
-  
+
   if (pb_n_channels == 4)
     {
       guchar *buf = pb_pixels + src_y * pb_rowstride + src_x * 4;

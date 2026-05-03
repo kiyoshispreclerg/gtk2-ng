@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Original author: Owen Taylor <otaylor@redhat.com>
- * 
+ *
  * Modified for VIQR - Robert Brady <robert@suse.co.uk>
  *
  */
@@ -53,7 +53,7 @@ viqr_register_type (GTypeModule *module)
     (GInstanceInitFunc) viqr_init,
   };
 
-  type_viqr_translit = 
+  type_viqr_translit =
     g_type_module_register_type (module,
 				 GTK_TYPE_IM_CONTEXT_SIMPLE,
 				 "GtkIMContextViqr",
@@ -239,7 +239,7 @@ viqr_init (GtkIMContextSimple *im_context)
 				   G_N_ELEMENTS (viqr_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo viqr_info = { 
+static const GtkIMContextInfo viqr_info = {
   "viqr",		   /* ID */
   N_("Vietnamese (VIQR)"), /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain */

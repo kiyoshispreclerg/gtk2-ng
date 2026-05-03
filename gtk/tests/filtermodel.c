@@ -2403,10 +2403,10 @@ specific_bug_300089 (void)
 
   path = gtk_tree_path_new_from_indices (1, 1, -1);
 
-  /* make sure a level is constructed */ 
+  /* make sure a level is constructed */
   gtk_tree_model_get_iter (sort_model, &sort_iter, path);
 
-  /* change the "E" row in a way that causes it to change position */ 
+  /* change the "E" row in a way that causes it to change position */
   gtk_tree_model_get_iter (child_model, &iter, path);
   gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter, 0, "A", -1);
 }

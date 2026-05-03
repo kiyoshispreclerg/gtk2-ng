@@ -35,7 +35,7 @@ main (int argc, char *argv[])
   /* FIXME: This is not allowable - what is this supposed to be? */
   /*  gdk_progclass = g_strdup ("XTerm"); */
   gtk_init (&argc, &argv);
-  
+
   window = g_object_connect (g_object_new (gtk_window_get_type (),
 					     "user_data", NULL,
 					     "type", GTK_WINDOW_TOPLEVEL,

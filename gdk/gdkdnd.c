@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -43,7 +43,7 @@
  * Finds the destination window and DND protocol to use at the
  * given pointer position.
  *
- * This function is called by the drag source to obtain the 
+ * This function is called by the drag source to obtain the
  * @dest_window and @protocol parameters for gdk_drag_motion().
  *
  * Deprecated: 2.24: Use gdk_drag_find_window_for_screen() instead.
@@ -65,9 +65,9 @@ gdk_drag_find_window (GdkDragContext  *context,
  * gdk_drag_get_protocol:
  * @xid: the windowing system id of the destination window.
  * @protocol: location where the supported DND protocol is returned.
- * 
+ *
  * Finds out the DND protocol supported by a window.
- * 
+ *
  * Return value: the windowing system specific id for the window where
  *    the drop should happen. This may be @xid or the id of a proxy
  *    window, or zero if @xid doesn't support Drag and Drop.

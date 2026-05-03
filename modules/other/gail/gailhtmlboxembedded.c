@@ -60,7 +60,7 @@ gail_html_box_embedded_get_n_children (AtkObject *obj)
   GObject *g_obj;
 
   g_return_val_if_fail (GAIL_IS_HTML_BOX_EMBEDDED (obj), 0);
-  atk_gobject = ATK_GOBJECT (obj); 
+  atk_gobject = ATK_GOBJECT (obj);
   g_obj = atk_gobject_get_object (atk_gobject);
   if (g_obj == NULL)
     /* State is defunct */

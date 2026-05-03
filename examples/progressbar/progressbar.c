@@ -14,38 +14,38 @@ static gboolean progress_timeout( gpointer data )
 {
   ProgressData *pdata = (ProgressData *)data;
   gdouble new_val;
-  
-  if (pdata->activity_mode) 
+
+  if (pdata->activity_mode)
     gtk_progress_bar_pulse (GTK_PROGRESS_BAR (pdata->pbar));
-  else 
+  else
     {
       /* Calculate the value of the progress bar using the
        * value range set in the adjustment object */
-      
+
       new_val = gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (pdata->pbar)) + 0.01;
-      
+
       if (new_val > 1.0)
 	new_val = 0.0;
-      
+
       /* Set the new value */
       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (pdata->pbar), new_val);
     }
-  
+
   /* As this is a timeout function, return TRUE so that it
    * continues to get called */
   return TRUE;
-} 
+}
 
 /* Callback that toggles the text display within the progress bar trough */
 static void toggle_show_text( GtkWidget    *widget,
                               ProgressData *pdata )
 {
   const gchar *text;
-  
+
   text = gtk_progress_bar_get_text (GTK_PROGRESS_BAR (pdata->pbar));
   if (text && *text)
     gtk_progress_bar_set_text (GTK_PROGRESS_BAR (pdata->pbar), "");
-  else 
+  else
     gtk_progress_bar_set_text (GTK_PROGRESS_BAR (pdata->pbar), "some text");
 }
 
@@ -54,24 +54,24 @@ static void toggle_activity_mode( GtkWidget    *widget,
                                   ProgressData *pdata )
 {
   pdata->activity_mode = !pdata->activity_mode;
-  if (pdata->activity_mode) 
+  if (pdata->activity_mode)
       gtk_progress_bar_pulse (GTK_PROGRESS_BAR (pdata->pbar));
   else
       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (pdata->pbar), 0.0);
 }
 
- 
+
 /* Callback that toggles the orientation of the progress bar */
 static void toggle_orientation( GtkWidget    *widget,
                                 ProgressData *pdata )
 {
   switch (gtk_progress_bar_get_orientation (GTK_PROGRESS_BAR (pdata->pbar))) {
   case GTK_PROGRESS_LEFT_TO_RIGHT:
-    gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (pdata->pbar), 
+    gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (pdata->pbar),
 				      GTK_PROGRESS_RIGHT_TO_LEFT);
     break;
   case GTK_PROGRESS_RIGHT_TO_LEFT:
-    gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (pdata->pbar), 
+    gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (pdata->pbar),
 				      GTK_PROGRESS_LEFT_TO_RIGHT);
     break;
   default:;
@@ -79,7 +79,7 @@ static void toggle_orientation( GtkWidget    *widget,
   }
 }
 
- 
+
 /* Clean up allocated memory and remove the timer */
 static void destroy_progress( GtkWidget    *widget,
                               ProgressData *pdata)
@@ -106,7 +106,7 @@ int main( int   argc,
 
     /* Allocate memory for the data that is passed to the callbacks */
     pdata = g_malloc (sizeof (ProgressData));
-  
+
     pdata->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_resizable (GTK_WINDOW (pdata->window), TRUE);
 
@@ -120,7 +120,7 @@ int main( int   argc,
     gtk_container_set_border_width (GTK_CONTAINER (vbox), 10);
     gtk_container_add (GTK_CONTAINER (pdata->window), vbox);
     gtk_widget_show (vbox);
-  
+
     /* Create a centering alignment object */
     align = gtk_alignment_new (0.5, 0.5, 0, 0);
     gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 5);
@@ -193,6 +193,6 @@ int main( int   argc,
     gtk_widget_show (pdata->window);
 
     gtk_main ();
-    
+
     return 0;
 }

@@ -40,15 +40,15 @@ randomly_modify (const gchar *image, guint size)
 
   guchar *img_copy = g_malloc (size);
   memmove (img_copy, image, size);
-  
+
   for (i = 0; i < size / 4; i++)
     {
       FILE *f;
       GdkPixbufLoader *loader;
-      
+
       guint index = g_random_int_range (0, size);
       guchar byte = g_random_int_range (0, 256);
-      
+
       img_copy[index] = byte;
       f = fopen ("pixbuf-randomly-modified-image", "w");
       if (!f)
@@ -101,7 +101,7 @@ main (int argc, char **argv)
 
   if (argc == 1)
     usage ();
-  
+
   seed = time (NULL);
 
   for (i = 1; i < argc; ++i)
@@ -129,7 +129,7 @@ main (int argc, char **argv)
   g_random_set_seed (seed);
 
   g_print ("the last tested image is saved to pixbuf-randomly-modified-image\n");
-  
+
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL);
 
   for (;;)
@@ -138,7 +138,7 @@ main (int argc, char **argv)
 	gchar *contents;
 	gsize size;
 	GError *err = NULL;
-	
+
 	fflush (stdout);
 	if (!g_file_get_contents (files->pdata[i], &contents, &size, &err))
 	  {
@@ -149,10 +149,10 @@ main (int argc, char **argv)
 	    g_print ("%s\t\t", (char *)files->pdata[i]);
 	    randomly_modify (contents, size);
 	    g_print ("done\n");
-	    
+
 	    g_free (contents);
 	  }
       }
-  
+
   return 0;
 }

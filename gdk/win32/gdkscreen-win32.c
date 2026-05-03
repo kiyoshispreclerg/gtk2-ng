@@ -46,14 +46,14 @@ gdk_screen_set_default_colormap (GdkScreen   *screen,
 				 GdkColormap *colormap)
 {
   GdkColormap *old_colormap;
-  
+
   g_return_if_fail (screen == _gdk_screen);
   g_return_if_fail (GDK_IS_COLORMAP (colormap));
 
   old_colormap = default_colormap;
 
   default_colormap = g_object_ref (colormap);
-  
+
   if (old_colormap)
     g_object_unref (old_colormap);
 }
@@ -108,7 +108,7 @@ gdk_screen_get_monitor_plug_name (GdkScreen *screen,
 }
 
 void
-gdk_screen_get_monitor_geometry (GdkScreen    *screen, 
+gdk_screen_get_monitor_geometry (GdkScreen    *screen,
 				 gint          num_monitor,
 				 GdkRectangle *dest)
 {
@@ -126,7 +126,7 @@ gdk_screen_get_rgba_colormap (GdkScreen *screen)
 
   return NULL;
 }
-  
+
 GdkVisual *
 gdk_screen_get_rgba_visual (GdkScreen *screen)
 {
@@ -134,16 +134,16 @@ gdk_screen_get_rgba_visual (GdkScreen *screen)
 
   return NULL;
 }
-  
+
 gint
 gdk_screen_get_number (GdkScreen *screen)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);  
-  
+  g_return_val_if_fail (screen == _gdk_screen, 0);
+
   return 0;
 }
 
-gchar * 
+gchar *
 _gdk_windowing_substitute_screen_number (const gchar *display_name,
 					 int          screen_number)
 {

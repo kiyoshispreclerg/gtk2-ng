@@ -71,9 +71,9 @@ struct _GtkMenuShell
 struct _GtkMenuShellClass
 {
   GtkContainerClass parent_class;
-  
+
   guint submenu_placement : 1;
-  
+
   void (*deactivate)     (GtkMenuShell *menu_shell);
   void (*selection_done) (GtkMenuShell *menu_shell);
 

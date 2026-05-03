@@ -527,7 +527,7 @@ main (int argc, char *argv[])
   g_signal_connect (tree_view, "realize",
 		    G_CALLBACK (gtk_tree_view_expand_all),
 		    NULL);
-			   
+
   gtk_container_add (GTK_CONTAINER (scrolled_window), tree_view);
 
 

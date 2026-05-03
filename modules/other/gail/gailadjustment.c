@@ -49,7 +49,7 @@ static void      gail_adjustment_destroyed         (GtkAdjustment       *adjustm
 G_DEFINE_TYPE_WITH_CODE (GailAdjustment, gail_adjustment, ATK_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
 
-static void	 
+static void
 gail_adjustment_class_init (GailAdjustmentClass *klass)
 {
   AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
@@ -62,7 +62,7 @@ gail_adjustment_init (GailAdjustment *adjustment)
 {
 }
 
-AtkObject* 
+AtkObject*
 gail_adjustment_new (GtkAdjustment *adjustment)
 {
   GObject *object;
@@ -97,7 +97,7 @@ gail_adjustment_real_initialize (AtkObject *obj,
                            obj, 0);
 }
 
-static void	 
+static void
 atk_value_interface_init (AtkValueIface *iface)
 {
   iface->get_current_value = gail_adjustment_get_current_value;
@@ -107,13 +107,13 @@ atk_value_interface_init (AtkValueIface *iface)
   iface->set_current_value = gail_adjustment_set_current_value;
 }
 
-static void	 
+static void
 gail_adjustment_get_current_value (AtkValue             *obj,
                                    GValue               *value)
 {
   GtkAdjustment* adjustment;
   gdouble current_value;
- 
+
   adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
@@ -127,13 +127,13 @@ gail_adjustment_get_current_value (AtkValue             *obj,
   g_value_set_double (value,current_value);
 }
 
-static void	 
+static void
 gail_adjustment_get_maximum_value (AtkValue             *obj,
                                    GValue               *value)
 {
   GtkAdjustment* adjustment;
   gdouble maximum_value;
- 
+
   adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
@@ -147,13 +147,13 @@ gail_adjustment_get_maximum_value (AtkValue             *obj,
   g_value_set_double (value, maximum_value);
 }
 
-static void	 
+static void
 gail_adjustment_get_minimum_value (AtkValue             *obj,
                                    GValue               *value)
 {
   GtkAdjustment* adjustment;
   gdouble minimum_value;
- 
+
   adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
@@ -173,7 +173,7 @@ gail_adjustment_get_minimum_increment (AtkValue        *obj,
 {
   GtkAdjustment* adjustment;
   gdouble minimum_increment;
- 
+
   adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
@@ -208,7 +208,7 @@ gail_adjustment_get_minimum_increment (AtkValue        *obj,
   g_value_set_double (value, minimum_increment);
 }
 
-static gboolean	 
+static gboolean
 gail_adjustment_set_current_value (AtkValue             *obj,
                                    const GValue         *value)
 {
@@ -216,7 +216,7 @@ gail_adjustment_set_current_value (AtkValue             *obj,
   {
     GtkAdjustment* adjustment;
     gdouble new_value;
- 
+
     adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
     if (adjustment == NULL)
     {
@@ -237,7 +237,7 @@ gail_adjustment_destroyed (GtkAdjustment       *adjustment,
                            GailAdjustment      *gail_adjustment)
 {
   /*
-   * This is the signal handler for the "destroy" signal for the 
+   * This is the signal handler for the "destroy" signal for the
    * GtkAdjustment. We set the  pointer location to NULL;
    */
   gail_adjustment->adjustment = NULL;

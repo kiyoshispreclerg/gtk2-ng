@@ -80,7 +80,7 @@ remove_shaped_area (GdkPixbuf *pixbuf,
   retval = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
 			   gdk_pixbuf_get_width (pixbuf),
 			   gdk_pixbuf_get_height (pixbuf));
-  
+
   gdk_pixbuf_fill (retval, 0);
   rectangles = XShapeGetRectangles (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), window,
 				    ShapeBounding, &rectangle_count, &rectangle_order);

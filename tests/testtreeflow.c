@@ -144,7 +144,7 @@ main (int argc, char *argv[])
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
   gtk_box_pack_start (GTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
-  
+
   initialize_model ();
   tree_view = gtk_tree_view_new_with_model (model);
   gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view), path, NULL, TRUE, 0.5, 0.0);

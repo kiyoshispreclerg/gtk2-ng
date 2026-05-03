@@ -98,7 +98,7 @@ blink (GtkWidget *widget,
        GtkWidget *window)
 {
   guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (window), "blink"));
-  
+
   if (!blink_timeout)
     {
       blink_timeout = gdk_threads_add_timeout (1000, blink_cb, window);
@@ -178,14 +178,14 @@ create_menubar (GtkWindow *window)
   GtkItemFactory *item_factory;
   GtkAccelGroup *accel_group=NULL;
   GtkWidget *menubar;
-  
+
   accel_group = gtk_accel_group_new ();
   item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>",
                                        accel_group);
   gtk_item_factory_create_items (item_factory,
 				 G_N_ELEMENTS (menu_items),
 				 menu_items, NULL);
-  
+
   gtk_window_add_accel_group (window, accel_group);
   menubar = gtk_item_factory_get_widget (item_factory, "<main>");
 
@@ -201,7 +201,7 @@ create_combo_box (void)
   gtk_combo_box_text_append_text (combo_box, "Is");
   gtk_combo_box_text_append_text (combo_box, "A");
   gtk_combo_box_text_append_text (combo_box, "ComboBox");
-  
+
   return GTK_WIDGET (combo_box);
 }
 
@@ -218,7 +218,7 @@ create_content (GtkWindow *window, gboolean local)
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 3);
 
   gtk_container_add (GTK_CONTAINER (frame), vbox);
-  
+
   /* Combo */
   gtk_box_pack_start (GTK_BOX (vbox), create_combo(), TRUE, TRUE, 0);
 
@@ -244,7 +244,7 @@ create_content (GtkWindow *window, gboolean local)
 
   /* Combo Box */
   gtk_box_pack_start (GTK_BOX (vbox), create_combo_box (), TRUE, TRUE, 0);
-  
+
   add_buttons (NULL, vbox);
 
   return frame;
@@ -266,7 +266,7 @@ create_child_plug (guint32  xid,
   gtk_container_set_border_width (GTK_CONTAINER (window), 0);
 
   content = create_content (GTK_WINDOW (window), local);
-  
+
   gtk_container_add (GTK_CONTAINER (window), content);
 
   gtk_widget_show_all (window);

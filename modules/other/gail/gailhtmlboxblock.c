@@ -61,7 +61,7 @@ gail_html_box_block_get_n_children (AtkObject *obj)
   GObject *g_obj;
 
   g_return_val_if_fail (GAIL_IS_HTML_BOX_BLOCK (obj), 0);
-  atk_gobject = ATK_GOBJECT (obj); 
+  atk_gobject = ATK_GOBJECT (obj);
   g_obj = atk_gobject_get_object (atk_gobject);
   if (g_obj == NULL)
     return 0;
@@ -95,7 +95,7 @@ gail_html_box_block_ref_child (AtkObject *obj,
   gint n_children = 0;
 
   g_return_val_if_fail (GAIL_IS_HTML_BOX_BLOCK (obj), NULL);
-  atk_gobject = ATK_GOBJECT (obj); 
+  atk_gobject = ATK_GOBJECT (obj);
   g_obj = atk_gobject_get_object (atk_gobject);
   if (g_obj == NULL)
     return NULL;

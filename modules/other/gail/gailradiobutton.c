@@ -81,7 +81,7 @@ gail_radio_button_ref_relation_set (AtkObject *obj)
    * If the radio button'group has changed remove the relation
    */
   list = gtk_radio_button_get_group (GTK_RADIO_BUTTON (widget));
-  
+
   if (radio_button->old_group != list)
     {
       AtkRelation *relation;
@@ -105,7 +105,7 @@ gail_radio_button_ref_relation_set (AtkObject *obj)
       gint i = 0;
 
       list_length = g_slist_length (list);
-      accessible_array = (AtkObject**) g_malloc (sizeof (AtkObject *) * 
+      accessible_array = (AtkObject**) g_malloc (sizeof (AtkObject *) *
                           list_length);
       while (list != NULL)
       {

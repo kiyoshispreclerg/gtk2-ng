@@ -47,11 +47,11 @@ mnemonic_hash_free_foreach (gpointer	key,
   GSList *targets = value;
 
   gchar *name = gtk_accelerator_name (keyval, 0);
-      
+
   g_warning ("mnemonic \"%s\" wasn't removed for widget (%p)",
 	     name, targets->data);
   g_free (name);
-  
+
   g_slist_free (targets);
 }
 
@@ -73,9 +73,9 @@ _gtk_mnemonic_hash_add (GtkMnemonicHash *mnemonic_hash,
 {
   gpointer key = GUINT_TO_POINTER (keyval);
   GSList *targets, *new_targets;
-  
+
   g_return_if_fail (GTK_IS_WIDGET (target));
-  
+
   targets = g_hash_table_lookup (mnemonic_hash->hash, key);
   g_return_if_fail (g_slist_find (targets, target) == NULL);
 
@@ -91,9 +91,9 @@ _gtk_mnemonic_hash_remove (GtkMnemonicHash *mnemonic_hash,
 {
   gpointer key = GUINT_TO_POINTER (keyval);
   GSList *targets, *new_targets;
-  
+
   g_return_if_fail (GTK_IS_WIDGET (target));
-  
+
   targets = g_hash_table_lookup (mnemonic_hash->hash, key);
 
   g_return_if_fail (targets && g_slist_find (targets, target) != NULL);
@@ -120,13 +120,13 @@ _gtk_mnemonic_hash_activate (GtkMnemonicHash *mnemonic_hash,
 				 GUINT_TO_POINTER (keyval));
   if (!targets)
     return FALSE;
-  
+
   overloaded = FALSE;
   chosen_widget = NULL;
   for (list = targets; list; list = list->next)
     {
       widget = GTK_WIDGET (list->data);
-      
+
       if (gtk_widget_is_sensitive (widget) &&
 	  gtk_widget_get_mapped (widget) &&
           widget->window &&
@@ -177,7 +177,7 @@ mnemonic_hash_foreach_func (gpointer key,
 
   guint keyval = GPOINTER_TO_UINT (key);
   GSList *targets = value;
-  
+
   (*info->func) (keyval, targets, info->func_data);
 }
 
@@ -190,7 +190,7 @@ _gtk_mnemonic_hash_foreach (GtkMnemonicHash       *mnemonic_hash,
     GtkMnemonicHashForeach func;
     gpointer func_data;
   } info;
-  
+
   info.func = func;
   info.func_data = func_data;
 

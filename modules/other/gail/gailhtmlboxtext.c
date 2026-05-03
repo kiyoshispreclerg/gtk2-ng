@@ -26,7 +26,7 @@ static void           gail_html_box_text_text_interface_init (AtkTextIface      
 static gchar*         gail_html_box_text_get_text            (AtkText             *text,
                                                               gint                start_offset,
                                                               gint                end_offset);
-static gchar*         gail_html_box_text_get_text_after_offset 
+static gchar*         gail_html_box_text_get_text_after_offset
                                                              (AtkText             *text,
                                                               gint                offset,
                                                               AtkTextBoundary     boundary_type,
@@ -37,13 +37,13 @@ static gchar*         gail_html_box_text_get_text_at_offset  (AtkText           
                                                               AtkTextBoundary     boundary_type,
                                                               gint                *start_offset,
                                                               gint                *end_offset);
-static gchar*         gail_html_box_text_get_text_before_offset 
+static gchar*         gail_html_box_text_get_text_before_offset
                                                              (AtkText             *text,
                                                               gint                offset,
                                                               AtkTextBoundary     boundary_type,
                                                               gint                *start_offset,
                                                               gint                *end_offset);
-static gunichar       gail_html_box_text_get_character_at_offset 
+static gunichar       gail_html_box_text_get_character_at_offset
                                                               (AtkText            *text,
                                                                gint               offset);
 static gint           gail_html_box_text_get_character_count  (AtkText            *text);
@@ -61,12 +61,12 @@ static void           gail_html_box_text_get_character_extents (AtkText         
                                                                 gint              *width,
                                                                 gint              *height,
                                                                 AtkCoordType      coords);
-static AtkAttributeSet* 
+static AtkAttributeSet*
                       gail_html_box_text_get_run_attributes    (AtkText           *text,
                                                                 gint              offset,
                                                                 gint              *start_offset,
                                                                 gint              *end_offset);
-static AtkAttributeSet* 
+static AtkAttributeSet*
                       gail_html_box_text_get_default_attributes (AtkText          *text);
 static gint           gail_html_box_text_get_n_selections      (AtkText           *text);
 static gchar*         gail_html_box_text_get_selection         (AtkText           *text,
@@ -174,7 +174,7 @@ gail_html_box_text_get_text_after_offset (AtkText         *text,
                                           gint            *end_offset)
 {
   return get_text_near_offset (text, GAIL_AFTER_OFFSET,
-                               boundary_type, offset, 
+                               boundary_type, offset,
                                start_offset, end_offset);
 }
 
@@ -186,7 +186,7 @@ gail_html_box_text_get_text_at_offset (AtkText         *text,
                                        gint            *end_offset)
 {
   return get_text_near_offset (text, GAIL_AT_OFFSET,
-                               boundary_type, offset, 
+                               boundary_type, offset,
                                start_offset, end_offset);
 }
 
@@ -198,7 +198,7 @@ gail_html_box_text_get_text_before_offset (AtkText         *text,
                                            gint            *end_offset)
 {
   return get_text_near_offset (text, GAIL_BEFORE_OFFSET,
-                               boundary_type, offset, 
+                               boundary_type, offset,
                                start_offset, end_offset);
 }
 
@@ -392,14 +392,14 @@ add_to_attr_set (AtkAttributeSet   *attrib_set,
       value = g_strdup (atk_text_attribute_get_value (attr, attrs->appearance.strikethrough));
       break;
     case ATK_TEXT_ATTR_SIZE:
-      value = g_strdup_printf ("%i", 
+      value = g_strdup_printf ("%i",
                               pango_font_description_get_size (attrs->font));
       break;
     case ATK_TEXT_ATTR_SCALE:
       value = g_strdup_printf ("%g", attrs->font_scale);
       break;
     case ATK_TEXT_ATTR_WEIGHT:
-      value = g_strdup_printf ("%d", 
+      value = g_strdup_printf ("%d",
                               pango_font_description_get_weight (attrs->font));
       break;
     case ATK_TEXT_ATTR_LANGUAGE:
@@ -436,22 +436,22 @@ add_to_attr_set (AtkAttributeSet   *attrib_set,
       value = g_strdup (atk_text_attribute_get_value (attr, attrs->justification));
       break;
     case ATK_TEXT_ATTR_STRETCH:
-      value = g_strdup (atk_text_attribute_get_value (attr, 
+      value = g_strdup (atk_text_attribute_get_value (attr,
                         pango_font_description_get_stretch (attrs->font)));
       break;
     case ATK_TEXT_ATTR_VARIANT:
-      value = g_strdup (atk_text_attribute_get_value (attr, 
+      value = g_strdup (atk_text_attribute_get_value (attr,
                         pango_font_description_get_variant (attrs->font)));
       break;
     case ATK_TEXT_ATTR_STYLE:
-      value = g_strdup (atk_text_attribute_get_value (attr, 
+      value = g_strdup (atk_text_attribute_get_value (attr,
                         pango_font_description_get_style (attrs->font)));
       break;
     default:
       value = NULL;
       break;
     }
-  return gail_text_helper_add_attribute (attrib_set, 
+  return gail_text_helper_add_attribute (attrib_set,
                                          attr,
                                          value);
 }
@@ -465,6 +465,6 @@ get_text_near_offset (AtkText          *text,
                       gint             *end_offset)
 {
   return gail_text_helper_get_text (GAIL_HTML_BOX_TEXT (text)->texthelper, NULL,
-                                    function, boundary_type, offset, 
+                                    function, boundary_type, offset,
                                     start_offset, end_offset);
 }

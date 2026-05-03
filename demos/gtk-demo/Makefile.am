@@ -98,7 +98,7 @@ IMAGEFILES=	alphatest.png		\
 		gnome-gmush.png		\
 		gnome-gsame.png		\
 		gnu-keys.png		\
-		gtk-logo-rgb.gif		
+		gtk-logo-rgb.gif
 
 democode_DATA = $(demos) $(IMAGEFILES) demo.ui
 

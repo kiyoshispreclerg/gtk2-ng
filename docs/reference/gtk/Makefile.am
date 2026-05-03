@@ -10,10 +10,10 @@ DOC_MODULE=gtk2
 DOC_MAIN_SGML_FILE=gtk-docs.sgml
 
 # Extra options to supply to gtkdoc-scan
-SCAN_OPTIONS=--deprecated-guards="GTK_ENABLE_BROKEN|GTK_DISABLE_DEPRECATED" 
+SCAN_OPTIONS=--deprecated-guards="GTK_ENABLE_BROKEN|GTK_DISABLE_DEPRECATED"
 
 # Extra options to pass to gtkdoc-scangobj
-SCANGOBJ_OPTIONS=--type-init-func="gtk_type_init(0)" 
+SCANGOBJ_OPTIONS=--type-init-func="gtk_type_init(0)"
 
 # The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=../../../gtk
@@ -370,7 +370,7 @@ if ENABLE_MAN
 
 man_MANS = gtk-query-immodules-2.0.1 gtk-update-icon-cache.1 gtk-builder-convert.1
 
-%.1 : %.xml 
+%.1 : %.xml
 	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
 BUILT_EXTRA_DIST = $(man_MANS)

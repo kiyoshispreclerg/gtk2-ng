@@ -15,7 +15,7 @@ static void color_changed_cb( GtkWidget         *widget,
   GdkColor ncolor;
 
   gtk_color_selection_get_current_color (colorsel, &ncolor);
-  gtk_widget_modify_bg (drawingarea, GTK_STATE_NORMAL, &ncolor);       
+  gtk_widget_modify_bg (drawingarea, GTK_STATE_NORMAL, &ncolor);
 }
 
 /* Drawingarea event handler */
@@ -56,7 +56,7 @@ static gboolean area_event( GtkWidget *widget,
 
       if (response == GTK_RESPONSE_OK)
         gtk_color_selection_get_current_color (colorsel, &color);
-      else 
+      else
         gtk_widget_modify_bg (drawingarea, GTK_STATE_NORMAL, &color);
 
       gtk_widget_hide (colorseldlg);
@@ -96,7 +96,7 @@ gint main( gint   argc,
 
   g_signal_connect (GTK_OBJECT (window), "delete_event",
                     GTK_SIGNAL_FUNC (destroy_window), (gpointer) window);
-  
+
   /* Create drawingarea, set size and catch button events */
 
   drawingarea = gtk_drawing_area_new ();
@@ -104,22 +104,22 @@ gint main( gint   argc,
   color.red = 0;
   color.blue = 65535;
   color.green = 0;
-  gtk_widget_modify_bg (drawingarea, GTK_STATE_NORMAL, &color);       
+  gtk_widget_modify_bg (drawingarea, GTK_STATE_NORMAL, &color);
 
   gtk_widget_set_size_request (GTK_WIDGET (drawingarea), 200, 200);
 
   gtk_widget_set_events (drawingarea, GDK_BUTTON_PRESS_MASK);
 
-  g_signal_connect (GTK_OBJECT (drawingarea), "event", 
+  g_signal_connect (GTK_OBJECT (drawingarea), "event",
 	            GTK_SIGNAL_FUNC (area_event), (gpointer) drawingarea);
-  
+
   /* Add drawingarea to window, then show them both */
 
   gtk_container_add (GTK_CONTAINER (window), drawingarea);
 
   gtk_widget_show (drawingarea);
   gtk_widget_show (window);
-  
+
   /* Enter the gtk main loop (this never returns) */
 
   gtk_main ();

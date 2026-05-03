@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -68,7 +68,7 @@ gdk_font_hash_remove (GdkFontType type,
     {
       g_hash_table_remove (hash, tmp_list->data);
       g_free (tmp_list->data);
-      
+
       tmp_list = tmp_list->next;
     }
 
@@ -91,7 +91,7 @@ gdk_font_hash_lookup (GdkFontType  type,
       result = g_hash_table_lookup (hash, font_name);
       if (result)
 	gdk_font_ref (result);
-      
+
       return result;
     }
 }
@@ -214,7 +214,7 @@ typedef enum
 
 static struct {
   wchar_t low, high;
-  unicode_subset bit; 
+  unicode_subset bit;
   gchar *name;
 } utab[] =
 {
@@ -690,7 +690,7 @@ check_unicode_subranges (UINT           charset,
       set_bit (U_HEBREW_EXTENDED);
       set_bit (U_GENERAL_PUNCTUATION);
       set_bit (U_LETTERLIKE_SYMBOLS);
-      retval = TRUE; 
+      retval = TRUE;
       break;
     case ARABIC_CHARSET:
       set_bit (U_BASIC_LATIN);
@@ -844,7 +844,7 @@ gdk_font_load_logfont (LOGFONT *lfp)
 
       if (hfont != NULL)
 	break;
-      
+
       /* If we fail, try some similar fonts often found on Windows. */
       if (tries == 0)
 	{
@@ -892,7 +892,7 @@ gdk_font_load_logfont (LOGFONT *lfp)
 
   if (!hfont)
     return NULL;
-      
+
   singlefont = g_new (GdkWin32SingleFont, 1);
   singlefont->hfont = hfont;
   GetObject (singlefont->hfont, sizeof (logfont), &logfont);
@@ -1036,7 +1036,7 @@ gdk_font_load_internal (const gchar *font_name)
 #ifdef FW_ULTRALIGHT
 	logfont.lfWeight = FW_ULTRALIGHT;
 #else
-	logfont.lfWeight = FW_EXTRALIGHT; /* In fact, FW_ULTRALIGHT really is 
+	logfont.lfWeight = FW_EXTRALIGHT; /* In fact, FW_ULTRALIGHT really is
 					   * defined as FW_EXTRALIGHT anyway.
 					   */
 #endif
@@ -1150,7 +1150,7 @@ gdk_font_load_internal (const gchar *font_name)
 	logfont.lfPitchAndFamily = FIXED_PITCH;
       else if (g_ascii_strcasecmp (spacing, "p") == 0)
 	logfont.lfPitchAndFamily = VARIABLE_PITCH;
-      else 
+      else
 	logfont.lfPitchAndFamily = DEFAULT_PITCH;
       fn = g_filename_from_utf8 (family, -1, NULL, NULL, NULL);
       strcpy (logfont.lfFaceName, fn);
@@ -1334,7 +1334,7 @@ gdk_fontset_load (const gchar *fontset_name)
       if (!*s)
 	break;
     }
-  
+
   g_free (fs);
 
   gdk_font_hash_insert (GDK_FONT_FONTSET, font, fontset_name);
@@ -1347,7 +1347,7 @@ gdk_fontset_load_for_display (GdkDisplay  *display,
 			      const gchar *fontset_name)
 {
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  
+
   return gdk_fontset_load (fontset_name);
 }
 
@@ -1363,20 +1363,20 @@ _gdk_font_destroy (GdkFont *font)
 			   singlefont->hfont));
 
   gdk_font_hash_remove (font->type, font);
-  
+
   switch (font->type)
     {
     case GDK_FONT_FONT:
       DeleteObject (singlefont->hfont);
       break;
-      
+
     case GDK_FONT_FONTSET:
       list = private->fonts;
       while (list)
 	{
 	  singlefont = (GdkWin32SingleFont *) list->data;
 	  DeleteObject (singlefont->hfont);
-	  
+
 	  list = list->next;
 	}
       g_slist_free (private->fonts);
@@ -1514,7 +1514,7 @@ _gdk_wchar_text_handle (GdkFont       *font,
       while (list)
 	{
 	  singlefont = (GdkWin32SingleFont *) list->data;
-	  
+
 	  if (singlefont->fs.fsUsb[block/32] & (1 << (block % 32)))
 	    break;
 
@@ -1715,7 +1715,7 @@ gdk_text_extents_wc (GdkFont        *font,
     *descent = font->descent + 1;
 }
 
-GdkDisplay* 
+GdkDisplay*
 gdk_font_get_display (GdkFont* font)
 {
   return _gdk_display;

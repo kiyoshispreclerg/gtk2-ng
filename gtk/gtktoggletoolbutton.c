@@ -49,7 +49,7 @@ struct _GtkToggleToolButtonPrivate
 {
   guint active : 1;
 };
-  
+
 
 static void     gtk_toggle_tool_button_set_property        (GObject      *object,
 							    guint         prop_id,
@@ -143,7 +143,7 @@ gtk_toggle_tool_button_init (GtkToggleToolButton *button)
    * active at the time it was created.
    */
   button->priv->active = gtk_toggle_button_get_active (toggle_button);
-    
+
   g_signal_connect_object (toggle_button,
 			   "toggled", G_CALLBACK (button_toggled), button, 0);
 }
@@ -159,7 +159,7 @@ gtk_toggle_tool_button_set_property (GObject      *object,
   switch (prop_id)
     {
       case PROP_ACTIVE:
-	gtk_toggle_tool_button_set_active (button, 
+	gtk_toggle_tool_button_set_active (button,
 					   g_value_get_boolean (value));
         break;
 
@@ -227,7 +227,7 @@ gtk_toggle_tool_button_create_menu_proxy (GtkToolItem *item)
     {
       label = "";
     }
-  
+
   if (use_mnemonic)
     menu_item = gtk_check_menu_item_new_with_mnemonic (label);
   else
@@ -249,7 +249,7 @@ gtk_toggle_tool_button_create_menu_proxy (GtkToolItem *item)
 				  FALSE);
 
   gtk_tool_item_set_proxy_menu_item (item, MENU_ID, menu_item);
-  
+
   return TRUE;
 }
 
@@ -293,9 +293,9 @@ button_toggled (GtkWidget           *widget,
   if (toggle_tool_button->priv->active != toggle_active)
     {
       GtkWidget *menu_item;
-      
+
       toggle_tool_button->priv->active = toggle_active;
-       
+
       if ((menu_item =
 	   gtk_tool_item_get_proxy_menu_item (GTK_TOOL_ITEM (toggle_tool_button), MENU_ID)))
 	{
@@ -356,11 +356,11 @@ gtk_toggle_tool_button_sync_action_properties (GtkActivatable *activatable,
 
 /**
  * gtk_toggle_tool_button_new:
- * 
+ *
  * Returns a new #GtkToggleToolButton
- * 
+ *
  * Return value: a newly created #GtkToggleToolButton
- * 
+ *
  * Since: 2.4
  **/
 GtkToolItem *
@@ -370,22 +370,22 @@ gtk_toggle_tool_button_new (void)
 
   button = g_object_new (GTK_TYPE_TOGGLE_TOOL_BUTTON,
 			 NULL);
-  
+
   return GTK_TOOL_ITEM (button);
 }
 
 /**
  * gtk_toggle_tool_button_new_from_stock:
- * @stock_id: the name of the stock item 
+ * @stock_id: the name of the stock item
  *
  * Creates a new #GtkToggleToolButton containing the image and text from a
  * stock item. Some stock ids have preprocessor macros like #GTK_STOCK_OK
  * and #GTK_STOCK_APPLY.
  *
  * It is an error if @stock_id is not a name of a stock item.
- * 
+ *
  * Return value: A new #GtkToggleToolButton
- * 
+ *
  * Since: 2.4
  **/
 GtkToolItem *
@@ -394,11 +394,11 @@ gtk_toggle_tool_button_new_from_stock (const gchar *stock_id)
   GtkToolButton *button;
 
   g_return_val_if_fail (stock_id != NULL, NULL);
-  
+
   button = g_object_new (GTK_TYPE_TOGGLE_TOOL_BUTTON,
 			 "stock-id", stock_id,
 			 NULL);
-  
+
   return GTK_TOOL_ITEM (button);
 }
 
@@ -406,11 +406,11 @@ gtk_toggle_tool_button_new_from_stock (const gchar *stock_id)
  * gtk_toggle_tool_button_set_active:
  * @button: a #GtkToggleToolButton
  * @is_active: whether @button should be active
- * 
+ *
  * Sets the status of the toggle tool button. Set to %TRUE if you
  * want the GtkToggleButton to be 'pressed in', and %FALSE to raise it.
  * This action causes the toggled signal to be emitted.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -428,12 +428,12 @@ gtk_toggle_tool_button_set_active (GtkToggleToolButton *button,
 /**
  * gtk_toggle_tool_button_get_active:
  * @button: a #GtkToggleToolButton
- * 
+ *
  * Queries a #GtkToggleToolButton and returns its current state.
  * Returns %TRUE if the toggle button is pressed in and %FALSE if it is raised.
- * 
+ *
  * Return value: %TRUE if the toggle tool button is pressed in, %FALSE if not
- * 
+ *
  * Since: 2.4
  **/
 gboolean

@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 2003.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -38,19 +38,19 @@
 #include "gtkprivate.h"
 #include "gtkalias.h"
 
-struct _GtkRadioActionPrivate 
+struct _GtkRadioActionPrivate
 {
   GSList *group;
   gint    value;
 };
 
-enum 
+enum
 {
   CHANGED,
   LAST_SIGNAL
 };
 
-enum 
+enum
 {
   PROP_0,
   PROP_VALUE,
@@ -96,7 +96,7 @@ gtk_radio_action_class_init (GtkRadioActionClass *klass)
    * GtkRadioAction:value:
    *
    * The value is an arbitrary integer which can be used as a
-   * convenient way to determine which action in the group is 
+   * convenient way to determine which action in the group is
    * currently active in an ::activate or ::changed signal handler.
    * See gtk_radio_action_get_current_value() and #GtkRadioActionEntry
    * for convenient ways to get and set this property.
@@ -132,7 +132,7 @@ gtk_radio_action_class_init (GtkRadioActionClass *klass)
    * GtkRadioAction:current-value:
    *
    * The value property of the currently active member of the group to which
-   * this action belongs. 
+   * this action belongs.
    *
    * Since: 2.10
    */
@@ -242,7 +242,7 @@ gtk_radio_action_set_property (GObject         *object,
 			       GParamSpec      *pspec)
 {
   GtkRadioAction *radio_action;
-  
+
   radio_action = GTK_RADIO_ACTION (object);
 
   switch (prop_id)
@@ -250,12 +250,12 @@ gtk_radio_action_set_property (GObject         *object,
     case PROP_VALUE:
       radio_action->private_data->value = g_value_get_int (value);
       break;
-    case PROP_GROUP: 
+    case PROP_GROUP:
       {
 	GtkRadioAction *arg;
 	GSList *slist = NULL;
-	
-	if (G_VALUE_HOLDS_OBJECT (value)) 
+
+	if (G_VALUE_HOLDS_OBJECT (value))
 	  {
 	    arg = GTK_RADIO_ACTION (g_value_get_object (value));
 	    if (arg)
@@ -319,7 +319,7 @@ gtk_radio_action_activate (GtkAction *action)
 	  tmp_action = tmp_list->data;
 	  tmp_list = tmp_list->next;
 
-	  if (tmp_action->private_data->active && (tmp_action != toggle_action)) 
+	  if (tmp_action->private_data->active && (tmp_action != toggle_action))
 	    {
 	      toggle_action->private_data->active = !toggle_action->private_data->active;
 
@@ -351,7 +351,7 @@ gtk_radio_action_activate (GtkAction *action)
 	{
 	  tmp_action = tmp_list->data;
 	  tmp_list = tmp_list->next;
-	  
+
           g_object_notify (G_OBJECT (tmp_action), "current-value");
 
 	  g_signal_emit (tmp_action, radio_action_signals[CHANGED], 0, radio_action);
@@ -364,7 +364,7 @@ gtk_radio_action_activate (GtkAction *action)
 static GtkWidget *
 create_menu_item (GtkAction *action)
 {
-  return g_object_new (GTK_TYPE_CHECK_MENU_ITEM, 
+  return g_object_new (GTK_TYPE_CHECK_MENU_ITEM,
 		       "draw-as-radio", TRUE,
 		       NULL);
 }
@@ -375,17 +375,17 @@ create_menu_item (GtkAction *action)
  *
  * Returns the list representing the radio group for this object.
  * Note that the returned list is only valid until the next change
- * to the group. 
+ * to the group.
  *
  * A common way to set up a group of radio group is the following:
  * |[
  *   GSList *group = NULL;
  *   GtkRadioAction *action;
- *  
+ *
  *   while (/&ast; more actions to add &ast;/)
  *     {
  *        action = gtk_radio_action_new (...);
- *        
+ *
  *        gtk_radio_action_set_group (action, group);
  *        group = gtk_radio_action_get_group (action);
  *     }
@@ -413,7 +413,7 @@ gtk_radio_action_get_group (GtkRadioAction *action)
  * Since: 2.4
  */
 void
-gtk_radio_action_set_group (GtkRadioAction *action, 
+gtk_radio_action_set_group (GtkRadioAction *action,
 			    GSList         *group)
 {
   g_return_if_fail (GTK_IS_RADIO_ACTION (action));
@@ -455,10 +455,10 @@ gtk_radio_action_set_group (GtkRadioAction *action,
 /**
  * gtk_radio_action_get_current_value:
  * @action: a #GtkRadioAction
- * 
- * Obtains the value property of the currently active member of 
+ *
+ * Obtains the value property of the currently active member of
  * the group to which @action belongs.
- * 
+ *
  * Return value: The value of the currently active group member
  *
  * Since: 2.4
@@ -488,7 +488,7 @@ gtk_radio_action_get_current_value (GtkRadioAction *action)
  * gtk_radio_action_set_current_value:
  * @action: a #GtkRadioAction
  * @current_value: the new value
- * 
+ *
  * Sets the currently active group member to the member with value
  * property @current_value.
  *

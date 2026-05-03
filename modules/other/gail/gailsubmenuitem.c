@@ -140,7 +140,7 @@ gail_sub_menu_item_add_selection (AtkSelection *selection,
   item = g_list_nth (shell->children, i);
   g_return_val_if_fail (item != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_MENU_ITEM(item->data), FALSE);
-   
+
   gtk_menu_shell_select_item (shell, GTK_WIDGET (item->data));
   return TRUE;
 }
@@ -185,7 +185,7 @@ gail_sub_menu_item_ref_selection (AtkSelection   *selection,
   submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
   g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), NULL);
   shell = GTK_MENU_SHELL (submenu);
-  
+
   if (shell->active_menu_item != NULL)
     {
       obj = gtk_widget_get_accessible (shell->active_menu_item);
@@ -243,10 +243,10 @@ gail_sub_menu_item_is_child_selected (AtkSelection   *selection,
 
   if (shell->active_menu_item == NULL)
     return FALSE;
-  
+
   j = g_list_index (shell->children, shell->active_menu_item);
 
-  return (j==i);   
+  return (j==i);
 }
 
 static gboolean
@@ -269,7 +269,7 @@ gail_sub_menu_item_remove_selection (AtkSelection   *selection,
   g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), FALSE);
   shell = GTK_MENU_SHELL (submenu);
 
-  if (shell->active_menu_item && 
+  if (shell->active_menu_item &&
       GTK_MENU_ITEM (shell->active_menu_item)->submenu)
     {
     /*

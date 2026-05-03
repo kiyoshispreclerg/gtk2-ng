@@ -2,9 +2,9 @@
  *
  * GtkSizeGroup provides a mechanism for grouping a number of
  * widgets together so they all request the same amount of space.
- * This is typically useful when you want a column of widgets to 
+ * This is typically useful when you want a column of widgets to
  * have the same size, but you can't use a GtkTable widget.
- * 
+ *
  * Note that size groups only affect the amount of space requested,
  * not the size that the widgets finally receive. If you want the
  * widgets in a GtkSizeGroup to actually be the same size, you need
@@ -26,7 +26,7 @@ create_combo_box (const char **strings)
   const char **str;
 
   combo_box = gtk_combo_box_text_new ();
-  
+
   for (str = strings; *str; str++)
     gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), *str);
 
@@ -51,7 +51,7 @@ add_row (GtkTable     *table,
 		    0, 1,                  row, row + 1,
 		    GTK_EXPAND | GTK_FILL, 0,
 		    0,                     0);
-  
+
   combo_box = create_combo_box (options);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), combo_box);
   gtk_size_group_add_widget (size_group, combo_box);
@@ -75,7 +75,7 @@ toggle_grouping (GtkToggleButton *check_button,
     new_mode = GTK_SIZE_GROUP_HORIZONTAL;
   else
     new_mode = GTK_SIZE_GROUP_NONE;
-  
+
   gtk_size_group_set_mode (size_group, new_mode);
 }
 
@@ -91,15 +91,15 @@ do_sizegroup (GtkWidget *do_widget)
   static const char *color_options[] = {
     "Red", "Green", "Blue", NULL
   };
-  
+
   static const char *dash_options[] = {
     "Solid", "Dashed", "Dotted", NULL
   };
-  
+
   static const char *end_options[] = {
     "Square", "Round", "Arrow", NULL
   };
-  
+
   if (!window)
     {
       window = gtk_dialog_new_with_buttons ("GtkSizeGroup",
@@ -109,7 +109,7 @@ do_sizegroup (GtkWidget *do_widget)
 					    GTK_RESPONSE_NONE,
 					    NULL);
       gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
-      
+
       g_signal_connect (window, "response",
 			G_CALLBACK (gtk_widget_destroy), NULL);
       g_signal_connect (window, "destroy",
@@ -120,7 +120,7 @@ do_sizegroup (GtkWidget *do_widget)
       gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
 
       size_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-      
+
       /* Create one frame holding color options
        */
       frame = gtk_frame_new ("Color Options");
@@ -152,7 +152,7 @@ do_sizegroup (GtkWidget *do_widget)
       /* And a check button to turn grouping on and off */
       check_button = gtk_check_button_new_with_mnemonic ("_Enable grouping");
       gtk_box_pack_start (GTK_BOX (vbox), check_button, FALSE, FALSE, 0);
-      
+
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check_button), TRUE);
       g_signal_connect (check_button, "toggled",
 			G_CALLBACK (toggle_grouping), size_group);

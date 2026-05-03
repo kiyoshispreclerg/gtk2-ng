@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GTK_DISABLE_DEPRECATED
@@ -163,7 +163,7 @@ selection_toggled (GtkWidget *widget)
 }
 
 void
-selection_get (GtkWidget *widget, 
+selection_get (GtkWidget *widget,
 	       GtkSelectionData *selection_data,
 	       guint      info,
 	       guint      time,
@@ -177,7 +177,7 @@ selection_get (GtkWidget *widget,
     {
       buffer = NULL;
       len = 0;
-    }      
+    }
   else
     {
       buffer = (guchar *)selection_string->str;
@@ -192,7 +192,7 @@ selection_get (GtkWidget *widget,
     case STRING:
       type = seltypes[STRING];
     }
-  
+
   gtk_selection_data_set (selection_data, type, 8, buffer, len);
 }
 
@@ -210,7 +210,7 @@ stringify_atom (guchar *data, gint *position)
 {
   gchar *str = gdk_atom_name (*(GdkAtom *)(data+*position));
   *position += sizeof(GdkAtom);
-    
+
   return str;
 }
 
@@ -219,7 +219,7 @@ stringify_text (guchar *data, gint *position)
 {
   gchar *str = g_strdup ((gchar *)(data+*position));
   *position += strlen (str) + 1;
-    
+
   return str;
 }
 
@@ -233,7 +233,7 @@ stringify_xid (guchar *data, gint *position)
   str = g_strdup (buffer);
 
   *position += sizeof(guint32);
-    
+
   return str;
 }
 
@@ -247,7 +247,7 @@ stringify_integer (guchar *data, gint *position)
   str = g_strdup (buffer);
 
   *position += sizeof(int);
-    
+
   return str;
 }
 
@@ -262,7 +262,7 @@ stringify_span (guchar *data, gint *position)
   str = g_strdup (buffer);
 
   *position += 2*sizeof(int);
-    
+
   return str;
 }
 
@@ -273,7 +273,7 @@ selection_received (GtkWidget *widget, GtkSelectionData *data)
   int i;
   SelType seltype;
   char *str;
-  
+
   if (data->length < 0)
     {
       g_print("Error retrieving selection\n");
@@ -305,7 +305,7 @@ selection_received (GtkWidget *widget, GtkSelectionData *data)
 
   gtk_text_freeze (GTK_TEXT (selection_text));
   gtk_text_set_point (GTK_TEXT (selection_text), 0);
-  gtk_text_forward_delete (GTK_TEXT (selection_text), 
+  gtk_text_forward_delete (GTK_TEXT (selection_text),
 			   gtk_text_get_length (GTK_TEXT (selection_text)));
 
   position = 0;
@@ -344,11 +344,11 @@ selection_received (GtkWidget *widget, GtkSelectionData *data)
 	    continue;
 	  }
 	}
-      gtk_text_insert (GTK_TEXT (selection_text), NULL, 
-		       &selection_text->style->black, 
+      gtk_text_insert (GTK_TEXT (selection_text), NULL,
+		       &selection_text->style->black,
 		       NULL, str, -1);
-      gtk_text_insert (GTK_TEXT (selection_text), NULL, 
-		       &selection_text->style->black, 
+      gtk_text_insert (GTK_TEXT (selection_text), NULL,
+		       &selection_text->style->black,
 		       NULL, "\n", -1);
       g_string_append (selection_string, str);
       g_free (str);
@@ -371,7 +371,7 @@ paste (GtkWidget *widget, GtkWidget *entry)
       return;
     }
 
-  gtk_selection_convert (selection_widget, GDK_SELECTION_PRIMARY, atom, 
+  gtk_selection_convert (selection_widget, GDK_SELECTION_PRIMARY, atom,
 			 GDK_CURRENT_TIME);
 }
 
@@ -399,7 +399,7 @@ main (int argc, char *argv[])
     { "COMPOUND_TEXT", 0, COMPOUND_TEXT }
   };
   static gint ntargets = sizeof(targetlist) / sizeof(targetlist[0]);
-  
+
   gtk_init (&argc, &argv);
 
   init_atoms();
@@ -420,10 +420,10 @@ main (int argc, char *argv[])
   gtk_table_set_row_spacing (GTK_TABLE (table), 1, 2);
   gtk_table_set_row_spacing (GTK_TABLE (table), 2, 2);
   gtk_table_set_col_spacing (GTK_TABLE (table), 0, 2);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), 
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox),
 		      table, TRUE, TRUE, 0);
   gtk_widget_show (table);
-  
+
   selection_button = gtk_toggle_button_new_with_label ("Claim Selection");
   gtk_table_attach (GTK_TABLE (table), selection_button, 0, 2, 0, 1,
 		    GTK_EXPAND | GTK_FILL, 0, 0, 0);
@@ -445,12 +445,12 @@ main (int argc, char *argv[])
   selection_text = gtk_text_new (NULL, NULL);
   gtk_table_attach_defaults (GTK_TABLE (table), selection_text, 0, 1, 1, 2);
   gtk_widget_show (selection_text);
-  
+
   hscrollbar = gtk_hscrollbar_new (GTK_TEXT (selection_text)->hadj);
   gtk_table_attach (GTK_TABLE (table), hscrollbar, 0, 1, 2, 3,
 		    GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show (hscrollbar);
-  
+
   vscrollbar = gtk_vscrollbar_new (GTK_TEXT (selection_text)->vadj);
   gtk_table_attach (GTK_TABLE (table), vscrollbar, 1, 2, 1, 2,
 		    GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
@@ -471,14 +471,14 @@ main (int argc, char *argv[])
 
   /* .. And create some buttons */
   button = gtk_button_new_with_label ("Paste");
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), 
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area),
 		      button, TRUE, TRUE, 0);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (paste), entry);
   gtk_widget_show (button);
 
   button = gtk_button_new_with_label ("Quit");
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area), 
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->action_area),
 		      button, TRUE, TRUE, 0);
 
   g_signal_connect_swapped (button, "clicked",

@@ -165,7 +165,7 @@ gail_option_menu_real_add_gtk (GtkContainer *container,
   return 1;
 }
 
-static gint 
+static gint
 gail_option_menu_real_remove_gtk (GtkContainer *container,
                                   GtkWidget    *widget,
                                   gpointer     data)
@@ -201,7 +201,7 @@ gail_option_menu_do_action (AtkAction *action,
                             gint      i)
 {
   GtkWidget *widget;
-  GailButton *button; 
+  GailButton *button;
   gboolean return_value = TRUE;
 
   button = GAIL_BUTTON (action);
@@ -227,13 +227,13 @@ gail_option_menu_do_action (AtkAction *action,
       return_value = FALSE;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
-static gboolean 
+static gboolean
 idle_do_action (gpointer data)
 {
-  GtkButton *button; 
+  GtkButton *button;
   GtkWidget *widget;
   GdkEvent tmp_event;
   GailButton *gail_button;
@@ -246,13 +246,13 @@ idle_do_action (gpointer data)
       !gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
     return FALSE;
 
-  button = GTK_BUTTON (widget); 
+  button = GTK_BUTTON (widget);
 
   button->in_button = TRUE;
   g_signal_emit_by_name (button, "enter");
   /*
    * Simulate a button press event. calling gtk_button_pressed() does
-   * not get the job done for a GtkOptionMenu.  
+   * not get the job done for a GtkOptionMenu.
    */
   tmp_event.button.type = GDK_BUTTON_PRESS;
   tmp_event.button.window = widget->window;
@@ -290,7 +290,7 @@ gail_option_menu_get_description (AtkAction *action,
       return_value = NULL;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static const gchar*
@@ -312,7 +312,7 @@ gail_option_menu_action_get_name (AtkAction *action,
       return_value = NULL;
       break;
   }
-  return return_value; 
+  return return_value;
 }
 
 static gboolean

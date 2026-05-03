@@ -83,7 +83,7 @@ DECLARE_INTERFACE_ (IPrintDialogCallback, IUnknown)
     STDMETHOD (InitDone)(THIS) PURE;
     STDMETHOD (SelectionChange)(THIS) PURE;
     STDMETHOD (HandleMessage)(THIS_ HWND,UINT,WPARAM,LPARAM,LRESULT*) PURE;
-}; 
+};
 #endif
 
 static UINT got_gdk_events_message;
@@ -127,7 +127,7 @@ static GtkPaperSize *
 paper_size_from_win32 (short size)
 {
   const char *name;
-  
+
   switch (size)
     {
     case DMPAPER_LETTER_TRANSVERSE:
@@ -296,7 +296,7 @@ paper_size_from_win32 (short size)
     case DMPAPER_A2:
       name = "iso_a2";
       break;
-      
+
     default:
       name = NULL;
       break;
@@ -304,7 +304,7 @@ paper_size_from_win32 (short size)
 
   if (name)
     return gtk_paper_size_new (name);
-  else 
+  else
     return NULL;
 }
 
@@ -315,7 +315,7 @@ paper_size_to_win32 (GtkPaperSize *paper_size)
 
   if (gtk_paper_size_is_custom (paper_size))
     return 0;
-  
+
   format = gtk_paper_size_get_name (paper_size);
 
   if (strcmp (format, "na_letter") == 0)
@@ -463,11 +463,11 @@ win32_start_page (GtkPrintOperation *op,
   double x_off, y_off;
 
   devmode = GlobalLock (op_win32->devmode);
-  
+
   devmode->dmFields |= DM_ORIENTATION;
   devmode->dmOrientation =
     orientation_to_win32 (gtk_page_setup_get_orientation (page_setup));
-  
+
   paper_size = gtk_page_setup_get_paper_size (page_setup);
   devmode->dmFields |= DM_PAPERSIZE;
   devmode->dmFields &= ~(DM_PAPERWIDTH | DM_PAPERLENGTH);
@@ -481,16 +481,16 @@ win32_start_page (GtkPrintOperation *op,
       devmode->dmPaperWidth = gtk_paper_size_get_width (paper_size, GTK_UNIT_MM) * 10.0;
       devmode->dmPaperLength = gtk_paper_size_get_height (paper_size, GTK_UNIT_MM) * 10.0;
     }
-  
+
   ResetDCW (op_win32->hdc, devmode);
-  
+
   GlobalUnlock (op_win32->devmode);
 
   set_hard_margins (op);
   x_off = GetDeviceCaps (op_win32->hdc, PHYSICALOFFSETX);
   y_off = GetDeviceCaps (op_win32->hdc, PHYSICALOFFSETY);
   cairo_surface_set_device_offset (op_win32->surface, -x_off, -y_off);
-  
+
   StartPage (op_win32->hdc);
 }
 
@@ -509,7 +509,7 @@ static gboolean
 win32_poll_status_timeout (GtkPrintOperation *op)
 {
   GtkPrintOperationWin32 *op_win32 = op->priv->platform_data;
-  
+
   op_win32->timeout_id = 0;
   /* We need to ref this, as setting the status to finished
      might unref the object */
@@ -535,7 +535,7 @@ win32_end_run (GtkPrintOperation *op,
   HANDLE printerHandle = 0;
 
   cairo_surface_finish (op_win32->surface);
-  
+
   EndDoc (op_win32->hdc);
 
   if (op->priv->track_print_status)
@@ -546,7 +546,7 @@ win32_end_run (GtkPrintOperation *op,
 	printerHandle = 0;
       GlobalUnlock (op_win32->devnames);
     }
-  
+
   GlobalFree (op_win32->devmode);
   GlobalFree (op_win32->devnames);
 
@@ -554,7 +554,7 @@ win32_end_run (GtkPrintOperation *op,
   op_win32->surface = NULL;
 
   DeleteDC (op_win32->hdc);
-  
+
   if (printerHandle != 0)
     {
       op_win32->printerHandle = printerHandle;
@@ -593,9 +593,9 @@ win32_poll_status (GtkPrintOperation *op)
       win32_status = job_info->Status;
 
       if (job_info->pStatus)
-	status_str = g_utf16_to_utf8 (job_info->pStatus, 
+	status_str = g_utf16_to_utf8 (job_info->pStatus,
 				      -1, NULL, NULL, NULL);
-     
+
       if (win32_status &
 	  (JOB_STATUS_COMPLETE | JOB_STATUS_PRINTED))
 	status = GTK_PRINT_STATUS_FINISHED;
@@ -638,7 +638,7 @@ win32_poll_status (GtkPrintOperation *op)
   g_free (data);
 
   _gtk_print_operation_set_status (op, status, status_str);
- 
+
   g_free (status_str);
 }
 
@@ -675,7 +675,7 @@ devmode_to_settings (GtkPrintSettings *settings,
   LPDEVMODEW devmode;
 
   devmode = GlobalLock (hDevMode);
-  
+
   gtk_print_settings_set_int (settings, GTK_PRINT_SETTINGS_WIN32_DRIVER_VERSION,
 			      devmode->dmDriverVersion);
   if (devmode->dmDriverExtra != 0)
@@ -687,12 +687,12 @@ devmode_to_settings (GtkPrintSettings *settings,
 			      extra);
       g_free (extra);
     }
-  
+
   if (devmode->dmFields & DM_ORIENTATION)
     gtk_print_settings_set_orientation (settings,
 					orientation_from_win32 (devmode->dmOrientation));
-  
-  
+
+
   if (devmode->dmFields & DM_PAPERSIZE &&
       devmode->dmPaperSize != 0)
     {
@@ -712,7 +712,7 @@ devmode_to_settings (GtkPrintSettings *settings,
       GtkPaperSize *paper_size;
       char *form_name = NULL;
       if (devmode->dmFields & DM_FORMNAME)
-	form_name = g_utf16_to_utf8 (devmode->dmFormName, 
+	form_name = g_utf16_to_utf8 (devmode->dmFormName,
 				     -1, NULL, NULL, NULL);
       if (form_name == NULL || form_name[0] == 0)
 	form_name = g_strdup (_("Custom size"));
@@ -726,14 +726,14 @@ devmode_to_settings (GtkPrintSettings *settings,
       gtk_print_settings_set_paper_size (settings, paper_size);
       gtk_paper_size_free (paper_size);
     }
-  
+
   if (devmode->dmFields & DM_SCALE)
     gtk_print_settings_set_scale (settings, devmode->dmScale);
-  
+
   if (devmode->dmFields & DM_COPIES)
     gtk_print_settings_set_n_copies (settings,
 				     devmode->dmCopies);
-  
+
   if (devmode->dmFields & DM_DEFAULTSOURCE)
     {
       char *source;
@@ -783,7 +783,7 @@ devmode_to_settings (GtkPrintSettings *settings,
       gtk_print_settings_set_default_source (settings, source);
       gtk_print_settings_set_int (settings, "win32-default-source", devmode->dmDefaultSource);
     }
-  
+
   if (devmode->dmFields & DM_PRINTQUALITY)
     {
       GtkPrintQuality quality;
@@ -806,10 +806,10 @@ devmode_to_settings (GtkPrintSettings *settings,
       gtk_print_settings_set_quality (settings, quality);
       gtk_print_settings_set_int (settings, "win32-print-quality", devmode->dmPrintQuality);
     }
-  
+
   if (devmode->dmFields & DM_COLOR)
     gtk_print_settings_set_use_color (settings, devmode->dmColor == DMCOLOR_COLOR);
-  
+
   if (devmode->dmFields & DM_DUPLEX)
     {
       GtkPrintDuplex duplex;
@@ -826,14 +826,14 @@ devmode_to_settings (GtkPrintSettings *settings,
 	  duplex = GTK_PRINT_DUPLEX_VERTICAL;
 	  break;
 	}
-      
+
       gtk_print_settings_set_duplex (settings, duplex);
     }
-  
+
   if (devmode->dmFields & DM_COLLATE)
     gtk_print_settings_set_collate (settings,
 				    devmode->dmCollate == DMCOLLATE_TRUE);
-  
+
   if (devmode->dmFields & DM_MEDIATYPE)
     {
       char *media_type;
@@ -853,7 +853,7 @@ devmode_to_settings (GtkPrintSettings *settings,
       gtk_print_settings_set_media_type (settings, media_type);
       gtk_print_settings_set_int (settings, "win32-media-type", devmode->dmMediaType);
     }
-  
+
   if (devmode->dmFields & DM_DITHERTYPE)
     {
       char *dither;
@@ -882,7 +882,7 @@ devmode_to_settings (GtkPrintSettings *settings,
       gtk_print_settings_set_dither (settings, dither);
       gtk_print_settings_set_int (settings, "win32-dither-type", devmode->dmDitherType);
     }
-  
+
   GlobalUnlock (hDevMode);
 }
 
@@ -919,13 +919,13 @@ dialog_to_print_settings (GtkPrintOperation *op,
 					  printdlgex->nPageRanges);
       g_free (ranges);
     }
-  
+
   if (printdlgex->hDevNames != NULL)
     devnames_to_settings (settings, printdlgex->hDevNames);
 
   if (printdlgex->hDevMode != NULL)
     devmode_to_settings (settings, printdlgex->hDevMode);
-  
+
   gtk_print_operation_set_print_settings (op, settings);
 }
 
@@ -946,17 +946,17 @@ devmode_from_settings (GtkPrintSettings *settings,
   extras_base64 = gtk_print_settings_get (settings, GTK_PRINT_SETTINGS_WIN32_DRIVER_EXTRA);
   if (extras_base64)
     extras = g_base64_decode (extras_base64, &extras_len);
-  
-  hDevMode = GlobalAlloc (GMEM_MOVEABLE, 
+
+  hDevMode = GlobalAlloc (GMEM_MOVEABLE,
 			  sizeof (DEVMODEW) + extras_len);
 
   devmode = GlobalLock (hDevMode);
 
   memset (devmode, 0, sizeof (DEVMODEW));
-  
+
   devmode->dmSpecVersion = DM_SPECVERSION;
   devmode->dmSize = sizeof (DEVMODEW);
-  
+
   devmode->dmDriverExtra = 0;
   if (extras && extras_len > 0)
     {
@@ -966,7 +966,7 @@ devmode_from_settings (GtkPrintSettings *settings,
   g_free (extras);
   if (gtk_print_settings_has_key (settings, GTK_PRINT_SETTINGS_WIN32_DRIVER_VERSION))
     devmode->dmDriverVersion = gtk_print_settings_get_int (settings, GTK_PRINT_SETTINGS_WIN32_DRIVER_VERSION);
-  
+
   if (page_setup ||
       gtk_print_settings_has_key (settings, GTK_PRINT_SETTINGS_ORIENTATION))
     {
@@ -1013,7 +1013,7 @@ devmode_from_settings (GtkPrintSettings *settings,
       devmode->dmFields |= DM_SCALE;
       devmode->dmScale = gtk_print_settings_get_scale (settings);
     }
-  
+
   if (gtk_print_settings_has_key (settings, GTK_PRINT_SETTINGS_N_COPIES))
     {
       devmode->dmFields |= DM_COPIES;
@@ -1068,7 +1068,7 @@ devmode_from_settings (GtkPrintSettings *settings,
     {
       devmode->dmFields |= DM_PRINTQUALITY;
       devmode->dmPrintQuality = gtk_print_settings_get_resolution (settings);
-    } 
+    }
   else if (gtk_print_settings_has_key (settings, GTK_PRINT_SETTINGS_QUALITY))
     {
       devmode->dmFields |= DM_PRINTQUALITY;
@@ -1135,14 +1135,14 @@ devmode_from_settings (GtkPrintSettings *settings,
     {
       devmode->dmFields |= DM_MEDIATYPE;
       devmode->dmMediaType = DMMEDIA_STANDARD;
-      
+
       val = gtk_print_settings_get_media_type (settings);
       if (strcmp (val, "transparency") == 0)
 	devmode->dmMediaType = DMMEDIA_TRANSPARENCY;
       if (strcmp (val, "photographic-glossy") == 0)
 	devmode->dmMediaType = DMMEDIA_GLOSSY;
     }
- 
+
   if (gtk_print_settings_has_key (settings, "win32-dither-type"))
     {
       devmode->dmFields |= DM_DITHERTYPE;
@@ -1152,7 +1152,7 @@ devmode_from_settings (GtkPrintSettings *settings,
     {
       devmode->dmFields |= DM_DITHERTYPE;
       devmode->dmDitherType = DMDITHER_FINE;
-      
+
       val = gtk_print_settings_get_dither (settings);
       if (strcmp (val, "none") == 0)
 	devmode->dmDitherType = DMDITHER_NONE;
@@ -1167,7 +1167,7 @@ devmode_from_settings (GtkPrintSettings *settings,
       if (strcmp (val, "error-diffusion") == 0)
 	devmode->dmDitherType = DMDITHER_ERRORDIFFUSION;
     }
-  
+
   GlobalUnlock (hDevMode);
 
   return hDevMode;
@@ -1218,11 +1218,11 @@ dialog_from_print_settings (GtkPrintOperation *op,
 	  printdlgex->lpPageRanges[i].nToPage = ranges[i].end + 1;
 	}
     }
-  
+
   printer = gtk_print_settings_get_printer (settings);
   if (printer)
     printdlgex->hDevNames = gtk_print_win32_devnames_to_win32_from_printer_name (printer);
-  
+
   printdlgex->hDevMode = devmode_from_settings (settings,
 						op->priv->default_page_setup);
 }
@@ -1308,7 +1308,7 @@ iprintdialogcallback_handlemessage (IPrintDialogCallback *This,
       *pResult = TRUE;
       return S_OK;
     }
-  
+
   *pResult = 0;
   return S_FALSE;
 }
@@ -1350,7 +1350,7 @@ pageDlgProc (HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
   GtkPrintOperation *op;
   GtkPrintOperationWin32 *op_win32;
-  
+
   if (message == WM_INITDIALOG)
     {
       PROPSHEETPAGEW *page = (PROPSHEETPAGEW *)lparam;
@@ -1360,7 +1360,7 @@ pageDlgProc (HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
       op_win32 = op->priv->platform_data;
 
       SetWindowLongPtrW (wnd, GWLP_USERDATA, (LONG_PTR)op);
-      
+
       plug = _gtk_win32_embed_widget_new ((GdkNativeWindow) wnd);
       gtk_window_set_modal (GTK_WINDOW (plug), TRUE);
       op_win32->embed_widget = plug;
@@ -1380,13 +1380,13 @@ pageDlgProc (HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
     {
       op = GTK_PRINT_OPERATION (GetWindowLongPtrW (wnd, GWLP_USERDATA));
       op_win32 = op->priv->platform_data;
-      
+
       g_signal_emit_by_name (op, "custom-widget-apply", op->priv->custom_widget);
       gtk_widget_destroy (op_win32->embed_widget);
       op_win32->embed_widget = NULL;
       op->priv->custom_widget = NULL;
     }
-  else 
+  else
     {
       op = GTK_PRINT_OPERATION (GetWindowLongPtrW (wnd, GWLP_USERDATA));
       op_win32 = op->priv->platform_data;
@@ -1394,7 +1394,7 @@ pageDlgProc (HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
       return _gtk_win32_embed_widget_dialog_procedure (GTK_WIN32_EMBED_WIDGET (op_win32->embed_widget),
 						       wnd, message, wparam, lparam);
     }
-  
+
   return FALSE;
 }
 
@@ -1413,12 +1413,12 @@ create_application_page (GtkPrintOperation *op)
 
   /* Make the template the size of the custom widget size request */
   gtk_widget_size_request (op->priv->custom_widget, &requisition);
-      
+
   base_units = GetDialogBaseUnits ();
   baseunitX = LOWORD (base_units);
   baseunitY = HIWORD (base_units);
-  
-  htemplate = GlobalAlloc (GMEM_MOVEABLE, 
+
+  htemplate = GlobalAlloc (GMEM_MOVEABLE,
 			   sizeof (DLGTEMPLATE) + sizeof (WORD) * 3);
   template = GlobalLock (htemplate);
   template->style = WS_CHILDWINDOW | DS_CONTROL;
@@ -1428,34 +1428,34 @@ create_application_page (GtkPrintOperation *op)
   template->y = MulDiv (0, 8, baseunitY);
   template->cx = MulDiv (requisition.width, 4, baseunitX);
   template->cy = MulDiv (requisition.height, 8, baseunitY);
-  
+
   array = (WORD *) (template+1);
   *array++ = 0; /* menu */
   *array++ = 0; /* class */
   *array++ = 0; /* title */
-  
+
   memset (&page, 0, sizeof (page));
   page.dwSize = sizeof (page);
   page.dwFlags = PSP_DLGINDIRECT | PSP_USETITLE | PSP_PREMATURE;
   page.hInstance = GetModuleHandle (NULL);
   page.pResource = template;
-  
+
   tab_label = op->priv->custom_tab_label;
   if (tab_label == NULL)
     tab_label = g_get_application_name ();
   if (tab_label == NULL)
     tab_label = _("Application");
-  page.pszTitle = g_utf8_to_utf16 (tab_label, 
+  page.pszTitle = g_utf8_to_utf16 (tab_label,
 				   -1, NULL, NULL, NULL);
   page.pfnDlgProc = pageDlgProc;
   page.pfnCallback = NULL;
   page.lParam = (LPARAM) op;
   hpage = CreatePropertySheetPageW (&page);
-  
+
   GlobalUnlock (htemplate);
-  
+
   /* TODO: We're leaking htemplate here... */
-  
+
   return hpage;
 }
 
@@ -1465,7 +1465,7 @@ create_page_setup (GtkPrintOperation *op)
   GtkPrintOperationPrivate *priv = op->priv;
   GtkPageSetup *page_setup;
   GtkPrintSettings *settings;
-  
+
   if (priv->default_page_setup)
     page_setup = gtk_page_setup_copy (priv->default_page_setup);
   else
@@ -1475,7 +1475,7 @@ create_page_setup (GtkPrintOperation *op)
   if (settings)
     {
       GtkPaperSize *paper_size;
-      
+
       if (gtk_print_settings_has_key (settings, GTK_PRINT_SETTINGS_ORIENTATION))
 	gtk_page_setup_set_orientation (page_setup,
 					gtk_print_settings_get_orientation (settings));
@@ -1490,7 +1490,7 @@ create_page_setup (GtkPrintOperation *op)
 
       /* TODO: Margins? */
     }
-  
+
   return page_setup;
 }
 
@@ -1518,7 +1518,7 @@ gtk_print_operation_run_without_dialog (GtkPrintOperation *op,
 
   priv = op->priv;
   settings = priv->print_settings;
-  
+
   op_win32 = g_new0 (GtkPrintOperationWin32, 1);
   priv->platform_data = op_win32;
   priv->free_platform_data = (GDestroyNotify) op_win32_free;
@@ -1566,7 +1566,7 @@ gtk_print_operation_run_without_dialog (GtkPrintOperation *op,
 			   _("Invalid argument to CreateDC"));
       goto out;
     }
-  
+
   priv->print_context = _gtk_print_context_new (op);
   page_setup = create_page_setup (op);
   _gtk_print_context_set_page_setup (priv->print_context, page_setup);
@@ -1585,16 +1585,16 @@ gtk_print_operation_run_without_dialog (GtkPrintOperation *op,
   set_hard_margins (op);
 
   memset (&docinfo, 0, sizeof (DOCINFOW));
-  docinfo.cbSize = sizeof (DOCINFOW); 
-  docinfo.lpszDocName = g_utf8_to_utf16 (op->priv->job_name, -1, NULL, NULL, NULL); 
-  docinfo.lpszOutput = NULL; 
-  docinfo.lpszDatatype = NULL; 
-  docinfo.fwType = 0; 
+  docinfo.cbSize = sizeof (DOCINFOW);
+  docinfo.lpszDocName = g_utf8_to_utf16 (op->priv->job_name, -1, NULL, NULL, NULL);
+  docinfo.lpszOutput = NULL;
+  docinfo.lpszDatatype = NULL;
+  docinfo.fwType = 0;
 
-  job_id = StartDocW (hDC, &docinfo); 
+  job_id = StartDocW (hDC, &docinfo);
   g_free ((void *)docinfo.lpszDocName);
   if (job_id <= 0)
-    { 
+    {
       result = GTK_PRINT_OPERATION_RESULT_ERROR;
       g_set_error_literal (&priv->error,
 			   GTK_PRINT_ERROR,
@@ -1603,7 +1603,7 @@ gtk_print_operation_run_without_dialog (GtkPrintOperation *op,
       *do_print = FALSE;
       cairo_surface_destroy (op_win32->surface);
       op_win32->surface = NULL;
-      goto out; 
+      goto out;
     }
 
   result = GTK_PRINT_OPERATION_RESULT_APPLY;
@@ -1628,7 +1628,7 @@ gtk_print_operation_run_without_dialog (GtkPrintOperation *op,
   op->priv->start_page = win32_start_page;
   op->priv->end_page = win32_end_page;
   op->priv->end_run = win32_end_run;
-  
+
  out:
   if (!*do_print && hDC != NULL)
     DeleteDC (hDC);
@@ -1657,21 +1657,21 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
   GtkPrintOperationPrivate *priv;
   IPrintDialogCallback *callback;
   HPROPSHEETPAGE prop_page;
-  
+
   *do_print = FALSE;
 
   priv = op->priv;
-  
+
   op_win32 = g_new0 (GtkPrintOperationWin32, 1);
   priv->platform_data = op_win32;
   priv->free_platform_data = (GDestroyNotify) op_win32_free;
-  
+
   if (parent == NULL)
     {
       invisible = gtk_invisible_new ();
       parentHWnd = get_parent_hwnd (invisible);
     }
-  else 
+  else
     parentHWnd = get_parent_hwnd (GTK_WIDGET (parent));
 
   printdlgex = (LPPRINTDLGEXW)GlobalAlloc (GPTR, sizeof (PRINTDLGEXW));
@@ -1683,7 +1683,7 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
                            GTK_PRINT_ERROR_NOMEM,
                            _("Not enough free memory"));
       goto out;
-    }      
+    }
 
   printdlgex->lStructSize = sizeof (PRINTDLGEXW);
   printdlgex->hwndOwner = parentHWnd;
@@ -1696,9 +1696,9 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
   printdlgex->Flags2 = 0;
   printdlgex->ExclusionFlags = 0;
 
-  page_ranges = (LPPRINTPAGERANGE) GlobalAlloc (GPTR, 
+  page_ranges = (LPPRINTPAGERANGE) GlobalAlloc (GPTR,
 						MAX_PAGE_RANGES * sizeof (PRINTPAGERANGE));
-  if (!page_ranges) 
+  if (!page_ranges)
     {
       result = GTK_PRINT_OPERATION_RESULT_ERROR;
       g_set_error_literal (&priv->error,
@@ -1731,7 +1731,7 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
     printdlgex->nPropertyPages = 0;
     printdlgex->lphPropertyPages = NULL;
   }
-  
+
   printdlgex->nStartPage = START_PAGE_GENERAL;
   printdlgex->dwResultAction = 0;
 
@@ -1745,7 +1745,7 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
   IUnknown_Release ((IUnknown *)callback);
   gdk_win32_set_modal_dialog_libgtk_only (NULL);
 
-  if (hResult != S_OK) 
+  if (hResult != S_OK)
     {
       result = GTK_PRINT_OPERATION_RESULT_ERROR;
       if (hResult == E_OUTOFMEMORY)
@@ -1784,7 +1784,7 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
     }
   else
     result = GTK_PRINT_OPERATION_RESULT_CANCEL;
-  
+
   if (printdlgex->dwResultAction == PD_RESULT_PRINT)
     {
       DOCINFOW docinfo;
@@ -1797,7 +1797,7 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
       page_setup = create_page_setup (op);
       _gtk_print_context_set_page_setup (priv->print_context, page_setup);
       g_object_unref (page_setup);
-      
+
       *do_print = TRUE;
 
       op_win32->surface = cairo_win32_printing_surface_create (printdlgex->hDC);
@@ -1812,15 +1812,15 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
       set_hard_margins (op);
 
       memset ( &docinfo, 0, sizeof (DOCINFOW));
-      docinfo.cbSize = sizeof (DOCINFOW); 
-      docinfo.lpszDocName = g_utf8_to_utf16 (op->priv->job_name, -1, NULL, NULL, NULL); 
-      docinfo.lpszOutput = (LPCWSTR) NULL; 
-      docinfo.lpszDatatype = (LPCWSTR) NULL; 
-      docinfo.fwType = 0; 
+      docinfo.cbSize = sizeof (DOCINFOW);
+      docinfo.lpszDocName = g_utf8_to_utf16 (op->priv->job_name, -1, NULL, NULL, NULL);
+      docinfo.lpszOutput = (LPCWSTR) NULL;
+      docinfo.lpszDatatype = (LPCWSTR) NULL;
+      docinfo.fwType = 0;
 
-      job_id = StartDocW (printdlgex->hDC, &docinfo); 
+      job_id = StartDocW (printdlgex->hDC, &docinfo);
       g_free ((void *)docinfo.lpszDocName);
-      if (job_id <= 0) 
+      if (job_id <= 0)
 	{
 	  result = GTK_PRINT_OPERATION_RESULT_ERROR;
 	  g_set_error_literal (&priv->error,
@@ -1830,14 +1830,14 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
 	  *do_print = FALSE;
 	  cairo_surface_destroy (op_win32->surface);
 	  op_win32->surface = NULL;
-	  goto out; 
-	} 
-      
+	  goto out;
+	}
+
       op_win32->hdc = printdlgex->hDC;
       op_win32->devmode = printdlgex->hDevMode;
       op_win32->devnames = printdlgex->hDevNames;
       op_win32->job_id = job_id;
-      
+
       op->priv->print_pages = gtk_print_settings_get_print_pages (op->priv->print_settings);
       op->priv->num_page_ranges = 0;
       if (op->priv->print_pages == GTK_PRINT_PAGES_RANGES)
@@ -1856,16 +1856,16 @@ gtk_print_operation_run_with_dialog (GtkPrintOperation *op,
   op->priv->start_page = win32_start_page;
   op->priv->end_page = win32_end_page;
   op->priv->end_run = win32_end_run;
-  
+
   out:
   if (!*do_print && printdlgex && printdlgex->hDC != NULL)
     DeleteDC (printdlgex->hDC);
 
-  if (!*do_print && printdlgex && printdlgex->hDevMode != NULL) 
-    GlobalFree (printdlgex->hDevMode); 
+  if (!*do_print && printdlgex && printdlgex->hDevMode != NULL)
+    GlobalFree (printdlgex->hDevMode);
 
-  if (!*do_print && printdlgex && printdlgex->hDevNames != NULL) 
-    GlobalFree (printdlgex->hDevNames); 
+  if (!*do_print && printdlgex && printdlgex->hDevNames != NULL)
+    GlobalFree (printdlgex->hDevNames);
 
   if (page_ranges)
     GlobalFree (page_ranges);
@@ -1899,12 +1899,12 @@ _gtk_print_operation_platform_backend_launch_preview (GtkPrintOperation *op,
 {
   HDC dc;
   HENHMETAFILE metafile;
-  
+
   dc = cairo_win32_surface_get_dc (surface);
   cairo_surface_destroy (surface);
   metafile = CloseEnhMetaFile (dc);
   DeleteEnhMetaFile (metafile);
-  
+
   ShellExecuteW (NULL, L"open", (gunichar2 *)filename, NULL, NULL, SW_SHOW);
 }
 
@@ -1953,7 +1953,7 @@ _gtk_print_operation_platform_backend_create_preview_surface (GtkPrintOperation 
 
   filename = g_strconcat (template, ".emf", NULL);
   g_free (template);
-  
+
   filename_utf16 = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
   g_free (filename);
 
@@ -1964,7 +1964,7 @@ _gtk_print_operation_platform_backend_create_preview_surface (GtkPrintOperation 
   rect.right = 100.0 * gtk_paper_size_get_width (paper_size, GTK_UNIT_MM);
   rect.top = 0;
   rect.bottom = 100.0 * gtk_paper_size_get_height (paper_size, GTK_UNIT_MM);
-  
+
   metafile_dc = CreateEnhMetaFileW (NULL, filename_utf16,
 				    &rect, L"Gtk+\0Print Preview\0\0");
   if (metafile_dc == NULL)
@@ -1974,7 +1974,7 @@ _gtk_print_operation_platform_backend_create_preview_surface (GtkPrintOperation 
     }
 
   *target = (char *)filename_utf16;
-  
+
   *dpi_x = (double)GetDeviceCaps (metafile_dc, LOGPIXELSX);
   *dpi_y = (double)GetDeviceCaps (metafile_dc, LOGPIXELSY);
 
@@ -2013,7 +2013,7 @@ gtk_print_run_page_setup_dialog (GtkWindow        *parent,
       settings = gtk_print_settings_new ();
       free_settings = TRUE;
     }
-  
+
   memset (pagesetupdlg, 0, sizeof (PAGESETUPDLGW));
 
   pagesetupdlg->lStructSize = sizeof (PAGESETUPDLGW);
@@ -2052,13 +2052,13 @@ gtk_print_run_page_setup_dialog (GtkWindow        *parent,
     page_setup = gtk_page_setup_copy (page_setup);
   else
     page_setup = gtk_page_setup_new ();
-  
+
   pagesetupdlg->Flags |= PSD_MARGINS;
   pagesetupdlg->rtMargin.left =
     floor (gtk_page_setup_get_left_margin (page_setup, unit) * scale + 0.5);
   pagesetupdlg->rtMargin.right =
     floor (gtk_page_setup_get_right_margin (page_setup, unit) * scale + 0.5);
-  pagesetupdlg->rtMargin.top = 
+  pagesetupdlg->rtMargin.top =
     floor (gtk_page_setup_get_top_margin (page_setup, unit) * scale + 0.5);
   pagesetupdlg->rtMargin.bottom =
     floor (gtk_page_setup_get_bottom_margin (page_setup, unit) * scale + 0.5);
@@ -2066,22 +2066,22 @@ gtk_print_run_page_setup_dialog (GtkWindow        *parent,
   pagesetupdlg->Flags |= PSD_ENABLEPAGESETUPHOOK;
   pagesetupdlg->lpfnPageSetupHook = run_mainloop_hook;
   got_gdk_events_message = RegisterWindowMessage ("GDK_WIN32_GOT_EVENTS");
-  
+
   res = PageSetupDlgW (pagesetupdlg);
   gdk_win32_set_modal_dialog_libgtk_only (NULL);
 
   if (res)
-    {  
+    {
       if (pagesetupdlg->hDevNames != NULL)
 	devnames_to_settings (settings, pagesetupdlg->hDevNames);
 
       if (pagesetupdlg->hDevMode != NULL)
 	devmode_to_settings (settings, pagesetupdlg->hDevMode);
     }
-  
+
   if (res)
     {
-      gtk_page_setup_set_orientation (page_setup, 
+      gtk_page_setup_set_orientation (page_setup,
 				      gtk_print_settings_get_orientation (settings));
       paper_size = gtk_print_settings_get_paper_size (settings);
       if (paper_size)
@@ -2114,7 +2114,7 @@ gtk_print_run_page_setup_dialog (GtkWindow        *parent,
 					pagesetupdlg->rtMargin.bottom / scale,
 					unit);
     }
-  
+
   if (free_settings)
     g_object_unref (settings);
 

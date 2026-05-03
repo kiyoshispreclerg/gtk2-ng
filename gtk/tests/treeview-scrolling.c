@@ -319,7 +319,7 @@ test_position_with_align (GtkTreeView  *tree_view,
 			/* For the last half of the bottom view we
 			 * can't center the row in the view, instead
 			 * we show the last page.
-			 *   - dy should be the start of the 
+			 *   - dy should be the start of the
 			 *     last page.
 			 */
 			if (vadj->value != vadj->upper - vadj->page_size)
@@ -901,7 +901,7 @@ test_bug359231 (void)
 		gtk_tree_store_append (store, &child, &iter);
 		gtk_tree_store_set (store, &child, 0, "Two\nLines", -1);
 	}
-	
+
 	fixture = g_new0 (ScrollFixture, 1);
 	scroll_fixture_setup (fixture, GTK_TREE_MODEL (store), NULL);
 	gtk_widget_show_all (fixture->window);

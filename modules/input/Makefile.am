@@ -38,7 +38,7 @@ if HAVE_X11R6
 if INCLUDE_IM_XIM
 STATIC_XIM_MODULE = libstatic-im-xim.la
 else
-XIM_MODULE=im-xim.la 
+XIM_MODULE=im-xim.la
 endif
 endif
 
@@ -150,7 +150,7 @@ if USE_WIN32
 if INCLUDE_IM_IME
 STATIC_IME_MODULE = libstatic-im-ime.la
 else
-IME_MODULE=im-ime.la 
+IME_MODULE=im-ime.la
 endif
 endif
 

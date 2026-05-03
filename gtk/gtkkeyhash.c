@@ -36,7 +36,7 @@ struct _GtkKeyHashEntry
 
   /* Set as a side effect of generating key_hash->keycode_hash
    */
-  GdkKeymapKey *keys;		
+  GdkKeymapKey *keys;
   gint n_keys;
 };
 
@@ -68,7 +68,7 @@ key_hash_insert_entry (GtkKeyHash      *key_hash,
   gdk_keymap_get_entries_for_keyval (key_hash->keymap,
 				     entry->keyval,
 				     &entry->keys, &entry->n_keys);
-  
+
   for (i = 0; i < entry->n_keys; i++)
     {
       GSList *old_keys = g_hash_table_lookup (key_hash->keycode_hash,
@@ -86,9 +86,9 @@ key_hash_get_keycode_hash (GtkKeyHash *key_hash)
   if (!key_hash->keycode_hash)
     {
       GList *tmp_list;
-  
+
       key_hash->keycode_hash = g_hash_table_new (g_direct_hash, NULL);
-      
+
       /* Preserve the original insertion order
        */
       for (tmp_list = g_list_last (key_hash->entries_list);
@@ -119,9 +119,9 @@ key_hash_keys_changed (GdkKeymap  *keymap,
  * @keymap: a #GdkKeymap
  * @item_destroy_notify: function to be called when items are removed
  *   from the hash or %NULL.
- * 
- * Create a new key hash object for doing binding resolution. 
- * 
+ *
+ * Create a new key hash object for doing binding resolution.
+ *
  * Return value: the newly created object. Free with _gtk_key_hash_free().
  **/
 GtkKeyHash *
@@ -148,7 +148,7 @@ key_hash_free_entry (GtkKeyHash      *key_hash,
 {
   if (key_hash->destroy_notify)
     (*key_hash->destroy_notify) (entry->value);
-  
+
   g_free (entry->keys);
   g_slice_free (GtkKeyHashEntry, entry);
 }
@@ -166,7 +166,7 @@ key_hash_free_entry_foreach (gpointer value,
 /**
  * gtk_key_hash_free:
  * @key_hash: a #GtkKeyHash
- * 
+ *
  * Destroys a key hash created with gtk_key_hash_new()
  **/
 void
@@ -181,12 +181,12 @@ _gtk_key_hash_free (GtkKeyHash *key_hash)
       g_hash_table_foreach (key_hash->keycode_hash, key_hash_clear_keycode, NULL);
       g_hash_table_destroy (key_hash->keycode_hash);
     }
-  
+
   g_hash_table_destroy (key_hash->reverse_hash);
 
   g_list_foreach (key_hash->entries_list, key_hash_free_entry_foreach, key_hash);
   g_list_free (key_hash->entries_list);
-  
+
   g_free (key_hash);
 }
 
@@ -196,8 +196,8 @@ _gtk_key_hash_free (GtkKeyHash *key_hash)
  * @keyval: key symbol for this binding
  * @modifiers: modifiers for this binding
  * @value: value to insert in the key hash
- * 
- * Inserts a pair of key symbol and modifier mask into the key hash. 
+ *
+ * Inserts a pair of key symbol and modifier mask into the key hash.
  **/
 void
 _gtk_key_hash_add_entry (GtkKeyHash      *key_hash,
@@ -223,7 +223,7 @@ _gtk_key_hash_add_entry (GtkKeyHash      *key_hash,
  * _gtk_key_hash_remove_entry:
  * @key_hash: a #GtkKeyHash
  * @value: value previously added with _gtk_key_hash_add_entry()
- * 
+ *
  * Removes a value previously added to the key hash with
  * _gtk_key_hash_add_entry().
  **/
@@ -232,7 +232,7 @@ _gtk_key_hash_remove_entry (GtkKeyHash *key_hash,
 			    gpointer    value)
 {
   GList *entry_node = g_hash_table_lookup (key_hash->reverse_hash, value);
-  
+
   if (entry_node)
     {
       GtkKeyHashEntry *entry = entry_node->data;
@@ -240,12 +240,12 @@ _gtk_key_hash_remove_entry (GtkKeyHash *key_hash,
       if (key_hash->keycode_hash)
 	{
 	  gint i;
-	  
+
 	  for (i = 0; i < entry->n_keys; i++)
 	    {
 	      GSList *old_keys = g_hash_table_lookup (key_hash->keycode_hash,
 						      GUINT_TO_POINTER (entry->keys[i].keycode));
-	      
+
 	      GSList *new_keys = g_slist_remove (old_keys, entry);
 	      if (new_keys != old_keys)
 		{
@@ -259,7 +259,7 @@ _gtk_key_hash_remove_entry (GtkKeyHash *key_hash,
 		}
 	    }
 	}
-	  
+
       g_hash_table_remove (key_hash->reverse_hash, entry_node);
       key_hash->entries_list = g_list_delete_link (key_hash->entries_list, entry_node);
 
@@ -295,7 +295,7 @@ lookup_result_compare (gconstpointer a,
     }
 
   return n_bits_a < n_bits_b ? -1 : (n_bits_a == n_bits_b ? 0 : 1);
-  
+
 }
 
 /* Sort a list of results so that matches with less modifiers come
@@ -330,11 +330,11 @@ sort_lookup_results_by_keyval (GSList *slist)
 
 /* Return true if keyval is defined in keyboard group
  */
-static gboolean 
+static gboolean
 keyval_in_group (GdkKeymap  *keymap,
                  guint      keyval,
                  gint       group)
-{                 
+{
   GtkKeyHashEntry entry;
   gint i;
 
@@ -363,19 +363,19 @@ keyval_in_group (GdkKeymap  *keymap,
  * @mask: mask of modifiers to consider when matching against the
  *        modifiers in entries.
  * @group: group field from a #GdkEventKey
- * 
+ *
  * Looks up the best matching entry or entries in the hash table for
  * a given event. The results are sorted so that entries with less
  * modifiers come before entries with more modifiers.
- * 
+ *
  * The matches returned by this function can be exact (i.e. keycode, level
  * and group all match) or fuzzy (i.e. keycode and level match, but group
  * does not). As long there are any exact matches, only exact matches
  * are returned. If there are no exact matches, fuzzy matches will be
  * returned, as long as they are not shadowing a possible exact match.
- * This means that fuzzy matches won't be considered if their keyval is 
+ * This means that fuzzy matches won't be considered if their keyval is
  * present in the current group.
- * 
+ *
  * Return value: A #GSList of matching entries.
  **/
 GSList *
@@ -491,10 +491,10 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
 	}
     }
 
-  if (!have_exact && results) 
+  if (!have_exact && results)
     {
-      /* If there are fuzzy matches, check that the current group doesn't also 
-       * define these keyvals; if yes, discard results because a widget up in 
+      /* If there are fuzzy matches, check that the current group doesn't also
+       * define these keyvals; if yes, discard results because a widget up in
        * the stack may have an exact match and we don't want to 'steal' it.
        */
       guint oldkeyval = 0;
@@ -515,7 +515,7 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
             }
         }
     }
-    
+
   results = sort_lookup_results (results);
   for (l = results; l; l = l->next)
     l->data = ((GtkKeyHashEntry *)l->data)->value;
@@ -527,13 +527,13 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
  * _gtk_key_hash_lookup_keyval:
  * @key_hash: a #GtkKeyHash
  * @event: a #GtkEvent
- * 
+ *
  * Looks up the best matching entry or entries in the hash table for a
  * given keyval/modifiers pair. It's better to use
  * _gtk_key_hash_lookup() if you have the original #GdkEventKey
  * available.  The results are sorted so that entries with less
  * modifiers come before entries with more modifiers.
- * 
+ *
  * Return value: A #GSList of all matching entries.
  **/
 GSList *
@@ -571,7 +571,7 @@ _gtk_key_hash_lookup_keyval (GtkKeyHash     *key_hash,
     }
 
   g_free (keys);
-	  
+
   results = sort_lookup_results (results);
   for (l = results; l; l = l->next)
     l->data = ((GtkKeyHashEntry *)l->data)->value;

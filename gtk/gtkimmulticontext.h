@@ -72,7 +72,7 @@ const char  * gtk_im_multicontext_get_context_id   (GtkIMMulticontext *context);
 
 void          gtk_im_multicontext_set_context_id   (GtkIMMulticontext *context,
                                                     const char        *context_id);
- 
+
 G_END_DECLS
 
 #endif /* __GTK_IM_MULTICONTEXT_H__ */

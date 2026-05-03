@@ -150,7 +150,7 @@ struct _GtkImage
   GtkMisc misc;
 
   GtkImageType GSEAL (storage_type);
-  
+
   union
   {
     GtkImagePixmapData pixmap;

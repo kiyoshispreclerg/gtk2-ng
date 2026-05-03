@@ -5,7 +5,7 @@
 #define MAX_LINE_SIZE   1000
 
 /* Maximum number of tests */
-#define MAX_TESTS       30 
+#define MAX_TESTS       30
 
 /* Maximum number of test windows */
 #define MAX_WINDOWS	5
@@ -18,7 +18,7 @@
 typedef struct
 {
   GtkWidget     *outputWindow;
-  GtkTextBuffer *outputBuffer; 
+  GtkTextBuffer *outputBuffer;
   GtkTextIter   outputIter;
 }OutputWindow;
 

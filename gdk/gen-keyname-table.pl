@@ -30,7 +30,7 @@ print <<EOT;
  *
  *  Date: $date
  *
- * Do not edit.   
+ * Do not edit.
  */
 static const char keynames[] =
 EOT
@@ -105,7 +105,7 @@ for $key (@translate) {
     print <<EOT;
 N_("keyboard label|$key")
 EOT
-} 
+}
 
 print <<EOT;
 

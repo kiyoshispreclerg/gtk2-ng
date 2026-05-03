@@ -1,15 +1,15 @@
-/* Combo boxes 
+/* Combo boxes
  *
  * The ComboBox widget allows to select one option out of a list.
  * The ComboBoxEntry additionally allows the user to enter a value
- * that is not in the list of options. 
+ * that is not in the list of options.
  *
  * How the options are displayed is controlled by cell renderers.
  */
 
 #include <gtk/gtk.h>
 
-enum 
+enum
 {
   PIXBUF_COL,
   TEXT_COL
@@ -20,10 +20,10 @@ strip_underscore (const gchar *text)
 {
   gchar *p, *q;
   gchar *result;
-  
+
   result = g_strdup (text);
   p = q = result;
-  while (*p) 
+  while (*p)
     {
       if (*p != '_')
 	{
@@ -46,7 +46,7 @@ create_stock_icon_store (void)
     GTK_STOCK_NEW,
     GTK_STOCK_CLEAR,
     NULL,
-    GTK_STOCK_OPEN    
+    GTK_STOCK_OPEN
   };
 
   GtkStockItem item;
@@ -58,7 +58,7 @@ create_stock_icon_store (void)
   gint i;
 
   cellview = gtk_cell_view_new ();
-  
+
   store = gtk_list_store_new (2, GDK_TYPE_PIXBUF, G_TYPE_STRING);
 
   for (i = 0; i < G_N_ELEMENTS (stock_id); i++)
@@ -88,12 +88,12 @@ create_stock_icon_store (void)
     }
 
   gtk_widget_destroy (cellview);
-  
+
   return GTK_TREE_MODEL (store);
 }
 
 /* A GtkCellLayoutDataFunc that demonstrates how one can control
- * sensitivity of rows. This particular function does nothing 
+ * sensitivity of rows. This particular function does nothing
  * useful and just makes the second row insensitive.
  */
 static void
@@ -116,7 +116,7 @@ set_sensitive (GtkCellLayout   *cell_layout,
 }
 
 /* A GtkTreeViewRowSeparatorFunc that demonstrates how rows can be
- * rendered as separators. This particular function does nothing 
+ * rendered as separators. This particular function does nothing
  * useful and just turns the fourth row into a separator.
  */
 static gboolean
@@ -141,11 +141,11 @@ create_capital_store (void)
     gchar *group;
     gchar *capital;
   } capitals[] = {
-    { "A - B", NULL }, 
+    { "A - B", NULL },
     { NULL, "Albany" },
     { NULL, "Annapolis" },
     { NULL, "Atlanta" },
-    { NULL, "Augusta" }, 
+    { NULL, "Augusta" },
     { NULL, "Austin" },
     { NULL, "Baton Rouge" },
     { NULL, "Bismarck" },
@@ -199,13 +199,13 @@ create_capital_store (void)
     { NULL, "Trenton" },
     { NULL, NULL }
   };
-  
+
   GtkTreeIter iter, iter2;
   GtkTreeStore *store;
   gint i;
 
   store = gtk_tree_store_new (1, G_TYPE_STRING);
-  
+
   for (i = 0; capitals[i].group || capitals[i].capital; i++)
     {
       if (capitals[i].group)
@@ -219,7 +219,7 @@ create_capital_store (void)
 	  gtk_tree_store_set (store, &iter2, 0, capitals[i].capital, -1);
 	}
     }
-  
+
   return GTK_TREE_MODEL (store);
 }
 
@@ -338,42 +338,42 @@ do_combobox (GtkWidget *do_widget)
     gtk_window_set_screen (GTK_WINDOW (window),
                            gtk_widget_get_screen (do_widget));
     gtk_window_set_title (GTK_WINDOW (window), "Combo boxes");
-   
+
     g_signal_connect (window, "destroy",
                       G_CALLBACK (gtk_widget_destroyed),
                       &window);
-    
+
     gtk_container_set_border_width (GTK_CONTAINER (window), 10);
 
     vbox = gtk_vbox_new (FALSE, 2);
     gtk_container_add (GTK_CONTAINER (window), vbox);
 
     /* A combobox demonstrating cell renderers, separators and
-     *  insensitive rows 
+     *  insensitive rows
      */
     frame = gtk_frame_new ("Some stock icons");
     gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-    
+
     box = gtk_vbox_new (FALSE, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 5);
     gtk_container_add (GTK_CONTAINER (frame), box);
-    
+
     model = create_stock_icon_store ();
     combo = gtk_combo_box_new_with_model (model);
     g_object_unref (model);
     gtk_container_add (GTK_CONTAINER (box), combo);
-    
+
     renderer = gtk_cell_renderer_pixbuf_new ();
     gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), renderer, FALSE);
     gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), renderer,
-				    "pixbuf", PIXBUF_COL, 
+				    "pixbuf", PIXBUF_COL,
 				    NULL);
 
     gtk_cell_layout_set_cell_data_func (GTK_CELL_LAYOUT (combo),
 					renderer,
 					set_sensitive,
 					NULL, NULL);
-    
+
     renderer = gtk_cell_renderer_text_new ();
     gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), renderer, TRUE);
     gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), renderer,
@@ -385,11 +385,11 @@ do_combobox (GtkWidget *do_widget)
 					set_sensitive,
 					NULL, NULL);
 
-    gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combo), 
+    gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combo),
 					  is_separator, NULL, NULL);
-    
+
     gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
-    
+
     /* A combobox demonstrating trees.
      */
     frame = gtk_frame_new ("Where are we ?");
@@ -398,7 +398,7 @@ do_combobox (GtkWidget *do_widget)
     box = gtk_vbox_new (FALSE, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 5);
     gtk_container_add (GTK_CONTAINER (frame), box);
-    
+
     model = create_capital_store ();
     combo = gtk_combo_box_new_with_model (model);
     g_object_unref (model);
@@ -423,21 +423,21 @@ do_combobox (GtkWidget *do_widget)
      */
     frame = gtk_frame_new ("Editable");
     gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-    
+
     box = gtk_vbox_new (FALSE, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 5);
     gtk_container_add (GTK_CONTAINER (frame), box);
-    
+
     combo = gtk_combo_box_text_new_with_entry ();
     fill_combo_entry (combo);
     gtk_container_add (GTK_CONTAINER (box), combo);
-    
+
     entry = g_object_new (TYPE_MASK_ENTRY, NULL);
     MASK_ENTRY (entry)->mask = "^([0-9]*|One|Two|2\302\275|Three)$";
-     
+
     gtk_container_remove (GTK_CONTAINER (combo), gtk_bin_get_child (GTK_BIN (combo)));
     gtk_container_add (GTK_CONTAINER (combo), entry);
-  
+
   }
 
   if (!gtk_widget_get_visible (window))
@@ -445,7 +445,7 @@ do_combobox (GtkWidget *do_widget)
       gtk_widget_show_all (window);
     }
   else
-    {    
+    {
       gtk_widget_destroy (window);
       window = NULL;
     }

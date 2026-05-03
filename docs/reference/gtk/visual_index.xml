@@ -5,7 +5,7 @@
 <para role="gallery">
   <link linkend="GtkAccelLabel">
     <inlinegraphic fileref="accel-label.png" format="PNG"></inlinegraphic>
-  </link> 
+  </link>
   <link linkend="GtkButton">
     <inlinegraphic fileref="button.png" format="PNG"></inlinegraphic>
   </link>
@@ -56,16 +56,16 @@
   </link>
   <link linkend="GtkPaned">
     <inlinegraphic fileref="panes.png" format="PNG"></inlinegraphic>
-  </link> 
+  </link>
   <link linkend="GtkVolumeButton">
     <inlinegraphic fileref="volumebutton.png" format="PNG"></inlinegraphic>
   </link>
   <link linkend="GtkPageSetupUnixDialog">
     <inlinegraphic fileref="pagesetupdialog.png" format="PNG"></inlinegraphic>
-  </link> 
+  </link>
   <link linkend="GtkPrintUnixDialog">
     <inlinegraphic fileref="printdialog.png" format="PNG"></inlinegraphic>
-  </link> 
+  </link>
   <link linkend="GtkProgressBar">
     <inlinegraphic fileref="progressbar.png" format="PNG"></inlinegraphic>
   </link>
@@ -101,7 +101,7 @@
   </link>
   <link linkend="GtkToolPalette">
     <inlinegraphic fileref="toolpalette.png" format="PNG"></inlinegraphic>
-  </link> 
+  </link>
   <link linkend="GtkTreeView">
     <inlinegraphic fileref="list-and-tree.png" format="PNG"></inlinegraphic>
   </link>

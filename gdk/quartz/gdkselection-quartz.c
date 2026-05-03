@@ -78,7 +78,7 @@ gdk_selection_send_notify_for_display (GdkDisplay      *display,
 gint
 gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 					    GdkAtom       encoding,
-					    gint          format, 
+					    gint          format,
 					    const guchar *text,
 					    gint          length,
 					    gchar      ***list)
@@ -149,7 +149,7 @@ make_list (const gchar  *text,
   while (p < text + length)
     {
       gchar *str;
-      
+
       q = p;
       while (*q && q < text + length)
 	q++;
@@ -199,7 +199,7 @@ make_list (const gchar  *text,
   return n_strings;
 }
 
-gint 
+gint
 gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
 					    GdkAtom        encoding,
 					    gint           format,

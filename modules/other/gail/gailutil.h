@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 
 typedef struct _GailUtil                  GailUtil;
 typedef struct _GailUtilClass             GailUtilClass;
-  
+
 struct _GailUtil
 {
   AtkUtil parent;
@@ -56,7 +56,7 @@ struct _GailUtilClass
 
 typedef struct _GailMisc                  GailMisc;
 typedef struct _GailMiscClass             GailMiscClass;
-  
+
 struct _GailMisc
 {
   AtkMisc parent;

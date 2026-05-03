@@ -67,7 +67,7 @@ typedef struct _GtkFontSelectionDialogClass  GtkFontSelectionDialogClass;
 struct _GtkFontSelection
 {
   GtkVBox parent_instance;
-  
+
   GtkWidget *GSEAL (font_entry);        /* Used _get_family_entry() for consistency, -mr */
   GtkWidget *GSEAL (family_list);
   GtkWidget *GSEAL (font_style_entry);  /* Used _get_face_entry() for consistency, -mr */
@@ -81,9 +81,9 @@ struct _GtkFontSelection
 
   PangoFontFamily *GSEAL (family);	/* Current family */
   PangoFontFace *GSEAL (face);		/* Current face */
-  
+
   gint GSEAL (size);
-  
+
   GdkFont *GSEAL (font);		/* Cache for gdk_font_selection_get_font, so we can preserve
                                          * refcounting behavior
                                          */
@@ -198,7 +198,7 @@ GdkFont*   gtk_font_selection_dialog_get_font	       (GtkFontSelectionDialog *fs
 
 /* This sets the currently displayed font. It should be a valid X Logical
    Font Description font name (anything else will be ignored), e.g.
-   "-adobe-courier-bold-o-normal--25-*-*-*-*-*-*-*" 
+   "-adobe-courier-bold-o-normal--25-*-*-*-*-*-*-*"
    It returns TRUE on success. */
 gboolean   gtk_font_selection_dialog_set_font_name     (GtkFontSelectionDialog *fsd,
                                                         const gchar	       *fontname);

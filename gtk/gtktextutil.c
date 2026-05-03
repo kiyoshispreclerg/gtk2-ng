@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -97,11 +97,11 @@ activate_cb (GtkWidget *menu_item,
   GtkUnicodeMenuEntry *entry;
   GtkTextUtilCallbackInfo *info = data;
   char buf[7];
-  
+
   entry = g_object_get_data (G_OBJECT (menu_item), "gtk-unicode-menu-entry");
 
   buf[g_unichar_to_utf8 (entry->ch, buf)] = '\0';
-  
+
   (* info->func) (buf, info->data);
 }
 
@@ -110,7 +110,7 @@ activate_cb (GtkWidget *menu_item,
  * @menushell: a #GtkMenuShell
  * @callback:  call this when an item is chosen
  * @data: data for callback
- * 
+ *
  * Add menuitems for various bidi control characters  to a menu;
  * the menuitems, when selected, will call the given function
  * with the chosen character.
@@ -170,7 +170,7 @@ limit_layout_lines (PangoLayout *layout)
   gint         n_lines;
 
   n_lines = pango_layout_get_line_count (layout);
-  
+
   if (n_lines >= DRAG_ICON_MAX_LINES)
     {
       text  = pango_layout_get_text (layout);
@@ -205,7 +205,7 @@ limit_layout_lines (PangoLayout *layout)
  * Returns: a #GdkPixmap to use as DND icon
  */
 GdkPixmap *
-_gtk_text_util_create_drag_icon (GtkWidget *widget, 
+_gtk_text_util_create_drag_icon (GtkWidget *widget,
                                  gchar     *text,
                                  gsize      len)
 {

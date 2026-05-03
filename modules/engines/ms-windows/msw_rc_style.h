@@ -40,7 +40,7 @@ extern GType msw_type_rc_style;
 struct _MswRcStyle
 {
   GtkRcStyle parent_instance;
-  
+
   GList *img_list;
 };
 

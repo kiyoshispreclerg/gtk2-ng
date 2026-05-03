@@ -24,13 +24,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -119,7 +119,7 @@ gdk_region_new (void)
   temp->extents.x2 = 0;
   temp->extents.y2 = 0;
   temp->size = 1;
-  
+
   return temp;
 }
 
@@ -142,8 +142,8 @@ _gdk_region_new_from_yxbanded_rects (GdkRectangle *rects,
       temp->rects[i].x2 = rects[i].x + rects[i].width;
       temp->rects[i].y2 = rects[i].y + rects[i].height;
     }
-  miSetExtents (temp);  
-  
+  miSetExtents (temp);
+
   return temp;
 }
 
@@ -151,9 +151,9 @@ _gdk_region_new_from_yxbanded_rects (GdkRectangle *rects,
 /**
  * gdk_region_rectangle:
  * @rectangle: a #GdkRectangle
- * 
+ *
  * Creates a new region containing the area @rectangle.
- * 
+ *
  * Return value: a new region
  **/
 GdkRegion *
@@ -175,16 +175,16 @@ gdk_region_rectangle (const GdkRectangle *rectangle)
   temp->extents.x2 = rectangle->x + rectangle->width;
   temp->extents.y2 = rectangle->y + rectangle->height;
   temp->size = 1;
-  
+
   return temp;
 }
 
 /**
  * gdk_region_copy:
  * @region: a #GdkRegion
- * 
+ *
  * Copies @region, creating an identical new region.
- * 
+ *
  * Return value: a new region identical to @region
  **/
 GdkRegion *
@@ -215,7 +215,7 @@ gdk_region_get_clipbox (const GdkRegion *region,
 {
   g_return_if_fail (region != NULL);
   g_return_if_fail (rectangle != NULL);
-  
+
   rectangle->x = region->extents.x1;
   rectangle->y = region->extents.y1;
   rectangle->width = region->extents.x2 - region->extents.x1;
@@ -238,11 +238,11 @@ gdk_region_get_rectangles (const GdkRegion  *region,
                            gint             *n_rectangles)
 {
   gint i;
-  
+
   g_return_if_fail (region != NULL);
   g_return_if_fail (rectangles != NULL);
   g_return_if_fail (n_rectangles != NULL);
-  
+
   *n_rectangles = region->numRects;
   *rectangles = g_new (GdkRectangle, region->numRects);
 
@@ -261,7 +261,7 @@ gdk_region_get_rectangles (const GdkRegion  *region,
  * gdk_region_union_with_rect:
  * @region: a #GdkRegion.
  * @rect: a #GdkRectangle.
- * 
+ *
  * Sets the area of @region to the union of the areas of @region and
  * @rect. The resulting area is the set of pixels contained in
  * either @region or @rect.
@@ -277,7 +277,7 @@ gdk_region_union_with_rect (GdkRegion          *region,
 
   if (rect->width <= 0 || rect->height <= 0)
     return;
-    
+
   tmp_region.rects = &tmp_region.extents;
   tmp_region.numRects = 1;
   tmp_region.extents.x1 = rect->x;
@@ -317,7 +317,7 @@ miSetExtents (GdkRegion *pReg)
       pReg->extents.y2 = 0;
       return;
     }
-  
+
   pExtents = &pReg->extents;
   pBox = pReg->rects;
   pBoxEnd = &pBox[pReg->numRects - 1];
@@ -405,9 +405,9 @@ gdk_region_offset (GdkRegion *region,
     }
 }
 
-/* 
+/*
    Utility procedure Compress:
-   Replace r by the region r', where 
+   Replace r by the region r', where
      p in r' iff (Quantifer m <= dx) (p + m in r), and
      Quantifier is Exists if grow is TRUE, For all if grow is FALSE, and
      (x,y) + m = (x+m,y) if xdir is TRUE; (x,y+m) if xdir is FALSE.
@@ -493,13 +493,13 @@ gdk_region_shrink (GdkRegion *region,
     dx = -dx;
   if (dx)
      Compress(region, s, t, (unsigned) 2*dx, TRUE, grow);
-     
+
   grow = (dy < 0);
   if (grow)
     dy = -dy;
   if (dy)
      Compress(region, s, t, (unsigned) 2*dy, FALSE, grow);
-  
+
   gdk_region_offset (region, dx, dy);
   gdk_region_destroy (s);
   gdk_region_destroy (t);
@@ -600,7 +600,7 @@ gdk_region_intersect (GdkRegion       *source1,
 {
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
-  
+
   /* check for trivial reject */
   if ((!(source1->numRects)) || (!(source2->numRects))  ||
       (!EXTENTCHECK(&source1->extents, &source2->extents)))
@@ -608,7 +608,7 @@ gdk_region_intersect (GdkRegion       *source1,
   else
     miRegionOp (source1, source1, source2,
     		miIntersectO, (nonOverlapFunc) NULL, (nonOverlapFunc) NULL);
-    
+
   /*
    * Can't alter source1's extents before miRegionOp depends on the
    * extents of the regions being unchanged. Besides, this way there's
@@ -623,7 +623,7 @@ miRegionCopy (GdkRegion       *dstrgn,
 	      const GdkRegion *rgn)
 {
   if (dstrgn != rgn) /*  don't want to copy to itself */
-    {  
+    {
       if (dstrgn->size < rgn->numRects)
         {
 	  if (dstrgn->rects != &dstrgn->extents)
@@ -695,7 +695,7 @@ miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
     {
       pCurBox++;
     }
-    
+
   if (pCurBox != pRegEnd)
     {
       /*
@@ -712,7 +712,7 @@ miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
       curStart = pRegEnd - pReg->rects;
       pRegEnd = pReg->rects + pReg->numRects;
     }
-	
+
   if ((curNumRects == prevNumRects) && (curNumRects != 0)) {
     pCurBox -= curNumRects;
     /*
@@ -782,7 +782,7 @@ miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
 	      }
 	    while (pCurBox != pRegEnd);
 	  }
-	    
+
       }
   }
   return curStart;
@@ -845,7 +845,7 @@ miRegionOp(GdkRegion       *newReg,
 					 * band */
     int     	  bot;	    	    	/* Bottom of non-overlapping
 					 * band */
-    
+
     /*
      * Initialization:
      *	set r1, r2, r1End and r2End appropriately, preserve the important
@@ -857,9 +857,9 @@ miRegionOp(GdkRegion       *newReg,
     r2 = reg2->rects;
     r1End = r1 + reg1->numRects;
     r2End = r2 + reg2->numRects;
-    
+
     oldRects = newReg->rects;
-    
+
     EMPTY_REGION(newReg);
 
     /*
@@ -871,7 +871,7 @@ miRegionOp(GdkRegion       *newReg,
      */
     newReg->size = MAX (reg1->numRects, reg2->numRects) * 2;
     newReg->rects = g_new (GdkRegionBox, newReg->size);
-    
+
     /*
      * Initialize ybot and ytop.
      * In the upcoming loop, ybot and ytop serve different functions depending
@@ -889,7 +889,7 @@ miRegionOp(GdkRegion       *newReg,
       ybot = reg1->extents.y1;
     else
       ybot = reg2->extents.y1;
-    
+
     /*
      * prevBand serves to mark the start of the previous band so rectangles
      * can be coalesced into larger rectangles. qv. miCoalesce, above.
@@ -900,7 +900,7 @@ miRegionOp(GdkRegion       *newReg,
      * array of rectangles.
      */
     prevBand = 0;
-    
+
     do
       {
 	curBand = newReg->numRects;
@@ -917,13 +917,13 @@ miRegionOp(GdkRegion       *newReg,
 	  {
 	    r1BandEnd++;
 	  }
-	
+
 	r2BandEnd = r2;
 	while ((r2BandEnd != r2End) && (r2BandEnd->y1 == r2->y1))
 	  {
 	    r2BandEnd++;
 	  }
-	
+
 	/*
 	 * First handle the band that doesn't intersect, if any.
 	 *
@@ -983,7 +983,7 @@ miRegionOp(GdkRegion       *newReg,
 	    (* overlapFn) (newReg, r1, r1BandEnd, r2, r2BandEnd, ytop, ybot);
 
 	  }
-	
+
 	if (newReg->numRects != curBand)
 	  {
 	    prevBand = miCoalesce (newReg, prevBand, curBand);
@@ -1153,7 +1153,7 @@ miUnionO (GdkRegion *pReg,
 	  gint          y2)
 {
   GdkRegionBox *	pNextRect;
-    
+
   pNextRect = &pReg->rects[pReg->numRects];
 
 #define MERGERECT(r) 					\
@@ -1180,7 +1180,7 @@ miUnionO (GdkRegion *pReg,
       }  						\
     g_assert(pReg->numRects<=pReg->size);			\
     r++;
-    
+
     g_assert (y1<y2);
     while ((r1 != r1End) && (r2 != r2End))
     {
@@ -1193,7 +1193,7 @@ miUnionO (GdkRegion *pReg,
 	    MERGERECT(r2);
 	}
     }
-    
+
     if (r1 != r1End)
     {
 	do
@@ -1210,8 +1210,8 @@ miUnionO (GdkRegion *pReg,
 /**
  * gdk_region_union:
  * @source1:  a #GdkRegion
- * @source2: a #GdkRegion 
- * 
+ * @source2: a #GdkRegion
+ *
  * Sets the area of @source1 to the union of the areas of @source1 and
  * @source2. The resulting area is the set of pixels contained in
  * either @source1 or @source2.
@@ -1222,7 +1222,7 @@ gdk_region_union (GdkRegion       *source1,
 {
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
-  
+
   /*  checks all the simple cases */
 
   /*
@@ -1231,7 +1231,7 @@ gdk_region_union (GdkRegion       *source1,
   if ((source1 == source2) || (!(source2->numRects)))
     return;
 
-  /* 
+  /*
    * source1 is empty
    */
   if (!(source1->numRects))
@@ -1239,11 +1239,11 @@ gdk_region_union (GdkRegion       *source1,
       miRegionCopy (source1, source2);
       return;
     }
-  
+
   /*
    * source1 completely subsumes source2
    */
-  if ((source1->numRects == 1) && 
+  if ((source1->numRects == 1) &&
       (source1->extents.x1 <= source2->extents.x1) &&
       (source1->extents.y1 <= source2->extents.y1) &&
       (source1->extents.x2 >= source2->extents.x2) &&
@@ -1253,7 +1253,7 @@ gdk_region_union (GdkRegion       *source1,
   /*
    * source2 completely subsumes source1
    */
-  if ((source2->numRects == 1) && 
+  if ((source2->numRects == 1) &&
       (source2->extents.x1 <= source1->extents.x1) &&
       (source2->extents.y1 <= source1->extents.y1) &&
       (source2->extents.x2 >= source1->extents.x2) &&
@@ -1263,7 +1263,7 @@ gdk_region_union (GdkRegion       *source1,
       return;
     }
 
-  miRegionOp (source1, source1, source2, miUnionO, 
+  miRegionOp (source1, source1, source2, miUnionO,
 	      miUnionNonO, miUnionNonO);
 
   source1->extents.x1 = MIN (source1->extents.x1, source2->extents.x1);
@@ -1300,9 +1300,9 @@ miSubtractNonO1 (GdkRegion    *pReg,
 		 gint          y2)
 {
   GdkRegionBox *	pNextRect;
-	
+
   pNextRect = &pReg->rects[pReg->numRects];
-	
+
   g_assert(y1<y2);
 
   while (r != rEnd)
@@ -1348,9 +1348,9 @@ miSubtractO (GdkRegion    *pReg,
 {
   GdkRegionBox *	pNextRect;
   int  	x1;
-    
+
   x1 = r1->x1;
-    
+
   g_assert(y1<y2);
   pNextRect = &pReg->rects[pReg->numRects];
 
@@ -1483,12 +1483,12 @@ gdk_region_subtract (GdkRegion       *source1,
 {
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
-  
+
   /* check for trivial reject */
   if ((!(source1->numRects)) || (!(source2->numRects)) ||
       (!EXTENTCHECK(&source1->extents, &source2->extents)))
     return;
- 
+
   miRegionOp (source1, source1, source2, miSubtractO,
 	      miSubtractNonO1, (nonOverlapFunc) NULL);
 
@@ -1525,12 +1525,12 @@ gdk_region_xor (GdkRegion       *source1,
   gdk_region_subtract (source1, source2);
 
   gdk_region_union (source1, trb);
-  
+
   gdk_region_destroy (trb);
 }
 
 /**
- * gdk_region_empty: 
+ * gdk_region_empty:
  * @region: a #GdkRegion
  *
  * Finds out if the #GdkRegion is empty.
@@ -1541,7 +1541,7 @@ gboolean
 gdk_region_empty (const GdkRegion *region)
 {
   g_return_val_if_fail (region != NULL, FALSE);
-  
+
   if (region->numRects == 0)
     return TRUE;
   else
@@ -1594,7 +1594,7 @@ gdk_region_equal (const GdkRegion *region1,
  *
  * Since: 2.18
  *
- * Deprecated: 2.22: Use gdk_region_new_rect() and gdk_region_equal() to 
+ * Deprecated: 2.22: Use gdk_region_new_rect() and gdk_region_equal() to
  *             achieve the same effect.
  */
 gboolean
@@ -1644,7 +1644,7 @@ gdk_region_point_in (const GdkRegion *region,
 }
 
 /**
- * gdk_region_rect_in: 
+ * gdk_region_rect_in:
  * @region: a #GdkRegion.
  * @rectangle: a #GdkRectangle.
  *
@@ -1670,12 +1670,12 @@ gdk_region_rect_in (const GdkRegion    *region,
 
   rx = rectangle->x;
   ry = rectangle->y;
-  
+
   prect->x1 = rx;
   prect->y1 = ry;
   prect->x2 = rx + rectangle->width;
   prect->y2 = ry + rectangle->height;
-    
+
     /* this is (just) a useful optimization */
   if ((region->numRects == 0) || !EXTENTCHECK (&region->extents, prect))
     return GDK_OVERLAP_RECTANGLE_OUT;
@@ -1740,7 +1740,7 @@ gdk_region_rect_in (const GdkRegion    *region,
 
   return (partIn ?
 	     ((ry < prect->y2) ?
-	      GDK_OVERLAP_RECTANGLE_PART : GDK_OVERLAP_RECTANGLE_IN) : 
+	      GDK_OVERLAP_RECTANGLE_PART : GDK_OVERLAP_RECTANGLE_IN) :
 	  GDK_OVERLAP_RECTANGLE_OUT);
 }
 
@@ -1765,11 +1765,11 @@ gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
       y = spans[i].y;
       left = spans[i].x;
       right = left + spans[i].width; /* right is not in the span! */
-    
+
       if (! ((region->extents.y1 <= y) &&
 	     (region->extents.y2 > y) &&
 	     (region->extents.x1 < right) &&
-	     (region->extents.x2 > left)) ) 
+	     (region->extents.x2 > left)) )
 	continue;
 
       /* can stop when we passed y */
@@ -1779,17 +1779,17 @@ gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
 	{
 	  if (pbox->y2 <= y)
 	    continue; /* Not quite there yet */
-	  
+
 	  if (pbox->y1 > y)
 	    break; /* passed the spanline */
-	  
-	  if ((right > pbox->x1) && (left < pbox->x2)) 
+
+	  if ((right > pbox->x1) && (left < pbox->x2))
 	    {
               GdkSpan out_span;
 
 	      clipped_left = MAX (left, pbox->x1);
 	      clipped_right = MIN (right, pbox->x2);
-	      
+
 	      out_span.y = y;
 	      out_span.x = clipped_left;
 	      out_span.width = clipped_right - clipped_left;
@@ -1839,7 +1839,7 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
 						   data);
       return;
     }
-  
+
   if ((!region->numRects) || (n_spans == 0))
     return;
 
@@ -1872,7 +1872,7 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
 		return;
 	    }
 	}
-      
+
       /* Ok, we got at least one span that might intersect this rectangle. */
       tmpspan = span;
       while ((tmpspan < end_span) &&
@@ -1881,20 +1881,20 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
 	  y = tmpspan->y;
 	  left = tmpspan->x;
 	  right = left + tmpspan->width; /* right is not in the span! */
-	  
+
 	  if ((right > pbox->x1) && (left < pbox->x2))
 	    {
               GdkSpan out_span;
 
 	      clipped_left = MAX (left, pbox->x1);
 	      clipped_right = MIN (right, pbox->x2);
-	      
+
 	      out_span.y = y;
 	      out_span.x = clipped_left;
 	      out_span.width = clipped_right - clipped_left;
 	      (*function) (&out_span, data);
 	    }
-	  
+
 	  tmpspan++;
 	}
 

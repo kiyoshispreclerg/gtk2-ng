@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -835,7 +835,7 @@ static const struct {
   /* Following items added to GTK, not in the xterm table */
 
   /* Numeric keypad */
-  
+
   { 0xFF80 /* Space */, ' ' },
   { 0xFFAA /* Multiply */, '*' },
   { 0xFFAB /* Add */, '+' },
@@ -853,18 +853,18 @@ static const struct {
   { 0xFFB7 /* 7 */, '7' },
   { 0xFFB8 /* 8 */, '8' },
   { 0xFFB9 /* 9 */, '9' },
-  { 0xFFBD /* Equal */, '=' },  
+  { 0xFFBD /* Equal */, '=' },
 
   /* End numeric keypad */
 };
 
 /**
  * gdk_keyval_to_unicode:
- * @keyval: a GDK key symbol 
- * 
+ * @keyval: a GDK key symbol
+ *
  * Convert from a GDK key symbol to the corresponding ISO10646 (Unicode)
  * character.
- * 
+ *
  * Return value: the corresponding unicode character, or 0 if there
  *               is no corresponding character.
  **/
@@ -906,7 +906,7 @@ gdk_keyval_to_unicode (guint keyval)
       return gdk_keysym_to_unicode_tab[mid].ucs;
     }
   }
-  
+
   /* No matching Unicode value found */
   return 0;
 }
@@ -1670,11 +1670,11 @@ static const struct {
 /**
  * gdk_unicode_to_keyval:
  * @wc: a ISO10646 encoded character
- * 
+ *
  * Convert from a ISO10646 character to a key symbol.
- * 
+ *
  * Return value: the corresponding GDK key symbol, if one exists.
- *               or, if there is no corresponding symbol, 
+ *               or, if there is no corresponding symbol,
  *               wc | 0x01000000
  **/
 guint
@@ -1701,7 +1701,7 @@ gdk_unicode_to_keyval (guint32 wc)
       return gdk_unicode_to_keysym_tab[mid].keysym;
     }
   }
-  
+
   /*
    * No matching keysym value found, return Unicode value plus 0x01000000
    * (a convention introduced in the UTF-8 work on xterm).

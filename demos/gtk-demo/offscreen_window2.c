@@ -194,7 +194,7 @@ gtk_mirror_bin_realize (GtkWidget *widget)
   attributes.wclass = GDK_INPUT_OUTPUT;
 
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  
+
   gdk_window = gdk_window_new (gtk_widget_get_parent_window (widget),
                                &attributes, attributes_mask);
   gtk_widget_set_window (widget, gdk_window);
@@ -309,7 +309,7 @@ gtk_mirror_bin_size_request (GtkWidget      *widget,
   GtkMirrorBin *bin = GTK_MIRROR_BIN (widget);
   GtkRequisition child_requisition;
   gint border_width;
-  
+
   border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
 
   child_requisition.width = 0;
@@ -329,7 +329,7 @@ gtk_mirror_bin_size_allocate (GtkWidget     *widget,
   GtkMirrorBin *bin = GTK_MIRROR_BIN (widget);
   gint border_width;
   gint w, h;
-  
+
   gtk_widget_set_allocation (widget, allocation);
 
   border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));

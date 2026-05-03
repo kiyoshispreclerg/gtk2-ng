@@ -73,7 +73,7 @@ find_name (const gchar *name)
 
 static gboolean
 parse_media_size (const gchar *size,
-                  gdouble     *width_mm, 
+                  gdouble     *width_mm,
                   gdouble     *height_mm)
 {
   const gchar *p;
@@ -81,7 +81,7 @@ parse_media_size (const gchar *size,
   gdouble short_dim, long_dim;
 
   p = size;
-  
+
   short_dim = g_ascii_strtod (p, &e);
 
   if (p == e || *e != 'x')
@@ -108,11 +108,11 @@ parse_media_size (const gchar *size,
     *width_mm = short_dim;
   if (height_mm)
     *height_mm = long_dim;
-  
-  return TRUE;  
+
+  return TRUE;
 }
 
-int 
+int
 main (int argc, char *argv[])
 {
   gint i, j, offset;

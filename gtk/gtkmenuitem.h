@@ -71,15 +71,15 @@ struct _GtkMenuItem
 struct _GtkMenuItemClass
 {
   GtkItemClass parent_class;
-  
+
   /* If the following flag is true, then we should always hide
-   * the menu when the MenuItem is activated. Otherwise, the 
+   * the menu when the MenuItem is activated. Otherwise, the
    * it is up to the caller. For instance, when navigating
    * a menu with the keyboard, <Space> doesn't hide, but
    * <Return> does.
    */
   guint hide_on_activate : 1;
-  
+
   void (* activate)             (GtkMenuItem *menu_item);
   void (* activate_item)        (GtkMenuItem *menu_item);
   void (* toggle_size_request)  (GtkMenuItem *menu_item,

@@ -168,8 +168,8 @@ static gboolean settings_update_fontconfig       (GtkSettings           *setting
 #endif
 static void    settings_update_color_scheme      (GtkSettings *settings);
 
-static void    merge_color_scheme                (GtkSettings           *settings, 
-						  const GValue          *value, 
+static void    merge_color_scheme                (GtkSettings           *settings,
+						  const GValue          *value,
 						  GtkSettingsSource      source);
 static gchar  *get_color_scheme                  (GtkSettings           *settings);
 static GHashTable *get_color_hash                (GtkSettings           *settings);
@@ -193,7 +193,7 @@ gtk_settings_init (GtkSettings *settings)
 {
   GParamSpec **pspecs, **p;
   guint i = 0;
-  
+
   g_datalist_init (&settings->queued_settings);
   object_list = g_slist_prepend (object_list, settings);
 
@@ -229,7 +229,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   guint result;
-  
+
   gobject_class->finalize = gtk_settings_finalize;
   gobject_class->get_property = gtk_settings_get_property;
   gobject_class->set_property = gtk_settings_set_property;
@@ -256,9 +256,9 @@ gtk_settings_class_init (GtkSettingsClass *class)
   /**
    * GtkSettings:gtk-cursor-blink:
    *
-   * Whether the cursor should blink. 
+   * Whether the cursor should blink.
    *
-   * Also see the #GtkSettings:gtk-cursor-blink-timeout setting, 
+   * Also see the #GtkSettings:gtk-cursor-blink-timeout setting,
    * which allows more flexible control over cursor blinking.
    */
   result = settings_install_property_parser (class,
@@ -277,7 +277,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
                                                                GTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_CURSOR_BLINK_TIME);
- 
+
   /**
    * GtkSettings:gtk-cursor-blink-timeout:
    *
@@ -285,7 +285,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
    * The timer is reset after each user interaction.
    *
    * Setting this to zero has the same effect as setting
-   * #GtkSettings:gtk-cursor-blink to %FALSE. 
+   * #GtkSettings:gtk-cursor-blink to %FALSE.
    *
    * Since: 2.12
    */
@@ -335,7 +335,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
 								  GTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_FALLBACK_ICON_THEME);
-  
+
   result = settings_install_property_parser (class,
                                              g_param_spec_string ("gtk-key-theme-name",
 								  P_("Key Theme Name"),
@@ -343,7 +343,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
 								  DEFAULT_KEY_THEME,
 								  GTK_PARAM_READWRITE),
                                              NULL);
-  g_assert (result == PROP_KEY_THEME_NAME);    
+  g_assert (result == PROP_KEY_THEME_NAME);
 
   result = settings_install_property_parser (class,
                                              g_param_spec_string ("gtk-menu-bar-accel",
@@ -380,10 +380,10 @@ gtk_settings_class_init (GtkSettingsClass *class)
    *
    * <replaceable>size-name</replaceable> = <replaceable>width</replaceable> , <replaceable>height</replaceable>
    *
-   * E.g. "gtk-menu=16,16:gtk-button=20,20:gtk-dialog=48,48". 
-   * GTK+ itself use the following named icon sizes: gtk-menu, 
-   * gtk-button, gtk-small-toolbar, gtk-large-toolbar, gtk-dnd, 
-   * gtk-dialog. Applications can register their own named icon 
+   * E.g. "gtk-menu=16,16:gtk-button=20,20:gtk-dialog=48,48".
+   * GTK+ itself use the following named icon sizes: gtk-menu,
+   * gtk-button, gtk-small-toolbar, gtk-large-toolbar, gtk-dnd,
+   * gtk-dialog. Applications can register their own named icon
    * sizes with gtk_icon_size_register().
    */
   result = settings_install_property_parser (class,
@@ -412,9 +412,9 @@ gtk_settings_class_init (GtkSettingsClass *class)
  							       -1, 1, -1,
  							       GTK_PARAM_READWRITE),
 					     NULL);
- 
+
   g_assert (result == PROP_XFT_ANTIALIAS);
-  
+
   result = settings_install_property_parser (class,
 					     g_param_spec_int ("gtk-xft-hinting",
  							       P_("Xft Hinting"),
@@ -422,9 +422,9 @@ gtk_settings_class_init (GtkSettingsClass *class)
  							       -1, 1, -1,
  							       GTK_PARAM_READWRITE),
 					     NULL);
-  
+
   g_assert (result == PROP_XFT_HINTING);
-  
+
   result = settings_install_property_parser (class,
 					     g_param_spec_string ("gtk-xft-hintstyle",
  								  P_("Xft Hint Style"),
@@ -432,9 +432,9 @@ gtk_settings_class_init (GtkSettingsClass *class)
  								  NULL,
  								  GTK_PARAM_READWRITE),
                                               NULL);
-  
+
   g_assert (result == PROP_XFT_HINTSTYLE);
-  
+
   result = settings_install_property_parser (class,
 					     g_param_spec_string ("gtk-xft-rgba",
  								  P_("Xft RGBA"),
@@ -442,9 +442,9 @@ gtk_settings_class_init (GtkSettingsClass *class)
  								  NULL,
  								  GTK_PARAM_READWRITE),
 					     NULL);
-  
+
   g_assert (result == PROP_XFT_RGBA);
-  
+
   result = settings_install_property_parser (class,
 					     g_param_spec_int ("gtk-xft-dpi",
  							       P_("Xft DPI"),
@@ -452,7 +452,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
  							       -1, 1024*1024, -1,
  							       GTK_PARAM_READWRITE),
 					     NULL);
-  
+
   g_assert (result == PROP_XFT_DPI);
 
   result = settings_install_property_parser (class,
@@ -471,7 +471,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
  							       0, 128, 0,
  							       GTK_PARAM_READWRITE),
 					     NULL);
-  
+
   g_assert (result == PROP_CURSOR_THEME_SIZE);
 
 #endif  /* GDK_WINDOWING_X11 */
@@ -559,11 +559,11 @@ gtk_settings_class_init (GtkSettingsClass *class)
    * name2: color2
    * ...
    * </programlisting>
-   * Color names must be acceptable as identifiers in the 
+   * Color names must be acceptable as identifiers in the
    * <link linkend="gtk-Resource-Files">gtkrc</link> syntax, and
    * color specifications must be in the format accepted by
    * gdk_color_parse().
-   * 
+   *
    * Note that due to the way the color tables from different sources are
    * merged, color specifications will be converted to hexadecimal form
    * when getting this property.
@@ -643,7 +643,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
    * Browse mode is enabled when the mouse pointer moves off an object
    * where a tooltip was currently being displayed. If the mouse pointer
    * hits another object before the browse mode timeout expires (see
-   * #GtkSettings:gtk-tooltip-browse-mode-timeout), it will take the 
+   * #GtkSettings:gtk-tooltip-browse-mode-timeout), it will take the
    * amount of milliseconds specified by this setting to popup the tooltip
    * for the new object.
    *
@@ -743,12 +743,12 @@ gtk_settings_class_init (GtkSettingsClass *class)
   /**
    * GtkSettings:color-hash:
    *
-   * Holds a hash table representation of the #GtkSettings:gtk-color-scheme 
-   * setting, mapping color names to #GdkColor<!-- -->s. 
+   * Holds a hash table representation of the #GtkSettings:gtk-color-scheme
+   * setting, mapping color names to #GdkColor<!-- -->s.
    *
    * Since: 2.10
    */
-  result = settings_install_property_parser (class, 
+  result = settings_install_property_parser (class,
                                              g_param_spec_boxed ("color-hash",
                                                                  P_("Color Hash"),
                                                                  P_("A hash table representation of the color scheme."),
@@ -757,7 +757,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
                                              NULL);
   g_assert (result == PROP_COLOR_HASH);
 
-  result = settings_install_property_parser (class, 
+  result = settings_install_property_parser (class,
                                              g_param_spec_string ("gtk-file-chooser-backend",
                                                                   P_("Default file chooser backend"),
                                                                   P_("Name of the GtkFileChooser backend to use by default"),
@@ -791,7 +791,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
    * should contain a %f placeholder, which will get replaced by
    * the path to the pdf file. The command may also contain a %s
    * placeholder, which will get replaced by the path to a file
-   * containing the print settings in the format produced by 
+   * containing the print settings in the format produced by
    * gtk_print_settings_to_file().
    *
    * The preview application is responsible for removing the pdf file
@@ -805,7 +805,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
                                                                   P_("Command to run when displaying a print preview"),
                                                                   GTK_PRINT_PREVIEW_COMMAND,
                                                                   GTK_PARAM_READWRITE),
-                                             NULL); 
+                                             NULL);
   g_assert (result == PROP_PRINT_PREVIEW_COMMAND);
 
   /**
@@ -864,9 +864,9 @@ gtk_settings_class_init (GtkSettingsClass *class)
   /**
    * GtkSettings:gtk-im-module:
    *
-   * Which IM (input method) module should be used by default. This is the 
-   * input method that will be used if the user has not explicitly chosen 
-   * another input method from the IM context menu.  
+   * Which IM (input method) module should be used by default. This is the
+   * input method that will be used if the user has not explicitly chosen
+   * another input method from the IM context menu.
    * This also can be a colon-separated list of input methods, which GTK+
    * will try in turn until it finds one available on the system.
    *
@@ -908,7 +908,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
 								0, G_MAXUINT, 0,
 								GTK_PARAM_READWRITE),
 					     NULL);
-  
+
   g_assert (result == PROP_FONTCONFIG_TIMESTAMP);
 
   /**
@@ -916,10 +916,10 @@ gtk_settings_class_init (GtkSettingsClass *class)
    *
    * The XDG sound theme to use for event sounds.
    *
-   * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec">Sound Theme spec</ulink> 
+   * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec">Sound Theme spec</ulink>
    * for more information on event sounds and sound themes.
    *
-   * GTK+ itself does not support event sounds, you have to use a loadable 
+   * GTK+ itself does not support event sounds, you have to use a loadable
    * module like the one that comes with libcanberra.
    *
    * Since: 2.14
@@ -938,10 +938,10 @@ gtk_settings_class_init (GtkSettingsClass *class)
    *
    * Whether to play event sounds as feedback to user input.
    *
-   * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec">Sound Theme spec</ulink> 
+   * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec">Sound Theme spec</ulink>
    * for more information on event sounds and sound themes.
    *
-   * GTK+ itself does not support event sounds, you have to use a loadable 
+   * GTK+ itself does not support event sounds, you have to use a loadable
    * module like the one that comes with libcanberra.
    *
    * Since: 2.14
@@ -961,10 +961,10 @@ gtk_settings_class_init (GtkSettingsClass *class)
    *
    * Whether to play any event sounds at all.
    *
-   * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec">Sound Theme spec</ulink> 
+   * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec">Sound Theme spec</ulink>
    * for more information on event sounds and sound themes.
    *
-   * GTK+ itself does not support event sounds, you have to use a loadable 
+   * GTK+ itself does not support event sounds, you have to use a loadable
    * module like the one that comes with libcanberra.
    *
    * Since: 2.14
@@ -1124,7 +1124,7 @@ gtk_settings_class_init (GtkSettingsClass *class)
   /**
    * GtkSettings:gtk-scrolled-window-placement:
    *
-   * Where the contents of scrolled windows are located with respect to the 
+   * Where the contents of scrolled windows are located with respect to the
    * scrollbars, if not overridden by the scrolled window's own placement.
    *
    * Since: 2.10
@@ -1220,7 +1220,7 @@ gtk_settings_finalize (GObject *object)
   for (i = 0; i < class_n_properties; i++)
     g_value_unset (&settings->property_values[i].value);
   g_free (settings->property_values);
-  
+
   g_datalist_clear (&settings->queued_settings);
 
   G_OBJECT_CLASS (gtk_settings_parent_class)->finalize (object);
@@ -1248,7 +1248,7 @@ gtk_settings_get_for_screen (GdkScreen *screen)
     {
       settings = g_object_new (GTK_TYPE_SETTINGS, NULL);
       settings->screen = screen;
-      g_object_set_data_full (G_OBJECT (screen), I_("gtk-settings"), 
+      g_object_set_data_full (G_OBJECT (screen), I_("gtk-settings"),
 			      settings, g_object_unref);
 
       gtk_rc_reparse_all_for_settings (settings, TRUE);
@@ -1260,13 +1260,13 @@ gtk_settings_get_for_screen (GdkScreen *screen)
 #endif
       settings_update_color_scheme (settings);
     }
-  
+
   return settings;
 }
 
 /**
  * gtk_settings_get_default:
- * 
+ *
  * Gets the #GtkSettings object for the default GDK screen, creating
  * it if necessary. See gtk_settings_get_for_screen().
  *
@@ -1294,7 +1294,7 @@ gtk_settings_set_property (GObject      *object,
 
   g_value_copy (value, &settings->property_values[property_id - 1].value);
   settings->property_values[property_id - 1].source = GTK_SETTINGS_SOURCE_APPLICATION;
-  
+
   if (pspec->param_id == PROP_COLOR_SCHEME)
     merge_color_scheme (settings, value, GTK_SETTINGS_SOURCE_APPLICATION);
 }
@@ -1333,7 +1333,7 @@ gtk_settings_get_property (GObject     *object,
       if (settings->property_values[property_id - 1].source == GTK_SETTINGS_SOURCE_APPLICATION ||
 	  !gdk_screen_get_setting (settings->screen, pspec->name, value))
         g_value_copy (&settings->property_values[property_id - 1].value, value);
-      else 
+      else
         g_param_value_validate (pspec, value);
     }
   else
@@ -1341,7 +1341,7 @@ gtk_settings_get_property (GObject     *object,
       GValue val = { 0, };
 
       /* Try to get xsetting as a string and parse it. */
-      
+
       g_value_init (&val, G_TYPE_STRING);
 
       if (settings->property_values[property_id - 1].source == GTK_SETTINGS_SOURCE_APPLICATION ||
@@ -1354,7 +1354,7 @@ gtk_settings_get_property (GObject     *object,
           GValue tmp_value = { 0, };
           GValue gstring_value = { 0, };
           GtkRcPropertyParser parser = (GtkRcPropertyParser) g_param_spec_get_qdata (pspec, quark_property_parser);
-          
+
           g_value_init (&gstring_value, G_TYPE_GSTRING);
           g_value_take_boxed (&gstring_value,
                               g_string_new (g_value_get_string (&val)));
@@ -1444,7 +1444,7 @@ _gtk_settings_parse_convert (GtkRcPropertyParser parser,
     {
       GString *gstring;
       gboolean free_gstring = TRUE;
-      
+
       if (G_VALUE_HOLDS (src_value, G_TYPE_GSTRING))
 	{
 	  gstring = g_value_get_boxed (src_value);
@@ -1463,7 +1463,7 @@ _gtk_settings_parse_convert (GtkRcPropertyParser parser,
       else if (G_VALUE_HOLDS_STRING (src_value))
 	{
 	  gchar *tstr = g_strescape (g_value_get_string (src_value), NULL);
-	  
+
 	  gstring = g_string_new ("\"");
 	  g_string_append (gstring, tstr);
 	  g_string_append_c (gstring, '\"');
@@ -1509,7 +1509,7 @@ apply_queued_setting (GtkSettings             *data,
   if (_gtk_settings_parse_convert (parser, &qvalue->public.value,
 				   pspec, &tmp_value))
     {
-      if (pspec->param_id == PROP_COLOR_SCHEME) 
+      if (pspec->param_id == PROP_COLOR_SCHEME)
         merge_color_scheme (data, &tmp_value, qvalue->source);
 
       if (data->property_values[pspec->param_id - 1].source <= qvalue->source)
@@ -1523,7 +1523,7 @@ apply_queued_setting (GtkSettings             *data,
   else
     {
       gchar *debug = g_strdup_value_contents (&qvalue->public.value);
-      
+
       g_message ("%s: failed to retrieve property `%s' of type `%s' from rc file value \"%s\" of type `%s'",
 		 qvalue->public.origin ? qvalue->public.origin : "(for origin information, set GTK_DEBUG)",
 		 pspec->name,
@@ -1576,7 +1576,7 @@ settings_install_property_parser (GtkSettingsClass   *class,
 		 pspec->name);
       return 0;
     }
-  
+
   for (node = object_list; node; node = node->next)
     g_object_freeze_notify (node->data);
 
@@ -1587,14 +1587,14 @@ settings_install_property_parser (GtkSettingsClass   *class,
     {
       GtkSettings *settings = node->data;
       GtkSettingsValuePrivate *qvalue;
-      
+
       settings->property_values = g_renew (GtkSettingsPropertyValue, settings->property_values, class_n_properties);
       settings->property_values[class_n_properties - 1].value.g_type = 0;
       g_value_init (&settings->property_values[class_n_properties - 1].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       g_param_value_set_default (pspec, &settings->property_values[class_n_properties - 1].value);
       settings->property_values[class_n_properties - 1].source = GTK_SETTINGS_SOURCE_DEFAULT;
       g_object_notify (G_OBJECT (settings), pspec->name);
-      
+
       qvalue = g_datalist_get_data (&settings->queued_settings, pspec->name);
       if (qvalue)
 	apply_queued_setting (settings, pspec, qvalue);
@@ -1662,7 +1662,7 @@ static void
 free_value (gpointer data)
 {
   GtkSettingsValuePrivate *qvalue = data;
-  
+
   g_value_unset (&qvalue->public.value);
   g_free (qvalue->public.origin);
   g_slice_free (GtkSettingsValuePrivate, qvalue);
@@ -1687,7 +1687,7 @@ gtk_settings_set_property_value_internal (GtkSettings            *settings,
       g_warning (G_STRLOC ": value type invalid");
       return;
     }
-  
+
   name = g_strdup (prop_name);
   g_strcanon (name, G_CSET_DIGITS "-" G_CSET_a_2_z G_CSET_A_2_Z, '-');
   name_quark = g_quark_from_string (name);
@@ -1765,7 +1765,7 @@ gtk_settings_set_long_property (GtkSettings *settings,
 				const gchar *origin)
 {
   GtkSettingsValue svalue = { NULL, { 0, }, };
-  
+
   g_return_if_fail (GTK_SETTINGS (settings));
   g_return_if_fail (name != NULL);
 
@@ -1799,14 +1799,14 @@ gtk_settings_set_double_property (GtkSettings *settings,
  * @pspec: a #GParamSpec
  * @gstring: the #GString to be parsed
  * @property_value: a #GValue which must hold #GdkColor values.
- * 
+ *
  * A #GtkRcPropertyParser for use with gtk_settings_install_property_parser()
  * or gtk_widget_class_install_style_property_parser() which parses a
- * color given either by its name or in the form 
+ * color given either by its name or in the form
  * <literal>{ red, green, blue }</literal> where %red, %green and
  * %blue are integers between 0 and 65535 or floating-point numbers
  * between 0 and 1.
- * 
+ *
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #GdkColor.
  **/
@@ -1842,7 +1842,7 @@ gtk_rc_property_parse_color (const GParamSpec *pspec,
  * @pspec: a #GParamSpec
  * @gstring: the #GString to be parsed
  * @property_value: a #GValue which must hold enum values.
- * 
+ *
  * A #GtkRcPropertyParser for use with gtk_settings_install_property_parser()
  * or gtk_widget_class_install_style_property_parser() which parses a single
  * enumeration value.
@@ -1850,7 +1850,7 @@ gtk_rc_property_parse_color (const GParamSpec *pspec,
  * The enumeration value can be specified by its name, its nickname or
  * its numeric value. For consistency with flags parsing, the value
  * may be surrounded by parentheses.
- * 
+ *
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #GEnumValue.
  **/
@@ -1881,7 +1881,7 @@ gtk_rc_property_parse_enum (const GParamSpec *pspec,
   if (scanner->token == G_TOKEN_IDENTIFIER)
     {
       GEnumClass *class = G_PARAM_SPEC_ENUM (pspec)->enum_class;
-      
+
       enum_value = g_enum_get_value_by_name (class, scanner->value.v_identifier);
       if (!enum_value)
 	enum_value = g_enum_get_value_by_nick (class, scanner->value.v_identifier);
@@ -1938,14 +1938,14 @@ parse_flags_value (GScanner    *scanner,
  * @pspec: a #GParamSpec
  * @gstring: the #GString to be parsed
  * @property_value: a #GValue which must hold flags values.
- * 
+ *
  * A #GtkRcPropertyParser for use with gtk_settings_install_property_parser()
- * or gtk_widget_class_install_style_property_parser() which parses flags. 
- * 
+ * or gtk_widget_class_install_style_property_parser() which parses flags.
+ *
  * Flags can be specified by their name, their nickname or
- * numerically. Multiple flags can be specified in the form 
+ * numerically. Multiple flags can be specified in the form
  * <literal>"( flag1 | flag2 | ... )"</literal>.
- * 
+ *
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting flags value.
  **/
@@ -1970,7 +1970,7 @@ gtk_rc_property_parse_flags (const GParamSpec *pspec,
       scanner->next_token == G_TOKEN_INT)
     {
       guint token, flags_value = 0;
-      
+
       token = parse_flags_value (scanner, class, &flags_value);
 
       if (token == G_TOKEN_NONE && g_scanner_peek_next_token (scanner) == G_TOKEN_EOF)
@@ -1978,7 +1978,7 @@ gtk_rc_property_parse_flags (const GParamSpec *pspec,
 	  success = TRUE;
 	  g_value_set_flags (property_value, flags_value);
 	}
-      
+
     }
   else if (g_scanner_get_next_token (scanner) == '(')
     {
@@ -2044,12 +2044,12 @@ get_braced_int (GScanner *scanner,
  * @pspec: a #GParamSpec
  * @gstring: the #GString to be parsed
  * @property_value: a #GValue which must hold boxed values.
- * 
+ *
  * A #GtkRcPropertyParser for use with gtk_settings_install_property_parser()
  * or gtk_widget_class_install_style_property_parser() which parses a
- * requisition in the form 
+ * requisition in the form
  * <literal>"{ width, height }"</literal> for integers %width and %height.
- * 
+ *
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #GtkRequisition.
  **/
@@ -2085,13 +2085,13 @@ gtk_rc_property_parse_requisition  (const GParamSpec *pspec,
  * @pspec: a #GParamSpec
  * @gstring: the #GString to be parsed
  * @property_value: a #GValue which must hold boxed values.
- * 
+ *
  * A #GtkRcPropertyParser for use with gtk_settings_install_property_parser()
  * or gtk_widget_class_install_style_property_parser() which parses
- * borders in the form 
- * <literal>"{ left, right, top, bottom }"</literal> for integers 
+ * borders in the form
+ * <literal>"{ left, right, top, bottom }"</literal> for integers
  * %left, %right, %top and %bottom.
- * 
+ *
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #GtkBorder.
  **/
@@ -2133,15 +2133,15 @@ _gtk_settings_handle_event (GdkEventSetting *event)
 
   settings = gtk_settings_get_for_screen (gdk_window_get_screen (event->window));
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (settings), event->name);
- 
-  if (pspec) 
+
+  if (pspec)
     {
       property_id = pspec->param_id;
 
       if (property_id == PROP_COLOR_SCHEME)
         {
           GValue value = { 0, };
- 
+
           g_value_init (&value, G_TYPE_STRING);
           if (!gdk_screen_get_setting (settings->screen, pspec->name, &value))
             g_value_set_static_string (&value, "");
@@ -2215,12 +2215,12 @@ settings_update_double_click (GtkSettings *settings)
       GdkDisplay *display = gdk_screen_get_display (settings->screen);
       gint double_click_time;
       gint double_click_distance;
-  
-      g_object_get (settings, 
-		    "gtk-double-click-time", &double_click_time, 
+
+      g_object_get (settings,
+		    "gtk-double-click-time", &double_click_time,
 		    "gtk-double-click-distance", &double_click_distance,
 		    NULL);
-      
+
       gdk_display_set_double_click_time (display, double_click_time);
       gdk_display_set_double_click_distance (display, double_click_distance);
     }
@@ -2230,13 +2230,13 @@ static void
 settings_update_modules (GtkSettings *settings)
 {
   gchar *modules;
-  
-  g_object_get (settings, 
+
+  g_object_get (settings,
 		"gtk-modules", &modules,
 		NULL);
-  
+
   _gtk_modules_settings_changed (settings, modules);
-  
+
   g_free (modules);
 }
 
@@ -2247,12 +2247,12 @@ settings_update_cursor_theme (GtkSettings *settings)
   GdkDisplay *display = gdk_screen_get_display (settings->screen);
   gchar *theme = NULL;
   gint size = 0;
-  
-  g_object_get (settings, 
+
+  g_object_get (settings,
 		"gtk-cursor-theme-name", &theme,
 		"gtk-cursor-theme-size", &size,
 		NULL);
-  
+
   gdk_x11_display_set_cursor_theme (display, theme, size);
 
   g_free (theme);
@@ -2269,7 +2269,7 @@ settings_update_font_options (GtkSettings *settings)
   gchar *rgba_str;
   cairo_subpixel_order_t subpixel_order = CAIRO_SUBPIXEL_ORDER_DEFAULT;
   cairo_font_options_t *options;
-  
+
   g_object_get (settings,
 		"gtk-xft-antialias", &antialias,
 		"gtk-xft-hinting", &hinting,
@@ -2280,7 +2280,7 @@ settings_update_font_options (GtkSettings *settings)
   options = cairo_font_options_create ();
 
   cairo_font_options_set_hint_metrics (options, CAIRO_HINT_METRICS_ON);
-  
+
   if (hinting >= 0 && !hinting)
     {
       hint_style = CAIRO_HINT_STYLE_NONE;
@@ -2316,18 +2316,18 @@ settings_update_font_options (GtkSettings *settings)
     }
 
   cairo_font_options_set_subpixel_order (options, subpixel_order);
-  
+
   if (antialias >= 0 && !antialias)
     antialias_mode = CAIRO_ANTIALIAS_NONE;
   else if (subpixel_order != CAIRO_SUBPIXEL_ORDER_DEFAULT)
     antialias_mode = CAIRO_ANTIALIAS_SUBPIXEL;
   else if (antialias >= 0)
     antialias_mode = CAIRO_ANTIALIAS_GRAY;
-  
+
   cairo_font_options_set_antialias (options, antialias_mode);
 
   gdk_screen_set_font_options (settings->screen, options);
-  
+
   cairo_font_options_destroy (options);
 }
 
@@ -2374,7 +2374,7 @@ settings_update_resolution (GtkSettings *settings)
 {
   gint dpi_int;
   double dpi;
-  
+
   g_object_get (settings,
 		"gtk-xft-dpi", &dpi_int,
 		NULL);
@@ -2423,7 +2423,7 @@ settings_update_color_scheme (GtkSettings *settings)
       data->color_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
 					        (GDestroyNotify) gdk_color_free);
       g_object_set_data_full (G_OBJECT (settings), "gtk-color-scheme",
-			      data, (GDestroyNotify) color_scheme_data_free); 
+			      data, (GDestroyNotify) color_scheme_data_free);
 
       g_value_init (&value, G_TYPE_STRING);
       if (gdk_screen_get_setting (settings->screen, "gtk-color-scheme", &value))
@@ -2479,7 +2479,7 @@ add_colors_to_hash_from_string (GHashTable  *hash,
         p++;
 
       s = p;
-      while (*s) 
+      while (*s)
 	{
 	  if (*s == '\n' || *s == ';')
 	    {
@@ -2599,8 +2599,8 @@ update_color_hash (ColorSchemeData   *data,
 }
 
 static void
-merge_color_scheme (GtkSettings       *settings, 
-		    const GValue      *value, 
+merge_color_scheme (GtkSettings       *settings,
+		    const GValue      *value,
 		    GtkSettingsSource  source)
 {
   ColorSchemeData *data;
@@ -2614,7 +2614,7 @@ merge_color_scheme (GtkSettings       *settings,
 
   data = (ColorSchemeData *) g_object_get_data (G_OBJECT (settings),
 						"gtk-color-scheme");
-  
+
   if (update_color_hash (data, colors, source))
     g_object_notify (G_OBJECT (settings), "color-hash");
 
@@ -2627,14 +2627,14 @@ get_color_hash (GtkSettings *settings)
   ColorSchemeData *data;
 
   settings_update_color_scheme (settings);
-  
-  data = (ColorSchemeData *)g_object_get_data (G_OBJECT (settings), 
+
+  data = (ColorSchemeData *)g_object_get_data (G_OBJECT (settings),
 					       "gtk-color-scheme");
 
   return data->color_hash;
 }
 
-static void 
+static void
 append_color_scheme (gpointer key,
 		     gpointer value,
 		     gpointer data)
@@ -2652,7 +2652,7 @@ get_color_scheme (GtkSettings *settings)
 {
   ColorSchemeData *data;
   GString *string;
-  
+
   settings_update_color_scheme (settings);
 
   data = (ColorSchemeData *) g_object_get_data (G_OBJECT (settings),

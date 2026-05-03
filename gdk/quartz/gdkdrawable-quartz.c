@@ -113,7 +113,7 @@ gdk_quartz_set_colormap (GdkDrawable *drawable,
 
   if (impl->colormap == colormap)
     return;
-  
+
   if (impl->colormap)
     g_object_unref (impl->colormap);
   impl->colormap = colormap;
@@ -515,7 +515,7 @@ gdk_quartz_draw_points (GdkDrawable *drawable,
       return;
     }
   /* Just draw 1x1 rectangles */
-  for (i = 0; i < npoints; i++) 
+  for (i = 0; i < npoints; i++)
     {
       CGRect rect = CGRectMake (points[i].x, points[i].y, 1, 1);
       CGContextFillRect (context, rect);
@@ -584,7 +584,7 @@ gdk_quartz_draw_segments (GdkDrawable    *drawable,
       CGContextMoveToPoint (context, segs[i].x1 + 0.5, segs[i].y1 + 0.5);
       CGContextAddLineToPoint (context, segs[i].x2 + 0.5 + xfix, segs[i].y2 + 0.5 + yfix);
     }
-  
+
   CGContextStrokePath (context);
 
   gdk_quartz_drawable_release_context (drawable, context);
@@ -667,10 +667,10 @@ gdk_quartz_draw_pixbuf (GdkDrawable     *drawable,
   data_provider = CGDataProviderCreateWithData (NULL, data, pixbuf_height * rowstride, NULL);
 
   image = CGImageCreate (pixbuf_width, pixbuf_height, 8,
-			 has_alpha ? 32 : 24, rowstride, 
-			 colorspace, 
+			 has_alpha ? 32 : 24, rowstride,
+			 colorspace,
 			 has_alpha ? kCGImageAlphaLast : 0,
-			 data_provider, NULL, FALSE, 
+			 data_provider, NULL, FALSE,
 			 kCGRenderingIntentDefault);
 
   CGDataProviderRelease (data_provider);
@@ -719,7 +719,7 @@ gdk_quartz_draw_image (GdkDrawable     *drawable,
   cgimage = CGImageCreate (image->width, image->height, 8,
 			   32, image->bpl,
 			   colorspace,
-			   kCGImageAlphaNoneSkipFirst, 
+			   kCGImageAlphaNoneSkipFirst,
 			   data_provider, NULL, FALSE, kCGRenderingIntentDefault);
 
   CGDataProviderRelease (data_provider);
@@ -807,12 +807,12 @@ gdk_drawable_impl_quartz_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (GDK_TYPE_DRAWABLE,
                                             "GdkDrawableImplQuartz",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -876,12 +876,12 @@ _gdk_quartz_drawable_flush (GdkDrawable *drawable)
 }
 
 void
-gdk_quartz_drawable_release_context (GdkDrawable  *drawable, 
+gdk_quartz_drawable_release_context (GdkDrawable  *drawable,
 				     CGContextRef  cg_context)
 {
   if (!cg_context)
     return;
-  
+
   if (GDK_IS_WINDOW_IMPL_QUARTZ (drawable))
     {
       GdkWindowImplQuartz *window_impl = GDK_WINDOW_IMPL_QUARTZ (drawable);
@@ -912,4 +912,4 @@ _gdk_quartz_drawable_finish (GdkDrawable *drawable)
 				   NULL, NULL);
       impl->cairo_surface = NULL;
     }
-}  
+}

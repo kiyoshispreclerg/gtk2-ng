@@ -27,7 +27,7 @@ static void       gail_container_cell_init                (GailContainerCell   *
 static void       gail_container_cell_finalize            (GObject             *obj);
 
 
-static void       _gail_container_cell_recompute_child_indices 
+static void       _gail_container_cell_recompute_child_indices
                                                           (GailContainerCell *container);
 
 static void       gail_container_cell_refresh_child_index (GailCell *cell);
@@ -39,7 +39,7 @@ static AtkObject* gail_container_cell_ref_child           (AtkObject *obj,
 
 G_DEFINE_TYPE (GailContainerCell, gail_container_cell, GAIL_TYPE_CELL)
 
-static void 
+static void
 gail_container_cell_class_init (GailContainerCellClass *klass)
 {
   AtkObjectClass *class = ATK_OBJECT_CLASS(klass);
@@ -56,7 +56,7 @@ gail_container_cell_init (GailContainerCell   *cell)
 {
 }
 
-GailContainerCell * 
+GailContainerCell *
 gail_container_cell_new (void)
 {
   GObject *object;
@@ -89,7 +89,7 @@ gail_container_cell_finalize (GObject *obj)
     list = list->next;
   }
   g_list_free (container->children);
-  
+
   G_OBJECT_CLASS (gail_container_cell_parent_class)->finalize (obj);
 }
 
@@ -172,7 +172,7 @@ gail_container_cell_ref_child (AtkObject *obj,
 
   g_return_val_if_fail (GAIL_IS_CONTAINER_CELL(obj), NULL);
   cell = GAIL_CONTAINER_CELL(obj);
-  
+
   list_node = g_list_nth (cell->children, child);
   if (!list_node)
     return NULL;

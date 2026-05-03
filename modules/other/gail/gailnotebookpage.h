@@ -45,7 +45,7 @@ struct _GailNotebookPage
 #else
   gpointer page;
 #endif
-  
+
   gint index;
   guint notify_child_added_id;
 

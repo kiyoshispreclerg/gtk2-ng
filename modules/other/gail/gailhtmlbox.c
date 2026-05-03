@@ -72,7 +72,7 @@ gail_html_box_initialize (AtkObject *obj,
    * We do not set the parent here for the root node of a HtmlView
    */
   if (box->parent)
-    { 
+    {
       atk_object_set_parent (obj,
                         atk_gobject_get_accessible (G_OBJECT (box->parent)));
     }
@@ -150,7 +150,7 @@ gail_html_box_ref_state_set (AtkObject	  *obj)
   else
     {
       HtmlBox *box;
-  
+
       box = HTML_BOX (g_obj);
 
       if (HTML_BOX_GET_STYLE (box)->display != HTML_DISPLAY_NONE)
@@ -160,7 +160,7 @@ gail_html_box_ref_state_set (AtkObject	  *obj)
         }
     }
   return state_set;
-} 
+}
 
 static void
 gail_html_box_component_interface_init (AtkComponentIface *iface)
@@ -184,7 +184,7 @@ static guint
 gail_html_box_add_focus_handler (AtkComponent    *component,
                                  AtkFocusHandler handler)
 {
-  return g_signal_connect_closure (component, 
+  return g_signal_connect_closure (component,
                                    "focus-event",
                                    g_cclosure_new (
 						   G_CALLBACK (handler), NULL,

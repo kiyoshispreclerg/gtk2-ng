@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 2003.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /**
@@ -92,7 +92,7 @@
 
 #define GTK_ACTION_GET_PRIVATE(obj) ((GtkActionPrivate *) gtk_action_get_instance_private (GTK_ACTION (obj)))
 
-struct _GtkActionPrivate 
+struct _GtkActionPrivate
 {
   const gchar *name; /* interned */
   gchar *label;
@@ -127,13 +127,13 @@ struct _GtkActionPrivate
   GSList *proxies;
 };
 
-enum 
+enum
 {
   ACTIVATE,
   LAST_SIGNAL
 };
 
-enum 
+enum
 {
   PROP_0,
   PROP_NAME,
@@ -183,7 +183,7 @@ static void       connect_proxy       (GtkAction *action,
 				       GtkWidget *proxy);
 static void       disconnect_proxy    (GtkAction *action,
 				       GtkWidget *proxy);
- 
+
 static void       closure_accel_activate (GClosure     *closure,
 					  GValue       *return_value,
 					  guint         n_param_values,
@@ -221,17 +221,17 @@ gtk_action_class_init (GtkActionClass *klass)
 							P_("Name"),
 							P_("A unique name for the action."),
 							NULL,
-							GTK_PARAM_READWRITE | 
+							GTK_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY));
 
   /**
    * GtkAction:label:
    *
    * The label used for menu items and buttons that activate
-   * this action. If the label is %NULL, GTK+ uses the stock 
+   * this action. If the label is %NULL, GTK+ uses the stock
    * label specified via the stock-id property.
    *
-   * This is an appearance property and thus only applies if 
+   * This is an appearance property and thus only applies if
    * #GtkActivatable:use-action-appearance is %TRUE.
    */
   g_object_class_install_property (gobject_class,
@@ -248,7 +248,7 @@ gtk_action_class_init (GtkActionClass *klass)
    *
    * A shorter label that may be used on toolbar buttons.
    *
-   * This is an appearance property and thus only applies if 
+   * This is an appearance property and thus only applies if
    * #GtkActivatable:use-action-appearance is %TRUE.
    */
   g_object_class_install_property (gobject_class,
@@ -273,7 +273,7 @@ gtk_action_class_init (GtkActionClass *klass)
    *
    * The stock icon displayed in widgets representing this action.
    *
-   * This is an appearance property and thus only applies if 
+   * This is an appearance property and thus only applies if
    * #GtkActivatable:use-action-appearance is %TRUE.
    */
   g_object_class_install_property (gobject_class,
@@ -289,10 +289,10 @@ gtk_action_class_init (GtkActionClass *klass)
    *
    * The #GIcon displayed in the #GtkAction.
    *
-   * Note that the stock icon is preferred, if the #GtkAction:stock-id 
+   * Note that the stock icon is preferred, if the #GtkAction:stock-id
    * property holds the id of an existing stock icon.
    *
-   * This is an appearance property and thus only applies if 
+   * This is an appearance property and thus only applies if
    * #GtkActivatable:use-action-appearance is %TRUE.
    *
    * Since: 2.16
@@ -303,17 +303,17 @@ gtk_action_class_init (GtkActionClass *klass)
 							P_("GIcon"),
 							P_("The GIcon being displayed"),
 							G_TYPE_ICON,
- 							GTK_PARAM_READWRITE));							
+							GTK_PARAM_READWRITE));
   /**
    * GtkAction:icon-name:
    *
-   * The name of the icon from the icon theme. 
-   * 
-   * Note that the stock icon is preferred, if the #GtkAction:stock-id 
-   * property holds the id of an existing stock icon, and the #GIcon is
-   * preferred if the #GtkAction:gicon property is set. 
+   * The name of the icon from the icon theme.
    *
-   * This is an appearance property and thus only applies if 
+   * Note that the stock icon is preferred, if the #GtkAction:stock-id
+   * property holds the id of an existing stock icon, and the #GIcon is
+   * preferred if the #GtkAction:gicon property is set.
+   *
+   * This is an appearance property and thus only applies if
    * #GtkActivatable:use-action-appearance is %TRUE.
    *
    * Since: 2.10
@@ -324,7 +324,7 @@ gtk_action_class_init (GtkActionClass *klass)
 							P_("Icon Name"),
 							P_("The name of the icon from the icon theme"),
 							NULL,
- 							GTK_PARAM_READWRITE));
+							GTK_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
 				   PROP_VISIBLE_HORIZONTAL,
@@ -337,7 +337,7 @@ gtk_action_class_init (GtkActionClass *klass)
   /**
    * GtkAction:visible-overflown:
    *
-   * When %TRUE, toolitem proxies for this action are represented in the 
+   * When %TRUE, toolitem proxies for this action are represented in the
    * toolbar overflow menu.
    *
    * Since: 2.6
@@ -399,11 +399,11 @@ gtk_action_class_init (GtkActionClass *klass)
   /**
    * GtkAction:always-show-image:
    *
-   * If %TRUE, the action's menu item proxies will ignore the #GtkSettings:gtk-menu-images 
+   * If %TRUE, the action's menu item proxies will ignore the #GtkSettings:gtk-menu-images
    * setting and always show their image, if available.
    *
    * Use this property if the menu item would be useless or hard to use
-   * without their image. 
+   * without their image.
    *
    * Since: 2.20
    **/
@@ -461,9 +461,9 @@ gtk_action_init (GtkAction *action)
   action->private_data->accel_count = 0;
   action->private_data->accel_group = NULL;
   action->private_data->accel_quark = 0;
-  action->private_data->accel_closure = 
+  action->private_data->accel_closure =
     g_closure_new_object (sizeof (GClosure), G_OBJECT (action));
-  g_closure_set_marshal (action->private_data->accel_closure, 
+  g_closure_set_marshal (action->private_data->accel_closure,
 			 closure_accel_activate);
   g_closure_ref (action->private_data->accel_closure);
   g_closure_sink (action->private_data->accel_closure);
@@ -471,7 +471,7 @@ gtk_action_init (GtkAction *action)
   action->private_data->action_group = NULL;
 
   action->private_data->proxies = NULL;
-  action->private_data->gicon = NULL;  
+  action->private_data->gicon = NULL;
 }
 
 static void
@@ -543,7 +543,7 @@ gtk_action_finalize (GObject *object)
   g_free (action->private_data->tooltip);
   g_free (action->private_data->stock_id);
   g_free (action->private_data->icon_name);
-  
+
   if (action->private_data->gicon)
     g_object_unref (action->private_data->gicon);
 
@@ -551,7 +551,7 @@ gtk_action_finalize (GObject *object)
   if (action->private_data->accel_group)
     g_object_unref (action->private_data->accel_group);
 
-  G_OBJECT_CLASS (gtk_action_parent_class)->finalize (object);  
+  G_OBJECT_CLASS (gtk_action_parent_class)->finalize (object);
 }
 
 static void
@@ -561,7 +561,7 @@ gtk_action_set_property (GObject         *object,
 			 GParamSpec      *pspec)
 {
   GtkAction *action;
-  
+
   action = GTK_ACTION (object);
 
   switch (prop_id)
@@ -739,17 +739,17 @@ disconnect_proxy (GtkAction *action,
  * @action: (allow-none): a #GtkAction, or %NULL to determine the action from @proxy
  * @proxy: a proxy menu item
  * @empty: whether the submenu attached to @proxy is empty
- * 
+ *
  * Updates the visibility of @proxy from the visibility of @action
  * according to the following rules:
  * <itemizedlist>
  * <listitem><para>if @action is invisible, @proxy is too
  * </para></listitem>
- * <listitem><para>if @empty is %TRUE, hide @proxy unless the "hide-if-empty" 
+ * <listitem><para>if @empty is %TRUE, hide @proxy unless the "hide-if-empty"
  *   property of @action indicates otherwise
  * </para></listitem>
  * </itemizedlist>
- * 
+ *
  * This function is used in the implementation of #GtkUIManager.
  **/
 void
@@ -805,8 +805,8 @@ _gtk_action_emit_activate (GtkAction *action)
  * gtk_action_activate:
  * @action: the action object
  *
- * Emits the "activate" signal on the specified action, if it isn't 
- * insensitive. This gets called by the proxy widgets when they get 
+ * Emits the "activate" signal on the specified action, if it isn't
+ * insensitive. This gets called by the proxy widgets when they get
  * activated.
  *
  * It can also be used to manually activate an action.
@@ -817,7 +817,7 @@ void
 gtk_action_activate (GtkAction *action)
 {
   g_return_if_fail (GTK_IS_ACTION (action));
-  
+
   if (action->private_data->activate_blocked)
     return;
 
@@ -829,7 +829,7 @@ gtk_action_activate (GtkAction *action)
  * gtk_action_block_activate:
  * @action: a #GtkAction
  *
- * Disable activation signals from the action 
+ * Disable activation signals from the action
  *
  * This is needed when updating the state of your proxy
  * #GtkActivatable widget could result in calling gtk_action_activate(),
@@ -850,7 +850,7 @@ gtk_action_block_activate (GtkAction *action)
  * gtk_action_unblock_activate:
  * @action: a #GtkAction
  *
- * Reenable activation signals from the action 
+ * Reenable activation signals from the action
  *
  * Since: 2.16
  */
@@ -946,7 +946,7 @@ _gtk_action_add_to_proxy_list (GtkAction     *action,
 {
   g_return_if_fail (GTK_IS_ACTION (action));
   g_return_if_fail (GTK_IS_WIDGET (proxy));
- 
+
   GTK_ACTION_GET_CLASS (action)->connect_proxy (action, proxy);
 }
 
@@ -965,9 +965,9 @@ _gtk_action_remove_from_proxy_list (GtkAction     *action,
  * @action: the action object
  * @proxy: the proxy widget
  *
- * Connects a widget to an action object as a proxy.  Synchronises 
- * various properties of the action with the widget (such as label 
- * text, icon, tooltip, etc), and attaches a callback so that the 
+ * Connects a widget to an action object as a proxy.  Synchronises
+ * various properties of the action with the widget (such as label
+ * text, icon, tooltip, etc), and attaches a callback so that the
  * action gets activated when the proxy widget does.
  *
  * If the widget is already connected to an action, it is disconnected
@@ -995,7 +995,7 @@ gtk_action_connect_proxy (GtkAction *action,
  * @action: the action object
  * @proxy: the proxy widget
  *
- * Disconnects a proxy widget from an action.  
+ * Disconnects a proxy widget from an action.
  * Does <emphasis>not</emphasis> destroy the widget, however.
  *
  * Since: 2.4
@@ -1015,7 +1015,7 @@ gtk_action_disconnect_proxy (GtkAction *action,
 /**
  * gtk_action_get_proxies:
  * @action: the action object
- * 
+ *
  * Returns the proxy widgets for an action.
  * See also gtk_widget_get_action().
  *
@@ -1037,7 +1037,7 @@ gtk_action_get_proxies (GtkAction *action)
  * gtk_widget_get_action:
  * @widget: a #GtkWidget
  *
- * Returns the #GtkAction that @widget is a proxy for. 
+ * Returns the #GtkAction that @widget is a proxy for.
  * See also gtk_action_get_proxies().
  *
  * Returns: the action that a widget is a proxy for, or
@@ -1061,9 +1061,9 @@ gtk_widget_get_action (GtkWidget *widget)
 /**
  * gtk_action_get_name:
  * @action: the action object
- * 
+ *
  * Returns the name of the action.
- * 
+ *
  * Return value: the name of the action. The string belongs to GTK+ and should not
  *   be freed.
  *
@@ -1080,10 +1080,10 @@ gtk_action_get_name (GtkAction *action)
 /**
  * gtk_action_is_sensitive:
  * @action: the action object
- * 
+ *
  * Returns whether the action is effectively sensitive.
  *
- * Return value: %TRUE if the action and its associated action group 
+ * Return value: %TRUE if the action and its associated action group
  * are both sensitive.
  *
  * Since: 2.4
@@ -1103,9 +1103,9 @@ gtk_action_is_sensitive (GtkAction *action)
 /**
  * gtk_action_get_sensitive:
  * @action: the action object
- * 
- * Returns whether the action itself is sensitive. Note that this doesn't 
- * necessarily mean effective sensitivity. See gtk_action_is_sensitive() 
+ *
+ * Returns whether the action itself is sensitive. Note that this doesn't
+ * necessarily mean effective sensitivity. See gtk_action_is_sensitive()
  * for that.
  *
  * Return value: %TRUE if the action itself is sensitive.
@@ -1124,10 +1124,10 @@ gtk_action_get_sensitive (GtkAction *action)
  * gtk_action_set_sensitive:
  * @action: the action object
  * @sensitive: %TRUE to make the action sensitive
- * 
- * Sets the ::sensitive property of the action to @sensitive. Note that 
- * this doesn't necessarily mean effective sensitivity. See 
- * gtk_action_is_sensitive() 
+ *
+ * Sets the ::sensitive property of the action to @sensitive. Note that
+ * this doesn't necessarily mean effective sensitivity. See
+ * gtk_action_is_sensitive()
  * for that.
  *
  * Since: 2.6
@@ -1139,7 +1139,7 @@ gtk_action_set_sensitive (GtkAction *action,
   g_return_if_fail (GTK_IS_ACTION (action));
 
   sensitive = sensitive != FALSE;
-  
+
   if (action->private_data->sensitive != sensitive)
     {
       action->private_data->sensitive = sensitive;
@@ -1151,10 +1151,10 @@ gtk_action_set_sensitive (GtkAction *action,
 /**
  * gtk_action_is_visible:
  * @action: the action object
- * 
+ *
  * Returns whether the action is effectively visible.
  *
- * Return value: %TRUE if the action and its associated action group 
+ * Return value: %TRUE if the action and its associated action group
  * are both visible.
  *
  * Since: 2.4
@@ -1174,9 +1174,9 @@ gtk_action_is_visible (GtkAction *action)
 /**
  * gtk_action_get_visible:
  * @action: the action object
- * 
- * Returns whether the action itself is visible. Note that this doesn't 
- * necessarily mean effective visibility. See gtk_action_is_sensitive() 
+ *
+ * Returns whether the action itself is visible. Note that this doesn't
+ * necessarily mean effective visibility. See gtk_action_is_sensitive()
  * for that.
  *
  * Return value: %TRUE if the action itself is visible.
@@ -1195,10 +1195,10 @@ gtk_action_get_visible (GtkAction *action)
  * gtk_action_set_visible:
  * @action: the action object
  * @visible: %TRUE to make the action visible
- * 
- * Sets the ::visible property of the action to @visible. Note that 
- * this doesn't necessarily mean effective visibility. See 
- * gtk_action_is_visible() 
+ *
+ * Sets the ::visible property of the action to @visible. Note that
+ * this doesn't necessarily mean effective visibility. See
+ * gtk_action_is_visible()
  * for that.
  *
  * Since: 2.6
@@ -1210,7 +1210,7 @@ gtk_action_set_visible (GtkAction *action,
   g_return_if_fail (GTK_IS_ACTION (action));
 
   visible = visible != FALSE;
-  
+
   if (action->private_data->visible != visible)
     {
       action->private_data->visible = visible;
@@ -1229,20 +1229,20 @@ gtk_action_set_visible (GtkAction *action,
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_is_important (GtkAction *action,
 			     gboolean   is_important)
 {
   g_return_if_fail (GTK_IS_ACTION (action));
 
   is_important = is_important != FALSE;
-  
+
   if (action->private_data->is_important != is_important)
     {
       action->private_data->is_important = is_important;
-      
+
       g_object_notify (G_OBJECT (action), "is-important");
-    }  
+    }
 }
 
 /**
@@ -1250,12 +1250,12 @@ gtk_action_set_is_important (GtkAction *action,
  * @action: a #GtkAction
  *
  * Checks whether @action is important or not
- * 
+ *
  * Returns: whether @action is important
  *
  * Since: 2.16
  */
-gboolean 
+gboolean
 gtk_action_get_is_important (GtkAction *action)
 {
   g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
@@ -1287,7 +1287,7 @@ gtk_action_set_always_show_image (GtkAction *action,
   priv = action->private_data;
 
   always_show = always_show != FALSE;
-  
+
   if (priv->always_show_image != always_show)
     {
       priv->always_show_image = always_show;
@@ -1325,14 +1325,14 @@ gtk_action_get_always_show_image  (GtkAction *action)
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_label (GtkAction	  *action,
 		      const gchar *label)
 {
   gchar *tmp;
-  
+
   g_return_if_fail (GTK_IS_ACTION (action));
-  
+
   tmp = action->private_data->label;
   action->private_data->label = g_strdup (label);
   g_free (tmp);
@@ -1341,13 +1341,13 @@ gtk_action_set_label (GtkAction	  *action,
   if (!action->private_data->label_set && action->private_data->stock_id)
     {
       GtkStockItem stock_item;
-      
+
       if (gtk_stock_lookup (action->private_data->stock_id, &stock_item))
 	action->private_data->label = g_strdup (stock_item.label);
     }
 
   g_object_notify (G_OBJECT (action), "label");
-  
+
   /* if short_label is unset, set short_label=label */
   if (!action->private_data->short_label_set)
     {
@@ -1383,7 +1383,7 @@ gtk_action_get_label (GtkAction *action)
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_short_label (GtkAction   *action,
 			    const gchar *short_label)
 {
@@ -1438,13 +1438,13 @@ gtk_action_set_visible_horizontal (GtkAction *action,
   g_return_if_fail (GTK_IS_ACTION (action));
 
   visible_horizontal = visible_horizontal != FALSE;
-  
+
   if (action->private_data->visible_horizontal != visible_horizontal)
     {
       action->private_data->visible_horizontal = visible_horizontal;
-      
+
       g_object_notify (G_OBJECT (action), "visible-horizontal");
-    }  
+    }
 }
 
 /**
@@ -1452,12 +1452,12 @@ gtk_action_set_visible_horizontal (GtkAction *action,
  * @action: a #GtkAction
  *
  * Checks whether @action is visible when horizontal
- * 
+ *
  * Returns: whether @action is visible when horizontal
  *
  * Since: 2.16
  */
-gboolean 
+gboolean
 gtk_action_get_visible_horizontal (GtkAction *action)
 {
   g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
@@ -1470,11 +1470,11 @@ gtk_action_get_visible_horizontal (GtkAction *action)
  * @action: a #GtkAction
  * @visible_vertical: whether the action is visible vertically
  *
- * Sets whether @action is visible when vertical 
+ * Sets whether @action is visible when vertical
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_visible_vertical (GtkAction *action,
 				 gboolean   visible_vertical)
 {
@@ -1483,13 +1483,13 @@ gtk_action_set_visible_vertical (GtkAction *action,
   g_return_if_fail (GTK_IS_ACTION (action));
 
   visible_vertical = visible_vertical != FALSE;
-  
+
   if (action->private_data->visible_vertical != visible_vertical)
     {
       action->private_data->visible_vertical = visible_vertical;
-      
+
       g_object_notify (G_OBJECT (action), "visible-vertical");
-    }  
+    }
 }
 
 /**
@@ -1497,12 +1497,12 @@ gtk_action_set_visible_vertical (GtkAction *action,
  * @action: a #GtkAction
  *
  * Checks whether @action is visible when horizontal
- * 
+ *
  * Returns: whether @action is visible when horizontal
  *
  * Since: 2.16
  */
-gboolean 
+gboolean
 gtk_action_get_visible_vertical (GtkAction *action)
 {
   g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
@@ -1519,7 +1519,7 @@ gtk_action_get_visible_vertical (GtkAction *action)
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_tooltip (GtkAction   *action,
 			const gchar *tooltip)
 {
@@ -1561,7 +1561,7 @@ gtk_action_get_tooltip (GtkAction *action)
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_stock_id (GtkAction   *action,
 			 const gchar *stock_id)
 {
@@ -1576,18 +1576,18 @@ gtk_action_set_stock_id (GtkAction   *action,
   g_free (tmp);
 
   g_object_notify (G_OBJECT (action), "stock-id");
-  
+
   /* update label and short_label if appropriate */
   if (!action->private_data->label_set)
     {
       GtkStockItem stock_item;
-      
+
       if (action->private_data->stock_id &&
 	  gtk_stock_lookup (action->private_data->stock_id, &stock_item))
 	gtk_action_set_label (action, stock_item.label);
-      else 
+      else
 	gtk_action_set_label (action, NULL);
-      
+
       action->private_data->label_set = FALSE;
     }
 }
@@ -1619,7 +1619,7 @@ gtk_action_get_stock_id (GtkAction *action)
  *
  * Since: 2.16
  */
-void 
+void
 gtk_action_set_icon_name (GtkAction   *action,
 			  const gchar *icon_name)
 {
@@ -1706,18 +1706,18 @@ gtk_action_get_gicon (GtkAction *action)
  * break notification loops for things like check or radio actions.
  *
  * This function is intended for use by action implementations.
- * 
+ *
  * Since: 2.4
  *
  * Deprecated: 2.16: activatables are now responsible for activating the
  * action directly so this doesnt apply anymore.
  */
 void
-gtk_action_block_activate_from (GtkAction *action, 
+gtk_action_block_activate_from (GtkAction *action,
 				GtkWidget *proxy)
 {
   g_return_if_fail (GTK_IS_ACTION (action));
-  
+
   g_signal_handlers_block_by_func (proxy, G_CALLBACK (gtk_action_activate),
 				   action);
 
@@ -1734,14 +1734,14 @@ gtk_action_block_activate_from (GtkAction *action,
  * blocking done by gtk_action_block_activate_from().
  *
  * This function is intended for use by action implementations.
- * 
+ *
  * Since: 2.4
  *
  * Deprecated: 2.16: activatables are now responsible for activating the
  * action directly so this doesnt apply anymore.
  */
 void
-gtk_action_unblock_activate_from (GtkAction *action, 
+gtk_action_unblock_activate_from (GtkAction *action,
 				  GtkWidget *proxy)
 {
   g_return_if_fail (GTK_IS_ACTION (action));
@@ -1763,7 +1763,7 @@ closure_accel_activate (GClosure     *closure,
   if (gtk_action_is_sensitive (GTK_ACTION (closure->data)))
     {
       _gtk_action_emit_activate (GTK_ACTION (closure->data));
-      
+
       /* we handled the accelerator */
       g_value_set_boolean (return_value, TRUE);
     }
@@ -1791,13 +1791,13 @@ gtk_action_set_action_group (GtkAction	    *action,
  * accelerators are consistent.
  *
  * Note that @accel_path string will be stored in a #GQuark. Therefore, if you
- * pass a static string, you can save some memory by interning it first with 
+ * pass a static string, you can save some memory by interning it first with
  * g_intern_static_string().
  *
  * Since: 2.4
  */
 void
-gtk_action_set_accel_path (GtkAction   *action, 
+gtk_action_set_accel_path (GtkAction   *action,
 			   const gchar *accel_path)
 {
   g_return_if_fail (GTK_IS_ACTION (action));
@@ -1809,12 +1809,12 @@ gtk_action_set_accel_path (GtkAction   *action,
  * gtk_action_get_accel_path:
  * @action: the action object
  *
- * Returns the accel path for this action.  
+ * Returns the accel path for this action.
  *
  * Since: 2.6
  *
  * Returns: the accel path for this action, or %NULL
- *   if none is set. The returned string is owned by GTK+ 
+ *   if none is set. The returned string is owned by GTK+
  *   and must not be freed or modified.
  */
 const gchar *
@@ -1865,7 +1865,7 @@ gtk_action_set_accel_group (GtkAction     *action,
 {
   g_return_if_fail (GTK_IS_ACTION (action));
   g_return_if_fail (accel_group == NULL || GTK_IS_ACCEL_GROUP (accel_group));
-  
+
   if (accel_group)
     g_object_ref (accel_group);
   if (action->private_data->accel_group)
@@ -1877,9 +1877,9 @@ gtk_action_set_accel_group (GtkAction     *action,
 /**
  * gtk_action_connect_accelerator:
  * @action: a #GtkAction
- * 
+ *
  * Installs the accelerator for @action if @action has an
- * accel path and group. See gtk_action_set_accel_path() and 
+ * accel path and group. See gtk_action_set_accel_path() and
  * gtk_action_set_accel_group()
  *
  * Since multiple proxies may independently trigger the installation
@@ -1889,7 +1889,7 @@ gtk_action_set_accel_group (GtkAction     *action,
  *
  * Since: 2.4
  **/
-void 
+void
 gtk_action_connect_accelerator (GtkAction *action)
 {
   g_return_if_fail (GTK_IS_ACTION (action));
@@ -1900,9 +1900,9 @@ gtk_action_connect_accelerator (GtkAction *action)
 
   if (action->private_data->accel_count == 0)
     {
-      const gchar *accel_path = 
+      const gchar *accel_path =
 	g_quark_to_string (action->private_data->accel_quark);
-      
+
       gtk_accel_group_connect_by_path (action->private_data->accel_group,
 				       accel_path,
 				       action->private_data->accel_closure);
@@ -1914,12 +1914,12 @@ gtk_action_connect_accelerator (GtkAction *action)
 /**
  * gtk_action_disconnect_accelerator:
  * @action: a #GtkAction
- * 
+ *
  * Undoes the effect of one call to gtk_action_connect_accelerator().
  *
  * Since: 2.4
  **/
-void 
+void
 gtk_action_disconnect_accelerator (GtkAction *action)
 {
   g_return_if_fail (GTK_IS_ACTION (action));

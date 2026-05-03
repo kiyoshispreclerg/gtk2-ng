@@ -257,7 +257,7 @@ gdk_event_apply_filters (NSEvent *nsevent,
 {
   GList *tmp_list;
   GdkFilterReturn result;
-  
+
   tmp_list = *filters;
 
   while (tmp_list)
@@ -407,11 +407,11 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
       return GDK_SCROLL_MASK | GDK_BUTTON_PRESS_MASK;
     case NSLeftMouseDragged:
       return (GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK |
-	      GDK_BUTTON_MOTION_MASK | GDK_BUTTON1_MOTION_MASK | 
+	      GDK_BUTTON_MOTION_MASK | GDK_BUTTON1_MOTION_MASK |
 	      GDK_BUTTON1_MASK);
     case NSRightMouseDragged:
       return (GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK |
-	      GDK_BUTTON_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | 
+	      GDK_BUTTON_MOTION_MASK | GDK_BUTTON3_MOTION_MASK |
 	      GDK_BUTTON3_MASK);
     case NSOtherMouseDragged:
       {
@@ -422,7 +422,7 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
 		GDK_BUTTON_MOTION_MASK);
 
 	if (get_mouse_button_from_ns_event (nsevent) == 2)
-	  mask |= (GDK_BUTTON2_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | 
+	  mask |= (GDK_BUTTON2_MOTION_MASK | GDK_BUTTON2_MOTION_MASK |
 		   GDK_BUTTON2_MASK);
 
 	return mask;
@@ -631,7 +631,7 @@ _gdk_quartz_events_update_focus_window (GdkWindow *window,
   /* FIXME: Don't do this when grabbed? Or make GdkQuartzWindow
    * disallow it in the first place instead?
    */
-  
+
   if (!got_focus && window == current_keyboard_window)
     {
       event = create_focus_event (current_keyboard_window, FALSE);
@@ -649,7 +649,7 @@ _gdk_quartz_events_update_focus_window (GdkWindow *window,
 	  g_object_unref (current_keyboard_window);
 	  current_keyboard_window = NULL;
 	}
-      
+
       event = create_focus_event (window, TRUE);
       append_event (event, FALSE);
       current_keyboard_window = g_object_ref (window);
@@ -678,7 +678,7 @@ _gdk_quartz_events_send_map_event (GdkWindow *window)
 
       event.any.type = GDK_MAP;
       event.any.window = window;
-  
+
       gdk_event_put (&event);
     }
 }
@@ -715,8 +715,8 @@ find_toplevel_under_pointer (GdkDisplay *display,
  * into account grabs, event propagation, and event masks.
  */
 static GdkWindow *
-find_window_for_ns_event (NSEvent *nsevent, 
-                          gint    *x, 
+find_window_for_ns_event (NSEvent *nsevent,
+                          gint    *x,
                           gint    *y,
                           gint    *x_root,
                           gint    *y_root)
@@ -809,7 +809,7 @@ find_window_for_ns_event (NSEvent *nsevent,
 
 	    return NULL;
 	  }
-	else 
+	else
 	  {
 	    /* The non-grabbed case. */
             GdkWindow *toplevel_under_pointer;
@@ -849,7 +849,7 @@ find_window_for_ns_event (NSEvent *nsevent,
 	  }
       }
       break;
-      
+
     case NSMouseEntered:
     case NSMouseExited:
       /* Only handle our own entered/exited events, not the ones for the
@@ -1024,10 +1024,10 @@ fill_key_event (GdkWindow    *window,
   event->key.hardware_keycode = [nsevent keyCode];
   event->key.group = ([nsevent modifierFlags] & NSAlternateKeyMask) ? 1 : 0;
   event->key.keyval = GDK_VoidSymbol;
-  
+
   gdk_keymap_translate_keyboard_state (NULL,
 				       event->key.hardware_keycode,
-				       event->key.state, 
+				       event->key.state,
 				       event->key.group,
 				       &event->key.keyval,
 				       NULL, NULL, NULL);
@@ -1094,7 +1094,7 @@ fill_key_event (GdkWindow    *window,
 
       len = g_unichar_to_utf8 (c, buf);
       buf[len] = '\0';
-      
+
       event->key.string = g_locale_from_utf8 (buf, len,
 					      NULL, &bytes_written,
 					      NULL);
@@ -1193,7 +1193,7 @@ _gdk_quartz_synthesize_null_key_event (GdkWindow *window)
   append_event(event, FALSE);
 }
 
-GdkEventMask 
+GdkEventMask
 _gdk_quartz_events_get_current_event_mask (void)
 {
   return current_event_mask;
@@ -1570,7 +1570,7 @@ gdk_event_translate (GdkEvent *event,
 
 void
 _gdk_events_queue (GdkDisplay *display)
-{  
+{
   NSEvent *nsevent;
 
   nsevent = _gdk_quartz_event_loop_get_pending ();
@@ -1672,7 +1672,7 @@ gdk_screen_get_setting (GdkScreen   *screen,
       GDK_QUARTZ_ALLOC_POOL;
 
       defaults = [NSUserDefaults standardUserDefaults];
-            
+
       t = [defaults floatForKey:@"com.apple.mouse.doubleClickThreshold"];
       if (t == 0.0)
 	{
@@ -1725,7 +1725,7 @@ gdk_screen_get_setting (GdkScreen   *screen,
 
       return TRUE;
     }
-  
+
   /* FIXME: Add more settings */
 
   return FALSE;

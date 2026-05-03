@@ -135,7 +135,7 @@ test_visual_coherency (gboolean   quiet,
   CQTEST (quiet, visual->depth >= 1 && visual->depth <= 32);
   CQTEST (quiet, visual->byte_order == GDK_LSB_FIRST || visual->byte_order ==
 	  GDK_MSB_FIRST);
-  
+
   return retval;
 }
 
@@ -568,9 +568,9 @@ test_points (void)
 	  test_one_point_on_drawable (pixmap, gcs[j], system_visual->depth);
 	  gdk_gc_set_function (gcs[j], GDK_COPY);
 	}
-  
+
   g_object_unref (pixmap);
-  
+
   pixmap = gdk_pixmap_new (w, width, height, 1);
   test_one_point_on_drawable (pixmap, black_bitmap_gc, 1);
   for (function = GDK_COPY; function <= GDK_SET; function++)
@@ -650,7 +650,7 @@ test_one_line_on_drawable (GdkDrawable *drawable,
 	      QTEST (oldpixel == newpixel);
 	  }
     }
-  
+
   gdk_image_destroy (oldimage);
   gdk_image_destroy (newimage);
 }
@@ -730,7 +730,7 @@ test_one_rectangle_on_drawable (GdkDrawable *drawable,
       {
 	oldpixel = gdk_image_get_pixel (oldimage, x, y);
 	newpixel = gdk_image_get_pixel (newimage, x, y);
-	
+
 	if (filled)
 	  {
 	    if (x >= x0 && x < x0+width &&
@@ -756,7 +756,7 @@ test_one_rectangle_on_drawable (GdkDrawable *drawable,
 	      QTEST (oldpixel == newpixel);
 	  }
       }
-  
+
   gdk_image_destroy (oldimage);
   gdk_image_destroy (newimage);
 }
@@ -788,7 +788,7 @@ test_rectangles (void)
 	    filled = !filled;
 	    gdk_gc_set_function (gcs[j], GDK_COPY);
 	  }
-  
+
   g_object_unref (pixmap);
 }
 
@@ -836,7 +836,7 @@ test_some_arcs_on_drawable (GdkDrawable *drawable,
       {
 	oldpixel = gdk_image_get_pixel (oldimage, x, y);
 	newpixel = gdk_image_get_pixel (newimage, x, y);
-	
+
 	if (filled)
 	  {
 	    /* XXX */
@@ -846,7 +846,7 @@ test_some_arcs_on_drawable (GdkDrawable *drawable,
 	    /* XXX */
 	  }
       }
-  
+
   gdk_image_destroy (oldimage);
   gdk_image_destroy (newimage);
 }

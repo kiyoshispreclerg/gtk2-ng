@@ -43,7 +43,7 @@ if [ ! -d $BUILDDIR ]; then
     echo "mkdir of build directory failed"
     exit 1
   fi
-fi 
+fi
 
 if ! cd $BUILDDIR; then
   echo "cd to build directory failed"
@@ -68,7 +68,7 @@ tar cvfz $TARGETDIR/gtk-tutorial.sgml.tgz gtk-tutorial.sgml
 echo "done"
 
 # HTML Format
-echo -n "Formatting into HTML.... " 
+echo -n "Formatting into HTML.... "
 if [ ! -d gtk-tutorial.html ]; then
   if [ -e gtk-tutorial.html ]; then
     echo "ERROR: gtk-tutorial.html is not a directory"

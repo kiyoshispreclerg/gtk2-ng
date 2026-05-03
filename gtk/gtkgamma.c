@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GTK_DISABLE_DEPRECATED
@@ -75,9 +75,9 @@ enum
 #pragma align 4 (spline_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 spline_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const guint8 spline_pixdata[] __attribute__ ((__aligned__ (4))) =
 #else
-static const guint8 spline_pixdata[] = 
+static const guint8 spline_pixdata[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -108,9 +108,9 @@ static const guint8 spline_pixdata[] =
 #pragma align 4 (linear_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 linear_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const guint8 linear_pixdata[] __attribute__ ((__aligned__ (4))) =
 #else
-static const guint8 linear_pixdata[] = 
+static const guint8 linear_pixdata[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -147,9 +147,9 @@ static const guint8 linear_pixdata[] =
 #pragma align 4 (free_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 free_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const guint8 free_pixdata[] __attribute__ ((__aligned__ (4))) =
 #else
-static const guint8 free_pixdata[] = 
+static const guint8 free_pixdata[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -181,9 +181,9 @@ static const guint8 free_pixdata[] =
 #pragma align 4 (gamma_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 gamma_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const guint8 gamma_pixdata[] __attribute__ ((__aligned__ (4))) =
 #else
-static const guint8 gamma_pixdata[] = 
+static const guint8 gamma_pixdata[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -215,9 +215,9 @@ static const guint8 gamma_pixdata[] =
 #pragma align 4 (reset_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 reset_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const guint8 reset_pixdata[] __attribute__ ((__aligned__ (4))) =
 #else
-static const guint8 reset_pixdata[] = 
+static const guint8 reset_pixdata[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -408,31 +408,31 @@ button_clicked_callback (GtkWidget *w, gpointer data)
 	{
 	  GtkWidget *vbox, *hbox, *label, *button;
 	  gchar buf[64];
-	  
+
 	  c->gamma_dialog = gtk_dialog_new ();
 	  gtk_window_set_screen (GTK_WINDOW (c->gamma_dialog),
 				 gtk_widget_get_screen (w));
 	  gtk_window_set_title (GTK_WINDOW (c->gamma_dialog), _("Gamma"));
 	  g_object_add_weak_pointer (G_OBJECT (c->gamma_dialog),
 				     (gpointer *)&c->gamma_dialog);
-	  
+
 	  vbox = GTK_DIALOG (c->gamma_dialog)->vbox;
-	  
+
 	  hbox = gtk_hbox_new (/* homogeneous */ FALSE, 0);
 	  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 2);
 	  gtk_widget_show (hbox);
-	  
+
 	  label = gtk_label_new_with_mnemonic (_("_Gamma value"));
 	  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
 	  gtk_widget_show (label);
-	  
+
 	  sprintf (buf, "%g", c->gamma);
 	  c->gamma_text = gtk_entry_new ();
           gtk_label_set_mnemonic_widget (GTK_LABEL (label), c->gamma_text);
 	  gtk_entry_set_text (GTK_ENTRY (c->gamma_text), buf);
 	  gtk_box_pack_start (GTK_BOX (hbox), c->gamma_text, TRUE, TRUE, 2);
 	  gtk_widget_show (c->gamma_text);
-	  
+
 	  /* fill in action area: */
 	  hbox = GTK_DIALOG (c->gamma_dialog)->action_area;
 
@@ -441,7 +441,7 @@ button_clicked_callback (GtkWidget *w, gpointer data)
 			    G_CALLBACK (gamma_cancel_callback), c);
 	  gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
 	  gtk_widget_show (button);
-	  
+
           button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	  gtk_widget_set_can_default (button, TRUE);
 	  g_signal_connect (button, "clicked",
@@ -449,7 +449,7 @@ button_clicked_callback (GtkWidget *w, gpointer data)
 	  gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
 	  gtk_widget_grab_default (button);
 	  gtk_widget_show (button);
-	  
+
 	  gtk_widget_show (c->gamma_dialog);
 	}
     }

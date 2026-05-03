@@ -65,7 +65,7 @@ struct _GailTreeViewClass
 };
 
 AtkObject* gail_tree_view_ref_focus_cell (GtkTreeView *treeview);
- 
+
 G_END_DECLS
 
 #endif /* __GAIL_TREE_VIEW_H__ */

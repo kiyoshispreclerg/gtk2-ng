@@ -86,8 +86,8 @@ typedef enum
 #define PART_SIZE 13
 
 static const unsigned char check_aa_bits[] = {
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1199,7 +1199,7 @@ draw_varrow (GdkWindow *window,
   gint y_start, y_increment;
   gint i;
   cairo_t *cr;
-  
+
   cr = gdk_cairo_create (window);
 
   if (area)
@@ -1249,7 +1249,7 @@ draw_harrow (GdkWindow *window,
   gint x_start, x_increment;
   gint i;
   cairo_t *cr;
-  
+
   cr = gdk_cairo_create (window);
 
   if (area)
@@ -3101,7 +3101,7 @@ draw_hline (GtkStyle *style,
 	    const gchar *detail, gint x1, gint x2, gint y)
 {
   cairo_t *cr;
-  
+
   cr = gdk_cairo_create (window);
 
   if (xp_theme_is_active () && DETAIL("menuitem"))
@@ -3170,7 +3170,7 @@ draw_vline (GtkStyle *style,
 	    const gchar *detail, gint y1, gint y2, gint x)
 {
   cairo_t *cr;
-  
+
   cr = gdk_cairo_create (window);
 
   if (style->xthickness == 2)
@@ -3230,9 +3230,9 @@ draw_resize_grip (GtkStyle *style,
 		  GdkWindowEdge edge, gint x, gint y, gint width, gint height)
 {
   cairo_t *cr;
-  
+
   cr = gdk_cairo_create (window);
-  
+
   if (DETAIL("statusbar"))
     {
       if (xp_theme_draw

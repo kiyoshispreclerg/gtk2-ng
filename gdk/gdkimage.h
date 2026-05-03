@@ -67,7 +67,7 @@ struct _GdkImage
   GObject parent_instance;
 
   /*< public >*/
-  
+
   GdkImageType	GSEAL (type); /* read only. */
   GdkVisual    *GSEAL (visual);	    /* read only. visual used to create the image */
   GdkByteOrder	GSEAL (byte_order); /* read only. */

@@ -57,7 +57,7 @@ create_model (void)
   blah = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   foo = gtk_widget_render_icon (blah, GTK_STOCK_NEW, GTK_ICON_SIZE_MENU, NULL);
   gtk_widget_destroy (blah);
-  
+
   model = gtk_tree_store_new (NUM_COLUMNS,
 			      G_TYPE_STRING,
 			      G_TYPE_BOOLEAN,
@@ -75,7 +75,7 @@ create_model (void)
 			  PROGRESS_COLUMN, model_strings[i].progress,
 			  -1);
     }
-  
+
   return GTK_TREE_MODEL (model);
 }
 
@@ -137,7 +137,7 @@ main (gint argc, gchar **argv)
   GtkTreeModel *tree_model;
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
-  
+
   gtk_init (&argc, &argv);
 
   if (g_getenv ("RTL"))
@@ -192,7 +192,7 @@ main (gint argc, gchar **argv)
   renderer = gtk_cell_renderer_toggle_new ();
   g_signal_connect (renderer, "toggled",
 		    G_CALLBACK (toggled), tree_model);
-  
+
   g_object_set (renderer,
 		"xalign", 0.0,
 		NULL);
@@ -210,7 +210,7 @@ main (gint argc, gchar **argv)
 					       NULL);
 
   gtk_container_add (GTK_CONTAINER (scrolled_window), tree_view);
-  
+
   gtk_window_set_default_size (GTK_WINDOW (window),
 			       800, 175);
 

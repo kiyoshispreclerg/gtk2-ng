@@ -100,7 +100,7 @@ compare (GtkTreeModel *model,
 
   gtk_tree_model_get (model, a, 1, &str_a, -1);
   gtk_tree_model_get (model, b, 1, &str_b, -1);
-  
+
   result = strcmp (str_a, str_b);
 
   g_free (str_a);
@@ -169,7 +169,7 @@ find_nth (GtkTreeModel *model,
 	  GtkTreeIter  *iter,
 	  gpointer      data)
 {
-  FindData *fdata = (FindData *)data; 
+  FindData *fdata = (FindData *)data;
 
   if (fdata->i >= fdata->n)
     {
@@ -242,7 +242,7 @@ test_run (gchar        *title,
 	  g_timer_stop (timer);
 	  elapsed += g_timer_elapsed (timer, NULL);
 	}
-      
+
       elapsed = elapsed * 1000 / repeats;
 #if defined(HAVE_MALLINFO2)
         memused = (mallinfo2().uordblks - uordblks_before) / 1024;
@@ -251,84 +251,84 @@ test_run (gchar        *title,
 #else
         memused = 0;
 #endif
-      g_print ("%d \t%f \t%f  \t%dk\n", 
+      g_print ("%d \t%f \t%f  \t%dk\n",
 	       items, elapsed, elapsed/items, memused);
-    }  
+    }
 }
 
 int
 main (int argc, char *argv[])
 {
   GtkTreeModel *model;
-  
+
   gtk_init_with_args (&argc, &argv, NULL, entries, NULL, NULL);
 
   model = GTK_TREE_MODEL (gtk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING));
-  
-  test_run ("list store append", 
-	    model, 
-	    (ClearFunc*)gtk_list_store_clear, 
+
+  test_run ("list store append",
+	    model,
+	    (ClearFunc*)gtk_list_store_clear,
 	    (InsertFunc*)list_store_append);
 
-  test_run ("list store prepend", 
-	    model, 
-	    (ClearFunc*)gtk_list_store_clear, 
+  test_run ("list store prepend",
+	    model,
+	    (ClearFunc*)gtk_list_store_clear,
 	    (InsertFunc*)list_store_prepend);
 
-  test_run ("list store insert", 
-	    model, 
-	    (ClearFunc*)gtk_list_store_clear, 
+  test_run ("list store insert",
+	    model,
+	    (ClearFunc*)gtk_list_store_clear,
 	    (InsertFunc*)list_store_insert);
 
-  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (model), 
+  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (model),
 					   compare, NULL, NULL);
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model), 
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model),
 					GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
 					GTK_SORT_ASCENDING);
 
-  test_run ("list store insert (sorted)", 
-	    model, 
-	    (ClearFunc*)gtk_list_store_clear, 
+  test_run ("list store insert (sorted)",
+	    model,
+	    (ClearFunc*)gtk_list_store_clear,
 	    (InsertFunc*)list_store_insert);
 
   g_object_unref (model);
-  
+
   model = GTK_TREE_MODEL (gtk_tree_store_new (2, G_TYPE_INT, G_TYPE_STRING));
 
-  test_run ("tree store append", 
-	    model, 
-	    (ClearFunc*)gtk_tree_store_clear, 
+  test_run ("tree store append",
+	    model,
+	    (ClearFunc*)gtk_tree_store_clear,
 	    (InsertFunc*)tree_store_append);
 
-  test_run ("tree store prepend", 
-	    model, 
-	    (ClearFunc*)gtk_tree_store_clear, 
+  test_run ("tree store prepend",
+	    model,
+	    (ClearFunc*)gtk_tree_store_clear,
 	    (InsertFunc*)tree_store_prepend);
 
-  test_run ("tree store insert (flat)", 
-	    model, 
-	    (ClearFunc*)gtk_tree_store_clear, 
+  test_run ("tree store insert (flat)",
+	    model,
+	    (ClearFunc*)gtk_tree_store_clear,
 	    (InsertFunc*)tree_store_insert_flat);
 
-  test_run ("tree store insert (deep)", 
-	    model, 
-	    (ClearFunc*)gtk_tree_store_clear, 
+  test_run ("tree store insert (deep)",
+	    model,
+	    (ClearFunc*)gtk_tree_store_clear,
 	    (InsertFunc*)tree_store_insert_deep);
 
-  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (model), 
+  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (model),
 					   compare, NULL, NULL);
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model), 
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model),
 					GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
 					GTK_SORT_ASCENDING);
 
-  test_run ("tree store insert (flat, sorted)", 
-	    model, 
-	    (ClearFunc*)gtk_tree_store_clear, 
+  test_run ("tree store insert (flat, sorted)",
+	    model,
+	    (ClearFunc*)gtk_tree_store_clear,
 	    (InsertFunc*)tree_store_insert_flat);
 
-  test_run ("tree store insert (deep, sorted)", 
-	    model, 
-	    (ClearFunc*)gtk_tree_store_clear, 
+  test_run ("tree store insert (deep, sorted)",
+	    model,
+	    (ClearFunc*)gtk_tree_store_clear,
 	    (InsertFunc*)tree_store_insert_deep);
 
   return 0;

@@ -23,7 +23,7 @@
 #include "gtkimcontextxim.h"
 #include <string.h>
 
-static const GtkIMContextInfo xim_ja_info = { 
+static const GtkIMContextInfo xim_ja_info = {
   "xim",		           /* ID */
   N_("X Input Method"),            /* Human readable name */
   GETTEXT_PACKAGE,		   /* Translation domain */

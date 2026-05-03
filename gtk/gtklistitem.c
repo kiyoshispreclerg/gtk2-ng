@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -262,7 +262,7 @@ gtk_list_item_class_init (GtkListItemClass *class)
 				"scroll-vertical", 2,
 				GTK_TYPE_ENUM, GTK_SCROLL_JUMP,
 				GTK_TYPE_FLOAT, 1.0);
-  
+
   gtk_binding_entry_add_signal (binding_set, GDK_Up, GDK_SHIFT_MASK,
 				"extend-selection", 3,
 				GTK_TYPE_ENUM, GTK_SCROLL_STEP_BACKWARD,
@@ -271,7 +271,7 @@ gtk_list_item_class_init (GtkListItemClass *class)
 				"extend-selection", 3,
 				GTK_TYPE_ENUM, GTK_SCROLL_STEP_BACKWARD,
 				GTK_TYPE_FLOAT, 0.0, GTK_TYPE_BOOL, TRUE);
-  
+
   gtk_binding_entry_add_signal (binding_set, GDK_Down, GDK_SHIFT_MASK,
 				"extend-selection", 3,
 				GTK_TYPE_ENUM, GTK_SCROLL_STEP_FORWARD,
@@ -317,7 +317,7 @@ gtk_list_item_class_init (GtkListItemClass *class)
 				GTK_TYPE_ENUM, GTK_SCROLL_JUMP,
 				GTK_TYPE_FLOAT, 1.0, GTK_TYPE_BOOL, TRUE);
 
-  
+
   gtk_binding_entry_add_signal (binding_set, GDK_Left, 0,
 				"scroll-horizontal", 2,
 				GTK_TYPE_ENUM, GTK_SCROLL_STEP_BACKWARD,
@@ -350,7 +350,7 @@ gtk_list_item_class_init (GtkListItemClass *class)
 				"scroll-horizontal", 2,
 				GTK_TYPE_ENUM, GTK_SCROLL_JUMP,
 				GTK_TYPE_FLOAT, 1.0);
-  
+
   gtk_binding_entry_add_signal (binding_set, GDK_Escape, 0,
 				"undo-selection", 0);
   gtk_binding_entry_add_signal (binding_set, GDK_space, 0,
@@ -401,7 +401,7 @@ gtk_list_item_new_with_label (const gchar *label)
   label_widget = gtk_label_new (label);
   gtk_misc_set_alignment (GTK_MISC (label_widget), 0.0, 0.5);
   gtk_misc_set_padding (GTK_MISC (label_widget), 0, 1);
-  
+
   gtk_container_add (GTK_CONTAINER (list_item), label_widget);
   gtk_widget_show (label_widget);
 
@@ -457,7 +457,7 @@ gtk_list_item_realize (GtkWidget *widget)
   gdk_window_set_user_data (widget->window, widget);
 
   widget->style = gtk_style_attach (widget->style, widget->window);
-  gdk_window_set_background (widget->window, 
+  gdk_window_set_background (widget->window,
 			     &widget->style->base[GTK_STATE_NORMAL]);
 }
 
@@ -523,7 +523,7 @@ gtk_list_item_size_allocate (GtkWidget     *widget,
     }
 }
 
-static void 
+static void
 gtk_list_item_style_set	(GtkWidget      *widget,
 			 GtkStyle       *previous_style)
 {
@@ -565,10 +565,10 @@ gtk_list_item_expose (GtkWidget      *widget,
         }
       else
         {
-          gtk_paint_flat_box (widget->style, widget->window, 
+          gtk_paint_flat_box (widget->style, widget->window,
                               widget->state, GTK_SHADOW_ETCHED_OUT,
                               &event->area, widget, "listitem",
-                              0, 0, -1, -1);           
+                              0, 0, -1, -1);
         }
 
       GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
@@ -618,7 +618,7 @@ static void
 gtk_real_list_item_toggle (GtkItem *item)
 {
   g_return_if_fail (GTK_IS_LIST_ITEM (item));
-  
+
   switch (GTK_WIDGET (item)->state)
     {
     case GTK_STATE_SELECTED:

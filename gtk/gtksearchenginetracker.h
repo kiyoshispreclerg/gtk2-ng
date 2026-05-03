@@ -38,14 +38,14 @@ typedef struct _GtkSearchEngineTracker GtkSearchEngineTracker;
 typedef struct _GtkSearchEngineTrackerClass GtkSearchEngineTrackerClass;
 typedef struct _GtkSearchEngineTrackerPrivate GtkSearchEngineTrackerPrivate;
 
-struct _GtkSearchEngineTracker 
+struct _GtkSearchEngineTracker
 {
   GtkSearchEngine parent;
 
   GtkSearchEngineTrackerPrivate *priv;
 };
 
-struct _GtkSearchEngineTrackerClass 
+struct _GtkSearchEngineTrackerClass
 {
   GtkSearchEngineClass parent_class;
 };

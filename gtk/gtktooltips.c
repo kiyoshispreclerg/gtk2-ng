@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -235,8 +235,8 @@ gtk_tooltips_set_tip (GtkTooltips *tooltips,
 	gtk_tooltips_widget_remove (tooltipsdata->widget, tooltipsdata);
       return;
     }
-  
-  if (tooltips->active_tips_data 
+
+  if (tooltips->active_tips_data
       && tooltipsdata
       && tooltips->active_tips_data->widget == widget
       && GTK_WIDGET_DRAWABLE (tooltips->active_tips_data->widget))
@@ -247,15 +247,15 @@ gtk_tooltips_set_tip (GtkTooltips *tooltips,
       tooltipsdata->tip_text = g_strdup (tip_text);
       tooltipsdata->tip_private = g_strdup (tip_private);
     }
-  else 
+  else
     {
       g_object_ref (widget);
-      
+
       if (tooltipsdata)
         gtk_tooltips_widget_remove (tooltipsdata->widget, tooltipsdata);
-      
+
       tooltipsdata = g_new0 (GtkTooltipsData, 1);
-      
+
       tooltipsdata->tooltips = tooltips;
       tooltipsdata->widget = widget;
 
@@ -289,18 +289,18 @@ gtk_tooltips_widget_remove (GtkWidget *widget,
 
 /**
  * gtk_tooltips_get_info_from_tip_window:
- * @tip_window: a #GtkWindow 
- * @tooltips: the return location for the tooltips which are displayed 
+ * @tip_window: a #GtkWindow
+ * @tooltips: the return location for the tooltips which are displayed
  *    in @tip_window, or %NULL
- * @current_widget: the return location for the widget whose tooltips 
+ * @current_widget: the return location for the widget whose tooltips
  *    are displayed, or %NULL
- * 
- * Determines the tooltips and the widget they belong to from the window in 
- * which they are displayed. 
+ *
+ * Determines the tooltips and the widget they belong to from the window in
+ * which they are displayed.
  *
  * This function is mostly intended for use by accessibility technologies;
  * applications should have little use for it.
- * 
+ *
  * Return value: %TRUE if @tip_window is displaying tooltips, otherwise %FALSE.
  *
  * Since: 2.4
@@ -312,7 +312,7 @@ gtk_tooltips_get_info_from_tip_window (GtkWindow    *tip_window,
                                        GtkTooltips **tooltips,
                                        GtkWidget   **current_widget)
 {
-  GtkTooltips  *current_tooltips;  
+  GtkTooltips  *current_tooltips;
   gboolean has_tips;
 
   g_return_val_if_fail (GTK_IS_WINDOW (tip_window), FALSE);

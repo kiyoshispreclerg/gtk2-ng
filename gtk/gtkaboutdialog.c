@@ -363,7 +363,7 @@ gtk_about_dialog_class_init (GtkAboutDialogClass *klass)
                                                         P_("Copyright information for the program"),
                                                         NULL,
                                                         GTK_PARAM_READWRITE));
-        
+
 
   /**
    * GtkAboutDialog:comments:
@@ -501,7 +501,7 @@ gtk_about_dialog_class_init (GtkAboutDialogClass *klass)
                                                         P_("Credits to the translators. This string should be marked as translatable"),
                                                         NULL,
                                                         GTK_PARAM_READWRITE));
-        
+
   /**
    * GtkAboutDialog:logo:
    *

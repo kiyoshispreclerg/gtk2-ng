@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 
 typedef struct _GailToplevel             GailToplevel;
 typedef struct _GailToplevelClass        GailToplevelClass;
-  
+
 struct _GailToplevel
 {
   AtkObject parent;

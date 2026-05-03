@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -66,12 +66,12 @@ _gdk_pixmap_impl_win32_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) gdk_pixmap_impl_win32_init,
       };
-      
+
       object_type = g_type_register_static (GDK_TYPE_DRAWABLE_IMPL_WIN32,
                                             "GdkPixmapImplWin32",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -93,7 +93,7 @@ gdk_pixmap_impl_win32_class_init (GdkPixmapImplWin32Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkDrawableClass *drawable_class = GDK_DRAWABLE_CLASS (klass);
-  
+
   parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize = gdk_pixmap_impl_win32_finalize;
@@ -215,7 +215,7 @@ _gdk_pixmap_new (GdkDrawable *drawable,
   drawable_impl = GDK_DRAWABLE_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
   pixmap_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
   drawable_impl->wrapper = GDK_DRAWABLE (pixmap);
-  
+
   pixmap_impl->is_foreign = FALSE;
   pixmap_impl->width = width;
   pixmap_impl->height = height;
@@ -515,7 +515,7 @@ gdk_pixmap_foreign_new (GdkNativeWindow anid)
   draw_impl = GDK_DRAWABLE_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
   pix_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
   draw_impl->wrapper = GDK_DRAWABLE (pixmap);
-  
+
   draw_impl->handle = hbitmap;
   draw_impl->colormap = NULL;
   pix_impl->is_foreign = TRUE;

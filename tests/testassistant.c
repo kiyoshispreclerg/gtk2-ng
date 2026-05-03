@@ -1,4 +1,4 @@
-/* 
+/*
  * GTK - The GIMP Toolkit
  * Copyright (C) 1999  Red Hat, Inc.
  * Copyright (C) 2002  Anders Carlsson <andersca@gnu.org>
@@ -37,7 +37,7 @@ typedef struct {
 } PageData;
 
 static void
-complete_cb (GtkWidget *check, 
+complete_cb (GtkWidget *check,
 	     gpointer   data)
 {
   PageData *pdata = data;
@@ -49,10 +49,10 @@ complete_cb (GtkWidget *check,
 				   pdata->page,
 				   complete);
 }
-	     
+
 static GtkWidget *
 add_completion_test_page (GtkWidget   *assistant,
-			  const gchar *text, 
+			  const gchar *text,
 			  gboolean     visible,
 			  gboolean     complete)
 {
@@ -65,13 +65,13 @@ add_completion_test_page (GtkWidget   *assistant,
 
   gtk_container_add (GTK_CONTAINER (page), gtk_label_new (text));
   gtk_container_add (GTK_CONTAINER (page), check);
-  
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), complete);
 
   pdata = g_new (PageData, 1);
   pdata->assistant = GTK_ASSISTANT (assistant);
   pdata->page = page;
-  g_signal_connect (G_OBJECT (check), "toggled", 
+  g_signal_connect (G_OBJECT (check), "toggled",
 		    G_CALLBACK (complete_cb), pdata);
 
 
@@ -194,7 +194,7 @@ create_simple_assistant (GtkWidget *widget)
 }
 
 static void
-visible_cb (GtkWidget *check, 
+visible_cb (GtkWidget *check,
 	    gpointer   data)
 {
   GtkWidget *page = data;
@@ -239,11 +239,11 @@ create_generous_assistant (GtkWidget *widget)
 
       check = gtk_check_button_new_with_label ("Next page visible");
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-      g_signal_connect (G_OBJECT (check), "toggled", 
+      g_signal_connect (G_OBJECT (check), "toggled",
 			G_CALLBACK (visible_cb), next);
       gtk_widget_show (check);
       gtk_container_add (GTK_CONTAINER (page), check);
-      
+
       add_completion_test_page (assistant, "Even More Content", TRUE, TRUE);
 
       page = get_test_page ("Confirmation");
@@ -343,7 +343,7 @@ create_nonlinear_assistant (GtkWidget *widget)
       gtk_box_pack_start (GTK_BOX (page), button, FALSE, FALSE, 0);
       g_signal_connect (G_OBJECT (button), "toggled", G_CALLBACK (select_branch), GINT_TO_POINTER ('A'));
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-      
+
       button = gtk_radio_button_new_with_label (gtk_radio_button_get_group (GTK_RADIO_BUTTON (button)),
 						"branch B");
       gtk_box_pack_start (GTK_BOX (page), button, FALSE, FALSE, 0);
@@ -353,7 +353,7 @@ create_nonlinear_assistant (GtkWidget *widget)
       gtk_assistant_append_page (GTK_ASSISTANT (assistant), page);
       gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), page, "Page 1");
       gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), page, TRUE);
-      
+
       page = get_test_page ("Page 2A");
       gtk_widget_show (page);
       gtk_assistant_append_page (GTK_ASSISTANT (assistant), page);
@@ -462,7 +462,7 @@ create_looping_assistant (GtkWidget *widget)
       gtk_assistant_append_page (GTK_ASSISTANT (assistant), page);
       gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), page, "Loop?");
       gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), page, TRUE);
-      
+
       page = get_test_page ("Confirmation");
       gtk_widget_show (page);
       gtk_assistant_append_page (GTK_ASSISTANT (assistant), page);

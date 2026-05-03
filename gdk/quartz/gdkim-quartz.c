@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -37,7 +37,7 @@ gdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
     g_warning ("locale not supported by C library");
-  
+
   return setlocale (LC_ALL, NULL);
 }
 
@@ -51,9 +51,9 @@ gdk_wcstombs (const GdkWChar *src)
 
   while (src[length] != 0)
     length++;
-  
+
   mbstr = g_new (gchar, length + 1);
-  
+
   for (i = 0; i < length + 1; i++)
     mbstr[i] = src[i];
 
@@ -64,7 +64,7 @@ gint
 gdk_mbstowcs (GdkWChar *dest, const gchar *src, gint dest_max)
 {
   gint i;
-  
+
   for (i = 0; i < dest_max && src[i]; i++)
     dest[i] = src[i];
 

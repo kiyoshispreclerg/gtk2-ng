@@ -50,7 +50,7 @@ typedef char *      (*ml_version)         (void);
 
 static ml_version                 medialib_version = mlib_version;
 
-gboolean 
+gboolean
 _gdk_use_medialib (void)
 {
   char *mlib_version_string;
@@ -84,13 +84,13 @@ _gdk_use_medialib (void)
    mlib_version_string = medialib_version ();
 
    count = sysinfo (SI_ARCHITECTURE, &sys_info[0], 257);
-             
+
    if (count != -1)
      {
        if (strcmp (sys_info, "i386") == 0)
          {
            char *mlib_target_isa = &mlib_version_string[23];
-  
+
            /*
             * For x86 processors mediaLib generic C implementation
             * does not give any performance advantage so disable it.

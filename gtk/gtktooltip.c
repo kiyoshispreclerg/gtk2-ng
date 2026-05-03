@@ -414,8 +414,8 @@ gtk_tooltip_set_icon_from_gicon (GtkTooltip  *tooltip,
  * Replaces the widget packed into the tooltip with
  * @custom_widget. @custom_widget does not get destroyed when the tooltip goes
  * away.
- * By default a box with a #GtkImage and #GtkLabel is embedded in 
- * the tooltip, which can be configured using gtk_tooltip_set_markup() 
+ * By default a box with a #GtkImage and #GtkLabel is embedded in
+ * the tooltip, which can be configured using gtk_tooltip_set_markup()
  * and gtk_tooltip_set_icon().
 
  *
@@ -441,8 +441,8 @@ gtk_tooltip_set_custom (GtkTooltip *tooltip,
   if (tooltip->custom_widget)
     {
       GtkWidget *custom = tooltip->custom_widget;
-      /* Note: We must reset tooltip->custom_widget first, 
-       * since gtk_container_remove() will recurse into 
+      /* Note: We must reset tooltip->custom_widget first,
+       * since gtk_container_remove() will recurse into
        * gtk_tooltip_set_custom()
        */
       tooltip->custom_widget = NULL;
@@ -1148,7 +1148,7 @@ gtk_tooltip_position (GtkTooltip *tooltip,
 
       if (y + requisition.height > monitor.y + monitor.height)
         y -= y - (monitor.y + monitor.height) + requisition.height;
-  
+
       if (!tooltip->keyboard_mode_enabled)
         {
           /* don't pop up under the pointer */
@@ -1156,7 +1156,7 @@ gtk_tooltip_position (GtkTooltip *tooltip,
               y <= tooltip->last_y && tooltip->last_y < y + requisition.height)
             y = tooltip->last_y - requisition.height - 2;
         }
-  
+
       gtk_window_move (GTK_WINDOW (tooltip->current_window), x, y);
       gtk_widget_show (GTK_WIDGET (tooltip->current_window));
     }

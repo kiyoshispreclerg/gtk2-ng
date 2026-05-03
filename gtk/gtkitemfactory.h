@@ -147,7 +147,7 @@ void		gtk_item_factory_construct (GtkItemFactory	*ifactory,
 					    GType		 container_type,
 					    const gchar		*path,
 					    GtkAccelGroup       *accel_group);
-     
+
 /* These functions operate on GtkItemFactoryClass basis.
  */
 void		gtk_item_factory_add_foreign        (GtkWidget	    *accel_widget,
@@ -155,7 +155,7 @@ void		gtk_item_factory_add_foreign        (GtkWidget	    *accel_widget,
 						     GtkAccelGroup  *accel_group,
 						     guint	     keyval,
 						     GdkModifierType modifiers);
-     
+
 GtkItemFactory*       gtk_item_factory_from_widget      (GtkWidget *widget);
 const gchar *         gtk_item_factory_path_from_widget (GtkWidget *widget);
 

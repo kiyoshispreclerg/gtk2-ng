@@ -55,7 +55,7 @@ gchar *gail_image_cell_property_list[] = {
 G_DEFINE_TYPE_WITH_CODE (GailImageCell, gail_image_cell, GAIL_TYPE_RENDERER_CELL,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_IMAGE, atk_image_interface_init))
 
-static void 
+static void
 gail_image_cell_class_init (GailImageCellClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -67,7 +67,7 @@ gail_image_cell_class_init (GailImageCellClass *klass)
   renderer_cell_class->property_list = gail_image_cell_property_list;
 }
 
-AtkObject* 
+AtkObject*
 gail_image_cell_new (void)
 {
   GObject *object;
@@ -105,7 +105,7 @@ gail_image_cell_finalize (GObject *object)
 }
 
 static gboolean
-gail_image_cell_update_cache (GailRendererCell *cell, 
+gail_image_cell_update_cache (GailRendererCell *cell,
                               gboolean         emit_change_signal)
 {
   return FALSE;

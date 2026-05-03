@@ -14,7 +14,7 @@
 #   attribute -> egenskab
 #   child -> underelement, underkontrol
 #   parent -> ophav(selement, -kontrol)
-#   directory -> mappe 
+#   directory -> mappe
 #   entry -> indtastningsfelt
 #   frame (i animation) -> billede
 #   (column) header -> (kolonne)overskrift
@@ -4717,7 +4717,7 @@ msgstr ""
 #
 # Is this like the sensitivity of an arrow at the bottom of a scrollbar or ?
 #
-# Yes, but this property does not directly control the sensitivity, but 
+# Yes, but this property does not directly control the sensitivity, but
 # the policy for changing the sensitivity. As the next string in the
 # source code says: The sensitivity policy for the stepper that points to the
 # adjustment's lower side

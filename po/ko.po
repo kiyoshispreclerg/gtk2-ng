@@ -694,7 +694,7 @@ msgstr "색상표(_P):"
 msgid "Color Wheel"
 msgstr "색상환"
 
-# palette => 색상표 
+# palette => 색상표
 # swatch => 견본
 #: ../gtk/gtkcolorsel.c:967
 msgid ""

@@ -23,7 +23,7 @@
  * Modified by the GTK+ Team and others 1997-2005.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "gtkmarshalers.h"
@@ -116,7 +116,7 @@ _gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
 				     GtkDirectionType direction)
 {
   GtkWin32EmbedMessageType message = GTK_WIN32_EMBED_FOCUS_PREV;
-  
+
   switch (direction)
     {
     case GTK_DIR_UP:
@@ -130,7 +130,7 @@ _gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
       message = GTK_WIN32_EMBED_FOCUS_NEXT;
       break;
     }
-  
+
   _gtk_win32_embed_send_focus_message (plug->socket_window, message, 0);
 }
 

@@ -82,14 +82,14 @@ elide_underscores (const gchar *original)
   const gchar *p, *end;
   gsize len;
   gboolean last_underscore;
-  
+
   if (!original)
     return NULL;
 
   len = strlen (original);
   q = result = g_malloc (len + 1);
   last_underscore = FALSE;
-  
+
   end = original + len;
   for (p = original; p < end; p++)
     {
@@ -98,7 +98,7 @@ elide_underscores (const gchar *original)
       else
 	{
 	  last_underscore = FALSE;
-	  if (original + 2 <= p && p + 1 <= end && 
+	  if (original + 2 <= p && p + 1 <= end &&
               p[-2] == '(' && p[-1] == '_' && p[0] != '_' && p[1] == ')')
 	    {
 	      q--;
@@ -112,9 +112,9 @@ elide_underscores (const gchar *original)
 
   if (last_underscore)
     *q++ = '_';
-  
+
   *q = '\0';
-  
+
   return result;
 }
 
@@ -183,7 +183,7 @@ gail_image_get_image_position (AtkImage     *image,
 }
 
 static void
-gail_image_get_image_size (AtkImage *image, 
+gail_image_get_image_size (AtkImage *image,
                            gint     *width,
                            gint     *height)
 {
@@ -203,10 +203,10 @@ gail_image_get_image_size (AtkImage *image,
   gtk_image = GTK_IMAGE(widget);
 
   image_type = gtk_image_get_storage_type(gtk_image);
- 
+
   switch(image_type) {
     case GTK_IMAGE_PIXMAP:
-    {	
+    {
       GdkPixmap *pixmap;
       gtk_image_get_pixmap(gtk_image, &pixmap, NULL);
       gdk_pixmap_get_size (pixmap, width, height);

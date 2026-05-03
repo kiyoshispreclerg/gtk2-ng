@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -61,7 +61,7 @@ _gdk_selection_window_destroyed (GdkWindow *window)
     {
       OwnerInfo *info = tmp_list->data;
       tmp_list = tmp_list->next;
-      
+
       if (info->owner == window)
 	{
 	  owner_list = g_slist_remove (owner_list, info);
@@ -78,7 +78,7 @@ _gdk_selection_filter_clear_event (XSelectionClearEvent *event)
 {
   GSList *tmp_list = owner_list;
   GdkDisplay *display = gdk_x11_lookup_xdisplay (event->display);
-  
+
   while (tmp_list)
     {
       OwnerInfo *info = tmp_list->data;
@@ -107,16 +107,16 @@ _gdk_selection_filter_clear_event (XSelectionClearEvent *event)
  * @owner: a #GdkWindow or %NULL to indicate that the owner for
  *         the given should be unset.
  * @selection: an atom identifying a selection.
- * @time_: timestamp to use when setting the selection. 
- *         If this is older than the timestamp given last time the owner was 
+ * @time_: timestamp to use when setting the selection.
+ *         If this is older than the timestamp given last time the owner was
  *         set for the given selection, the request will be ignored.
  * @send_event: if %TRUE, and the new owner is different from the current
  *              owner, the current owner will be sent a SelectionClear event.
  *
  * Sets the #GdkWindow @owner as the current owner of the selection @selection.
- * 
+ *
  * Returns: %TRUE if the selection owner was successfully changed to owner,
- *	    otherwise %FALSE. 
+ *	    otherwise %FALSE.
  *
  * Since: 2.2
  */
@@ -124,7 +124,7 @@ gboolean
 gdk_selection_owner_set_for_display (GdkDisplay *display,
 				     GdkWindow  *owner,
 				     GdkAtom     selection,
-				     guint32     time, 
+				     guint32     time,
 				     gboolean    send_event)
 {
   Display *xdisplay;
@@ -139,28 +139,28 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
   if (display->closed)
     return FALSE;
 
-  if (owner) 
+  if (owner)
     {
       if (GDK_WINDOW_DESTROYED (owner) || !GDK_WINDOW_IS_X11 (owner))
 	return FALSE;
-      
+
       gdk_window_ensure_native (owner);
       xdisplay = GDK_WINDOW_XDISPLAY (owner);
       xwindow = GDK_WINDOW_XID (owner);
     }
-  else 
+  else
     {
       xdisplay = GDK_DISPLAY_XDISPLAY (display);
       xwindow = None;
     }
-  
+
   xselection = gdk_x11_atom_to_xatom_for_display (display, selection);
 
   tmp_list = owner_list;
   while (tmp_list)
     {
       info = tmp_list->data;
-      if (info->selection == selection) 
+      if (info->selection == selection)
 	{
 	  owner_list = g_slist_remove (owner_list, info);
 	  g_free (info);
@@ -191,30 +191,30 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
  *
  * Determine the owner of the given selection.
  *
- * Note that the return value may be owned by a different 
+ * Note that the return value may be owned by a different
  * process if a foreign window was previously created for that
- * window, but a new foreign window will never be created by this call. 
+ * window, but a new foreign window will never be created by this call.
  *
- * Returns: if there is a selection owner for this window, and it is a 
- *    window known to the current process, the #GdkWindow that owns the 
+ * Returns: if there is a selection owner for this window, and it is a
+ *    window known to the current process, the #GdkWindow that owns the
  *    selection, otherwise %NULL.
  *
  * Since: 2.2
- */ 
+ */
 GdkWindow *
 gdk_selection_owner_get_for_display (GdkDisplay *display,
 				     GdkAtom     selection)
 {
   Window xwindow;
-  
+
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (selection != GDK_NONE, NULL);
-  
+
   if (display->closed)
     return NULL;
-  
+
   xwindow = XGetSelectionOwner (GDK_DISPLAY_XDISPLAY (display),
-				gdk_x11_atom_to_xatom_for_display (display, 
+				gdk_x11_atom_to_xatom_for_display (display,
 								   selection));
   if (xwindow == None)
     return NULL;
@@ -241,7 +241,7 @@ gdk_selection_convert (GdkWindow *requestor,
   XConvertSelection (GDK_WINDOW_XDISPLAY (requestor),
 		     gdk_x11_atom_to_xatom_for_display (display, selection),
 		     gdk_x11_atom_to_xatom_for_display (display, target),
-		     gdk_x11_atom_to_xatom_for_display (display, _gdk_selection_property), 
+		     gdk_x11_atom_to_xatom_for_display (display, _gdk_selection_property),
 		     GDK_WINDOW_XID (requestor), time);
 }
 
@@ -257,12 +257,12 @@ gdk_selection_convert (GdkWindow *requestor,
        be zero, to ensure nul-termination of strings.
  * @prop_type: location to store the type of the property.
  * @prop_format: location to store the format of the property.
- * 
+ *
  * Retrieves selection data that was stored by the selection
  * data in response to a call to gdk_selection_convert(). This function
  * will not be used by applications, who should use the #GtkClipboard
  * API instead.
- * 
+ *
  * Return value: the length of the retrieved data.
  **/
 gint
@@ -277,12 +277,12 @@ gdk_selection_property_get (GdkWindow  *requestor,
   Atom prop_type;
   gint prop_format;
   guchar *t = NULL;
-  GdkDisplay *display; 
+  GdkDisplay *display;
 
   g_return_val_if_fail (requestor != NULL, 0);
   g_return_val_if_fail (GDK_IS_WINDOW (requestor), 0);
   g_return_val_if_fail (GDK_WINDOW_IS_X11 (requestor), 0);
-  
+
   display = GDK_WINDOW_DISPLAY (requestor);
 
   if (GDK_WINDOW_DESTROYED (requestor) || !GDK_WINDOW_IS_X11 (requestor))
@@ -297,11 +297,11 @@ gdk_selection_property_get (GdkWindow  *requestor,
   if (XGetWindowProperty (GDK_DRAWABLE_XDISPLAY (requestor),
 			  GDK_DRAWABLE_XID (requestor),
 			  gdk_x11_atom_to_xatom_for_display (display, _gdk_selection_property),
-			  0, 0x1FFFFFFF /* MAXINT32 / 4 */, False, 
+			  0, 0x1FFFFFFF /* MAXINT32 / 4 */, False,
 			  AnyPropertyType, &prop_type, &prop_format,
 			  &nitems, &nbytes, &t) != Success)
     goto err;
-    
+
   if (prop_type != None)
     {
       if (ret_type)
@@ -318,7 +318,7 @@ gdk_selection_property_get (GdkWindow  *requestor,
 
 	  if (prop_format != 32)
 	    goto err;
-	  
+
 	  num_atom = nitems;
 	  length = sizeof (GdkAtom) * num_atom + 1;
 
@@ -327,7 +327,7 @@ gdk_selection_property_get (GdkWindow  *requestor,
 	      *data = g_malloc (length);
 	      (*data)[length - 1] = '\0';
 	      atoms_dest = (GdkAtom *)(*data);
-	  
+
 	      for (i=0; i < num_atom; i++)
 		atoms_dest[i] = gdk_x11_xatom_to_atom_for_display (display, atoms[i]);
 	    }
@@ -349,7 +349,7 @@ gdk_selection_property_get (GdkWindow  *requestor,
 	      g_assert_not_reached ();
 	      break;
 	    }
-	  
+
 	  /* Add on an extra byte to handle null termination.  X guarantees
 	     that t will be 1 longer than nitems and null terminated */
 	  length += 1;
@@ -357,10 +357,10 @@ gdk_selection_property_get (GdkWindow  *requestor,
 	  if (data)
 	    *data = g_memdup2 (t, length);
 	}
-      
+
       if (t)
 	XFree (t);
-      
+
       return length - 1;
     }
 
@@ -371,7 +371,7 @@ gdk_selection_property_get (GdkWindow  *requestor,
     *ret_format = 0;
   if (data)
     *data = NULL;
-  
+
   return 0;
 }
 
@@ -383,7 +383,7 @@ gdk_selection_property_get (GdkWindow  *requestor,
  * @target: target that was selected.
  * @property: property in which the selection owner stored the data,
  *            or %GDK_NONE to indicate that the request was rejected.
- * @time_: timestamp. 
+ * @time_: timestamp.
  *
  * Send a response to SelectionRequest event.
  *
@@ -394,13 +394,13 @@ gdk_selection_send_notify_for_display (GdkDisplay       *display,
 				       GdkNativeWindow  requestor,
 				       GdkAtom          selection,
 				       GdkAtom          target,
-				       GdkAtom          property, 
+				       GdkAtom          property,
 				       guint32          time)
 {
   XSelectionEvent xevent;
-  
+
   g_return_if_fail (GDK_IS_DISPLAY (display));
-  
+
   xevent.type = SelectionNotify;
   xevent.serial = 0;
   xevent.send_event = True;
@@ -419,23 +419,23 @@ gdk_selection_send_notify_for_display (GdkDisplay       *display,
 /**
  * gdk_text_property_to_text_list_for_display:
  * @display: The #GdkDisplay where the encoding is defined.
- * @encoding: an atom representing the encoding. The most 
- *    common values for this are STRING, or COMPOUND_TEXT. 
+ * @encoding: an atom representing the encoding. The most
+ *    common values for this are STRING, or COMPOUND_TEXT.
  *    This is value used as the type for the property.
  * @format: the format of the property.
  * @text: The text data.
  * @length: The number of items to transform.
- * @list: location to store a terminated array of strings in 
- *    the encoding of the current locale. This array should be 
+ * @list: location to store a terminated array of strings in
+ *    the encoding of the current locale. This array should be
  *    freed using gdk_free_text_list().
  *
- * Convert a text string from the encoding as it is stored 
+ * Convert a text string from the encoding as it is stored
  * in a property into an array of strings in the encoding of
  * the current locale. (The elements of the array represent the
  * nul-separated elements of the original text string.)
  *
- * Returns: the number of strings stored in list, or 0, 
- * if the conversion failed. 
+ * Returns: the number of strings stored in list, or 0,
+ * if the conversion failed.
  *
  * Since: 2.2
  *
@@ -460,7 +460,7 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 gint
 gdk_x11_display_text_property_to_text_list (GdkDisplay   *display,
 					    GdkAtom       encoding,
-					    gint          format, 
+					    gint          format,
 					    const guchar *text,
 					    gint          length,
 					    gchar      ***list)
@@ -481,7 +481,7 @@ gdk_x11_display_text_property_to_text_list (GdkDisplay   *display,
   property.encoding = gdk_x11_atom_to_xatom_for_display (display, encoding);
   property.format = format;
   property.nitems = length;
-  res = XmbTextPropertyToTextList (GDK_DISPLAY_XDISPLAY (display), &property, 
+  res = XmbTextPropertyToTextList (GDK_DISPLAY_XDISPLAY (display), &property,
 				   &local_list, &count);
   if (res == XNoMemory || res == XLocaleNotSupported || res == XConverterNotFound)
     return 0;
@@ -491,7 +491,7 @@ gdk_x11_display_text_property_to_text_list (GdkDisplay   *display,
 	*list = local_list;
       else
 	XFreeStringList (local_list);
-      
+
       return count;
     }
 }
@@ -527,7 +527,7 @@ make_list (const gchar  *text,
   while (p < text + length)
     {
       gchar *str;
-      
+
       q = p;
       while (*q && q < text + length)
 	q++;
@@ -570,7 +570,7 @@ make_list (const gchar  *text,
       *list = g_new (gchar *, n_strings + 1);
       (*list)[n_strings] = NULL;
     }
-     
+
   i = n_strings;
   tmp_list = strings;
   while (tmp_list)
@@ -579,10 +579,10 @@ make_list (const gchar  *text,
 	(*list)[--i] = tmp_list->data;
       else
 	g_free (tmp_list->data);
-      
+
       tmp_list = tmp_list->next;
     }
-  
+
   g_slist_free (strings);
 
   return n_strings;
@@ -597,16 +597,16 @@ make_list (const gchar  *text,
  * @length:   the length of @text, in bytes
  * @list:     location to store the list of strings or %NULL. The
  *            list should be freed with g_strfreev().
- * 
+ *
  * Converts a text property in the given encoding to
- * a list of UTF-8 strings. 
- * 
+ * a list of UTF-8 strings.
+ *
  * Return value: the number of strings in the resulting
  *               list.
  *
  * Since: 2.2
  **/
-gint 
+gint
 gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
 					    GdkAtom        encoding,
 					    gint           format,
@@ -617,7 +617,7 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
   g_return_val_if_fail (GDK_IS_DISPLAY (display), 0);
-  
+
   if (encoding == GDK_TARGET_STRING)
     {
       return make_list ((gchar *)text, length, TRUE, list);
@@ -635,18 +635,18 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
       gboolean need_conversion = !g_get_charset (&charset);
       gint count = 0;
       GError *error = NULL;
-      
+
       /* Probably COMPOUND text, we fall back to Xlib routines
        */
       local_count = gdk_text_property_to_text_list_for_display (display,
 								encoding,
-								format, 
+								format,
 								text,
 								length,
 								&local_list);
       if (list)
 	*list = g_new (gchar *, local_count + 1);
-      
+
       for (i=0; i<local_count; i++)
 	{
 	  /* list contains stuff in our default encoding
@@ -685,7 +685,7 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
 
       if (local_count)
 	gdk_free_text_list (local_list);
-      
+
       if (list)
 	(*list)[count] = NULL;
 
@@ -697,16 +697,16 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
  * gdk_string_to_compound_text_for_display:
  * @display:  the #GdkDisplay where the encoding is defined.
  * @str:      a nul-terminated string.
- * @encoding: location to store the encoding atom 
+ * @encoding: location to store the encoding atom
  *	      (to be used as the type for the property).
  * @format:   location to store the format of the property
  * @ctext:    location to store newly allocated data for the property.
  * @length:   the length of @text, in bytes
- * 
- * Convert a string from the encoding of the current 
+ *
+ * Convert a string from the encoding of the current
  * locale into a form suitable for storing in a window property.
- * 
- * Returns: 0 upon success, non-zero upon failure. 
+ *
+ * Returns: 0 upon success, non-zero upon failure.
  *
  * Since: 2.2
  *
@@ -739,7 +739,7 @@ gdk_x11_display_string_to_compound_text (GdkDisplay  *display,
   if (display->closed)
     res = XLocaleNotSupported;
   else
-    res = XmbTextListToTextProperty (GDK_DISPLAY_XDISPLAY (display), 
+    res = XmbTextListToTextProperty (GDK_DISPLAY_XDISPLAY (display),
 				     (char **)&str, 1, XCompoundTextStyle,
 				     &property);
   if (res != Success)
@@ -769,7 +769,7 @@ gdk_x11_display_string_to_compound_text (GdkDisplay  *display,
  * This routine strips out all non-allowed C0 and C1 characters
  * from the input string and also canonicalizes \r, and \r\n to \n
  */
-static gchar * 
+static gchar *
 sanitize_utf8 (const gchar *src,
 	       gboolean return_latin1)
 {
@@ -790,7 +790,7 @@ sanitize_utf8 (const gchar *src,
       else
 	{
 	  gunichar ch = g_utf8_get_char (p);
-	  
+
 	  if (!((ch < 0x20 && ch != '\t' && ch != '\n') || (ch >= 0x7f && ch < 0xa0)))
 	    {
 	      if (return_latin1)
@@ -806,7 +806,7 @@ sanitize_utf8 (const gchar *src,
 		{
 		  char buf[7];
 		  gint buflen;
-		  
+
 		  buflen = g_unichar_to_utf8 (ch, buf);
 		  g_string_append_len (result, buf, buflen);
 		}
@@ -822,12 +822,12 @@ sanitize_utf8 (const gchar *src,
 /**
  * gdk_utf8_to_string_target:
  * @str: a UTF-8 string
- * 
+ *
  * Converts an UTF-8 string into the best possible representation
  * as a STRING. The representation of characters not in STRING
  * is not specified; it may be as pseudo-escape sequences
  * \x{ABCD}, or it may be in some other form of approximation.
- * 
+ *
  * Return value: the newly-allocated string, or %NULL if the
  *               conversion failed. (It should not fail for
  *               any properly formed UTF-8 string unless system
@@ -848,9 +848,9 @@ gdk_utf8_to_string_target (const gchar *str)
  * @ctext:    location to store the data of the result
  * @length:   location to store the length of the data
  *            stored in @ctext
- * 
- * Converts from UTF-8 to compound text. 
- * 
+ *
+ * Converts from UTF-8 to compound text.
+ *
  * Return value: %TRUE if the conversion succeeded, otherwise
  *               %FALSE.
  *
@@ -921,12 +921,12 @@ gdk_x11_display_utf8_to_compound_text (GdkDisplay  *display,
     }
   else
     locale_str = tmp_str;
-    
+
   result = gdk_string_to_compound_text_for_display (display, locale_str,
-						    encoding, format, 
+						    encoding, format,
 						    ctext, length);
   result = (result == Success? TRUE : FALSE);
-  
+
   g_free (locale_str);
 
   return result;

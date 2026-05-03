@@ -184,7 +184,7 @@ gtk_cell_view_class_init (GtkCellViewClass *klass)
 							 P_("The model for cell view"),
 							 GTK_TYPE_TREE_MODEL,
 							 GTK_PARAM_READWRITE));
-  
+
 #define ADD_SET_PROP(propname, propval, nick, blurb) g_object_class_install_property (gobject_class, propval, g_param_spec_boolean (propname, nick, blurb, FALSE, GTK_PARAM_READWRITE))
 
   ADD_SET_PROP ("background-set", PROP_BACKGROUND_SET,
@@ -432,7 +432,7 @@ gtk_cell_view_expose (GtkWidget      *widget,
   area = widget->allocation;
 
   /* we draw on our very own window, initialize x and y to zero */
-  area.x = widget->allocation.x + (rtl ? widget->allocation.width : 0); 
+  area.x = widget->allocation.x + (rtl ? widget->allocation.width : 0);
   area.y = widget->allocation.y;
 
   if (gtk_widget_get_state (widget) == GTK_STATE_PRELIGHT)
@@ -441,7 +441,7 @@ gtk_cell_view_expose (GtkWidget      *widget,
     state = GTK_CELL_RENDERER_INSENSITIVE;
   else
     state = 0;
-      
+
   /* PACK_START */
   for (i = cellview->priv->cell_list; i; i = i->next)
     {
@@ -454,7 +454,7 @@ gtk_cell_view_expose (GtkWidget      *widget,
         continue;
 
       area.width = info->real_width;
-      if (rtl)                                             
+      if (rtl)
          area.x -= area.width;
 
       gtk_cell_renderer_render (info->cell,
@@ -463,11 +463,11 @@ gtk_cell_view_expose (GtkWidget      *widget,
                                 /* FIXME! */
                                 &area, &area, &event->area, state);
 
-      if (!rtl)                                           
+      if (!rtl)
          area.x += info->real_width;
     }
 
-   area.x = rtl ? widget->allocation.x : (widget->allocation.x + widget->allocation.width);  
+   area.x = rtl ? widget->allocation.x : (widget->allocation.x + widget->allocation.width);
 
   /* PACK_END */
   for (i = cellview->priv->cell_list; i; i = i->next)
@@ -482,7 +482,7 @@ gtk_cell_view_expose (GtkWidget      *widget,
 
       area.width = info->real_width;
       if (!rtl)
-         area.x -= area.width;   
+         area.x -= area.width;
 
       gtk_cell_renderer_render (info->cell,
                                 widget->window,
@@ -635,7 +635,7 @@ gtk_cell_view_cell_layout_clear (GtkCellLayout *layout)
       gtk_cell_view_cell_layout_clear_attributes (layout, info->cell);
       g_object_unref (info->cell);
       g_slice_free (GtkCellViewCellInfo, info);
-      cellview->priv->cell_list = g_list_delete_link (cellview->priv->cell_list, 
+      cellview->priv->cell_list = g_list_delete_link (cellview->priv->cell_list,
 						      cellview->priv->cell_list);
     }
 
@@ -685,7 +685,7 @@ gtk_cell_view_cell_layout_clear_attributes (GtkCellLayout   *layout,
 	  g_free (list->data);
 	  list = list->next->next;
 	}
-      
+
       g_slist_free (info->attributes);
       info->attributes = NULL;
     }
@@ -740,7 +740,7 @@ gtk_cell_view_new (void)
  * gtk_cell_view_new_with_text:
  * @text: the text to display in the cell view
  *
- * Creates a new #GtkCellView widget, adds a #GtkCellRendererText 
+ * Creates a new #GtkCellView widget, adds a #GtkCellRendererText
  * to it, and makes its show @text.
  *
  * Return value: A newly created #GtkCellView widget.
@@ -772,9 +772,9 @@ gtk_cell_view_new_with_text (const gchar *text)
  * gtk_cell_view_new_with_markup:
  * @markup: the text to display in the cell view
  *
- * Creates a new #GtkCellView widget, adds a #GtkCellRendererText 
+ * Creates a new #GtkCellView widget, adds a #GtkCellRendererText
  * to it, and makes it show @markup. The text can be
- * marked up with the <link linkend="PangoMarkupFormat">Pango text 
+ * marked up with the <link linkend="PangoMarkupFormat">Pango text
  * markup language</link>.
  *
  * Return value: A newly created #GtkCellView widget.
@@ -806,8 +806,8 @@ gtk_cell_view_new_with_markup (const gchar *markup)
  * gtk_cell_view_new_with_pixbuf:
  * @pixbuf: the image to display in the cell view
  *
- * Creates a new #GtkCellView widget, adds a #GtkCellRendererPixbuf 
- * to it, and makes its show @pixbuf. 
+ * Creates a new #GtkCellView widget, adds a #GtkCellRendererPixbuf
+ * to it, and makes its show @pixbuf.
  *
  * Return value: A newly created #GtkCellView widget.
  *
@@ -840,7 +840,7 @@ gtk_cell_view_new_with_pixbuf (GdkPixbuf *pixbuf)
  * @renderer: one of the renderers of @cell_view
  * @property: the name of the property of @renderer to set
  * @value: the new value to set the property to
- * 
+ *
  * Sets a property of a cell renderer of @cell_view, and
  * makes sure the display of @cell_view is updated.
  *
@@ -953,8 +953,8 @@ gtk_cell_view_set_displayed_row (GtkCellView *cell_view,
  * gtk_cell_view_get_displayed_row:
  * @cell_view: a #GtkCellView
  *
- * Returns a #GtkTreePath referring to the currently 
- * displayed row. If no row is currently displayed, 
+ * Returns a #GtkTreePath referring to the currently
+ * displayed row. If no row is currently displayed,
  * %NULL is returned.
  *
  * Returns: the currently displayed row or %NULL
@@ -975,12 +975,12 @@ gtk_cell_view_get_displayed_row (GtkCellView *cell_view)
 /**
  * gtk_cell_view_get_size_of_row:
  * @cell_view: a #GtkCellView
- * @path: a #GtkTreePath 
- * @requisition: (out): return location for the size 
+ * @path: a #GtkTreePath
+ * @requisition: (out): return location for the size
  *
- * Sets @requisition to the size needed by @cell_view to display 
+ * Sets @requisition to the size needed by @cell_view to display
  * the model row pointed to by @path.
- * 
+ *
  * Return value: %TRUE
  *
  * Since: 2.6

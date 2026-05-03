@@ -63,7 +63,7 @@ create_simple_completion_model (void)
 {
   GtkListStore *store;
   GtkTreeIter iter;
-  
+
   store = gtk_list_store_new (1, G_TYPE_STRING);
 
   gtk_list_store_append (store, &iter);
@@ -119,7 +119,7 @@ create_simple_completion_model (void)
   gtk_list_store_set (store, &iter, 0, "a\303\246y", -1);
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter, 0, "a\303\246z", -1);
- 
+
   return GTK_TREE_MODEL (store);
 }
 
@@ -155,7 +155,7 @@ create_completion_model (void)
   gtk_list_store_set (store, &iter, 0, pixbuf, 1, "Totten trust", -1);
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter, 0, pixbuf, 1, "Laminated arch", -1);
- 
+
   return GTK_TREE_MODEL (store);
 }
 
@@ -187,7 +187,7 @@ match_func (GtkEntryCompletion *completion,
 }
 
 static void
-activated_cb (GtkEntryCompletion *completion, 
+activated_cb (GtkEntryCompletion *completion,
 	      gint                index,
 	      gpointer            user_data)
 {
@@ -243,7 +243,7 @@ animation_timer (GtkEntryCompletion *completion)
       else
 	{
 	  g_print ("readding model!\n");
-	  
+
 	  gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (old_store));
 	  g_object_unref (old_store);
 	  old_store = NULL;
@@ -260,7 +260,7 @@ animation_timer (GtkEntryCompletion *completion)
 	  n = timer_count % n_completions;
 	  gtk_list_store_append (store, &iter);
 	  gtk_list_store_set (store, &iter, 0, dynamic_completions[n], -1);
-	  
+
 	}
       else
 	{
@@ -268,12 +268,12 @@ animation_timer (GtkEntryCompletion *completion)
 	    gtk_list_store_remove (store, &iter);
 	}
     }
-  
+
   timer_count++;
   return TRUE;
 }
 
-gboolean 
+gboolean
 match_selected_cb (GtkEntryCompletion *completion,
 		   GtkTreeModel       *model,
 		   GtkTreeIter        *iter)
@@ -311,7 +311,7 @@ add_with_prop_edit_button (GtkWidget *vbox, GtkWidget *entry, GtkEntryCompletion
 	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 }
 
-int 
+int
 main (int argc, char *argv[])
 {
   GtkWidget *vbox;
@@ -326,12 +326,12 @@ main (int argc, char *argv[])
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_container_set_border_width (GTK_CONTAINER (window), 5);
   g_signal_connect (window, "delete_event", gtk_main_quit, NULL);
-  
+
   vbox = gtk_vbox_new (FALSE, 2);
   gtk_container_add (GTK_CONTAINER (window), vbox);
-    
+
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
-  
+
   label = gtk_label_new (NULL);
 
   gtk_label_set_markup (GTK_LABEL (label), "Completion demo, try writing <b>total</b> or <b>gnome</b> for example.");
@@ -339,22 +339,22 @@ main (int argc, char *argv[])
 
   /* Create our first entry */
   entry = gtk_entry_new ();
-  
+
   /* Create the completion object */
   completion = gtk_entry_completion_new ();
   gtk_entry_completion_set_inline_completion (completion, TRUE);
-  
+
   /* Assign the completion to the entry */
   gtk_entry_set_completion (GTK_ENTRY (entry), completion);
   g_object_unref (completion);
-  
+
   add_with_prop_edit_button (vbox, entry, completion);
 
   /* Create a tree model and use it as the completion model */
   completion_model = create_simple_completion_model ();
   gtk_entry_completion_set_model (completion, completion_model);
   g_object_unref (completion_model);
-  
+
   /* Use model column 0 as the text column */
   gtk_entry_completion_set_text_column (completion, 0);
 
@@ -363,11 +363,11 @@ main (int argc, char *argv[])
 
   /* Create the completion object */
   completion = gtk_entry_completion_new ();
-  
+
   /* Assign the completion to the entry */
   gtk_entry_set_completion (GTK_ENTRY (entry), completion);
   g_object_unref (completion);
-  
+
   add_with_prop_edit_button (vbox, entry, completion);
 
   /* Create a tree model and use it as the completion model */
@@ -375,20 +375,20 @@ main (int argc, char *argv[])
   gtk_entry_completion_set_model (completion, completion_model);
   gtk_entry_completion_set_minimum_key_length (completion, 2);
   g_object_unref (completion_model);
-  
+
   /* Use model column 1 as the text column */
   cell = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (completion), cell, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (completion), cell, 
-				  "pixbuf", 0, NULL); 
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (completion), cell,
+				  "pixbuf", 0, NULL);
 
   cell = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (completion), cell, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (completion), cell, 
-				  "text", 1, NULL); 
-  
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (completion), cell,
+				  "text", 1, NULL);
+
   gtk_entry_completion_set_match_func (completion, match_func, NULL, NULL);
-  g_signal_connect (completion, "match-selected", 
+  g_signal_connect (completion, "match-selected",
 		    G_CALLBACK (match_selected_cb), NULL);
 
   gtk_entry_completion_insert_action_text (completion, 100, "action!");
@@ -400,11 +400,11 @@ main (int argc, char *argv[])
 
   /* Create the completion object */
   completion = gtk_entry_completion_new ();
-  
+
   /* Assign the completion to the entry */
   gtk_entry_set_completion (GTK_ENTRY (entry), completion);
   g_object_unref (completion);
-  
+
   add_with_prop_edit_button (vbox, entry, completion);
 
   /* Create a tree model and use it as the completion model */
@@ -426,17 +426,17 @@ main (int argc, char *argv[])
 
   /* Create the completion object */
   completion = gtk_entry_completion_new ();
-  
+
   /* Assign the completion to the entry */
   gtk_entry_set_completion (GTK_ENTRY (entry), completion);
   g_object_unref (completion);
-  
+
   add_with_prop_edit_button (vbox, entry, completion);
 
   gtk_widget_show_all (window);
 
   gtk_main ();
-  
+
   return 0;
 }
 

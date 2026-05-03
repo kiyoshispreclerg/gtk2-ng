@@ -24,7 +24,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GTK_DISABLE_DEPRECATED
@@ -340,9 +340,9 @@ static void
 gtk_tips_query_real_start_query (GtkTipsQuery *tips_query)
 {
   gint failure;
-  
+
   g_return_if_fail (GTK_IS_TIPS_QUERY (tips_query));
-  
+
   tips_query->query_cursor = gdk_cursor_new_for_display (gtk_widget_get_display (GTK_WIDGET (tips_query)),
 							 GDK_QUESTION_ARROW);
   failure = gdk_pointer_grab (GTK_WIDGET (tips_query)->window,
@@ -364,7 +364,7 @@ static void
 gtk_tips_query_real_stop_query (GtkTipsQuery *tips_query)
 {
   g_return_if_fail (GTK_IS_TIPS_QUERY (tips_query));
-  
+
   gtk_grab_remove (GTK_WIDGET (tips_query));
   if (tips_query->query_cursor)
     {
@@ -378,7 +378,7 @@ gtk_tips_query_real_stop_query (GtkTipsQuery *tips_query)
       g_object_unref (tips_query->last_crossed);
       tips_query->last_crossed = NULL;
     }
-  
+
   gtk_label_set_text (GTK_LABEL (tips_query), tips_query->label_inactive);
 }
 
@@ -443,7 +443,7 @@ gtk_tips_query_event (GtkWidget	       *widget,
   GtkTipsQuery *tips_query;
   GtkWidget *event_widget;
   gboolean event_handled;
-  
+
   g_return_val_if_fail (GTK_IS_TIPS_QUERY (widget), FALSE);
 
   tips_query = GTK_TIPS_QUERY (widget);
@@ -461,7 +461,7 @@ gtk_tips_query_event (GtkWidget	       *widget,
   switch (event->type)
     {
       GdkWindow *pointer_window;
-      
+
     case  GDK_LEAVE_NOTIFY:
       if (event_widget)
 	pointer_window = gdk_window_get_pointer (event_widget->window, NULL, NULL, NULL);
@@ -494,7 +494,7 @@ gtk_tips_query_event (GtkWidget	       *widget,
 	    {
 	      gint stop;
 	      GtkTooltipsData *tdata;
-	      
+
 	      stop = TRUE;
 	      tdata = gtk_tooltips_data_get (event_widget);
 	      if (tdata || tips_query->emit_always)
@@ -505,7 +505,7 @@ gtk_tips_query_event (GtkWidget	       *widget,
 				 tdata ? tdata->tip_private : NULL,
 				 event,
 				 &stop);
-	      
+
 	      if (stop)
 		gtk_tips_query_stop_query (tips_query);
 	    }

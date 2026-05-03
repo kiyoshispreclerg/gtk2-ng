@@ -61,7 +61,7 @@ typedef struct _GtkNotebookPage   GtkNotebookPage;
 struct _GtkNotebook
 {
   GtkContainer container;
-  
+
 #if !defined (GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
   GtkNotebookPage *GSEAL (cur_page);
 #else
@@ -70,15 +70,15 @@ struct _GtkNotebook
   GList *GSEAL (children);
   GList *GSEAL (first_tab);		/* The first tab visible (for scrolling notebooks) */
   GList *GSEAL (focus_tab);
-  
+
   GtkWidget *GSEAL (menu);
   GdkWindow *GSEAL (event_window);
-  
+
   guint32 GSEAL (timer);
-  
+
   guint16 GSEAL (tab_hborder);
   guint16 GSEAL (tab_vborder);
-  
+
   guint GSEAL (show_tabs)          : 1;
   guint GSEAL (homogeneous)        : 1;
   guint GSEAL (show_border)        : 1;

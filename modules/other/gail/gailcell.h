@@ -35,7 +35,7 @@ typedef struct _GailCell                  GailCell;
 typedef struct _GailCellClass             GailCellClass;
 typedef struct _ActionInfo ActionInfo;
 typedef void (*ACTION_FUNC) (GailCell *cell);
-  
+
 struct _GailCell
 {
   AtkObject parent;
@@ -68,7 +68,7 @@ struct _ActionInfo {
 };
 
 void      gail_cell_initialise           (GailCell        *cell,
-                                          GtkWidget       *widget, 
+                                          GtkWidget       *widget,
                                           AtkObject       *parent,
 			                  gint            index);
 
@@ -81,7 +81,7 @@ gboolean gail_cell_remove_state          (GailCell        *cell,
                                           gboolean        emit_signal);
 
 #ifndef GTK_DISABLE_DEPRECATED
-void     gail_cell_type_add_action_interface 
+void     gail_cell_type_add_action_interface
                                          (GType           type);
 #endif
 

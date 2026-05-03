@@ -8175,7 +8175,7 @@ gdk_window_get_background_pattern (GdkWindow *window)
             cairo_pattern_create_rgb (private->bg_color.red   / 65535.,
                                       private->bg_color.green / 65535.,
                                       private->bg_color.blue / 65535.);
-    }   
+    }
 
   return private->background;
 }
@@ -8378,7 +8378,7 @@ gdk_window_get_origin (GdkWindow *window,
 	*y = 0;
       return 0;
     }
-  
+
   private = (GdkWindowObject *) window;
 
   impl_iface = GDK_WINDOW_IMPL_GET_IFACE (private->impl);
@@ -8427,7 +8427,7 @@ gdk_window_get_root_coords (GdkWindow *window,
 	*root_y = y;
       return;
     }
-  
+
   impl_iface = GDK_WINDOW_IMPL_GET_IFACE (private->impl);
   impl_iface->get_root_coords (window,
 			       x + private->abs_x,
@@ -11259,7 +11259,7 @@ gdk_window_create_similar_surface (GdkWindow *     window,
   cairo_surface_t *window_surface, *surface;
 
   g_return_val_if_fail (GDK_IS_WINDOW (window), NULL);
-  
+
   window_surface = _gdk_drawable_ref_cairo_surface (window);
 
   surface = cairo_surface_create_similar (window_surface,

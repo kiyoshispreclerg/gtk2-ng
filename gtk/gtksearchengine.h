@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  *
- * Author: Anders Carlsson <andersca@imendio.com> 
+ * Author: Anders Carlsson <andersca@imendio.com>
  *
  * Based on nautilus-search-engine.h
  */
@@ -38,31 +38,31 @@ typedef struct _GtkSearchEngine GtkSearchEngine;
 typedef struct _GtkSearchEngineClass GtkSearchEngineClass;
 typedef struct _GtkSearchEnginePrivate GtkSearchEnginePrivate;
 
-struct _GtkSearchEngine 
+struct _GtkSearchEngine
 {
   GObject parent;
 
   GtkSearchEnginePrivate *priv;
 };
 
-struct _GtkSearchEngineClass 
+struct _GtkSearchEngineClass
 {
   GObjectClass parent_class;
-  
+
   /* VTable */
-  void     (*set_query)       (GtkSearchEngine *engine, 
+  void     (*set_query)       (GtkSearchEngine *engine,
 			       GtkQuery        *query);
   void     (*start)           (GtkSearchEngine *engine);
   void     (*stop)            (GtkSearchEngine *engine);
   gboolean (*is_indexed)      (GtkSearchEngine *engine);
-  
+
   /* Signals */
-  void     (*hits_added)      (GtkSearchEngine *engine, 
+  void     (*hits_added)      (GtkSearchEngine *engine,
 			       GList           *hits);
-  void     (*hits_subtracted) (GtkSearchEngine *engine, 
+  void     (*hits_subtracted) (GtkSearchEngine *engine,
 			       GList           *hits);
   void     (*finished)        (GtkSearchEngine *engine);
-  void     (*error)           (GtkSearchEngine *engine, 
+  void     (*error)           (GtkSearchEngine *engine,
 			       const gchar     *error_message);
 };
 
@@ -71,18 +71,18 @@ gboolean         _gtk_search_engine_enabled         (void);
 
 GtkSearchEngine* _gtk_search_engine_new             (void);
 
-void             _gtk_search_engine_set_query       (GtkSearchEngine *engine, 
+void             _gtk_search_engine_set_query       (GtkSearchEngine *engine,
                                                      GtkQuery        *query);
 void	         _gtk_search_engine_start           (GtkSearchEngine *engine);
 void	         _gtk_search_engine_stop            (GtkSearchEngine *engine);
 gboolean         _gtk_search_engine_is_indexed      (GtkSearchEngine *engine);
 
-void	         _gtk_search_engine_hits_added      (GtkSearchEngine *engine, 
+void	         _gtk_search_engine_hits_added      (GtkSearchEngine *engine,
 						     GList           *hits);
-void	         _gtk_search_engine_hits_subtracted (GtkSearchEngine *engine, 
+void	         _gtk_search_engine_hits_subtracted (GtkSearchEngine *engine,
 						     GList           *hits);
 void	         _gtk_search_engine_finished        (GtkSearchEngine *engine);
-void	         _gtk_search_engine_error           (GtkSearchEngine *engine, 
+void	         _gtk_search_engine_error           (GtkSearchEngine *engine,
 						     const gchar     *error_message);
 
 G_END_DECLS

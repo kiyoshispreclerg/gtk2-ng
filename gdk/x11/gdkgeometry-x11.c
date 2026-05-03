@@ -118,7 +118,7 @@ find_current_serial (Display *xdisplay)
 {
   XEvent xev;
   gulong serial = NextRequest (xdisplay);
-  
+
   XSync (xdisplay, False);
 
   XCheckIfEvent (xdisplay, &xev, expose_serial_predicate, (XPointer)&serial);
@@ -132,7 +132,7 @@ queue_delete_link (GQueue *queue,
 {
   if (queue->tail == link)
     queue->tail = link->prev;
-  
+
   queue->head = g_list_remove_link (queue->head, link);
   g_list_free_1 (link);
   queue->length--;
@@ -146,7 +146,7 @@ queue_item_free (GdkWindowQueueItem *item)
       g_object_remove_weak_pointer (G_OBJECT (item->window),
 				    (gpointer *)&(item->window));
     }
-  
+
   if (item->type == GDK_WINDOW_QUEUE_ANTIEXPOSE)
     gdk_region_destroy (item->u.antiexpose.area);
   else
@@ -154,7 +154,7 @@ queue_item_free (GdkWindowQueueItem *item)
       if (item->u.translate.area)
 	gdk_region_destroy (item->u.translate.area);
     }
-  
+
   g_free (item);
 }
 
@@ -163,7 +163,7 @@ gdk_window_queue (GdkWindow          *window,
 		  GdkWindowQueueItem *item)
 {
   GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (window));
-  
+
   if (!display_x11->translate_queue)
     display_x11->translate_queue = g_queue_new ();
 
@@ -175,12 +175,12 @@ gdk_window_queue (GdkWindow          *window,
     {
       gulong serial = find_current_serial (GDK_WINDOW_XDISPLAY (window));
       GList *tmp_list = display_x11->translate_queue->head;
-      
+
       while (tmp_list)
 	{
 	  GdkWindowQueueItem *item = tmp_list->data;
 	  GList *next = tmp_list->next;
-	  
+
 	  /* an overflow-safe (item->serial < serial) */
 	  if (item->serial - serial > (gulong) G_MAXLONG)
 	    {
@@ -196,17 +196,17 @@ gdk_window_queue (GdkWindow          *window,
    * is an event stuck in the event queue with an old serial:
    * If we can't reduce the queue length by the above method,
    * discard anti-expose items. (We can't discard translate
-   * items 
+   * items
    */
   if (display_x11->translate_queue->length >= 64)
     {
       GList *tmp_list = display_x11->translate_queue->head;
-      
+
       while (tmp_list)
 	{
 	  GdkWindowQueueItem *item = tmp_list->data;
 	  GList *next = tmp_list->next;
-	  
+
 	  if (item->type == GDK_WINDOW_QUEUE_ANTIEXPOSE)
 	    {
 	      queue_delete_link (display_x11->translate_queue, tmp_list);
@@ -219,7 +219,7 @@ gdk_window_queue (GdkWindow          *window,
 
   item->window = window;
   item->serial = NextRequest (GDK_WINDOW_XDISPLAY (window));
-  
+
   g_object_add_weak_pointer (G_OBJECT (window),
 			     (gpointer *)&(item->window));
 

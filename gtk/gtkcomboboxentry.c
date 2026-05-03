@@ -88,7 +88,7 @@ gtk_combo_box_entry_class_init (GtkComboBoxEntryClass *klass)
   GtkWidgetClass *widget_class;
   GtkContainerClass *container_class;
   GtkComboBoxClass *combo_class;
-  
+
   object_class = (GObjectClass *)klass;
   object_class->set_property = gtk_combo_box_entry_set_property;
   object_class->get_property = gtk_combo_box_entry_get_property;
@@ -103,7 +103,7 @@ gtk_combo_box_entry_class_init (GtkComboBoxEntryClass *klass)
 
   combo_class = (GtkComboBoxClass *)klass;
   combo_class->get_active_text = gtk_combo_box_entry_get_active_text;
-  
+
   g_object_class_install_property (object_class,
                                    PROP_TEXT_COLUMN,
                                    g_param_spec_int ("text-column",
@@ -258,8 +258,8 @@ gtk_combo_box_entry_active_changed (GtkComboBox *combo_box,
 
 	  model = gtk_combo_box_get_model (combo_box);
 
-	  gtk_tree_model_get (model, &iter, 
-			      entry_box->priv->text_column, &str, 
+	  gtk_tree_model_get (model, &iter,
+			      entry_box->priv->text_column, &str,
 			      -1);
 	  gtk_entry_set_text (entry, str);
 	  g_free (str);
@@ -271,7 +271,7 @@ gtk_combo_box_entry_active_changed (GtkComboBox *combo_box,
     }
 }
 
-static void 
+static void
 has_frame_changed (GtkComboBoxEntry *entry_box,
 		   GParamSpec       *pspec,
 		   gpointer          data)
@@ -279,7 +279,7 @@ has_frame_changed (GtkComboBoxEntry *entry_box,
   if (GTK_BIN (entry_box)->child)
     {
       gboolean has_frame;
-  
+
       g_object_get (entry_box, "has-frame", &has_frame, NULL);
 
       gtk_entry_set_has_frame (GTK_ENTRY (GTK_BIN (entry_box)->child), has_frame);
@@ -295,11 +295,11 @@ gtk_combo_box_entry_contents_changed (GtkEntry *entry,
   /*
    *  Fixes regression reported in bug #574059. The old functionality relied on
    *  bug #572478.  As a bugfix, we now emit the "changed" signal ourselves
-   *  when the selection was already set to -1. 
+   *  when the selection was already set to -1.
    */
   if (gtk_combo_box_get_active(combo_box) == -1)
     g_signal_emit_by_name (combo_box, "changed");
-  else 
+  else
     gtk_combo_box_set_active (combo_box, -1);
 }
 
@@ -436,7 +436,7 @@ gtk_combo_box_entry_grab_focus (GtkWidget *widget)
 /**
  * gtk_combo_box_entry_new_text:
  *
- * Convenience function which constructs a new editable text combo box, which 
+ * Convenience function which constructs a new editable text combo box, which
  * is a #GtkComboBoxEntry just displaying strings. If you use this function to
  * create a text combo box, you should only manipulate its data source with
  * the following convenience functions: gtk_combo_box_append_text(),

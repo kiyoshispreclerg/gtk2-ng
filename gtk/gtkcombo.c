@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /* Do NOT, I repeat, NOT, copy any of the code in this file.
@@ -138,8 +138,8 @@ gtk_combo_class_init (GtkComboClass * klass)
   oclass = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
-  gobject_class->set_property = gtk_combo_set_property; 
-  gobject_class->get_property = gtk_combo_get_property; 
+  gobject_class->set_property = gtk_combo_set_property;
+  gobject_class->get_property = gtk_combo_get_property;
 
   g_object_class_install_property (gobject_class,
                                    PROP_ENABLE_ARROW_KEYS,
@@ -178,10 +178,10 @@ gtk_combo_class_init (GtkComboClass * klass)
                                                          P_("Whether entered values must already be present in the list"),
                                                          FALSE,
                                                          GTK_PARAM_READWRITE));
-  
-   
+
+
   oclass->destroy = gtk_combo_destroy;
-  
+
   widget_class->size_allocate = gtk_combo_size_allocate;
   widget_class->realize = gtk_combo_realize;
   widget_class->unrealize = gtk_combo_unrealize;
@@ -264,7 +264,7 @@ gtk_combo_entry_key_press (GtkEntry * entry, GdkEventKey * event, GtkCombo * com
 	  gtk_list_select_child (GTK_LIST (combo->list), GTK_WIDGET (li->data));
 	  gtk_combo_update_entry (combo);
 	}
-      
+
       return TRUE;
     }
   if (((event->keyval == GDK_Down || event->keyval == GDK_KP_Down) && state == 0) ||
@@ -279,7 +279,7 @@ gtk_combo_entry_key_press (GtkEntry * entry, GdkEventKey * event, GtkCombo * com
 	  gtk_list_select_child (GTK_LIST (combo->list), GTK_WIDGET (li->data));
 	  gtk_combo_update_entry (combo);
 	}
-      
+
       return TRUE;
     }
   return FALSE;
@@ -332,7 +332,7 @@ gtk_combo_find (GtkCombo * combo)
     compare_text = (gchar *)text;
   else
     compare_text = g_utf8_casefold (text, -1);
-  
+
   for (clist = GTK_LIST (combo->list)->children;
        !found && clist;
        clist = clist->next)
@@ -447,7 +447,7 @@ gtk_combo_entry_focus_out (GtkEntry * entry, GdkEventFocus * event, GtkCombo * c
   if (combo->value_in_list && !gtk_combo_find (combo))
     {
       GSource *focus_idle;
-      
+
       /* gdk_beep(); *//* this can be annoying */
       if (combo->ok_if_empty && !strcmp (gtk_entry_get_text (entry), ""))
 	return FALSE;
@@ -455,7 +455,7 @@ gtk_combo_entry_focus_out (GtkEntry * entry, GdkEventFocus * event, GtkCombo * c
       printf ("INVALID ENTRY: `%s'\n", gtk_entry_get_text (entry));
 #endif
       gtk_grab_add (GTK_WIDGET (combo));
-      /* this is needed because if we call gtk_widget_grab_focus() 
+      /* this is needed because if we call gtk_widget_grab_focus()
          it isn't guaranteed it's the *last* call before the main-loop,
          so the focus can be lost anyway...
          the signal_stop_emission doesn't seem to work either...
@@ -466,7 +466,7 @@ gtk_combo_entry_focus_out (GtkEntry * entry, GdkEventFocus * event, GtkCombo * c
 						   G_OBJECT (combo)));
       g_source_attach (focus_idle, NULL);
 	g_source_unref (focus_idle);
-      
+
       /*g_signal_stop_emission_by_name (entry, "focus_out_event"); */
       return TRUE;
     }
@@ -479,7 +479,7 @@ gtk_combo_get_pos (GtkCombo * combo, gint * x, gint * y, gint * height, gint * w
   GtkBin *popwin;
   GtkWidget *widget;
   GtkScrolledWindow *popup;
-  
+
   gint real_height;
   GtkRequisition list_requisition;
   gboolean show_hscroll = FALSE;
@@ -491,7 +491,7 @@ gtk_combo_get_pos (GtkCombo * combo, gint * x, gint * y, gint * height, gint * w
   gint old_height;
   gint old_width;
   gint scrollbar_spacing;
-  
+
   widget = GTK_WIDGET (combo);
   popup  = GTK_SCROLLED_WINDOW (combo->popup);
   popwin = GTK_BIN (combo->popwin);
@@ -499,53 +499,53 @@ gtk_combo_get_pos (GtkCombo * combo, gint * x, gint * y, gint * height, gint * w
   scrollbar_spacing = _gtk_scrolled_window_get_scrollbar_spacing (popup);
 
   gdk_window_get_origin (combo->entry->window, x, y);
-  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) 
+  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
     *x -= widget->allocation.width - combo->entry->allocation.width;
-  real_height = MIN (combo->entry->requisition.height, 
+  real_height = MIN (combo->entry->requisition.height,
 		     combo->entry->allocation.height);
   *y += real_height;
   avail_height = gdk_screen_get_height (gtk_widget_get_screen (widget)) - *y;
-  
+
   gtk_widget_size_request (combo->list, &list_requisition);
-  min_height = MIN (list_requisition.height, 
+  min_height = MIN (list_requisition.height,
 		    popup->vscrollbar->requisition.height);
   if (!GTK_LIST (combo->list)->children)
     list_requisition.height += EMPTY_LIST_HEIGHT;
-  
+
   alloc_width = (widget->allocation.width -
 		 2 * popwin->child->style->xthickness -
 		 2 * GTK_CONTAINER (popwin->child)->border_width -
 		 2 * GTK_CONTAINER (combo->popup)->border_width -
-		 2 * GTK_CONTAINER (GTK_BIN (popup)->child)->border_width - 
+		 2 * GTK_CONTAINER (GTK_BIN (popup)->child)->border_width -
 		 2 * GTK_BIN (popup)->child->style->xthickness);
-  
+
   work_height = (2 * popwin->child->style->ythickness +
 		 2 * GTK_CONTAINER (popwin->child)->border_width +
 		 2 * GTK_CONTAINER (combo->popup)->border_width +
 		 2 * GTK_CONTAINER (GTK_BIN (popup)->child)->border_width +
 		 2 * GTK_BIN (popup)->child->style->ythickness);
-  
-  do 
+
+  do
     {
       old_width = alloc_width;
       old_height = work_height;
-      
+
       if (!show_hscroll &&
 	  alloc_width < list_requisition.width)
 	{
 	  GtkRequisition requisition;
-	  
+
 	  gtk_widget_size_request (popup->hscrollbar, &requisition);
 	  work_height += (requisition.height + scrollbar_spacing);
-	  
+
 	  show_hscroll = TRUE;
 	}
-      if (!show_vscroll && 
+      if (!show_vscroll &&
 	  work_height + list_requisition.height > avail_height)
 	{
 	  GtkRequisition requisition;
-	  
-	  if (work_height + min_height > avail_height && 
+
+	  if (work_height + min_height > avail_height &&
 	      *y - real_height > avail_height)
 	    {
 	      *y -= (work_height + list_requisition.height + real_height);
@@ -556,13 +556,13 @@ gtk_combo_get_pos (GtkCombo * combo, gint * x, gint * y, gint * height, gint * w
 	  show_vscroll = TRUE;
 	}
     } while (old_width != alloc_width || old_height != work_height);
-  
+
   *width = widget->allocation.width;
   if (show_vscroll)
     *height = avail_height;
   else
     *height = work_height + list_requisition.height;
-  
+
   if (*x < 0)
     *x = 0;
 }
@@ -595,7 +595,7 @@ gtk_combo_popup_list (GtkCombo *combo)
    * child, we focus the list itself with some hackery.
    */
   list = GTK_LIST (combo->list);
-  
+
   if (list->selection)
     {
       gtk_widget_grab_focus (list->selection->data);
@@ -607,14 +607,14 @@ gtk_combo_popup_list (GtkCombo *combo)
       GTK_LIST (combo->list)->last_focus_child = NULL;
       gtk_widget_set_can_focus (GTK_WIDGET (list), FALSE);
     }
-  
+
   gtk_window_move (GTK_WINDOW (combo->popwin), x, y);
 
   toplevel = gtk_widget_get_toplevel (GTK_WIDGET (combo));
 
   if (GTK_IS_WINDOW (toplevel))
     {
-      gtk_window_group_add_window (gtk_window_get_group (GTK_WINDOW (toplevel)), 
+      gtk_window_group_add_window (gtk_window_get_group (GTK_WINDOW (toplevel)),
                                    GTK_WINDOW (combo->popwin));
       gtk_window_set_transient_for (GTK_WINDOW (combo->popwin), GTK_WINDOW (toplevel));
     }
@@ -629,7 +629,7 @@ static void
 gtk_combo_popdown_list (GtkCombo *combo)
 {
   combo->current_button = 0;
-      
+
   if (GTK_BUTTON (combo->button)->in_button)
     {
       GTK_BUTTON (combo->button)->in_button = FALSE;
@@ -644,7 +644,7 @@ gtk_combo_popdown_list (GtkCombo *combo)
       gdk_display_keyboard_ungrab (gtk_widget_get_display (GTK_WIDGET (combo)),
 				   gtk_get_current_event_time ());
     }
-  
+
   gtk_widget_hide (combo->popwin);
 
   gtk_window_group_add_window (gtk_window_get_group (NULL), GTK_WINDOW (combo->popwin));
@@ -673,7 +673,7 @@ popup_grab_on_window (GdkWindow *window,
   return FALSE;
 }
 
-static void        
+static void
 gtk_combo_activate (GtkWidget        *widget,
 		    GtkCombo         *combo)
 {
@@ -683,7 +683,7 @@ gtk_combo_activate (GtkWidget        *widget,
     return;
 
   gtk_combo_popup_list (combo);
-  
+
   /* This must succeed since we already have the grab */
   popup_grab_on_window (combo->popwin->window,
 			gtk_get_current_event_time ());
@@ -823,7 +823,7 @@ gtk_combo_button_event_after (GtkWidget *widget,
 
   if (event->type != GDK_BUTTON_RELEASE)
     return;
-  
+
   child = gtk_get_event_widget ((GdkEvent*) event);
 
   if ((combo->current_button != 0) && (event->button.button == 1))
@@ -837,9 +837,9 @@ gtk_combo_button_event_after (GtkWidget *widget,
 	{
 	  gtk_grab_add (combo->popwin);
 	  gdk_pointer_grab (combo->popwin->window, TRUE,
-			    GDK_BUTTON_PRESS_MASK | 
+			    GDK_BUTTON_PRESS_MASK |
 			    GDK_BUTTON_RELEASE_MASK |
-			    GDK_POINTER_MOTION_MASK, 
+			    GDK_POINTER_MOTION_MASK,
 			    NULL, NULL, GDK_CURRENT_TIME);
 	  return;
 	}
@@ -847,7 +847,7 @@ gtk_combo_button_event_after (GtkWidget *widget,
 
   if (is_within (child, combo->list))
     gtk_combo_update_entry (combo);
-    
+
   gtk_combo_popdown_list (combo);
 
 }
@@ -875,7 +875,7 @@ find_child_window (GtkContainer   *container,
   gtk_container_foreach (container, find_child_foreach, event);
 }
 
-static gint         
+static gint
 gtk_combo_list_enter (GtkWidget        *widget,
 		      GdkEventCrossing *event,
 		      GtkCombo         *combo)
@@ -885,7 +885,7 @@ gtk_combo_list_enter (GtkWidget        *widget,
   event_widget = gtk_get_event_widget ((GdkEvent*) event);
 
   if ((event_widget == combo->list) &&
-      (combo->current_button != 0) && 
+      (combo->current_button != 0) &&
       (!GTK_WIDGET_HAS_GRAB (combo->list)))
     {
       GdkEvent *tmp_event = gdk_event_new (GDK_BUTTON_PRESS);
@@ -913,7 +913,7 @@ gtk_combo_list_enter (GtkWidget        *widget,
       if (!tmp_event->button.window)
 	{
 	  GtkWidget *child;
-	  
+
 	  if (GTK_LIST (combo->list)->children)
 	    child = GTK_LIST (combo->list)->children->data;
 	  else
@@ -940,7 +940,7 @@ gtk_combo_list_key_press (GtkWidget * widget, GdkEventKey * event, GtkCombo * co
 	gtk_list_end_drag_selection (GTK_LIST (combo->list));
 
       gtk_combo_popdown_list (combo);
-      
+
       return TRUE;
     }
   return FALSE;
@@ -1001,7 +1001,7 @@ gtk_combo_init (GtkCombo * combo)
 
   g_signal_connect (combo->popwin, "key-press-event",
 		    G_CALLBACK (gtk_combo_window_key_press), combo);
-  
+
   gtk_widget_set_events (combo->popwin, GDK_KEY_PRESS_MASK);
 
   event_box = gtk_event_box_new ();
@@ -1040,7 +1040,7 @@ gtk_combo_init (GtkCombo * combo)
 
   combo->list_change_id = g_signal_connect (combo->list, "selection-changed",
 					    G_CALLBACK (gtk_combo_selection_changed), combo);
-  
+
   g_signal_connect (combo->popwin, "key-press-event",
 		    G_CALLBACK (gtk_combo_list_key_press), combo);
   g_signal_connect (combo->popwin, "button-press-event",
@@ -1060,20 +1060,20 @@ gtk_combo_realize (GtkWidget *widget)
 {
   GtkCombo *combo = GTK_COMBO (widget);
 
-  gtk_window_set_screen (GTK_WINDOW (combo->popwin), 
+  gtk_window_set_screen (GTK_WINDOW (combo->popwin),
 			 gtk_widget_get_screen (widget));
-  
-  GTK_WIDGET_CLASS (gtk_combo_parent_class)->realize (widget);  
+
+  GTK_WIDGET_CLASS (gtk_combo_parent_class)->realize (widget);
 }
 
-static void        
+static void
 gtk_combo_unrealize (GtkWidget *widget)
 {
   GtkCombo *combo = GTK_COMBO (widget);
 
   gtk_combo_popdown_list (combo);
   gtk_widget_unrealize (combo->popwin);
-  
+
   GTK_WIDGET_CLASS (gtk_combo_parent_class)->unrealize (widget);
 }
 
@@ -1110,7 +1110,7 @@ gtk_combo_set_case_sensitive (GtkCombo * combo, gboolean val)
   g_return_if_fail (GTK_IS_COMBO (combo));
   val = val != FALSE;
 
-  if (combo->case_sensitive != val) 
+  if (combo->case_sensitive != val)
     {
   combo->case_sensitive = val;
   g_object_notify (G_OBJECT (combo), "case-sensitive");
@@ -1123,7 +1123,7 @@ gtk_combo_set_use_arrows (GtkCombo * combo, gboolean val)
   g_return_if_fail (GTK_IS_COMBO (combo));
   val = val != FALSE;
 
-  if (combo->use_arrows != val) 
+  if (combo->use_arrows != val)
     {
   combo->use_arrows = val;
   g_object_notify (G_OBJECT (combo), "enable-arrow-keys");
@@ -1136,13 +1136,13 @@ gtk_combo_set_use_arrows_always (GtkCombo * combo, gboolean val)
   g_return_if_fail (GTK_IS_COMBO (combo));
   val = val != FALSE;
 
-  if (combo->use_arrows_always != val) 
+  if (combo->use_arrows_always != val)
     {
        g_object_freeze_notify (G_OBJECT (combo));
   combo->use_arrows_always = val;
        g_object_notify (G_OBJECT (combo), "enable-arrows-always");
 
-       if (combo->use_arrows != TRUE) 
+       if (combo->use_arrows != TRUE)
          {
   combo->use_arrows = TRUE;
   g_object_notify (G_OBJECT (combo), "enable-arrow-keys");
@@ -1152,7 +1152,7 @@ gtk_combo_set_use_arrows_always (GtkCombo * combo, gboolean val)
 }
 
 void
-gtk_combo_set_popdown_strings (GtkCombo *combo, 
+gtk_combo_set_popdown_strings (GtkCombo *combo,
 			       GList    *strings)
 {
   GList *list;
@@ -1199,8 +1199,8 @@ gtk_combo_size_allocate (GtkWidget     *widget,
 
       button_allocation = combo->button->allocation;
       button_allocation.height = combo->entry->requisition.height;
-      button_allocation.y = combo->entry->allocation.y + 
-	(combo->entry->allocation.height - combo->entry->requisition.height) 
+      button_allocation.y = combo->entry->allocation.y +
+	(combo->entry->allocation.height - combo->entry->requisition.height)
 	/ 2;
       gtk_widget_size_allocate (combo->button, &button_allocation);
     }
@@ -1224,7 +1224,7 @@ gtk_combo_set_property (GObject      *object,
 			GParamSpec   *pspec)
 {
   GtkCombo *combo = GTK_COMBO (object);
-  
+
   switch (prop_id)
     {
     case PROP_ENABLE_ARROW_KEYS:
@@ -1246,7 +1246,7 @@ gtk_combo_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-  
+
 }
 
 static void
@@ -1256,7 +1256,7 @@ gtk_combo_get_property (GObject    *object,
 			GParamSpec *pspec)
 {
   GtkCombo *combo = GTK_COMBO (object);
-  
+
   switch (prop_id)
     {
     case PROP_ENABLE_ARROW_KEYS:
@@ -1278,7 +1278,7 @@ gtk_combo_get_property (GObject    *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-   
+
 }
 
 #define __GTK_SMART_COMBO_C__

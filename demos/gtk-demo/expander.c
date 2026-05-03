@@ -16,7 +16,7 @@ do_expander (GtkWidget *do_widget)
   GtkWidget *vbox;
   GtkWidget *label;
   GtkWidget *expander;
-  
+
   if (!window)
   {
     window = gtk_dialog_new_with_buttons ("GtkExpander",

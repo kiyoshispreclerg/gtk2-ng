@@ -27,7 +27,7 @@ scribble_configure_event (GtkWidget         *widget,
 {
   cairo_t *cr;
   GtkAllocation allocation;
-  
+
   gtk_widget_get_allocation (widget, &allocation);
 
   if (surface)
@@ -59,7 +59,7 @@ scribble_expose_event (GtkWidget      *widget,
   cairo_t *cr;
 
   cr = gdk_cairo_create (gtk_widget_get_window (widget));
-  
+
   cairo_set_source_surface (cr, surface, 0, 0);
   gdk_cairo_rectangle (cr, &event->area);
   cairo_fill (cr);
@@ -152,7 +152,7 @@ checkerboard_expose (GtkWidget      *da,
   gint i, j, xcount, ycount;
   cairo_t *cr;
   GtkAllocation allocation;
-  
+
   gtk_widget_get_allocation (da, &allocation);
 
 #define CHECK_SIZE 10

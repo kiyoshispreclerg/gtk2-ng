@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -96,7 +96,7 @@ gdk_image_finalize (GObject *object)
   GdkImage *image = GDK_IMAGE (object);
 
   gdk_x11_image_destroy (image);
-  
+
   G_OBJECT_CLASS (gdk_image_parent_class)->finalize (object);
 }
 
@@ -116,33 +116,33 @@ _gdk_image_exit (void)
 /**
  * gdk_image_new_bitmap:
  * @visual: the #GdkVisual to use for the image.
- * @data: the pixel data. 
- * @width: the width of the image in pixels. 
- * @height: the height of the image in pixels. 
- * 
+ * @data: the pixel data.
+ * @width: the width of the image in pixels.
+ * @height: the height of the image in pixels.
+ *
  * Creates a new #GdkImage with a depth of 1 from the given data.
- * <warning><para>THIS FUNCTION IS INCREDIBLY BROKEN. The passed-in data must 
- * be allocated by malloc() (NOT g_malloc()) and will be freed when the 
+ * <warning><para>THIS FUNCTION IS INCREDIBLY BROKEN. The passed-in data must
+ * be allocated by malloc() (NOT g_malloc()) and will be freed when the
  * image is freed.</para></warning>
- * 
+ *
  * Return value: a new #GdkImage.
  **/
 GdkImage *
-gdk_image_new_bitmap (GdkVisual *visual, 
-		      gpointer   data, 
-		      gint       width, 
+gdk_image_new_bitmap (GdkVisual *visual,
+		      gpointer   data,
+		      gint       width,
 		      gint       height)
 {
   Visual *xvisual;
   GdkImage *image;
   GdkDisplay *display;
   GdkImagePrivateX11 *private;
-  
+
   image = g_object_new (gdk_image_get_type (), NULL);
   private = PRIVATE_DATA (image);
   private->screen = gdk_visual_get_screen (visual);
   display = GDK_SCREEN_DISPLAY (private->screen);
-  
+
   image->type = GDK_IMAGE_NORMAL;
   image->visual = visual;
   image->width = width;
@@ -161,26 +161,26 @@ gdk_image_new_bitmap (GdkVisual *visual,
       private->ximage->bitmap_bit_order = MSBFirst;
       private->ximage->byte_order = MSBFirst;
     }
-  
+
   image->byte_order = MSBFirst;
   image->mem =  private->ximage->data;
   image->bpl = private->ximage->bytes_per_line;
   image->bpp = 1;
   return image;
-} 
+}
 
 void
 _gdk_windowing_image_init (GdkDisplay *display)
 {
   GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
-  
+
   if (display_x11->use_xshm)
     {
 #ifdef USE_SHM
       Display *xdisplay = display_x11->xdisplay;
       int major, minor, event_base;
       Bool pixmaps;
-  
+
       if (XShmQueryExtension (xdisplay) &&
 	  XShmQueryVersion (xdisplay, &major, &minor, &pixmaps))
 	{
@@ -216,17 +216,17 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
   g_return_val_if_fail (!visual || GDK_IS_VISUAL (visual), NULL);
   g_return_val_if_fail (visual || depth != -1, NULL);
   g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
-  
+
   screen_x11 = GDK_SCREEN_X11 (screen);
   display_x11 = GDK_DISPLAY_X11 (screen_x11->display);
-  
+
   if (visual)
     depth = visual->depth;
-  
+
   switch (type)
     {
     case GDK_IMAGE_FASTEST:
-      image = _gdk_image_new_for_depth (screen, GDK_IMAGE_SHARED, 
+      image = _gdk_image_new_for_depth (screen, GDK_IMAGE_SHARED,
 					visual, width, height, depth);
       if (!image)
 	image = _gdk_image_new_for_depth (screen, GDK_IMAGE_NORMAL,
@@ -235,7 +235,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 
     default:
       image = g_object_new (gdk_image_get_type (), NULL);
-      
+
       private = PRIVATE_DATA (image);
 
       private->screen = screen;
@@ -266,7 +266,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 		{
 		  g_warning ("XShmCreateImage failed");
 		  display_x11->use_xshm = FALSE;
-		  
+
 		  goto error;
 		}
 
@@ -316,14 +316,14 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 		  display_x11->use_xshm = FALSE;
 		  goto error;
 		}
-	      
+
 	      /* We mark the segment as destroyed so that when
 	       * the last process detaches, it will be deleted.
 	       * There is a small possibility of leaking if
 	       * we die in XShmAttach. In theory, a signal handler
 	       * could be set up.
 	       */
-	      shmctl (x_shm_info->shmid, IPC_RMID, NULL);		      
+	      shmctl (x_shm_info->shmid, IPC_RMID, NULL);
 
 	      if (image)
 		image_list = g_list_prepend (image_list, image);
@@ -371,18 +371,18 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
   if (private->x_shm_info)
     {
       x_shm_info = private->x_shm_info;
-      
+
       if (x_shm_info->shmaddr != (char *)-1)
 	shmdt (x_shm_info->shmaddr);
-      if (x_shm_info->shmid != -1) 
+      if (x_shm_info->shmid != -1)
 	shmctl (x_shm_info->shmid, IPC_RMID, NULL);
-      
+
       g_free (x_shm_info);
       private->x_shm_info = NULL;
     }
 #endif /* USE_SHM */
   g_object_unref (image);
-  
+
   return NULL;
 }
 
@@ -395,22 +395,22 @@ _gdk_x11_image_get_shm_pixmap (GdkImage *image)
   if (display->closed)
     return None;
 
-#ifdef USE_SHM  
+#ifdef USE_SHM
   /* Future: do we need one of these per-screen per-image? ShmPixmaps
    * are the same for every screen, but can they be shared? Not a concern
    * right now since we tie images to a particular screen.
    */
-  if (!private->shm_pixmap && image->type == GDK_IMAGE_SHARED && 
+  if (!private->shm_pixmap && image->type == GDK_IMAGE_SHARED &&
       GDK_DISPLAY_X11 (display)->have_shm_pixmaps)
     private->shm_pixmap = XShmCreatePixmap (GDK_SCREEN_XDISPLAY (private->screen),
 					    GDK_SCREEN_XROOTWIN (private->screen),
-					    image->mem, private->x_shm_info, 
+					    image->mem, private->x_shm_info,
 					    image->width, image->height, image->depth);
 
   return private->shm_pixmap;
 #else
   return None;
-#endif    
+#endif
 }
 
 static GdkImage*
@@ -426,34 +426,34 @@ get_full_image (GdkDrawable    *drawable,
   XImage *ximage;
 
   impl = GDK_DRAWABLE_IMPL_X11 (drawable);
-  
+
   ximage = XGetImage (GDK_SCREEN_XDISPLAY (impl->screen),
 		      impl->xid,
 		      src_x, src_y, width, height,
 		      AllPlanes, ZPixmap);
-  
+
   if (!ximage)
     return NULL;
-  
+
   image = g_object_new (gdk_image_get_type (), NULL);
-  
+
   private = PRIVATE_DATA (image);
-  
+
   private->screen = impl->screen;
   private->ximage = ximage;
-  
+
   image->type = GDK_IMAGE_NORMAL;
   image->visual = gdk_drawable_get_visual (drawable); /* could be NULL */
   image->width = width;
   image->height = height;
   image->depth = gdk_drawable_get_depth (drawable);
-  
+
   image->mem = private->ximage->data;
   image->bpl = private->ximage->bytes_per_line;
   image->bits_per_pixel = private->ximage->bits_per_pixel;
   image->bpp = (private->ximage->bits_per_pixel + 7) / 8;
   image->byte_order = (private->ximage->byte_order == LSBFirst) ? GDK_LSB_FIRST : GDK_MSB_FIRST;
-  
+
   return image;
 }
 
@@ -477,7 +477,7 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
   GdkRectangle window_rect;
   Pixmap shm_pixmap = None;
   gboolean success = TRUE;
-  
+
   g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_X11 (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
 
@@ -488,7 +488,7 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
 
   if (display->closed)
     return NULL;
-  
+
   have_grab = FALSE;
 
 #define UNGRAB() G_STMT_START {					\
@@ -512,13 +512,13 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
 	   */
 	  values.subwindow_mode = IncludeInferiors;
 	  xgc = XCreateGC (xdisplay, impl->xid, GCSubwindowMode, &values);
-	  
+
 	  XCopyArea (xdisplay, impl->xid, shm_pixmap, xgc,
 		     src_x, src_y, width, height, dest_x, dest_y);
 	  XSync (xdisplay, FALSE);
-	  
+
 	  XFreeGC (xdisplay, xgc);
-	  
+
 	  return image;
 	}
     }
@@ -539,29 +539,29 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
       XTranslateCoordinates (xdisplay,
 			     GDK_SCREEN_XROOTWIN (impl->screen),
 			     impl->xid,
-			     0, 0, 
-			     &screen_rect.x, &screen_rect.y, 
+			     0, 0,
+			     &screen_rect.x, &screen_rect.y,
 			     &child);
 
       screen_rect.width = gdk_screen_get_width (impl->screen);
       screen_rect.height = gdk_screen_get_height (impl->screen);
-      
+
       gdk_error_trap_push ();
 
       window_rect.x = 0;
       window_rect.y = 0;
-      
+
       gdk_window_get_geometry (GDK_WINDOW (impl->wrapper),
                                NULL, NULL,
                                &window_rect.width,
                                &window_rect.height,
                                NULL);
-      
+
       /* compute intersection of screen and window, in window
        * coordinates
        */
       if (gdk_error_trap_pop () ||
-          !gdk_rectangle_intersect (&window_rect, &screen_rect, 
+          !gdk_rectangle_intersect (&window_rect, &screen_rect,
                                     &window_rect))
 	goto out;
     }
@@ -573,22 +573,22 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
 			     &window_rect.width,
 			     &window_rect.height);
     }
-      
+
   req.x = src_x;
   req.y = src_y;
   req.width = width;
   req.height = height;
-  
+
   /* window_rect specifies the part of drawable which we can get from
-   * the server in window coordinates. 
-   * For pixmaps this is all of the pixmap, for windows it is just 
+   * the server in window coordinates.
+   * For pixmaps this is all of the pixmap, for windows it is just
    * the onscreen part.
    */
   if (!gdk_rectangle_intersect (&req, &window_rect, &req))
     goto out;
 
   gdk_error_trap_push ();
-  
+
   if (!image &&
       req.x == src_x && req.y == src_y && req.width == width && req.height == height)
     {
@@ -599,10 +599,10 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
   else
     {
       gboolean created_image = FALSE;
-      
+
       if (!image)
 	{
-	  image = _gdk_image_new_for_depth (impl->screen, GDK_IMAGE_NORMAL, 
+	  image = _gdk_image_new_for_depth (impl->screen, GDK_IMAGE_NORMAL,
 					    visual, width, height,
 					    gdk_drawable_get_depth (drawable));
 	  created_image = TRUE;
@@ -629,21 +629,21 @@ _gdk_x11_copy_to_image (GdkDrawable    *drawable,
   gdk_error_trap_pop ();
 
  out:
-  
+
   if (have_grab)
-    {				
+    {
       gdk_x11_display_ungrab (display);
       have_grab = FALSE;
     }
-  
+
   if (success && !image)
     {
       /* We "succeeded", but could get no content for the image so return junk */
-      image = _gdk_image_new_for_depth (impl->screen, GDK_IMAGE_NORMAL, 
+      image = _gdk_image_new_for_depth (impl->screen, GDK_IMAGE_NORMAL,
 					visual, width, height,
 					gdk_drawable_get_depth (drawable));
     }
-      
+
   return image;
 }
 
@@ -707,7 +707,7 @@ gdk_x11_image_destroy (GdkImage *image)
 	  if (!private->screen->closed)
 	    XDestroyImage (private->ximage);
 	  break;
-	  
+
 	case GDK_IMAGE_SHARED:
 #ifdef USE_SHM
 	  if (!private->screen->closed)
@@ -716,16 +716,16 @@ gdk_x11_image_destroy (GdkImage *image)
 
 	      if (private->shm_pixmap)
 		XFreePixmap (GDK_SCREEN_XDISPLAY (private->screen), private->shm_pixmap);
-	  	  
+
 	      XShmDetach (GDK_SCREEN_XDISPLAY (private->screen), private->x_shm_info);
 	      XDestroyImage (private->ximage);
 	    }
-	  
+
 	  image_list = g_list_remove (image_list, image);
 
 	  x_shm_info = private->x_shm_info;
 	  shmdt (x_shm_info->shmaddr);
-	  
+
 	  g_free (private->x_shm_info);
 	  private->x_shm_info = NULL;
 
@@ -733,11 +733,11 @@ gdk_x11_image_destroy (GdkImage *image)
 	  g_error ("trying to destroy shared memory image when gdk was compiled without shared memory support");
 #endif /* USE_SHM */
 	  break;
-	  
+
 	case GDK_IMAGE_FASTEST:
 	  g_assert_not_reached ();
 	}
-      
+
       private->ximage = NULL;
     }
 }
@@ -745,9 +745,9 @@ gdk_x11_image_destroy (GdkImage *image)
 /**
  * gdk_x11_image_get_xdisplay:
  * @image: a #GdkImage.
- * 
+ *
  * Returns the display of a #GdkImage.
- * 
+ *
  * Return value: an Xlib <type>Display*</type>.
  **/
 Display *
@@ -765,9 +765,9 @@ gdk_x11_image_get_xdisplay (GdkImage *image)
 /**
  * gdk_x11_image_get_ximage:
  * @image: a #GdkImage.
- * 
+ *
  * Returns the X image belonging to a #GdkImage.
- * 
+ *
  * Return value: an <type>XImage*</type>.
  **/
 XImage *
@@ -793,7 +793,7 @@ _gdk_windowing_get_bits_for_depth (GdkDisplay *display,
   gint count, i;
 
   formats = XListPixmapFormats (GDK_DISPLAY_XDISPLAY (display), &count);
-  
+
   for (i = 0; i < count; i++)
     if (formats[i].depth == depth)
       {

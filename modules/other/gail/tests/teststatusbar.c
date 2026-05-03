@@ -3,7 +3,7 @@
 #include <atk/atk.h>
 
 /*
- * To use this test module, run the test program testgtk and click on 
+ * To use this test module, run the test program testgtk and click on
  * statusbar
  */
 
@@ -74,7 +74,7 @@ static void _check_statusbar (AtkObject *obj)
   if (role != ATK_ROLE_FRAME)
     return;
 
-  statusbar = _find_object (obj, ATK_ROLE_STATUSBAR); 
+  statusbar = _find_object (obj, ATK_ROLE_STATUSBAR);
   if (!statusbar)
     return;
   g_print ("_check_statusbar\n");
@@ -85,7 +85,7 @@ static void _check_statusbar (AtkObject *obj)
    * We get notified of changes to the label
    */
   g_signal_connect_closure_by_id (statusbar,
-                                  g_signal_lookup ("notify", 
+                                  g_signal_lookup ("notify",
                                                    G_OBJECT_TYPE (statusbar)),
                                   0,
                                   g_cclosure_new (G_CALLBACK (_notify_handler),
@@ -96,7 +96,7 @@ static void _check_statusbar (AtkObject *obj)
 
 }
 
-static void 
+static void
 _notify_handler (GObject *obj, GParamSpec *pspec)
 {
   AtkObject *atk_obj = ATK_OBJECT (obj);

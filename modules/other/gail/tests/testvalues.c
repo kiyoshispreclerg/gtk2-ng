@@ -17,9 +17,9 @@ static void _value_change_handler (AtkObject   *obj,
    GValue *value_back, val;
 
   value_back = &val;
-    
-  if (!ATK_IS_VALUE (obj)) { 
-   	return;
+
+  if (!ATK_IS_VALUE (obj)) {
+	return;
   }
 
   if (strcmp (values->property_name, "accessible-value") == 0) {
@@ -27,30 +27,30 @@ static void _value_change_handler (AtkObject   *obj,
            type_name ? type_name : "NULL");
 	if(G_VALUE_HOLDS_DOUBLE (&values->new_value))
     {
-		g_print( "adjustment value changed : new value: %f\n", 
+		g_print( "adjustment value changed : new value: %f\n",
 		g_value_get_double (&values->new_value));
- 	}
+	}
 
 	g_print("Now calling the AtkValue interface functions\n");
 
-  	atk_value_get_current_value (ATK_VALUE(obj), value_back);
-  	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-  	g_print ("atk_value_get_current_value returns %f\n",
+	atk_value_get_current_value (ATK_VALUE(obj), value_back);
+	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
+	g_print ("atk_value_get_current_value returns %f\n",
 			g_value_get_double (value_back)	);
 
-  	atk_value_get_maximum_value (ATK_VALUE (obj), value_back);
-  	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-  	g_print ("atk_value_get_maximum returns %f\n",
+	atk_value_get_maximum_value (ATK_VALUE (obj), value_back);
+	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
+	g_print ("atk_value_get_maximum returns %f\n",
 			g_value_get_double (value_back));
 
-  	atk_value_get_minimum_value (ATK_VALUE (obj), value_back);
-  	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-  	g_print ("atk_value_get_minimum returns %f\n", 
+	atk_value_get_minimum_value (ATK_VALUE (obj), value_back);
+	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
+	g_print ("atk_value_get_minimum returns %f\n",
 			g_value_get_double (value_back));
-	
- 
+
+
     }
-  
+
 }
 
 static void _traverse_children (AtkObject *obj)
@@ -76,7 +76,7 @@ static void _add_handler (AtkObject *obj)
   gint i;
 
   /*
-   * We create a property handler for each object if one was not associated 
+   * We create a property handler for each object if one was not associated
    * with it already.
    *
    * We add it to our array of objects which have property handlers; if an
@@ -84,7 +84,7 @@ static void _add_handler (AtkObject *obj)
    */
   if (obj_array == NULL)
     obj_array = g_ptr_array_new ();
- 
+
   for (i = 0; i < obj_array->len; i++)
   {
     if (obj == g_ptr_array_index (obj_array, i))
@@ -110,34 +110,34 @@ static void _set_values (AtkObject *obj) {
   value_back = &val;
 
   if(ATK_IS_VALUE(obj)) {
-	/* Spin button also inherits the text interfaces from GailEntry. 
+	/* Spin button also inherits the text interfaces from GailEntry.
 	 * Check when spin button recieves focus.
      */
 
 	if(ATK_IS_TEXT(obj) && ATK_IS_EDITABLE_TEXT(obj)) {
-		if(count == 0) {	
+		if(count == 0) {
 			gint x;
 			gchar* text;
 			count++;
 			x = atk_text_get_character_count (ATK_TEXT (obj));
-  			text = atk_text_get_text (ATK_TEXT (obj), 0, x);
+			text = atk_text_get_text (ATK_TEXT (obj), 0, x);
 			g_print("Text : %s\n", text);
 			text = "5.7";
 			atk_editable_text_set_text_contents(ATK_EDITABLE_TEXT(obj),text);
 			g_print("Set text to %s\n",text);
 			atk_value_get_current_value(ATK_VALUE(obj), value_back);
 			g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-			g_print("atk_value_get_current_value returns %f\n", 
+			g_print("atk_value_get_current_value returns %f\n",
 				g_value_get_double( value_back));
-			} 
+			}
 	} else {
 		memset (value_back, 0, sizeof (GValue));
 		g_value_init (value_back, G_TYPE_DOUBLE);
-		g_value_set_double (value_back, 10.0);	
+		g_value_set_double (value_back, 10.0);
 		if (atk_value_set_current_value (ATK_VALUE (obj), value_back))
 		{
- 			double_value = g_value_get_double (value_back);
-  			g_print("atk_value_set_current_value returns %f\n", 
+			double_value = g_value_get_double (value_back);
+			g_print("atk_value_set_current_value returns %f\n",
 			double_value);
 		}
 	}
@@ -156,7 +156,7 @@ static void _check_values (AtkObject *obj)
   _add_handler (obj);
 
   if (++calls < 2)
-  { 
+  {
     /*
      * Just do this on this on the first 2 objects visited
      */

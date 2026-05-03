@@ -24,7 +24,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -79,14 +79,14 @@ gtk_pixmap_new (GdkPixmap *val,
 		GdkBitmap *mask)
 {
   GtkPixmap *pixmap;
-   
+
   g_return_val_if_fail (val != NULL, NULL);
-  
+
   pixmap = gtk_type_new (gtk_pixmap_get_type ());
-  
+
   pixmap->build_insensitive = TRUE;
   gtk_pixmap_set (pixmap, val, mask);
-  
+
   return GTK_WIDGET (pixmap);
 }
 
@@ -190,12 +190,12 @@ gtk_pixmap_expose (GtkWidget      *widget,
 	xalign = misc->xalign;
       else
 	xalign = 1.0 - misc->xalign;
-  
+
       x = floor (widget->allocation.x + misc->xpad
 		 + ((widget->allocation.width - widget->requisition.width) * xalign));
-      y = floor (widget->allocation.y + misc->ypad 
+      y = floor (widget->allocation.y + misc->ypad
 		 + ((widget->allocation.height - widget->requisition.height) * misc->yalign));
-      
+
       if (pixmap->mask)
 	{
 	  gdk_gc_set_clip_mask (widget->style->black_gc, pixmap->mask);
@@ -250,7 +250,7 @@ build_insensitive_pixmap (GtkPixmap *gtkpixmap)
   gint w, h;
   GdkPixbuf *pixbuf;
   GdkPixbuf *stated;
-  
+
   gdk_drawable_get_size (pixmap, &w, &h);
 
   pixbuf = gdk_pixbuf_get_from_drawable (NULL,
@@ -259,15 +259,15 @@ build_insensitive_pixmap (GtkPixmap *gtkpixmap)
                                          0, 0,
                                          0, 0,
                                          w, h);
-  
+
   stated = gdk_pixbuf_copy (pixbuf);
-  
+
   gdk_pixbuf_saturate_and_pixelate (pixbuf, stated,
                                     0.8, TRUE);
 
   g_object_unref (pixbuf);
   pixbuf = NULL;
-  
+
   insensitive = gdk_pixmap_new (GTK_WIDGET (gtkpixmap)->window, w, h, -1);
 
   gdk_draw_pixbuf (insensitive,

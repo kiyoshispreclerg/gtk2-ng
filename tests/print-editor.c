@@ -16,7 +16,7 @@ update_title (void)
 {
   char *basename;
   char *title;
-  
+
   if (filename == NULL)
     basename = g_strdup ("Untitled");
   else
@@ -24,7 +24,7 @@ update_title (void)
 
   title = g_strdup_printf ("Simple Editor with printing - %s", basename);
   g_free (basename);
-  
+
   gtk_window_set_title (GTK_WINDOW (main_window), title);
   g_free (title);
 }
@@ -38,7 +38,7 @@ update_statusbar (void)
   const char *print_str;
 
   gtk_statusbar_pop (GTK_STATUSBAR (statusbar), 0);
-  
+
   gtk_text_buffer_get_iter_at_mark (buffer,
                                     &iter,
                                     gtk_text_buffer_get_insert (buffer));
@@ -52,7 +52,7 @@ update_statusbar (void)
       GtkPrintOperation *op = active_prints->data;
       print_str = gtk_print_operation_get_status_string (op);
     }
-  
+
   msg = g_strdup_printf ("%d, %d%s %s",
                          row, col,
 			 file_changed?" - Modified":"",
@@ -103,7 +103,7 @@ load_file (const char *open_filename)
   char *contents;
   GError *error;
   gsize len;
-  
+
   error_dialog = NULL;
   error = NULL;
   if (g_file_get_contents (open_filename, &contents, &len, &error))
@@ -134,7 +134,7 @@ load_file (const char *open_filename)
 					     "Error loading file %s:\n%s",
 					     open_filename,
 					     error->message);
-      
+
       g_error_free (error);
     }
   if (error_dialog)
@@ -150,7 +150,7 @@ do_open (GtkAction *action)
   GtkWidget *dialog;
   gint response;
   char *open_filename;
-  
+
   dialog = gtk_file_chooser_dialog_new ("Select file",
 					GTK_WINDOW (main_window),
 					GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -198,10 +198,10 @@ save_file (const char *save_filename)
 					     "Error saving to file %s:\n%s",
 					     filename,
 					     error->message);
-      
+
       g_signal_connect (error_dialog, "response", G_CALLBACK (gtk_widget_destroy), NULL);
       gtk_widget_show (error_dialog);
-      
+
       g_error_free (error);
     }
 }
@@ -212,7 +212,7 @@ do_save_as (GtkAction *action)
   GtkWidget *dialog;
   gint response;
   char *save_filename;
-  
+
   dialog = gtk_file_chooser_dialog_new ("Select file",
 					GTK_WINDOW (main_window),
 					GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -228,7 +228,7 @@ do_save_as (GtkAction *action)
       save_file (save_filename);
       g_free (save_filename);
     }
-  
+
   gtk_widget_destroy (dialog);
 }
 
@@ -272,7 +272,7 @@ begin_print (GtkPrintOperation *operation,
   pango_font_description_free (desc);
 
   pango_layout_set_width (print_data->layout, width * PANGO_SCALE);
-  
+
   pango_layout_set_text (print_data->layout, print_data->text, -1);
 
   num_lines = pango_layout_get_line_count (print_data->layout);
@@ -284,7 +284,7 @@ begin_print (GtkPrintOperation *operation,
     {
       PangoRectangle ink_rect, logical_rect;
       double line_height;
-      
+
       layout_line = pango_layout_get_line (print_data->layout, line);
       pango_layout_line_get_extents (layout_line, &ink_rect, &logical_rect);
 
@@ -301,7 +301,7 @@ begin_print (GtkPrintOperation *operation,
 
   page_breaks = g_list_reverse (page_breaks);
   gtk_print_operation_set_n_pages (operation, g_list_length (page_breaks) + 1);
-  
+
   print_data->page_breaks = page_breaks;
 }
 
@@ -330,11 +330,11 @@ draw_page (GtkPrintOperation *operation,
     end = pango_layout_get_line_count (print_data->layout);
   else
     end = GPOINTER_TO_INT (pagebreak->data);
-    
+
   cr = gtk_print_context_get_cairo_context (context);
 
   cairo_set_source_rgb (cr, 0, 0, 0);
-  
+
   i = 0;
   start_pos = 0;
   iter = pango_layout_get_iter (print_data->layout);
@@ -350,12 +350,12 @@ draw_page (GtkPrintOperation *operation,
 
 	  pango_layout_iter_get_line_extents (iter, NULL, &logical_rect);
 	  baseline = pango_layout_iter_get_baseline (iter);
-	  
+
 	  if (i == start)
 	    start_pos = logical_rect.y / 1024.0;
-	  
+
 	  cairo_move_to (cr, logical_rect.x / 1024.0, baseline / 1024.0 - start_pos);
-	  
+
 	  pango_cairo_show_layout_line  (cr, line);
 	}
       i++;
@@ -376,7 +376,7 @@ do_page_setup (GtkAction *action)
 
   if (page_setup)
     g_object_unref (page_setup);
-  
+
   page_setup = new_page_setup;
 }
 
@@ -409,7 +409,7 @@ create_custom_widget (GtkPrintOperation *operation,
   label = gtk_label_new ("Font:");
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_widget_show (label);
-  
+
   font = gtk_font_button_new_with_font  (data->font);
   gtk_box_pack_start (GTK_BOX (hbox), font, FALSE, FALSE, 0);
   gtk_widget_show (font);
@@ -429,7 +429,7 @@ custom_widget_apply (GtkPrintOperation *operation,
   data->font = g_strdup (selected_font);
 }
 
-typedef struct 
+typedef struct
 {
   GtkPrintOperation *op;
   GtkPrintOperationPreview *preview;
@@ -470,7 +470,7 @@ preview_ready (GtkPrintOperationPreview *preview,
 
   g_object_get (pop->op, "n-pages", &n_pages, NULL);
 
-  gtk_spin_button_set_range (GTK_SPIN_BUTTON (pop->spin), 
+  gtk_spin_button_set_range (GTK_SPIN_BUTTON (pop->spin),
 			     1.0, n_pages);
 
   g_signal_connect (pop->area, "expose_event",
@@ -481,7 +481,7 @@ preview_ready (GtkPrintOperationPreview *preview,
 }
 
 static void
-preview_got_page_size (GtkPrintOperationPreview *preview, 
+preview_got_page_size (GtkPrintOperationPreview *preview,
 		       GtkPrintContext          *context,
 		       GtkPageSetup             *page_setup,
 		       gpointer                  data)
@@ -525,7 +525,7 @@ update_page (GtkSpinButton *widget,
 }
 
 static void
-preview_destroy (GtkWindow *window, 
+preview_destroy (GtkWindow *window,
 		 PreviewOp *pop)
 {
   gtk_print_operation_preview_end_preview (pop->preview);
@@ -534,7 +534,7 @@ preview_destroy (GtkWindow *window,
   g_free (pop);
 }
 
-static gboolean 
+static gboolean
 preview_cb (GtkPrintOperation        *op,
 	    GtkPrintOperationPreview *preview,
 	    GtkPrintContext          *context,
@@ -554,7 +554,7 @@ preview_cb (GtkPrintOperation        *op,
   width = 200;
   height = 300;
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_transient_for (GTK_WINDOW (window), 
+  gtk_window_set_transient_for (GTK_WINDOW (window),
 				GTK_WINDOW (main_window));
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (window), vbox);
@@ -563,7 +563,7 @@ preview_cb (GtkPrintOperation        *op,
 		      FALSE, FALSE, 0);
   page = gtk_spin_button_new_with_range (1, 100, 1);
   gtk_box_pack_start (GTK_BOX (hbox), page, FALSE, FALSE, 0);
-  
+
   close = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
   gtk_box_pack_start (GTK_BOX (hbox), close, FALSE, FALSE, 0);
 
@@ -572,13 +572,13 @@ preview_cb (GtkPrintOperation        *op,
   gtk_box_pack_start (GTK_BOX (vbox), da, TRUE, TRUE, 0);
 
   gtk_widget_realize (da);
-  
+
   cr = gdk_cairo_create (da->window);
 
   /* TODO: What dpi to use here? This will be used for pagination.. */
   gtk_print_context_set_cairo_context (context, cr, 72, 72);
   cairo_destroy (cr);
-  
+
   pop->op = g_object_ref (op);
   pop->preview = preview;
   pop->spin = page;
@@ -586,9 +586,9 @@ preview_cb (GtkPrintOperation        *op,
   pop->page = 1;
   pop->context = context;
 
-  g_signal_connect (page, "value-changed", 
+  g_signal_connect (page, "value-changed",
 		    G_CALLBACK (update_page), pop);
-  g_signal_connect_swapped (close, "clicked", 
+  g_signal_connect_swapped (close, "clicked",
 			    G_CALLBACK (gtk_widget_destroy), window);
 
   g_signal_connect (preview, "ready",
@@ -596,11 +596,11 @@ preview_cb (GtkPrintOperation        *op,
   g_signal_connect (preview, "got-page-size",
 		    G_CALLBACK (preview_got_page_size), pop);
 
-  g_signal_connect (window, "destroy", 
+  g_signal_connect (window, "destroy",
                     G_CALLBACK (preview_destroy), pop);
-                            
+
   gtk_widget_show_all (window);
-  
+
   return TRUE;
 }
 
@@ -615,9 +615,9 @@ print_done (GtkPrintOperation *op,
     {
 
       GtkWidget *error_dialog;
-      
+
       gtk_print_operation_get_error (op, &error);
-      
+
       error_dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
 					     GTK_DIALOG_DESTROY_WITH_PARENT,
 					     GTK_MESSAGE_ERROR,
@@ -637,13 +637,13 @@ print_done (GtkPrintOperation *op,
   g_free (print_data->text);
   g_free (print_data->font);
   g_free (print_data);
-  
+
   if (!gtk_print_operation_is_finished (op))
     {
       g_object_ref (op);
       active_prints = g_list_append (active_prints, op);
       update_statusbar ();
-      
+
       /* This ref is unref:ed when we get the final state change */
       g_signal_connect (op, "status_changed",
 			G_CALLBACK (status_changed_cb), NULL);
@@ -673,13 +673,13 @@ do_print_or_preview (GtkAction *action, GtkPrintOperationAction print_action)
   print = gtk_print_operation_new ();
 
   gtk_print_operation_set_track_print_status (print, TRUE);
-  
+
   if (settings != NULL)
     gtk_print_operation_set_print_settings (print, settings);
 
   if (page_setup != NULL)
     gtk_print_operation_set_default_page_setup (print, page_setup);
-  
+
   g_signal_connect (print, "begin_print", G_CALLBACK (begin_print), print_data);
   g_signal_connect (print, "end-print", G_CALLBACK (end_print), print_data);
   g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), print_data);
@@ -738,44 +738,44 @@ static GtkActionEntry entries[] = {
   { "HelpMenu", NULL, "_Help" },               /* name, stock id, label */
   { "New", GTK_STOCK_NEW,                      /* name, stock id */
     "_New", "<control>N",                      /* label, accelerator */
-    "Create a new file",                       /* tooltip */ 
-    G_CALLBACK (do_new) },      
+    "Create a new file",                       /* tooltip */
+    G_CALLBACK (do_new) },
   { "Open", GTK_STOCK_OPEN,                    /* name, stock id */
-    "_Open","<control>O",                      /* label, accelerator */     
+    "_Open","<control>O",                      /* label, accelerator */
     "Open a file",                             /* tooltip */
-    G_CALLBACK (do_open) }, 
+    G_CALLBACK (do_open) },
   { "Save", GTK_STOCK_SAVE,                    /* name, stock id */
-    "_Save","<control>S",                      /* label, accelerator */     
+    "_Save","<control>S",                      /* label, accelerator */
     "Save current file",                       /* tooltip */
     G_CALLBACK (do_save) },
   { "SaveAs", GTK_STOCK_SAVE,                  /* name, stock id */
-    "Save _As...", NULL,                       /* label, accelerator */     
+    "Save _As...", NULL,                       /* label, accelerator */
     "Save to a file",                          /* tooltip */
     G_CALLBACK (do_save_as) },
   { "Quit", GTK_STOCK_QUIT,                    /* name, stock id */
-    "_Quit", "<control>Q",                     /* label, accelerator */     
+    "_Quit", "<control>Q",                     /* label, accelerator */
     "Quit",                                    /* tooltip */
     G_CALLBACK (do_quit) },
   { "About", NULL,                             /* name, stock id */
-    "_About", "<control>A",                    /* label, accelerator */     
-    "About",                                   /* tooltip */  
+    "_About", "<control>A",                    /* label, accelerator */
+    "About",                                   /* tooltip */
     G_CALLBACK (do_about) },
   { "PageSetup", NULL,                         /* name, stock id */
-    "Page _Setup", NULL,                       /* label, accelerator */     
+    "Page _Setup", NULL,                       /* label, accelerator */
     "Set up the page",                         /* tooltip */
     G_CALLBACK (do_page_setup) },
   { "Preview", NULL,                           /* name, stock id */
-    "Print Preview", NULL,                     /* label, accelerator */     
+    "Print Preview", NULL,                     /* label, accelerator */
     "Preview the printed document",            /* tooltip */
     G_CALLBACK (do_preview) },
   { "Print", GTK_STOCK_PRINT,                  /* name, stock id */
-     NULL, NULL,                               /* label, accelerator */     
+     NULL, NULL,                               /* label, accelerator */
     "Print the document",                      /* tooltip */
     G_CALLBACK (do_print) }
 };
 static guint n_entries = G_N_ELEMENTS (entries);
 
-static const gchar *ui_info = 
+static const gchar *ui_info =
 "<ui>"
 "  <menubar name='MenuBar'>"
 "    <menu action='FileMenu'>"
@@ -816,12 +816,12 @@ update_resize_grip (GtkWidget           *widget,
 		    GdkEventWindowState *event,
 		    GtkStatusbar        *statusbar)
 {
-  if (event->changed_mask & (GDK_WINDOW_STATE_MAXIMIZED | 
+  if (event->changed_mask & (GDK_WINDOW_STATE_MAXIMIZED |
 			     GDK_WINDOW_STATE_FULLSCREEN))
     {
       gboolean maximized;
 
-      maximized = event->new_window_state & (GDK_WINDOW_STATE_MAXIMIZED | 
+      maximized = event->new_window_state & (GDK_WINDOW_STATE_MAXIMIZED |
 					     GDK_WINDOW_STATE_FULLSCREEN);
       gtk_statusbar_set_has_resize_grip (statusbar, !maximized);
     }
@@ -838,7 +838,7 @@ create_window (void)
   GtkActionGroup *actions;
   GError *error;
   GtkWindowGroup *group;
-  
+
   main_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
   group = gtk_window_group_new ();
@@ -847,16 +847,16 @@ create_window (void)
 
   gtk_window_set_default_size (GTK_WINDOW (main_window),
 			       400, 600);
-  
+
   g_signal_connect (main_window, "delete-event",
 		    G_CALLBACK (gtk_main_quit), NULL);
-  
+
   actions = gtk_action_group_new ("Actions");
   gtk_action_group_add_actions (actions, entries, n_entries, NULL);
-  
+
   ui = gtk_ui_manager_new ();
   gtk_ui_manager_insert_action_group (ui, actions, 0);
-  gtk_window_add_accel_group (GTK_WINDOW (main_window), 
+  gtk_window_add_accel_group (GTK_WINDOW (main_window),
 			      gtk_ui_manager_get_accel_group (ui));
   gtk_container_set_border_width (GTK_CONTAINER (main_window), 0);
 
@@ -873,7 +873,7 @@ create_window (void)
   bar = gtk_ui_manager_get_widget (ui, "/MenuBar");
   gtk_widget_show (bar);
   gtk_table_attach (GTK_TABLE (table),
-		    bar, 
+		    bar,
 		    /* X direction */          /* Y direction */
 		    0, 1,                      0, 1,
 		    GTK_EXPAND | GTK_FILL,     0,
@@ -885,25 +885,25 @@ create_window (void)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
-  
+
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
 				       GTK_SHADOW_IN);
-  
+
   gtk_table_attach (GTK_TABLE (table),
 		    sw,
 		    /* X direction */       /* Y direction */
 		    0, 1,                   1, 2,
 		    GTK_EXPAND | GTK_FILL,  GTK_EXPAND | GTK_FILL,
 		    0,                      0);
-  
+
   contents = gtk_text_view_new ();
   gtk_widget_grab_focus (contents);
-      
+
   gtk_container_add (GTK_CONTAINER (sw),
 		     contents);
-  
+
   /* Create statusbar */
-  
+
   statusbar = gtk_statusbar_new ();
   gtk_table_attach (GTK_TABLE (table),
 		    statusbar,
@@ -914,27 +914,27 @@ create_window (void)
 
   /* Show text widget info in the statusbar */
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (contents));
-  
+
   g_signal_connect_object (buffer,
 			   "changed",
 			   G_CALLBACK (buffer_changed_callback),
 			   NULL,
 			   0);
-  
+
   g_signal_connect_object (buffer,
 			   "mark_set", /* cursor moved */
 			   G_CALLBACK (mark_set_callback),
 			   NULL,
 			   0);
-  
-  g_signal_connect_object (main_window, 
-			   "window_state_event", 
+
+  g_signal_connect_object (main_window,
+			   "window_state_event",
 			   G_CALLBACK (update_resize_grip),
 			   statusbar,
 			   0);
-  
+
   update_ui ();
-  
+
   gtk_widget_show_all (main_window);
 }
 
@@ -965,7 +965,7 @@ main (int argc, char **argv)
 
   if (argc == 2)
     load_file (argv[1]);
-  
+
   gtk_main ();
 
   if (!gtk_print_settings_to_file (settings, "print-settings.ini", &error)) {

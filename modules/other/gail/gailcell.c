@@ -37,29 +37,29 @@ static gint         gail_cell_get_index_in_parent (AtkObject           *obj);
 
 /* AtkAction */
 
-static void         atk_action_interface_init 
+static void         atk_action_interface_init
                                                   (AtkActionIface      *iface);
 static ActionInfo * _gail_cell_get_action_info    (GailCell            *cell,
 			                           gint                index);
-static void         _gail_cell_destroy_action_info 
+static void         _gail_cell_destroy_action_info
                                                   (gpointer            data,
 				                   gpointer            user_data);
 
-static gint         gail_cell_action_get_n_actions 
+static gint         gail_cell_action_get_n_actions
                                                   (AtkAction           *action);
 static const gchar *
                     gail_cell_action_get_name     (AtkAction           *action,
 			                           gint                index);
 static const gchar *
-                    gail_cell_action_get_description 
+                    gail_cell_action_get_description
                                                   (AtkAction           *action,
 				                   gint                index);
-static gboolean     gail_cell_action_set_description 
+static gboolean     gail_cell_action_set_description
                                                   (AtkAction           *action,
 				                   gint                index,
 				                   const gchar         *desc);
 static const gchar *
-                    gail_cell_action_get_keybinding 
+                    gail_cell_action_get_keybinding
                                                   (AtkAction           *action,
 				                   gint                index);
 static gboolean     gail_cell_action_do_action    (AtkAction           *action,
@@ -79,7 +79,7 @@ G_DEFINE_TYPE_WITH_CODE (GailCell, gail_cell, ATK_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init)
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_COMPONENT, atk_component_interface_init))
 
-static void	 
+static void
 gail_cell_class_init (GailCellClass *klass)
 {
   AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
@@ -91,7 +91,7 @@ gail_cell_class_init (GailCellClass *klass)
   class->ref_state_set = gail_cell_ref_state_set;
 }
 
-void 
+void
 gail_cell_initialise (GailCell  *cell,
                       GtkWidget *widget,
                       AtkObject *parent,
@@ -115,7 +115,7 @@ gail_cell_destroyed (GtkWidget       *widget,
                      GailCell        *cell)
 {
   /*
-   * This is the signal handler for the "destroy" signal for the 
+   * This is the signal handler for the "destroy" signal for the
    * GtkWidget. We set the  pointer location to NULL;
    */
   cell->widget = NULL;
@@ -160,7 +160,7 @@ gail_cell_object_finalize (GObject *obj)
   relation_set = atk_object_ref_relation_set (ATK_OBJECT (obj));
   if (ATK_IS_RELATION_SET (relation_set))
     {
-      relation = atk_relation_set_get_relation_by_type (relation_set, 
+      relation = atk_relation_set_get_relation_by_type (relation_set,
                                                         ATK_RELATION_NODE_CHILD_OF);
       if (relation)
         {
@@ -190,7 +190,7 @@ gail_cell_ref_state_set (AtkObject *obj)
 }
 
 gboolean
-gail_cell_add_state (GailCell     *cell, 
+gail_cell_add_state (GailCell     *cell,
                      AtkStateType state_type,
                      gboolean     emit_signal)
 {
@@ -198,7 +198,7 @@ gail_cell_add_state (GailCell     *cell,
     {
       gboolean rc;
       AtkObject *parent;
-    
+
       rc = atk_state_set_add_state (cell->state_set, state_type);
       /*
        * The signal should only be generated if the value changed,
@@ -214,9 +214,9 @@ gail_cell_add_state (GailCell     *cell,
             g_signal_emit_by_name (cell, "visible_data_changed");
         }
 
-      /* 
-       * If the parent is a flyweight container cell, propagate the state 
-       * change to it also 
+      /*
+       * If the parent is a flyweight container cell, propagate the state
+       * change to it also
        */
 
       parent = atk_object_get_parent (ATK_OBJECT (cell));
@@ -229,7 +229,7 @@ gail_cell_add_state (GailCell     *cell,
 }
 
 gboolean
-gail_cell_remove_state (GailCell     *cell, 
+gail_cell_remove_state (GailCell     *cell,
                         AtkStateType state_type,
                         gboolean     emit_signal)
 {
@@ -255,9 +255,9 @@ gail_cell_remove_state (GailCell     *cell,
             g_signal_emit_by_name (cell, "visible_data_changed");
         }
 
-      /* 
-       * If the parent is a flyweight container cell, propagate the state 
-       * change to it also 
+      /*
+       * If the parent is a flyweight container cell, propagate the state
+       * change to it also
        */
 
       if (GAIL_IS_CONTAINER_CELL (parent))
@@ -355,9 +355,9 @@ gail_cell_remove_action_by_name (GailCell    *cell,
 {
   GList *list_node;
   gboolean action_found= FALSE;
-  
+
   g_return_val_if_fail (GAIL_IS_CELL (cell), FALSE);
-  for (list_node = cell->action_list; list_node && !action_found; 
+  for (list_node = cell->action_list; list_node && !action_found;
                     list_node = list_node->next)
     {
       if (!strcmp (((ActionInfo *)(list_node->data))->name, action_name))
@@ -390,7 +390,7 @@ _gail_cell_get_action_info (GailCell *cell,
 
 
 static void
-_gail_cell_destroy_action_info (gpointer action_info, 
+_gail_cell_destroy_action_info (gpointer action_info,
                                 gpointer user_data)
 {
   ActionInfo *info = (ActionInfo *)action_info;
@@ -496,7 +496,7 @@ atk_component_interface_init (AtkComponentIface *iface)
   iface->grab_focus = gail_cell_grab_focus;
 }
 
-static void 
+static void
 gail_cell_get_extents (AtkComponent *component,
                        gint         *x,
                        gint         *y,
@@ -513,11 +513,11 @@ gail_cell_get_extents (AtkComponent *component,
 
   cell_parent = gtk_widget_get_accessible (gailcell->widget);
 
-  gail_cell_parent_get_cell_extents (GAIL_CELL_PARENT (cell_parent), 
+  gail_cell_parent_get_cell_extents (GAIL_CELL_PARENT (cell_parent),
                                    gailcell, x, y, width, height, coord_type);
 }
 
-static gboolean 
+static gboolean
 gail_cell_grab_focus (AtkComponent *component)
 {
   GailCell *gailcell;
@@ -529,6 +529,6 @@ gail_cell_grab_focus (AtkComponent *component)
 
   cell_parent = gtk_widget_get_accessible (gailcell->widget);
 
-  return gail_cell_parent_grab_focus (GAIL_CELL_PARENT (cell_parent), 
+  return gail_cell_parent_grab_focus (GAIL_CELL_PARENT (cell_parent),
                                       gailcell);
 }

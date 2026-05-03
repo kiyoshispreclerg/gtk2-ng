@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GTK_DISABLE_DEPRECATED
@@ -200,8 +200,8 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_cursor),
 		    _gtk_marshal_VOID__INT_INT,
-		    GTK_TYPE_NONE, 2, 
-		    GTK_TYPE_INT, 
+		    GTK_TYPE_NONE, 2,
+		    GTK_TYPE_INT,
 		    GTK_TYPE_INT);
 
   editable_signals[MOVE_WORD] =
@@ -210,7 +210,7 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_word),
 		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_NONE, 1,
 		    GTK_TYPE_INT);
 
   editable_signals[MOVE_PAGE] =
@@ -219,8 +219,8 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_page),
 		    _gtk_marshal_VOID__INT_INT,
-		    GTK_TYPE_NONE, 2, 
-		    GTK_TYPE_INT, 
+		    GTK_TYPE_NONE, 2,
+		    GTK_TYPE_INT,
 		    GTK_TYPE_INT);
 
   editable_signals[MOVE_TO_ROW] =
@@ -229,7 +229,7 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_to_row),
 		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_NONE, 1,
 		    GTK_TYPE_INT);
 
   editable_signals[MOVE_TO_COLUMN] =
@@ -238,7 +238,7 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_to_column),
 		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_NONE, 1,
 		    GTK_TYPE_INT);
 
   editable_signals[KILL_CHAR] =
@@ -247,7 +247,7 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, kill_char),
 		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_NONE, 1,
 		    GTK_TYPE_INT);
 
   editable_signals[KILL_WORD] =
@@ -256,7 +256,7 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, kill_word),
 		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_NONE, 1,
 		    GTK_TYPE_INT);
 
   editable_signals[KILL_LINE] =
@@ -265,7 +265,7 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, kill_line),
 		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_NONE, 1,
 		    GTK_TYPE_INT);
 
   editable_signals[CUT_CLIPBOARD] =
@@ -358,7 +358,7 @@ gtk_old_editable_init (GtkOldEditable *old_editable)
   static const GtkTargetEntry targets[] = {
     { "UTF8_STRING", 0, 0 },
     { "STRING", 0, 0 },
-    { "TEXT",   0, 0 }, 
+    { "TEXT",   0, 0 },
     { "COMPOUND_TEXT", 0, 0 }
   };
 
@@ -401,11 +401,11 @@ gtk_old_editable_insert_text (GtkEditable *editable,
 
   text[new_text_length] = '\0';
   strncpy (text, new_text, new_text_length);
-  
+
   g_signal_emit_by_name (editable, "insert-text", text, new_text_length,
 			 position);
   g_signal_emit_by_name (editable, "changed");
-  
+
   if (new_text_length > 63)
     g_free (text);
 
@@ -427,7 +427,7 @@ gtk_old_editable_delete_text (GtkEditable *editable,
   if (old_editable->selection_start_pos == old_editable->selection_end_pos &&
       old_editable->has_selection)
     gtk_old_editable_claim_selection (old_editable, FALSE, GDK_CURRENT_TIME);
-  
+
   g_object_unref (old_editable);
 }
 
@@ -440,7 +440,7 @@ gtk_old_editable_update_text (GtkOldEditable *old_editable,
   klass->update_text (GTK_OLD_EDITABLE (old_editable), start_pos, end_pos);
 }
 
-static gchar *    
+static gchar *
 gtk_old_editable_get_chars  (GtkEditable      *editable,
 			     gint              start,
 			     gint              end)
@@ -453,7 +453,7 @@ gtk_old_editable_get_chars  (GtkEditable      *editable,
  * Like gtk_editable_get_chars, but if the editable is not
  * visible, return asterisks; also convert result to UTF-8.
  */
-static void *    
+static void *
 gtk_old_editable_get_public_chars (GtkOldEditable   *old_editable,
 				   gint              start,
 				   gint              end)
@@ -472,7 +472,7 @@ gtk_old_editable_get_public_chars (GtkOldEditable   *old_editable,
 	  str = g_convert (tmp, -1,
 			   "UTF-8", charset,
 			   NULL, NULL, &error);
-	  
+
 	  if (!str)
 	    {
 	      g_warning ("Cannot convert text from charset to UTF-8 %s: %s", charset, error->message);
@@ -488,7 +488,7 @@ gtk_old_editable_get_public_chars (GtkOldEditable   *old_editable,
     {
       gint i;
       gint nchars = end - start;
-       
+
       if (nchars < 0)
 	nchars = -nchars;
 
@@ -530,19 +530,19 @@ gtk_old_editable_selection_clear (GtkWidget         *widget,
 				  GdkEventSelection *event)
 {
   GtkOldEditable *old_editable = GTK_OLD_EDITABLE (widget);
-  
+
   /* Let the selection handling code know that the selection
    * has been changed, since we've overriden the default handler */
   if (!GTK_WIDGET_CLASS (gtk_old_editable_parent_class)->selection_clear_event (widget, event))
     return FALSE;
-  
+
   if (old_editable->has_selection)
     {
       old_editable->has_selection = FALSE;
       gtk_old_editable_update_text (old_editable, old_editable->selection_start_pos,
 				    old_editable->selection_end_pos);
     }
-  
+
   return TRUE;
 }
 
@@ -561,8 +561,8 @@ gtk_old_editable_selection_get (GtkWidget        *widget,
   selection_start_pos = MIN (old_editable->selection_start_pos, old_editable->selection_end_pos);
   selection_end_pos = MAX (old_editable->selection_start_pos, old_editable->selection_end_pos);
 
-  str = gtk_old_editable_get_public_chars (old_editable, 
-					   selection_start_pos, 
+  str = gtk_old_editable_get_public_chars (old_editable,
+					   selection_start_pos,
 					   selection_end_pos);
 
   if (str)
@@ -584,7 +584,7 @@ gtk_old_editable_paste_received (GtkOldEditable *old_editable,
   if (text)
     {
       GError *error = NULL;
-      
+
       need_conversion = !g_get_charset (&charset);
 
       if (need_conversion)
@@ -609,14 +609,14 @@ gtk_old_editable_paste_received (GtkOldEditable *old_editable,
       gboolean reselect;
       gint old_pos;
       gint tmp_pos;
-  
+
       reselect = FALSE;
 
-      if ((old_editable->selection_start_pos != old_editable->selection_end_pos) && 
+      if ((old_editable->selection_start_pos != old_editable->selection_end_pos) &&
 	  (!old_editable->has_selection || is_clipboard))
 	{
 	  reselect = TRUE;
-	  
+
 	  /* Don't want to call gtk_editable_delete_selection here if we are going
 	   * to reclaim the selection to avoid extra server traffic */
 	  if (old_editable->has_selection)
@@ -628,9 +628,9 @@ gtk_old_editable_paste_received (GtkOldEditable *old_editable,
 	  else
 	    gtk_editable_delete_selection (GTK_EDITABLE (old_editable));
 	}
-      
+
       tmp_pos = old_pos = old_editable->current_pos;
-      
+
       gtk_editable_insert_text (GTK_EDITABLE (old_editable), str, -1, &tmp_pos);
 
       if (reselect)
@@ -696,24 +696,24 @@ old_editable_text_received_cb (GtkClipboard *clipboard,
  * @claim: if %TRUE, claim ownership of the selection, if %FALSE, give
  *   up ownership
  * @time_: timestamp for this operation
- * 
+ *
  * Claims or gives up ownership of the selection.
  */
 void
-gtk_old_editable_claim_selection (GtkOldEditable *old_editable, 
-				  gboolean        claim, 
+gtk_old_editable_claim_selection (GtkOldEditable *old_editable,
+				  gboolean        claim,
 				  guint32         time)
 {
   GtkWidget  *widget;
   GdkDisplay *display;
-  
+
   g_return_if_fail (GTK_IS_OLD_EDITABLE (old_editable));
   widget = GTK_WIDGET (old_editable);
   g_return_if_fail (gtk_widget_get_realized (widget));
 
   display = gtk_widget_get_display (widget);
   old_editable->has_selection = FALSE;
-  
+
   if (claim)
     {
       if (gtk_selection_owner_set_for_display (display, widget,
@@ -735,10 +735,10 @@ gtk_old_editable_set_selection_bounds (GtkEditable *editable,
 				       gint         end)
 {
   GtkOldEditable *old_editable = GTK_OLD_EDITABLE (editable);
-  
+
   if (gtk_widget_get_realized (GTK_WIDGET (editable)))
     gtk_old_editable_claim_selection (old_editable, start != end, GDK_CURRENT_TIME);
-  
+
   gtk_old_editable_set_selection (old_editable, start, end);
 }
 
@@ -778,7 +778,7 @@ gtk_old_editable_real_cut_clipboard (GtkOldEditable *old_editable)
 static void
 gtk_old_editable_real_copy_clipboard (GtkOldEditable *old_editable)
 {
-  gint selection_start_pos; 
+  gint selection_start_pos;
   gint selection_end_pos;
 
   selection_start_pos = MIN (old_editable->selection_start_pos, old_editable->selection_end_pos);
@@ -794,7 +794,7 @@ gtk_old_editable_real_copy_clipboard (GtkOldEditable *old_editable)
 	{
 	  GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (old_editable),
 							      GDK_SELECTION_CLIPBOARD);
-	  
+
 	  gtk_clipboard_set_text (clipboard, text, -1);
 	  g_free (text);
 	}
@@ -804,7 +804,7 @@ gtk_old_editable_real_copy_clipboard (GtkOldEditable *old_editable)
 static void
 gtk_old_editable_real_paste_clipboard (GtkOldEditable *old_editable)
 {
-  GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (old_editable), 
+  GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (old_editable),
 						      GDK_SELECTION_CLIPBOARD);
 
   g_object_ref (G_OBJECT (old_editable));
@@ -821,7 +821,7 @@ void
 gtk_old_editable_changed (GtkOldEditable *old_editable)
 {
   g_return_if_fail (GTK_IS_OLD_EDITABLE (old_editable));
-  
+
   g_signal_emit_by_name (old_editable, "changed");
 }
 

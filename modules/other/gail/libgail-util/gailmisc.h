@@ -54,7 +54,7 @@ void             gail_misc_get_extents_from_pango_rectangle
 
 gint             gail_misc_get_index_at_point_in_layout
                                                   (GtkWidget         *widget,
-                                                   PangoLayout       *layout, 
+                                                   PangoLayout       *layout,
                                                    gint              x_layout,
                                                    gint              y_layout,
                                                    gint              x,

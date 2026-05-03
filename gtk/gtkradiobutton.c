@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -192,7 +192,7 @@ gtk_radio_button_set_group (GtkRadioButton *radio_button,
 {
   GtkWidget *old_group_singleton = NULL;
   GtkWidget *new_group_singleton = NULL;
-  
+
   g_return_if_fail (GTK_IS_RADIO_BUTTON (radio_button));
   g_return_if_fail (!g_slist_find (group, radio_button));
 
@@ -201,41 +201,41 @@ gtk_radio_button_set_group (GtkRadioButton *radio_button,
       GSList *slist;
 
       radio_button->group = g_slist_remove (radio_button->group, radio_button);
-      
+
       if (radio_button->group && !radio_button->group->next)
 	old_group_singleton = g_object_ref (radio_button->group->data);
-	  
+
       for (slist = radio_button->group; slist; slist = slist->next)
 	{
 	  GtkRadioButton *tmp_button;
-	  
+
 	  tmp_button = slist->data;
-	  
+
 	  tmp_button->group = radio_button->group;
 	}
     }
-  
+
   if (group && !group->next)
     new_group_singleton = g_object_ref (group->data);
-  
+
   radio_button->group = g_slist_prepend (group, radio_button);
-  
+
   if (group)
     {
       GSList *slist;
-      
+
       for (slist = group; slist; slist = slist->next)
 	{
 	  GtkRadioButton *tmp_button;
-	  
+
 	  tmp_button = slist->data;
-	  
+
 	  tmp_button->group = radio_button->group;
 	}
     }
 
   g_object_ref (radio_button);
-  
+
   g_object_notify (G_OBJECT (radio_button), "group");
   g_signal_emit (radio_button, group_changed_signal, 0);
   if (old_group_singleton)
@@ -307,9 +307,9 @@ gtk_radio_button_new_with_label (GSList      *group,
  * @label: the text of the button, with an underscore in front of the
  *         mnemonic character
  *
- * Creates a new #GtkRadioButton containing a label, adding it to the same 
- * group as @group. The label will be created using 
- * gtk_label_new_with_mnemonic(), so underscores in @label indicate the 
+ * Creates a new #GtkRadioButton containing a label, adding it to the same
+ * group as @group. The label will be created using
+ * gtk_label_new_with_mnemonic(), so underscores in @label indicate the
  * mnemonic for the button.
  *
  * Returns: a new #GtkRadioButton
@@ -320,9 +320,9 @@ gtk_radio_button_new_with_mnemonic (GSList      *group,
 {
   GtkWidget *radio_button;
 
-  radio_button = g_object_new (GTK_TYPE_RADIO_BUTTON, 
-			       "label", label, 
-			       "use-underline", TRUE, 
+  radio_button = g_object_new (GTK_TYPE_RADIO_BUTTON,
+			       "label", label,
+			       "use-underline", TRUE,
 			       NULL);
 
   if (group)
@@ -421,11 +421,11 @@ gtk_radio_button_destroy (GtkObject *object)
   GtkRadioButton *tmp_button;
   GSList *tmp_list;
   gboolean was_in_group;
-  
+
   radio_button = GTK_RADIO_BUTTON (object);
 
   was_in_group = radio_button->group && radio_button->group->next;
-  
+
   radio_button->group = g_slist_remove (radio_button->group, radio_button);
   if (radio_button->group && !radio_button->group->next)
     old_group_singleton = radio_button->group->data;
@@ -459,7 +459,7 @@ get_coordinates (GtkWidget    *widget,
 {
   *x = widget->allocation.x + widget->allocation.width / 2;
   *y = widget->allocation.y + widget->allocation.height / 2;
-  
+
   gtk_widget_translate_coordinates (widget, reference, *x, *y, x, y);
 }
 
@@ -485,10 +485,10 @@ up_down_compare (gconstpointer a,
 		 gpointer      data)
 {
   gint x1, y1, x2, y2;
-  
+
   get_coordinates ((GtkWidget *)a, data, &x1, &y1);
   get_coordinates ((GtkWidget *)b, data, &x2, &y2);
-  
+
   if (x1 == x2)
     return (y1 < y2) ? -1 : ((y1 == y2) ? 0 : 1);
   else
@@ -507,7 +507,7 @@ gtk_radio_button_focus (GtkWidget         *widget,
    */
   if (!GTK_TOGGLE_BUTTON (widget)->draw_indicator)
     return GTK_WIDGET_CLASS (gtk_radio_button_parent_class)->focus (widget, direction);
-  
+
   if (gtk_widget_is_focus (widget))
     {
       GtkSettings *settings = gtk_widget_get_settings (widget);
@@ -544,11 +544,11 @@ gtk_radio_button_focus (GtkWidget         *widget,
       if (tmp_list)
 	{
 	  tmp_list = tmp_list->next;
-	  
+
 	  while (tmp_list)
 	    {
 	      GtkWidget *child = tmp_list->data;
-	      
+
 	      if (gtk_widget_get_mapped (child) && gtk_widget_is_sensitive (child))
 		{
 		  new_focus = child;
@@ -584,17 +584,17 @@ gtk_radio_button_focus (GtkWidget         *widget,
 	  while (tmp_list)
 	    {
 	      GtkWidget *child = tmp_list->data;
-	      
+
 	      if (gtk_widget_get_mapped (child) && gtk_widget_is_sensitive (child))
 		{
 		  new_focus = child;
 		  break;
 		}
-	      
+
 	      tmp_list = tmp_list->next;
 	    }
 	}
-      
+
       g_slist_free (focus_list);
 
       if (new_focus)
@@ -610,12 +610,12 @@ gtk_radio_button_focus (GtkWidget         *widget,
   else
     {
       GtkRadioButton *selected_button = NULL;
-      
+
       /* We accept the focus if, we don't have the focus and
        *  - we are the currently active button in the group
        *  - there is no currently active radio button.
        */
-      
+
       tmp_slist = radio_button->group;
       while (tmp_slist)
 	{
@@ -623,7 +623,7 @@ gtk_radio_button_focus (GtkWidget         *widget,
 	    selected_button = tmp_slist->data;
 	  tmp_slist = tmp_slist->next;
 	}
-      
+
       if (selected_button && selected_button != radio_button)
 	return FALSE;
 
@@ -680,7 +680,7 @@ gtk_radio_button_clicked (GtkButton *button)
     {
       toggled = TRUE;
       toggle_button->active = !toggle_button->active;
-      
+
       tmp_list = radio_button->group;
       while (tmp_list)
 	{
@@ -757,7 +757,7 @@ gtk_radio_button_draw_indicator (GtkCheckButton *check_button,
 
       child = GTK_BIN (check_button)->child;
       if (!interior_focus || !(child && gtk_widget_get_visible (child)))
-	x += focus_width + focus_pad;      
+	x += focus_width + focus_pad;
 
       if (toggle_button->inconsistent)
 	shadow_type = GTK_SHADOW_ETCHED_IN;
@@ -782,16 +782,16 @@ gtk_radio_button_draw_indicator (GtkCheckButton *check_button,
 	{
 	  GdkRectangle restrict_area;
 	  GdkRectangle new_area;
-	      
+
 	  restrict_area.x = widget->allocation.x + GTK_CONTAINER (widget)->border_width;
 	  restrict_area.y = widget->allocation.y + GTK_CONTAINER (widget)->border_width;
 	  restrict_area.width = widget->allocation.width - (2 * GTK_CONTAINER (widget)->border_width);
 	  restrict_area.height = widget->allocation.height - (2 * GTK_CONTAINER (widget)->border_width);
-	  
+
 	  if (gdk_rectangle_intersect (area, &restrict_area, &new_area))
 	    {
 	      gtk_paint_flat_box (widget->style, widget->window, GTK_STATE_PRELIGHT,
-				  GTK_SHADOW_ETCHED_OUT, 
+				  GTK_SHADOW_ETCHED_OUT,
 				  area, widget, "checkbutton",
 				  new_area.x, new_area.y,
 				  new_area.width, new_area.height);

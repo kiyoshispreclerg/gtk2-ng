@@ -1,7 +1,7 @@
 ## Makefile for building the gtk DLL with Microsoft C
 ## Use: nmake -f makefile.msc
 
-## There is no install target, you have to decide where and 
+## There is no install target, you have to decide where and
 ## how to install for yourself.
 
 TOP = ..\..
@@ -624,7 +624,7 @@ gtk-recent.lib : $(gtk_OBJECTS_recent)
 gtk-text.lib : $(gtk_OBJECTS_text)
 	lib /out:gtk-text.lib $(gtk_OBJECTS_text)
 
-gtk-core.lib : $(gtk_OBJECTS) 
+gtk-core.lib : $(gtk_OBJECTS)
 	lib /out:gtk-core.lib $(gtk_OBJECTS)
 
 gtk_SUBLIBS = \

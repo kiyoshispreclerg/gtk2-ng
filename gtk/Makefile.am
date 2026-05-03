@@ -853,7 +853,7 @@ stamp-gtkmarshalers.h: @REBUILD@ gtkmarshalers.list
 	$(GLIB_GENMARSHAL) --prefix=_gtk_marshal $(srcdir)/gtkmarshalers.list --header >> xgen-gmlh \
 	&& (cmp -s xgen-gmlh gtkmarshalers.h || cp xgen-gmlh gtkmarshalers.h) \
 	&& rm -f xgen-gmlh \
-	&& echo timestamp > $(@F)	
+	&& echo timestamp > $(@F)
 gtkmarshalers.c: @REBUILD@ gtkmarshalers.list
 	(echo "#include \"gtkmarshalers.h\""; \
 	 echo "#include \"gtkalias.h\""; \
@@ -937,7 +937,7 @@ libgtk_target_ldflags = $(gtk_win32_res_ldflag) $(gtk_win32_symbols)
 endif
 EXTRA_LTLIBRARIES = libgtk-x11-2.0.la libgtk-win32-2.0.la libgtk-quartz-2.0.la libgtk-directfb-2.0.la
 
-install-exec-hook: 
+install-exec-hook:
 if DISABLE_EXPLICIT_DEPS
 	$(SHELL) $(top_srcdir)/sanitize-la.sh $(DESTDIR)$(libdir)/$(gtktargetlib)
 endif

@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -45,7 +45,7 @@ gdk_rectangle_union (const GdkRectangle *src1,
 		     GdkRectangle       *dest)
 {
   gint dest_x, dest_y;
-  
+
   g_return_if_fail (src1 != NULL);
   g_return_if_fail (src2 != NULL);
   g_return_if_fail (dest != NULL);
@@ -66,8 +66,8 @@ gdk_rectangle_union (const GdkRectangle *src1,
  * intersection of @src1 and @src2, or %NULL
  *
  * Calculates the intersection of two rectangles. It is allowed for
- * @dest to be the same as either @src1 or @src2. If the rectangles 
- * do not intersect, @dest's width and height is set to 0 and its x 
+ * @dest to be the same as either @src1 or @src2. If the rectangles
+ * do not intersect, @dest's width and height is set to 0 and its x
  * and y values are undefined. If you are only interested in whether
  * the rectangles intersect, but not in the intersecting area itself,
  * pass %NULL for @dest.
@@ -126,7 +126,7 @@ GType
 gdk_rectangle_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (g_intern_static_string ("GdkRectangle"),
 					     (GBoxedCopyFunc)gdk_rectangle_copy,

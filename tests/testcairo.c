@@ -60,7 +60,7 @@ fill_checks (cairo_t *cr,
              int width, int height)
 {
   int i, j;
-  
+
 #define CHECK_SIZE 32
 
   cairo_rectangle (cr, x, y, width, height);
@@ -69,7 +69,7 @@ fill_checks (cairo_t *cr,
 
   /* Only works for CHECK_SIZE a power of 2 */
   j = x & (-CHECK_SIZE);
-  
+
   for (; j < height; j += CHECK_SIZE)
     {
       i = y & (-CHECK_SIZE);
@@ -92,21 +92,21 @@ draw_3circles (cairo_t *cr,
 	       double alpha)
 {
   double subradius = radius * (2 / 3. - 0.1);
-    
+
   cairo_set_source_rgba (cr, 1., 0., 0., alpha);
   oval_path (cr,
 	     xc + radius / 3. * cos (G_PI * (0.5)),
 	     yc - radius / 3. * sin (G_PI * (0.5)),
 	     subradius, subradius);
   cairo_fill (cr);
-    
+
   cairo_set_source_rgba (cr, 0., 1., 0., alpha);
   oval_path (cr,
 	     xc + radius / 3. * cos (G_PI * (0.5 + 2/.3)),
 	     yc - radius / 3. * sin (G_PI * (0.5 + 2/.3)),
 	     subradius, subradius);
   cairo_fill (cr);
-    
+
   cairo_set_source_rgba (cr, 0., 0., 1., alpha);
   oval_path (cr,
 	     xc + radius / 3. * cos (G_PI * (0.5 + 4/.3)),
@@ -145,7 +145,7 @@ draw (cairo_t *cr,
 					  width, height);
   if (circles == NULL)
     return;
-    
+
   fill_checks (cr, 0, 0, width, height);
 
   /* Draw a black circle on the overlay
@@ -171,7 +171,7 @@ draw (cairo_t *cr,
    * without seams.
    */
   circles_cr = cairo_create (circles);
-  
+
   cairo_set_operator (circles_cr, CAIRO_OPERATOR_OVER);
   draw_3circles (circles_cr, xc, yc, radius, 0.5);
   cairo_destroy (circles_cr);
@@ -214,7 +214,7 @@ main (int argc, char **argv)
   gtk_init (&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  
+
   gtk_window_set_default_size (GTK_WINDOW (window), 400, 400);
   gtk_window_set_title (GTK_WINDOW (window), "cairo: Knockout Groups");
 
@@ -227,7 +227,7 @@ main (int argc, char **argv)
 		    G_CALLBACK (gtk_main_quit), NULL);
 
   gtk_widget_show_all (window);
-  
+
   gtk_main ();
 
   return 0;

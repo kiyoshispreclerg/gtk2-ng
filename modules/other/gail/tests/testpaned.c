@@ -33,21 +33,21 @@ static void _property_change_handler (AtkObject   *obj,
     memset (value, 0, sizeof (GValue));
     atk_value_get_current_value (ATK_VALUE (obj), value);
     g_return_if_fail (G_VALUE_HOLDS_INT (value));
-    position = g_value_get_int (value); 
-    g_print ("Position is  %d previous position was %d\n", 
+    position = g_value_get_int (value);
+    g_print ("Position is  %d previous position was %d\n",
              position, last_position);
     last_position = position;
     atk_value_get_minimum_value (ATK_VALUE (obj), value);
     g_return_if_fail (G_VALUE_HOLDS_INT (value));
-    position = g_value_get_int (value); 
-    g_print ("Minimum Value is  %d\n", position); 
+    position = g_value_get_int (value);
+    g_print ("Minimum Value is  %d\n", position);
     atk_value_get_maximum_value (ATK_VALUE (obj), value);
     g_return_if_fail (G_VALUE_HOLDS_INT (value));
-    position = g_value_get_int (value); 
-    g_print ("Maximum Value is  %d\n", position); 
+    position = g_value_get_int (value);
+    g_print ("Maximum Value is  %d\n", position);
   }
 }
- 
+
 static gint _test_paned (gpointer data)
 {
   AtkObject *obj = ATK_OBJECT (data);
@@ -63,7 +63,7 @@ static gint _test_paned (gpointer data)
     memset (value, 0, sizeof (GValue));
     atk_value_get_current_value (ATK_VALUE (obj), value);
     g_return_val_if_fail (G_VALUE_HOLDS_INT (value), FALSE);
-    position = g_value_get_int (value); 
+    position = g_value_get_int (value);
     g_print ("Position is : %d\n", position);
     last_position = position;
     position *= 2;

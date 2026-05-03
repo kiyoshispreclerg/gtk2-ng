@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -49,9 +49,9 @@ gdk_keymap_class_init (GdkKeymapClass *klass)
   /**
    * GdkKeymap::direction-changed:
    * @keymap: the object on which the signal is emitted
-   * 
+   *
    * The ::direction-changed signal gets emitted when the direction of
-   * the keymap changes. 
+   * the keymap changes.
    *
    * Since: 2.0
    */
@@ -100,7 +100,7 @@ gdk_keymap_class_init (GdkKeymapClass *klass)
                   G_STRUCT_OFFSET (GdkKeymapClass, state_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 
+                  G_TYPE_NONE,
                   0);
 }
 
@@ -162,7 +162,7 @@ gdk_keyval_convert_case (guint symbol,
       else if ((symbol >= GDK_oslash) && (symbol <= GDK_thorn))
 	xupper -= (GDK_oslash - GDK_Ooblique);
       break;
-      
+
     case 1: /* Latin 2 */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
       if (symbol == GDK_Aogonek)
@@ -186,7 +186,7 @@ gdk_keyval_convert_case (guint symbol,
       else if (symbol >= GDK_racute && symbol <= GDK_tcedilla)
 	xupper -= (GDK_racute - GDK_Racute);
       break;
-      
+
     case 2: /* Latin 3 */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
       if (symbol >= GDK_Hstroke && symbol <= GDK_Hcircumflex)
@@ -202,7 +202,7 @@ gdk_keyval_convert_case (guint symbol,
       else if (symbol >= GDK_cabovedot && symbol <= GDK_scircumflex)
 	xupper -= (GDK_cabovedot - GDK_Cabovedot);
       break;
-      
+
     case 3: /* Latin 4 */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
       if (symbol >= GDK_Rcedilla && symbol <= GDK_Tslash)
@@ -218,7 +218,7 @@ gdk_keyval_convert_case (guint symbol,
       else if (symbol >= GDK_amacron && symbol <= GDK_umacron)
 	xupper -= (GDK_amacron - GDK_Amacron);
       break;
-      
+
     case 6: /* Cyrillic */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
       if (symbol >= GDK_Serbian_DJE && symbol <= GDK_Serbian_DZE)
@@ -230,7 +230,7 @@ gdk_keyval_convert_case (guint symbol,
       else if (symbol >= GDK_Cyrillic_yu && symbol <= GDK_Cyrillic_hardsign)
 	xupper += (GDK_Cyrillic_YU - GDK_Cyrillic_yu);
       break;
-      
+
     case 7: /* Greek */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
       if (symbol >= GDK_Greek_ALPHAaccent && symbol <= GDK_Greek_OMEGAaccent)
@@ -258,7 +258,7 @@ guint
 gdk_keyval_to_upper (guint keyval)
 {
   guint result;
-  
+
   gdk_keyval_convert_case (keyval, NULL, &result);
 
   return result;
@@ -268,7 +268,7 @@ guint
 gdk_keyval_to_lower (guint keyval)
 {
   guint result;
-  
+
   gdk_keyval_convert_case (keyval, &result, NULL);
 
   return result;
@@ -280,7 +280,7 @@ gdk_keyval_is_upper (guint keyval)
   if (keyval)
     {
       guint upper_val = 0;
-      
+
       gdk_keyval_convert_case (keyval, NULL, &upper_val);
       return upper_val == keyval;
     }
@@ -293,14 +293,14 @@ gdk_keyval_is_lower (guint keyval)
   if (keyval)
     {
       guint lower_val = 0;
-      
+
       gdk_keyval_convert_case (keyval, &lower_val, NULL);
       return lower_val == keyval;
     }
   return FALSE;
 }
 
-/** 
+/**
  * gdk_keymap_get_default:
  * @returns: the #GdkKeymap attached to the default display.
  *

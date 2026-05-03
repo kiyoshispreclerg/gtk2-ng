@@ -159,7 +159,7 @@ GType gdk_rectangle_get_type (void) G_GNUC_CONST;
 
 #define GDK_TYPE_RECTANGLE (gdk_rectangle_get_type ())
 
-/* Conversion functions between wide char and multibyte strings. 
+/* Conversion functions between wide char and multibyte strings.
  */
 #ifndef GDK_DISABLE_DEPRECATED
 gchar     *gdk_wcstombs          (const GdkWChar   *src);

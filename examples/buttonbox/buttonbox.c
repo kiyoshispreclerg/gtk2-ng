@@ -115,6 +115,6 @@ int main( int   argc,
 
   /* Enter the event loop */
   gtk_main ();
-    
+
   return 0;
 }

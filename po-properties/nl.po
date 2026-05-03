@@ -5278,7 +5278,7 @@ msgstr ""
 "Maximale tijd tussen twee keer klikken zodat het nog beschouwd kan worden "
 "als een dubbelklik (in milliseconden)"
 
-# itt dubbelkliktijd 
+# itt dubbelkliktijd
 #: gtk/gtksettings.c:232
 msgid "Double Click Distance"
 msgstr "Dubbelklik-afstand"

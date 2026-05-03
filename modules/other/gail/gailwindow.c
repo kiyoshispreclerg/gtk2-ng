@@ -274,7 +274,7 @@ gail_window_get_name (AtkObject *accessible)
       /*
        * Get the window title if it exists
        */
-      GtkWidget* widget = GTK_ACCESSIBLE (accessible)->widget; 
+      GtkWidget* widget = GTK_ACCESSIBLE (accessible)->widget;
 
       if (widget == NULL)
         /*
@@ -287,7 +287,7 @@ gail_window_get_name (AtkObject *accessible)
       if (GTK_IS_WINDOW (widget))
         {
           GtkWindow *window = GTK_WINDOW (widget);
- 
+
           name = gtk_window_get_title (window);
           if (name == NULL &&
               accessible->role == ATK_ROLE_TOOL_TIP)
@@ -301,22 +301,22 @@ gail_window_get_name (AtkObject *accessible)
               if (GTK_IS_ALIGNMENT(child))
                 {
                   child = gtk_bin_get_child (GTK_BIN (child));
-                  if (GTK_IS_BOX(child)) 
+                  if (GTK_IS_BOX(child))
                     {
                       GList *children;
                       guint count;
                       children = gtk_container_get_children (GTK_CONTAINER (child));
                       count = g_list_length (children);
-                      if (count == 2) 
+                      if (count == 2)
                         {
                           child = (GtkWidget *) g_list_nth_data (children, 1);
                         }
-                      g_list_free (children);                
+                      g_list_free (children);
                     }
                 }
 
-              if (!GTK_IS_LABEL (child)) 
-              { 
+              if (!GTK_IS_LABEL (child))
+              {
                   g_message ("ATK_ROLE_TOOLTIP object found, but doesn't look like a tooltip.");
                   return NULL;
               }
@@ -340,7 +340,7 @@ gail_window_get_parent (AtkObject *accessible)
 static gint
 gail_window_get_index_in_parent (AtkObject *accessible)
 {
-  GtkWidget* widget = GTK_ACCESSIBLE (accessible)->widget; 
+  GtkWidget* widget = GTK_ACCESSIBLE (accessible)->widget;
   AtkObject* atk_obj = atk_get_root ();
   gint index = -1;
 
@@ -440,7 +440,7 @@ gail_window_ref_state_set (AtkObject *accessible)
 
   state_set = ATK_OBJECT_CLASS (gail_window_parent_class)->ref_state_set (accessible);
   widget = GTK_ACCESSIBLE (accessible)->widget;
- 
+
   if (widget == NULL)
     return state_set;
 
@@ -454,13 +454,13 @@ gail_window_ref_state_set (AtkObject *accessible)
       state = gdk_window_get_state (widget->window);
       if (state & GDK_WINDOW_STATE_ICONIFIED)
         atk_state_set_add_state (state_set, ATK_STATE_ICONIFIED);
-    } 
+    }
   if (gtk_window_get_modal (window))
     atk_state_set_add_state (state_set, ATK_STATE_MODAL);
 
   if (gtk_window_get_resizable (window))
     atk_state_set_add_state (state_set, ATK_STATE_RESIZABLE);
- 
+
   return state_set;
 }
 
@@ -514,7 +514,7 @@ gail_window_real_notify_gtk (GObject		*obj,
         {
           g_free (window->previous_name);
           window->previous_name = g_strdup (name);
-       
+
           if (window->name_change_handler == 0)
             window->name_change_handler = gdk_threads_add_idle (idle_notify_name_change, atk_obj);
         }
@@ -551,7 +551,7 @@ gail_window_get_extents (AtkComponent  *component,
                          gint          *height,
                          AtkCoordType  coord_type)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget; 
+  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
   GdkRectangle rect;
   gint x_toplevel, y_toplevel;
 
@@ -597,7 +597,7 @@ gail_window_get_size (AtkComponent *component,
                       gint         *width,
                       gint         *height)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget; 
+  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
   GdkRectangle rect;
 
   if (widget == NULL)
@@ -918,12 +918,12 @@ init_gail_screen (GdkScreen *screen,
 
   XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
 			GDK_WINDOW_XWINDOW (gail_screens [screen_n].root_window),
-			&attrs); 
+			&attrs);
 
   XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
 		GDK_WINDOW_XWINDOW (gail_screens [screen_n].root_window),
 		attrs.your_event_mask | PropertyChangeMask);
-           
+
   gail_screens [screen_n].screen_initialized = TRUE;
 }
 

@@ -60,7 +60,7 @@ typedef void (*GtkMenuDetachFunc)   (GtkWidget *attach_widget,
 struct _GtkMenu
 {
   GtkMenuShell GSEAL (menu_shell);
-  
+
   GtkWidget *GSEAL (parent_menu_item);
   GtkWidget *GSEAL (old_active_menu_item);
 
@@ -75,7 +75,7 @@ struct _GtkMenu
    * before operating on these widgets
    */
   GtkWidget *GSEAL (toplevel);
-  
+
   GtkWidget *GSEAL (tearoff_window);
   GtkWidget *GSEAL (tearoff_hbox);
   GtkWidget *GSEAL (tearoff_scrollbar);
@@ -88,7 +88,7 @@ struct _GtkMenu
   gint GSEAL (saved_scroll_offset);
   gint GSEAL (scroll_step);
   guint GSEAL (timeout_id);
-  
+
   /* When a submenu of this menu is popped up, motion in this
    * region is ignored
    */
@@ -201,7 +201,7 @@ void       gtk_menu_attach                (GtkMenu             *menu,
 void       gtk_menu_set_monitor           (GtkMenu             *menu,
                                            gint                 monitor_num);
 gint       gtk_menu_get_monitor           (GtkMenu             *menu);
-GList*     gtk_menu_get_for_attach_widget (GtkWidget           *widget); 
+GList*     gtk_menu_get_for_attach_widget (GtkWidget           *widget);
 
 #ifndef GTK_DISABLE_DEPRECATED
 #define gtk_menu_append(menu,child)	gtk_menu_shell_append  ((GtkMenuShell *)(menu),(child))

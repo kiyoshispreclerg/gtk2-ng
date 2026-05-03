@@ -39,7 +39,7 @@
 
 /* For GTK 2, we include compatibility defines by default. */
 #ifndef __G_IR_SCANNER__
-#include <gdk/gdkkeysyms-compat.h> 
+#include <gdk/gdkkeysyms-compat.h>
 #endif
 
 #define GDK_KEY_VoidSymbol 0xffffff

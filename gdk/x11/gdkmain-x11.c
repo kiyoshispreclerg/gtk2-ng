@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -68,7 +68,7 @@ struct _GdkErrorTrap
   gint error_code;
 };
 
-/* 
+/*
  * Private function declarations
  */
 
@@ -79,7 +79,7 @@ static void	 gdkx_XConvertCase	(KeySym	       symbol,
 #define XConvertCase gdkx_XConvertCase
 #endif
 
-static int	    gdk_x_error			 (Display     *display, 
+static int	    gdk_x_error			 (Display     *display,
 						  XErrorEvent *error);
 static int	    gdk_x_io_error		 (Display     *display);
 
@@ -89,7 +89,7 @@ static GSList *gdk_error_traps = NULL;               /* List of error traps */
 static GSList *gdk_error_trap_free_list = NULL;      /* Free list */
 
 const GOptionEntry _gdk_windowing_args[] = {
-  { "sync", 0, 0, G_OPTION_ARG_NONE, &_gdk_synchronize, 
+  { "sync", 0, 0, G_OPTION_ARG_NONE, &_gdk_synchronize,
     /* Description of --sync in --help output */ N_("Make X calls synchronous"), NULL },
   { NULL }
 };
@@ -98,7 +98,7 @@ void
 _gdk_windowing_init (void)
 {
   _gdk_x11_initialize_locale ();
-  
+
   XSetErrorHandler (gdk_x_error);
   XSetIOErrorHandler (gdk_x_io_error);
 
@@ -293,7 +293,7 @@ gdk_keyboard_grab (GdkWindow *	   window,
 				    owner_events,
 				    GrabModeAsync, GrabModeAsync,
 				    time);
-	if (G_UNLIKELY (!display_x11->trusted_client && 
+	if (G_UNLIKELY (!display_x11->trusted_client &&
 			return_val == AlreadyGrabbed))
 	  /* we can't grab the keyboard, but we can do a GTK-local grab */
 	  return_val = GrabSuccess;
@@ -315,7 +315,7 @@ gdk_keyboard_grab (GdkWindow *	   window,
  * @window: a #GdkWindow
  * @serial: serial from Unmap event (or from NextRequest(display)
  *   if the unmap is being done by this client.)
- * 
+ *
  * Checks to see if an unmap request or event causes the current
  * grab window to become not viewable, and if so, clear the
  * the pointer we keep to it.
@@ -345,7 +345,7 @@ _gdk_xgrab_check_unmap (GdkWindow *window,
 /**
  * _gdk_xgrab_check_destroy:
  * @window: a #GdkWindow
- * 
+ *
  * Checks to see if window is the current grab window, and if
  * so, clear the current grab window.
  **/
@@ -368,7 +368,7 @@ _gdk_xgrab_check_destroy (GdkWindow *window)
       grab->serial_end = grab->serial_start;
       grab->implicit_ungrab = TRUE;
     }
-  
+
   if (window == display->keyboard_grab.native_window &&
       display->keyboard_grab.window != NULL)
     _gdk_display_unset_has_keyboard_grab (display, TRUE);
@@ -421,11 +421,11 @@ void
 _gdk_windowing_exit (void)
 {
   GSList *tmp_list = _gdk_displays;
-    
+
   while (tmp_list)
     {
       XCloseDisplay (GDK_DISPLAY_XDISPLAY (tmp_list->data));
-      
+
       tmp_list = tmp_list->next;
   }
 }
@@ -462,7 +462,7 @@ gdk_x_error (Display	 *display,
 	{
 	  gchar buf[64];
           gchar *msg;
-          
+
 	  XGetErrorText (display, error->error_code, buf, 63);
 
           msg =
@@ -477,12 +477,12 @@ gdk_x_error (Display	 *display,
                              "   backtrace from your debugger if you break on the gdk_x_error() function.)",
                              g_get_prgname (),
                              buf,
-                             error->serial, 
-                             error->error_code, 
+                             error->serial,
+                             error->error_code,
                              error->request_code,
                              error->minor_code);
-          
-#ifdef G_ENABLE_DEBUG	  
+
+#ifdef G_ENABLE_DEBUG
 	  g_error ("%s", msg);
 #else /* !G_ENABLE_DEBUG */
 	  g_fprintf (stderr, "%s\n", msg);
@@ -492,7 +492,7 @@ gdk_x_error (Display	 *display,
 	}
       _gdk_error_code = error->error_code;
     }
-  
+
   return 0;
 }
 
@@ -550,7 +550,7 @@ gdk_x_io_error (Display *display)
  *     the corresponding gdk_error_pop(), which will return
  *     the error code, if any.
  *   arguments:
- *     
+ *
  *   results:
  *************************************************************/
 
@@ -573,7 +573,7 @@ gdk_error_trap_push (void)
 
   node->next = gdk_error_traps;
   gdk_error_traps = node;
-  
+
   trap = node->data;
   trap->old_handler = XSetErrorHandler (gdk_x_error);
   trap->error_code = _gdk_error_code;
@@ -587,7 +587,7 @@ gdk_error_trap_push (void)
  * gdk_error_trap_pop:
  *     Pop an error trap added with gdk_error_push()
  *   arguments:
- *     
+ *
  *   results:
  *     0, if no error occured, otherwise the error code.
  *************************************************************/
@@ -606,14 +606,14 @@ gdk_error_trap_pop (void)
 
   node->next = gdk_error_trap_free_list;
   gdk_error_trap_free_list = node;
-  
+
   result = _gdk_error_code;
-  
+
   trap = node->data;
   _gdk_error_code = trap->error_code;
   _gdk_error_warnings = trap->error_warnings;
   XSetErrorHandler (trap->old_handler);
-  
+
   return result;
 }
 
@@ -632,16 +632,16 @@ gdk_get_display (void)
  * @event_mask: event mask to match against, or 0 to send it to @window
  *              without regard to event masks.
  * @event_send: #XEvent to send
- * 
+ *
  * Send an event, like XSendEvent(), but trap errors and check
  * the result.
- * 
+ *
  * Return value: %TRUE if sending the event succeeded.
  **/
-gint 
+gint
 _gdk_send_xevent (GdkDisplay *display,
-		  Window      window, 
-		  gboolean    propagate, 
+		  Window      window,
+		  gboolean    propagate,
 		  glong       event_mask,
 		  XEvent     *event_send)
 {
@@ -651,13 +651,13 @@ _gdk_send_xevent (GdkDisplay *display,
     return FALSE;
 
   gdk_error_trap_push ();
-  result = XSendEvent (GDK_DISPLAY_XDISPLAY (display), window, 
+  result = XSendEvent (GDK_DISPLAY_XDISPLAY (display), window,
 		       propagate, event_mask, event_send);
   XSync (GDK_DISPLAY_XDISPLAY (display), False);
-  
+
   if (gdk_error_trap_pop ())
     return FALSE;
- 
+
   return result;
 }
 
@@ -671,7 +671,7 @@ _gdk_region_get_xrectangles (const GdkRegion *region,
   XRectangle *rectangles = g_new (XRectangle, region->numRects);
   GdkRegionBox *boxes = region->rects;
   gint i;
-  
+
   for (i = 0; i < region->numRects; i++)
     {
       rectangles[i].x = CLAMP (boxes[i].x1 + x_offset, G_MINSHORT, G_MAXSHORT);
@@ -686,12 +686,12 @@ _gdk_region_get_xrectangles (const GdkRegion *region,
 
 /**
  * gdk_x11_grab_server:
- * 
- * Call gdk_x11_display_grab() on the default display. 
- * To ungrab the server again, use gdk_x11_ungrab_server(). 
+ *
+ * Call gdk_x11_display_grab() on the default display.
+ * To ungrab the server again, use gdk_x11_ungrab_server().
  *
  * gdk_x11_grab_server()/gdk_x11_ungrab_server() calls can be nested.
- **/ 
+ **/
 void
 gdk_x11_grab_server (void)
 {
@@ -701,8 +701,8 @@ gdk_x11_grab_server (void)
 /**
  * gdk_x11_ungrab_server:
  *
- * Ungrab the default display after it has been grabbed with 
- * gdk_x11_grab_server(). 
+ * Ungrab the default display after it has been grabbed with
+ * gdk_x11_grab_server().
  **/
 void
 gdk_x11_ungrab_server (void)
@@ -712,9 +712,9 @@ gdk_x11_ungrab_server (void)
 
 /**
  * gdk_x11_get_default_screen:
- * 
+ *
  * Gets the default GTK+ screen number.
- * 
+ *
  * Return value: returns the screen number specified by
  *   the --display command line option or the DISPLAY environment
  *   variable when gdk_init() calls XOpenDisplay().
@@ -727,10 +727,10 @@ gdk_x11_get_default_screen (void)
 
 /**
  * gdk_x11_get_default_root_xwindow:
- * 
- * Gets the root window of the default screen 
- * (see gdk_x11_get_default_screen()).  
- * 
+ *
+ * Gets the root window of the default screen
+ * (see gdk_x11_get_default_screen()).
+ *
  * Return value: an Xlib <type>Window</type>.
  **/
 Window
@@ -741,11 +741,11 @@ gdk_x11_get_default_root_xwindow (void)
 
 /**
  * gdk_x11_get_default_xdisplay:
- * 
+ *
  * Gets the default GTK+ display.
- * 
+ *
  * Return value: the Xlib <type>Display*</type> for the display
- * specified in the <option>--display</option> command line option 
+ * specified in the <option>--display</option> command line option
  * or the <envar>DISPLAY</envar> environment variable.
  **/
 Display *

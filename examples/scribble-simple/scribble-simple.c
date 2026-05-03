@@ -75,7 +75,7 @@ static void draw_brush( GtkWidget *widget,
 		      TRUE,
 		      update_rect.x, update_rect.y,
 		      update_rect.width, update_rect.height);
-  gtk_widget_queue_draw_area (widget, 
+  gtk_widget_queue_draw_area (widget,
 		              update_rect.x, update_rect.y,
 		              update_rect.width, update_rect.height);
 }
@@ -103,10 +103,10 @@ static gboolean motion_notify_event( GtkWidget *widget,
       y = event->y;
       state = event->state;
     }
-    
+
   if (state & GDK_BUTTON1_MASK && pixmap != NULL)
     draw_brush (widget, x, y);
-  
+
   return TRUE;
 }
 
@@ -115,7 +115,7 @@ void quit ()
   exit (0);
 }
 
-int main( int   argc, 
+int main( int   argc,
           char *argv[] )
 {
   GtkWidget *window;

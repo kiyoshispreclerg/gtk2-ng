@@ -18,7 +18,7 @@ else
  else
   if [ -x /usr/bin/awk ]; then
    awk -f extract.awk $TUTORIAL $1 $2 $3 $4 $5
-  else 
+  else
    if [ -x /bin/awk ]; then
     awk -f extract.awk $TUTORIAL $1 $2 $3 $4 $5
    else

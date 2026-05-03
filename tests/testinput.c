@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GTK_DISABLE_DEPRECATED
@@ -69,7 +69,7 @@ update_cursor (GtkWidget *widget,  gdouble x, gdouble y)
       if (cursor_present)
 	{
           cairo_set_source_rgb (cr, 0, 0, 0);
-          cairo_rectangle (cr, 
+          cairo_rectangle (cr,
                            cursor_x - 5, cursor_y -5,
 			   10, 10);
           cairo_fill (cr);
@@ -164,11 +164,11 @@ static void
 print_axes (GdkDevice *device, gdouble *axes)
 {
   int i;
-  
+
   if (axes)
     {
       g_print ("%s ", device->name);
-      
+
       for (i=0; i<device->num_axes; i++)
 	g_print ("%g ", axes[i]);
 
@@ -189,7 +189,7 @@ button_press_event (GtkWidget *widget, GdkEventButton *event)
       print_axes (event->device, event->axes);
       gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
       draw_brush (widget, event->device->source, event->x, event->y, pressure);
-      
+
       motion_time = event->time;
     }
 
@@ -221,7 +221,7 @@ motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 
   if (event->state & GDK_BUTTON1_MASK && pixmap != NULL)
     {
-      if (gdk_device_get_history (event->device, event->window, 
+      if (gdk_device_get_history (event->device, event->window,
 				  motion_time, event->time,
 				  &events, &n_events))
 	{

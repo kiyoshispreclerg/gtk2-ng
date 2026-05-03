@@ -108,9 +108,9 @@ typedef gboolean (*GtkCTreeCompareDragFunc) (GtkCTree     *ctree,
 struct _GtkCTree
 {
   GtkCList clist;
-  
+
   GdkGC *lines_gc;
-  
+
   gint tree_indent;
   gint tree_spacing;
   gint tree_column;
@@ -125,7 +125,7 @@ struct _GtkCTree
 struct _GtkCTreeClass
 {
   GtkCListClass parent_class;
-  
+
   void (*tree_select_row)   (GtkCTree     *ctree,
 			     GtkCTreeNode *row,
 			     gint          column);
@@ -147,18 +147,18 @@ struct _GtkCTreeClass
 struct _GtkCTreeRow
 {
   GtkCListRow row;
-  
+
   GtkCTreeNode *parent;
   GtkCTreeNode *sibling;
   GtkCTreeNode *children;
-  
+
   GdkPixmap *pixmap_closed;
   GdkBitmap *mask_closed;
   GdkPixmap *pixmap_opened;
   GdkBitmap *mask_opened;
-  
+
   guint16 level;
-  
+
   guint is_leaf  : 1;
   guint expanded : 1;
 };
@@ -173,13 +173,13 @@ struct _GtkCTreeNode {
  ***********************************************************/
 
 GType   gtk_ctree_get_type                       (void) G_GNUC_CONST;
-GtkWidget * gtk_ctree_new_with_titles            (gint          columns, 
+GtkWidget * gtk_ctree_new_with_titles            (gint          columns,
 						  gint          tree_column,
 						  gchar        *titles[]);
-GtkWidget * gtk_ctree_new                        (gint          columns, 
+GtkWidget * gtk_ctree_new                        (gint          columns,
 						  gint          tree_column);
 GtkCTreeNode * gtk_ctree_insert_node             (GtkCTree     *ctree,
-						  GtkCTreeNode *parent, 
+						  GtkCTreeNode *parent,
 						  GtkCTreeNode *sibling,
 						  gchar        *text[],
 						  guint8        spacing,
@@ -189,7 +189,7 @@ GtkCTreeNode * gtk_ctree_insert_node             (GtkCTree     *ctree,
 						  GdkBitmap    *mask_opened,
 						  gboolean      is_leaf,
 						  gboolean      expanded);
-void gtk_ctree_remove_node                       (GtkCTree     *ctree, 
+void gtk_ctree_remove_node                       (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
 GtkCTreeNode * gtk_ctree_insert_gnode            (GtkCTree          *ctree,
 						  GtkCTreeNode      *parent,
@@ -209,25 +209,25 @@ GNode * gtk_ctree_export_to_gnode                (GtkCTree          *ctree,
  *  information                                            *
  ***********************************************************/
 
-void gtk_ctree_post_recursive                    (GtkCTree     *ctree, 
+void gtk_ctree_post_recursive                    (GtkCTree     *ctree,
 						  GtkCTreeNode *node,
 						  GtkCTreeFunc  func,
 						  gpointer      data);
-void gtk_ctree_post_recursive_to_depth           (GtkCTree     *ctree, 
-						  GtkCTreeNode *node,
-						  gint          depth,
-						  GtkCTreeFunc  func,
-						  gpointer      data);
-void gtk_ctree_pre_recursive                     (GtkCTree     *ctree, 
-						  GtkCTreeNode *node,
-						  GtkCTreeFunc  func,
-						  gpointer      data);
-void gtk_ctree_pre_recursive_to_depth            (GtkCTree     *ctree, 
+void gtk_ctree_post_recursive_to_depth           (GtkCTree     *ctree,
 						  GtkCTreeNode *node,
 						  gint          depth,
 						  GtkCTreeFunc  func,
 						  gpointer      data);
-gboolean gtk_ctree_is_viewable                   (GtkCTree     *ctree, 
+void gtk_ctree_pre_recursive                     (GtkCTree     *ctree,
+						  GtkCTreeNode *node,
+						  GtkCTreeFunc  func,
+						  gpointer      data);
+void gtk_ctree_pre_recursive_to_depth            (GtkCTree     *ctree,
+						  GtkCTreeNode *node,
+						  gint          depth,
+						  GtkCTreeFunc  func,
+						  gpointer      data);
+gboolean gtk_ctree_is_viewable                   (GtkCTree     *ctree,
 					          GtkCTreeNode *node);
 GtkCTreeNode * gtk_ctree_last                    (GtkCTree     *ctree,
 					          GtkCTreeNode *node);
@@ -267,7 +267,7 @@ gboolean gtk_ctree_is_hot_spot                   (GtkCTree     *ctree,
 
 void gtk_ctree_move                              (GtkCTree     *ctree,
 						  GtkCTreeNode *node,
-						  GtkCTreeNode *new_parent, 
+						  GtkCTreeNode *new_parent,
 						  GtkCTreeNode *new_sibling);
 void gtk_ctree_expand                            (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
@@ -287,16 +287,16 @@ void gtk_ctree_toggle_expansion                  (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
 void gtk_ctree_toggle_expansion_recursive        (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
-void gtk_ctree_select                            (GtkCTree     *ctree, 
+void gtk_ctree_select                            (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
-void gtk_ctree_select_recursive                  (GtkCTree     *ctree, 
+void gtk_ctree_select_recursive                  (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
-void gtk_ctree_unselect                          (GtkCTree     *ctree, 
+void gtk_ctree_unselect                          (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
-void gtk_ctree_unselect_recursive                (GtkCTree     *ctree, 
+void gtk_ctree_unselect_recursive                (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
-void gtk_ctree_real_select_recursive             (GtkCTree     *ctree, 
-						  GtkCTreeNode *node, 
+void gtk_ctree_real_select_recursive             (GtkCTree     *ctree,
+						  GtkCTreeNode *node,
 						  gint          state);
 
 /***********************************************************
@@ -407,15 +407,15 @@ GtkVisibility gtk_ctree_node_is_visible          (GtkCTree     *ctree,
  *             GtkCTree specific functions                 *
  ***********************************************************/
 
-void gtk_ctree_set_indent            (GtkCTree                *ctree, 
+void gtk_ctree_set_indent            (GtkCTree                *ctree,
 				      gint                     indent);
-void gtk_ctree_set_spacing           (GtkCTree                *ctree, 
+void gtk_ctree_set_spacing           (GtkCTree                *ctree,
 				      gint                     spacing);
-void gtk_ctree_set_show_stub         (GtkCTree                *ctree, 
+void gtk_ctree_set_show_stub         (GtkCTree                *ctree,
 				      gboolean                 show_stub);
-void gtk_ctree_set_line_style        (GtkCTree                *ctree, 
+void gtk_ctree_set_line_style        (GtkCTree                *ctree,
 				      GtkCTreeLineStyle        line_style);
-void gtk_ctree_set_expander_style    (GtkCTree                *ctree, 
+void gtk_ctree_set_expander_style    (GtkCTree                *ctree,
 				      GtkCTreeExpanderStyle    expander_style);
 void gtk_ctree_set_drag_compare_func (GtkCTree     	      *ctree,
 				      GtkCTreeCompareDragFunc  cmp_func);
@@ -424,9 +424,9 @@ void gtk_ctree_set_drag_compare_func (GtkCTree     	      *ctree,
  *             Tree sorting functions                      *
  ***********************************************************/
 
-void gtk_ctree_sort_node                         (GtkCTree     *ctree, 
+void gtk_ctree_sort_node                         (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
-void gtk_ctree_sort_recursive                    (GtkCTree     *ctree, 
+void gtk_ctree_sort_recursive                    (GtkCTree     *ctree,
 						  GtkCTreeNode *node);
 
 

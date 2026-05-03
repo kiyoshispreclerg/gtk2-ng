@@ -302,7 +302,7 @@ static const char * gtk_mini_xpm[] = {
 "     >%$$      ",
 "      >=       "};
 
-const gchar ** xpms[] = { 
+const gchar ** xpms[] = {
   book_open_xpm,
   book_closed_xpm,
   mini_page_xpm,
@@ -326,11 +326,11 @@ expose_func (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
 	if (gdk_pixbuf_get_has_alpha (pixbuf)) {
 		GdkPixbuf *dest;
                 cairo_t *cr;
-	  
+
 		gdk_window_set_back_pixmap (drawing_area->window, NULL, FALSE);
-	  
+
 		dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, event->area.width, event->area.height);
-		
+
 		gdk_pixbuf_composite_color (pixbuf, dest,
 					    0, 0, event->area.width, event->area.height,
 					    -event->area.x, -event->area.y,
@@ -338,7 +338,7 @@ expose_func (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
 					    (double) drawing_area->allocation.height / gdk_pixbuf_get_height (pixbuf),
 					    GDK_INTERP_BILINEAR, 255,
 					    event->area.x, event->area.y, 16, 0xaaaaaa, 0x555555);
-		
+
                 cr = gdk_cairo_create (drawing_area->window);
 
                 gdk_cairo_set_source_pixbuf (cr, dest, 0, 0);
@@ -350,8 +350,8 @@ expose_func (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
 	} else {
 		gdk_draw_rgb_image (drawing_area->window,
 				    drawing_area->style->white_gc,
-				    event->area.x, event->area.y, 
-				    event->area.width, 
+				    event->area.x, event->area.y,
+				    event->area.width,
 				    event->area.height,
 				    GDK_RGB_DITHER_NORMAL,
 				    gdk_pixbuf_get_pixels (pixbuf)
@@ -366,7 +366,7 @@ config_func (GtkWidget *drawing_area, GdkEventConfigure *event, gpointer data)
 {
 #if 0
 	GdkPixbuf *pixbuf;
-    
+
 	pixbuf = (GdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
 
 	if (((event->width) != gdk_pixbuf_get_width (pixbuf)) ||
@@ -410,7 +410,7 @@ new_testrgb_window (GdkPixbuf *pixbuf, gchar *title)
 	gtk_widget_set_size_request (GTK_WIDGET (drawing_area), w, h);
 	gtk_box_pack_start (GTK_BOX (temp_box), drawing_area, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox), temp_box, FALSE, FALSE, 0);
-	
+
 
 	g_signal_connect (drawing_area, "expose_event",
 			  G_CALLBACK (expose_func), NULL);
@@ -443,14 +443,14 @@ update_timeout (gpointer data)
         ProgressFileStatus *status = data;
 	gboolean done;
         GError *error;
-        
+
 	done = FALSE;
         error = NULL;
 
 	if (!feof (status->imagefile)) {
 		gint nbytes;
-                
-		nbytes = fread (status->buf, 1, status->readlen, 
+
+		nbytes = fread (status->buf, 1, status->readlen,
 			       status->imagefile);
 
 
@@ -460,12 +460,12 @@ update_timeout (gpointer data)
                         g_error_free (error);
                         done = TRUE;
                 }
-                        
-                        
-        } 
-	else 
+
+
+        }
+	else
                 done = TRUE;
-	  
+
 	if (done) {
                 /* ignoring errors, we should not do that. */
 		gdk_pixbuf_loader_close (GDK_PIXBUF_LOADER (status->loader), NULL);
@@ -555,7 +555,7 @@ main (int argc, char **argv)
 	if (argc == 1) {
                 const gchar*** xpmp;
                 GError *error = NULL;
-		
+
 		pixbuf = gdk_pixbuf_new_from_data (default_image, GDK_COLORSPACE_RGB, FALSE, 8,
 						   DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_WIDTH * 3,
 						   NULL, NULL);
@@ -581,7 +581,7 @@ main (int argc, char **argv)
 
                 pixbuf = gdk_pixbuf_new_from_inline (sizeof (gnome_foot), gnome_foot, TRUE, NULL);
                 new_testrgb_window (pixbuf, "GNOME Foot from inlined RLE data");
-                
+
 		found_valid = TRUE;
 	} else {
 		for (i = 1; i < argc; i++) {
@@ -595,7 +595,7 @@ main (int argc, char **argv)
                                            error->message);
                                 g_error_free (error);
                         }
-                        
+
 #if 0
 			pixbuf = gdk_pixbuf_rotate (pixbuf, 10.0);
 #endif
@@ -605,7 +605,7 @@ main (int argc, char **argv)
 				found_valid = TRUE;
 			}
 		}
-#if 1	
+#if 1
                 {
                         GtkWidget* rgb_window = NULL;
 			ProgressFileStatus   status;
@@ -618,7 +618,7 @@ main (int argc, char **argv)
 			status.buf = g_malloc (readlen);
 
 #if 0
-			g_signal_connect (pixbuf_loader, "size_prepared", 
+			g_signal_connect (pixbuf_loader, "size_prepared",
 					  G_CALLBACK (size_func), NULL);
 #endif
 
@@ -628,7 +628,7 @@ main (int argc, char **argv)
                         g_signal_connect (pixbuf_loader, "area_updated",
 					  G_CALLBACK (progressive_updated_callback),
 					  &rgb_window);
-			
+
                         status.imagefile = fopen (argv[1], "r");
                         g_assert (status.imagefile != NULL);
 

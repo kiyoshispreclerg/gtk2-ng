@@ -58,12 +58,12 @@ gdk_visual_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkVisual",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -96,13 +96,13 @@ create_standard_visual (gint depth)
   visual->depth = depth;
   visual->byte_order = GDK_MSB_FIRST; /* FIXME: Should this be different on intel macs? */
   visual->colormap_size = 0;
-  
+
   visual->type = GDK_VISUAL_TRUE_COLOR;
 
   visual->red_mask = 0xff0000;
   visual->green_mask = 0xff00;
   visual->blue_mask = 0xff;
-  
+
   gdk_visual_decompose_mask (visual->red_mask,
 			     &visual->red_shift,
 			     &visual->red_prec);

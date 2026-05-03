@@ -36,23 +36,23 @@ sub parse_entries {
 	s@/\*(?!<)
 	    ([^*]+|\*(?!/))*
 	   \*/@@gx;
-	
+
 	s@\n@ @;
-	
+
 	next if m@^\s*$@;
 
 	# Handle include files
 	if (/^\#include\s*<([^>]*)>/ ) {
             my $file= "../$1";
 	    open NEWFILE, $file or die "Cannot open include file $file: $!\n";
-	    
+
 	    if (parse_entries (\*NEWFILE)) {
 		return 1;
 	    } else {
 		next;
 	    }
 	}
-	
+
 	if (/^\s*\}\s*(\w+)/) {
 	    $enumname = $1;
 	    return 1;
@@ -63,7 +63,7 @@ sub parse_entries {
               (?:=(                      # value
                    (?:[^,/]|/(?!\*))*
                   ))?,?\s*
-              (?:/\*<		         # options 
+              (?:/\*<		         # options
                 (([^*]|\*(?!/))*)
                >\*/)?
               \s*$
@@ -186,7 +186,7 @@ while (<>) {
 	    # Trim so that it ends in an underscore
 	    $prefix =~ s/_[^_]*$/_/;
 	}
-	
+
 	for $entry (@entries) {
 	    my ($name,$nick) = @{$entry};
             if (!defined $nick) {

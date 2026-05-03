@@ -99,15 +99,15 @@ struct _GdkDevice
 {
   GObject parent_instance;
   /* All fields are read-only */
-	  
+
   gchar *GSEAL (name);
   GdkInputSource GSEAL (source);
   GdkInputMode GSEAL (mode);
   gboolean GSEAL (has_cursor);   /* TRUE if the X pointer follows device motion */
-	  
+
   gint GSEAL (num_axes);
   GdkDeviceAxis *GSEAL (axes);
-	  
+
   gint GSEAL (num_keys);
   GdkDeviceKey *GSEAL (keys);
 };
@@ -126,7 +126,7 @@ struct _GdkTimeCoord
 GType          gdk_device_get_type      (void) G_GNUC_CONST;
 
 #ifndef GDK_MULTIHEAD_SAFE
-/* Returns a list of GdkDevice * */	  
+/* Returns a list of GdkDevice * */
 GList *        gdk_devices_list              (void);
 #endif /* GDK_MULTIHEAD_SAFE */
 
@@ -147,7 +147,7 @@ gint                  gdk_device_get_n_axes     (GdkDevice       *device);
 /* Functions to configure a device */
 void           gdk_device_set_source    (GdkDevice      *device,
 					 GdkInputSource  source);
-	  
+
 gboolean       gdk_device_set_mode      (GdkDevice      *device,
 					 GdkInputMode    mode);
 
@@ -186,7 +186,7 @@ void gdk_input_set_extension_events (GdkWindow        *window,
 #ifndef GDK_MULTIHEAD_SAFE
 GdkDevice *gdk_device_get_core_pointer (void);
 #endif
- 
+
 G_END_DECLS
 
 #endif /* __GDK_INPUT_H__ */

@@ -68,10 +68,10 @@ typedef gboolean (*GtkAccelGroupActivate) (GtkAccelGroup  *accel_group,
 
 /**
  * GtkAccelGroupFindFunc:
- * @key: 
- * @closure: 
- * @data: 
- * 
+ * @key:
+ * @closure:
+ * @data:
+ *
  * Since: 2.2
  */
 typedef gboolean (*GtkAccelGroupFindFunc) (GtkAccelKey    *key,
@@ -80,7 +80,7 @@ typedef gboolean (*GtkAccelGroupFindFunc) (GtkAccelKey    *key,
 
 /**
  * GtkAccelGroup:
- * 
+ *
  * An object representing and maintaining a group of accelerators.
  */
 struct _GtkAccelGroup
@@ -102,7 +102,7 @@ struct _GtkAccelGroupClass
 				 guint           keyval,
 				 GdkModifierType modifier,
 				 GClosure       *accel_closure);
-  
+
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
   void (*_gtk_reserved2) (void);
@@ -122,7 +122,7 @@ struct _GtkAccelKey
 GType          gtk_accel_group_get_type           (void) G_GNUC_CONST;
 GtkAccelGroup* gtk_accel_group_new	      	  (void);
 gboolean       gtk_accel_group_get_is_locked      (GtkAccelGroup  *accel_group);
-GdkModifierType 
+GdkModifierType
                gtk_accel_group_get_modifier_mask  (GtkAccelGroup  *accel_group);
 void	       gtk_accel_group_lock		  (GtkAccelGroup  *accel_group);
 void	       gtk_accel_group_unlock		  (GtkAccelGroup  *accel_group);
@@ -195,16 +195,16 @@ struct _GtkAccelGroupEntry
 #ifndef GTK_DISABLE_DEPRECATED
 /**
  * gtk_accel_group_ref:
- * 
+ *
  * Deprecated equivalent of g_object_ref().
- * 
+ *
  * Returns: the accel group that was passed in
  */
 #define	gtk_accel_group_ref	g_object_ref
 
 /**
  * gtk_accel_group_unref:
- * 
+ *
  * Deprecated equivalent of g_object_unref().
  */
 #define	gtk_accel_group_unref	g_object_unref

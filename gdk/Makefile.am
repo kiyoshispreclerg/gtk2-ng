@@ -366,7 +366,7 @@ gdkenumtypes.c: @REBUILD@ $(gdk_public_h_sources) gdkenumtypes.c.template
 	&& cp xgen-getc gdkenumtypes.c  \
 	&& rm -f xgen-getc
 
-# 
+#
 # Marshaller generation
 #
 gdkmarshalers.h: @REBUILD@ gdkmarshalers.list

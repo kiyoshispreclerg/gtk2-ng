@@ -49,7 +49,7 @@ enum
 {
   calendar_show_header,
   calendar_show_days,
-  calendar_month_change, 
+  calendar_month_change,
   calendar_show_week,
   calendar_monday_first
 };
@@ -168,7 +168,7 @@ calendar_day_selected_double_click (GtkWidget    *widget,
 
   if (GTK_CALENDAR (data->window)->marked_date[day-1] == 0) {
     gtk_calendar_mark_day (GTK_CALENDAR (data->window), day);
-  } else { 
+  } else {
     gtk_calendar_unmark_day (GTK_CALENDAR (data->window), day);
   }
 }
@@ -238,7 +238,7 @@ calendar_toggle_flag (GtkWidget    *toggle,
       calendar->settings[i] = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle));
 
   calendar_set_flags(calendar);
-  
+
 }
 
 void calendar_select_font (GtkWidget    *button,
@@ -305,12 +305,12 @@ demonstrate_details (CalendarData *data)
       {
         gint year, month, day;
         gchar *detail;
-    
+
         year = calendar->year;
         month = calendar->month;
         month += calendar->day_month[row][col];
         day = calendar->day[row][col];
-    
+
         if (month < 1)
           {
             month += 12;
@@ -422,7 +422,7 @@ create_calendar(void)
   GtkStyle *style;
   gchar *font;
   gint i;
-  
+
   struct {
     gboolean init;
     char *label;
@@ -464,27 +464,27 @@ create_calendar(void)
 
   calendar_data.window = calendar;
   calendar_set_flags(&calendar_data);
-  gtk_calendar_mark_day (GTK_CALENDAR (calendar), 19);	
+  gtk_calendar_mark_day (GTK_CALENDAR (calendar), 19);
 
-  g_signal_connect (calendar, "month_changed", 
+  g_signal_connect (calendar, "month_changed",
 		    G_CALLBACK (calendar_month_changed),
 		    &calendar_data);
-  g_signal_connect (calendar, "day_selected", 
+  g_signal_connect (calendar, "day_selected",
 		    G_CALLBACK (calendar_day_selected),
 		    &calendar_data);
-  g_signal_connect (calendar, "day_selected_double_click", 
+  g_signal_connect (calendar, "day_selected_double_click",
 		    G_CALLBACK (calendar_day_selected_double_click),
 		    &calendar_data);
-  g_signal_connect (calendar, "prev_month", 
+  g_signal_connect (calendar, "prev_month",
 		    G_CALLBACK (calendar_prev_month),
 		    &calendar_data);
-  g_signal_connect (calendar, "next_month", 
+  g_signal_connect (calendar, "next_month",
 		    G_CALLBACK (calendar_next_month),
 		    &calendar_data);
-  g_signal_connect (calendar, "prev_year", 
+  g_signal_connect (calendar, "prev_year",
 		    G_CALLBACK (calendar_prev_year),
 		    &calendar_data);
-  g_signal_connect (calendar, "next_year", 
+  g_signal_connect (calendar, "next_year",
 		    G_CALLBACK (calendar_next_year),
 		    &calendar_data);
 
@@ -610,8 +610,8 @@ create_calendar(void)
                     G_CALLBACK(calendar_toggle_details),
                     &calendar_data);
   gtk_box_pack_start (GTK_BOX (vbox), toggle, FALSE, TRUE, 0);
-  
-  /* Build the Right frame with the flags in */ 
+
+  /* Build the Right frame with the flags in */
 
   vbox = gtk_vbox_new(FALSE, 0);
   frame = create_expander ("<b>Flags</b>", vbox, 1, 0);
@@ -636,7 +636,7 @@ create_calendar(void)
 
   vbox = gtk_vbox_new (TRUE, DEF_PAD_SMALL);
   frame = create_frame ("<b>Signal Events</b>", vbox, 1, 0);
-  
+
   hbox = gtk_hbox_new (FALSE, 3);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
   label = gtk_label_new ("Signal:");

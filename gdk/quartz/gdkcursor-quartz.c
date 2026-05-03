@@ -182,7 +182,7 @@ gdk_cursor_new_for_display (GdkDisplay    *display,
 
   g_return_val_if_fail (display == gdk_display_get_default (), NULL);
 
-  switch (cursor_type) 
+  switch (cursor_type)
     {
     case GDK_XTERM:
       nscursor = [NSCursor IBeamCursor];
@@ -328,42 +328,42 @@ _gdk_quartz_pixbuf_to_ns_image (GdkPixbuf *pixbuf)
   NSBitmapImageRep  *bitmap_rep;
   NSImage           *image;
   gboolean           has_alpha;
-  
+
   has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
-  
+
   /* Create a bitmap image rep */
-  bitmap_rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL 
+  bitmap_rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                          pixelsWide:gdk_pixbuf_get_width (pixbuf)
 					 pixelsHigh:gdk_pixbuf_get_height (pixbuf)
 					 bitsPerSample:8 samplesPerPixel:has_alpha ? 4 : 3
 					 hasAlpha:has_alpha isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace
 					 bytesPerRow:0 bitsPerPixel:0];
-	
+
   {
     /* Add pixel data to bitmap rep */
     guchar *src, *dst;
     int src_stride, dst_stride;
     int x, y;
-		
+
     src_stride = gdk_pixbuf_get_rowstride (pixbuf);
     dst_stride = [bitmap_rep bytesPerRow];
-		
-    for (y = 0; y < gdk_pixbuf_get_height (pixbuf); y++) 
+
+    for (y = 0; y < gdk_pixbuf_get_height (pixbuf); y++)
       {
 	src = gdk_pixbuf_get_pixels (pixbuf) + y * src_stride;
 	dst = [bitmap_rep bitmapData] + y * dst_stride;
-	
+
 	for (x = 0; x < gdk_pixbuf_get_width (pixbuf); x++)
 	  {
 	    if (has_alpha)
 	      {
 		guchar red, green, blue, alpha;
-		
+
 		red = *src++;
 		green = *src++;
 		blue = *src++;
 		alpha = *src++;
-		
+
 		*dst++ = (red * alpha) / 255;
 		*dst++ = (green * alpha) / 255;
 		*dst++ = (blue * alpha) / 255;
@@ -376,19 +376,19 @@ _gdk_quartz_pixbuf_to_ns_image (GdkPixbuf *pixbuf)
 	       *dst++ = *src++;
 	     }
 	  }
-      }	
+      }
   }
-	
+
   image = [[NSImage alloc] init];
   [image addRepresentation:bitmap_rep];
   [bitmap_rep release];
   [image autorelease];
-	
+
   return image;
 }
 
 GdkCursor *
-gdk_cursor_new_from_pixbuf (GdkDisplay *display, 
+gdk_cursor_new_from_pixbuf (GdkDisplay *display,
 			    GdkPixbuf  *pixbuf,
 			    gint        x,
 			    gint        y)
@@ -417,8 +417,8 @@ gdk_cursor_new_from_pixbuf (GdkDisplay *display,
   return cursor;
 }
 
-GdkCursor*  
-gdk_cursor_new_from_name (GdkDisplay  *display,  
+GdkCursor*
+gdk_cursor_new_from_name (GdkDisplay  *display,
 			  const gchar *name)
 {
   /* FIXME: Implement */
@@ -435,11 +435,11 @@ _gdk_cursor_destroy (GdkCursor *cursor)
 
   private = (GdkCursorPrivate *)cursor;
   [private->nscursor release];
-  
+
   g_free (private);
 }
 
-gboolean 
+gboolean
 gdk_display_supports_cursor_alpha (GdkDisplay *display)
 {
   g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
@@ -447,7 +447,7 @@ gdk_display_supports_cursor_alpha (GdkDisplay *display)
   return TRUE;
 }
 
-gboolean 
+gboolean
 gdk_display_supports_cursor_color (GdkDisplay *display)
 {
   g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
@@ -455,7 +455,7 @@ gdk_display_supports_cursor_color (GdkDisplay *display)
   return TRUE;
 }
 
-guint     
+guint
 gdk_display_get_default_cursor_size (GdkDisplay *display)
 {
   g_return_val_if_fail (GDK_IS_DISPLAY (display), 0);
@@ -464,7 +464,7 @@ gdk_display_get_default_cursor_size (GdkDisplay *display)
   return 32;
 }
 
-void     
+void
 gdk_display_get_maximal_cursor_size (GdkDisplay *display,
 				     guint       *width,
 				     guint       *height)

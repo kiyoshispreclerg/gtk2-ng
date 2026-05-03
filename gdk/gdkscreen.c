@@ -1,7 +1,7 @@
 /*
  * gdkscreen.c
- * 
- * Copyright 2001 Sun Microsystems Inc. 
+ *
+ * Copyright 2001 Sun Microsystems Inc.
  *
  * Erwann Chenede <erwann.chenede@sun.com>
  *
@@ -68,7 +68,7 @@ gdk_screen_class_init (GdkScreenClass *klass)
   object_class->finalize = gdk_screen_finalize;
   object_class->set_property = gdk_screen_set_property;
   object_class->get_property = gdk_screen_get_property;
-  
+
   g_object_class_install_property (object_class,
 				   PROP_FONT_OPTIONS,
 				   g_param_spec_pointer ("font-options",
@@ -91,8 +91,8 @@ gdk_screen_class_init (GdkScreenClass *klass)
   /**
    * GdkScreen::size-changed:
    * @screen: the object on which the signal is emitted
-   * 
-   * The ::size-changed signal is emitted when the pixel width or 
+   *
+   * The ::size-changed signal is emitted when the pixel width or
    * height of a screen changes.
    *
    * Since: 2.2
@@ -125,13 +125,13 @@ gdk_screen_class_init (GdkScreenClass *klass)
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
-	
+
   /**
    * GdkScreen::monitors-changed:
    * @screen: the object on which the signal is emitted
    *
    * The ::monitors-changed signal is emitted when the number, size
-   * or position of the monitors attached to the screen change. 
+   * or position of the monitors attached to the screen change.
    *
    * Only for X11 and OS X for now. A future implementation for Win32
    * may be a possibility.
@@ -190,7 +190,7 @@ gdk_screen_finalize (GObject *object)
   G_OBJECT_CLASS (gdk_screen_parent_class)->finalize (object);
 }
 
-void 
+void
 _gdk_screen_close (GdkScreen *screen)
 {
   g_return_if_fail (GDK_IS_SCREEN (screen));
@@ -217,12 +217,12 @@ get_nearest_monitor (GdkScreen *screen,
   g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
 
   num_monitors = gdk_screen_get_n_monitors (screen);
-  
+
   for (i = 0; i < num_monitors; i++)
     {
       GdkRectangle monitor;
       gint dist_x, dist_y, dist;
-      
+
       gdk_screen_get_monitor_geometry (screen, i, &monitor);
 
       if (x < monitor.x)
@@ -263,21 +263,21 @@ get_nearest_monitor (GdkScreen *screen,
  *
  * Since: 2.2
  **/
-gint 
+gint
 gdk_screen_get_monitor_at_point (GdkScreen *screen,
 				 gint       x,
 				 gint       y)
 {
   gint num_monitors, i;
-  
+
   g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
 
   num_monitors = gdk_screen_get_n_monitors (screen);
-  
+
   for (i=0;i<num_monitors;i++)
     {
       GdkRectangle monitor;
-      
+
       gdk_screen_get_monitor_geometry (screen, i, &monitor);
 
       if (x >= monitor.x &&
@@ -298,12 +298,12 @@ gdk_screen_get_monitor_at_point (GdkScreen *screen,
  *           or if @window does not intersect any monitors, a monitor,
  *           close to @window.
  *
- * Returns the number of the monitor in which the largest area of the 
+ * Returns the number of the monitor in which the largest area of the
  * bounding rectangle of @window resides.
  *
  * Since: 2.2
  **/
-gint 
+gint
 gdk_screen_get_monitor_at_window (GdkScreen      *screen,
 				  GdkWindow	 *window)
 {
@@ -316,16 +316,16 @@ gdk_screen_get_monitor_at_window (GdkScreen      *screen,
 			   &win_rect.height, NULL);
   gdk_window_get_origin (window, &win_rect.x, &win_rect.y);
   num_monitors = gdk_screen_get_n_monitors (screen);
-  
+
   for (i=0;i<num_monitors;i++)
     {
       GdkRectangle tmp_monitor, intersect;
-      
+
       gdk_screen_get_monitor_geometry (screen, i, &tmp_monitor);
       gdk_rectangle_intersect (&win_rect, &tmp_monitor, &intersect);
-      
+
       if (intersect.width * intersect.height > area)
-	{ 
+	{
 	  area = intersect.width * intersect.height;
 	  screen_num = i;
 	}
@@ -340,9 +340,9 @@ gdk_screen_get_monitor_at_window (GdkScreen      *screen,
 
 /**
  * gdk_screen_width:
- * 
+ *
  * Returns the width of the default screen in pixels.
- * 
+ *
  * Return value: the width of the default screen in pixels.
  **/
 gint
@@ -353,9 +353,9 @@ gdk_screen_width (void)
 
 /**
  * gdk_screen_height:
- * 
+ *
  * Returns the height of the default screen in pixels.
- * 
+ *
  * Return value: the height of the default screen in pixels.
  **/
 gint
@@ -366,10 +366,10 @@ gdk_screen_height (void)
 
 /**
  * gdk_screen_width_mm:
- * 
+ *
  * Returns the width of the default screen in millimeters.
  * Note that on many X servers this value will not be correct.
- * 
+ *
  * Return value: the width of the default screen in millimeters,
  * though it is not always correct.
  **/
@@ -381,10 +381,10 @@ gdk_screen_width_mm (void)
 
 /**
  * gdk_screen_height_mm:
- * 
+ *
  * Returns the height of the default screen in millimeters.
  * Note that on many X servers this value will not be correct.
- * 
+ *
  * Return value: the height of the default screen in millimeters,
  * though it is not always correct.
  **/
@@ -431,9 +431,9 @@ gdk_screen_set_font_options (GdkScreen                  *screen,
 /**
  * gdk_screen_get_font_options:
  * @screen: a #GdkScreen
- * 
+ *
  * Gets any options previously set with gdk_screen_set_font_options().
- * 
+ *
  * Return value: the current font options, or %NULL if no default
  *  font options have been set.
  *
@@ -452,7 +452,7 @@ gdk_screen_get_font_options (GdkScreen *screen)
  * @screen: a #GdkScreen
  * @dpi: the resolution in "dots per inch". (Physical inches aren't actually
  *   involved; the terminology is conventional.)
- 
+
  * Sets the resolution for font handling on the screen. This is a
  * scale factor between points specified in a #PangoFontDescription
  * and cairo units. The default value is 96, meaning that a 10 point
@@ -480,10 +480,10 @@ gdk_screen_set_resolution (GdkScreen *screen,
 /**
  * gdk_screen_get_resolution:
  * @screen: a #GdkScreen
- * 
+ *
  * Gets the resolution for font handling on the screen; see
  * gdk_screen_set_resolution() for full details.
- * 
+ *
  * Return value: the current resolution, or -1 if no resolution
  * has been set.
  *

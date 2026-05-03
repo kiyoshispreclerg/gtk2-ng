@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -112,7 +112,7 @@ gtk_preview_set_property (GObject      *object,
 			  GParamSpec   *pspec)
 {
   GtkPreview *preview = GTK_PREVIEW (object);
-  
+
   switch (prop_id)
     {
     case PROP_EXPAND:
@@ -131,9 +131,9 @@ gtk_preview_get_property (GObject      *object,
 			  GParamSpec   *pspec)
 {
   GtkPreview *preview;
-  
+
   preview = GTK_PREVIEW (object);
-  
+
   switch (prop_id)
     {
     case PROP_EXPAND:
@@ -262,7 +262,7 @@ gtk_preview_put (GtkPreview   *preview,
 			 preview->dither,
 			 src,
 			 rowstride);
-			
+
 }
 
 void
@@ -277,7 +277,7 @@ gtk_preview_draw_row (GtkPreview *preview,
 
   g_return_if_fail (GTK_IS_PREVIEW (preview));
   g_return_if_fail (data != NULL);
-  
+
   bpp = (preview->type == GTK_PREVIEW_COLOR ? 3 : 1);
   rowstride = (preview->buffer_width * bpp + 3) & -4;
 
@@ -330,8 +330,8 @@ gtk_preview_set_expand (GtkPreview *preview,
     {
       preview->expand = expand;
       gtk_widget_queue_resize (GTK_WIDGET (preview));
- 
-      g_object_notify (G_OBJECT (preview), "expand"); 
+
+      g_object_notify (G_OBJECT (preview), "expand");
     }
 }
 
@@ -450,7 +450,7 @@ gtk_preview_realize (GtkWidget *widget)
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 }
 
-static void   
+static void
 gtk_preview_size_allocate (GtkWidget        *widget,
 			   GtkAllocation    *allocation)
 {
@@ -499,7 +499,7 @@ gtk_preview_expose (GtkWidget      *widget,
 		       event->area.x, event->area.y,
 		       event->area.width, event->area.height);
     }
-  
+
   return FALSE;
 }
 

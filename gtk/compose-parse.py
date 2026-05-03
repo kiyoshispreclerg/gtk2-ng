@@ -27,7 +27,7 @@ URL_GDKKEYSYMSH = "http://git.gnome.org/browse/gtk%2B/plain/gdk/gdkkeysyms.h"
 URL_UNICODEDATATXT = 'http://www.unicode.org/Public/5.2.0/ucd/UnicodeData.txt'
 FILENAME_COMPOSE_SUPPLEMENTARY = 'gtk-compose-lookaside.txt'
 
-# We currently support keysyms of size 2; once upstream xorg gets sorted, 
+# We currently support keysyms of size 2; once upstream xorg gets sorted,
 # we might produce some tables with size 2 and some with size 4.
 SIZEOFINT = 2
 
@@ -66,7 +66,7 @@ headerfile_start = """/* GTK - The GIMP Tool Kit
  *
  * This table is optimised for space and requires special handling to access the content.
  * This table is used solely by http://svn.gnome.org/viewcvs/gtk%2B/trunk/gtk/gtkimcontextsimple.c
- * 
+ *
  * The resulting file is placed at http://svn.gnome.org/viewcvs/gtk%2B/trunk/gtk/gtkimcontextsimpleseqs.h
  * This file is described in bug report http://bugzilla.gnome.org/show_bug.cgi?id=321896
  */
@@ -115,7 +115,7 @@ headerfile_end = """};
 
 def stringtohex(str): return atoi(str, 16)
 
-def factorial(n): 
+def factorial(n):
 	if n <= 1:
 		return 1
 	else:
@@ -160,10 +160,10 @@ def usage():
 	Default is to show statistics.
 	"""
 
-try: 
-	opts, args = getopt.getopt(sys.argv[1:], "pvgashune", ["help", "algorithmic", "statistics", "unicodedatatxt", 
+try:
+	opts, args = getopt.getopt(sys.argv[1:], "pvgashune", ["help", "algorithmic", "statistics", "unicodedatatxt",
 		"stats", "gtk", "verbose", "plane1", "numeric", "gtk-expanded"])
-except: 
+except:
 	usage()
 	sys.exit(2)
 
@@ -185,7 +185,7 @@ for o, a in opts:
 	if o in ("-a", "--algorithmic"):
 		opt_algorithmic = True
 	if o in ("-g", "--gtk"):
-		opt_gtk = True	
+		opt_gtk = True
 	if o in ("-u", "--unicodedatatxt"):
 		opt_unicodedatatxt = True
 	if o in ("-v", "--verbose"):
@@ -206,7 +206,7 @@ def download_hook(blocks_transferred, block_size, file_size):
 		if file_size > 0:
 			if opt_verbose:
 				print "Downloading", file_size, "bytes: ",
-		else:	
+		else:
 			if opt_verbose:
 				print "Downloading: ",
 	sys.stdout.write('#')
@@ -220,7 +220,7 @@ def download_file(url):
         if not isfile(localfilename) or getsize(localfilename) <= 0:
 		if opt_verbose:
 			print "Downloading ", url, "..."
-		try: 
+		try:
 			urlretrieve(url, localfilename, download_hook)
 		except IOError, (errno, strerror):
 			print "I/O error(%s): %s" % (errno, strerror)
@@ -238,7 +238,7 @@ def process_gdkkeysymsh():
 	""" Opens the gdkkeysyms.h file from GTK+/gdk/gdkkeysyms.h """
 	""" Fills up keysymdb with contents """
 	filename_gdkkeysymsh = download_file(URL_GDKKEYSYMSH)
-	try: 
+	try:
 		gdkkeysymsh = open(filename_gdkkeysymsh, 'r')
 	except IOError, (errno, strerror):
 		print "I/O error(%s): %s" % (errno, strerror)
@@ -292,9 +292,9 @@ def process_gdkkeysymsh():
 	###keysymdb['dead_belowdiaeresis'] = 0x324
 
 	""" This is^Wwas preferential treatment for Greek """
-	# keysymdb['dead_tilde'] = 0x342  		
+	# keysymdb['dead_tilde'] = 0x342
 	""" This is^was preferential treatment for Greek """
-	#keysymdb['combining_tilde'] = 0x342	
+	#keysymdb['combining_tilde'] = 0x342
 
 	""" Fixing VoidSymbol """
 	keysymdb['VoidSymbol'] = 0xFFFF
@@ -305,7 +305,7 @@ def process_keysymstxt():
 	""" Grabs and opens the keysyms.txt file that Markus Kuhn maintains """
 	""" This file keeps a record between keysyms <-> unicode chars """
 	filename_keysymstxt = download_file(URL_KEYSYMSTXT)
-	try: 
+	try:
 		keysymstxt = open(filename_keysymstxt, 'r')
 	except IOError, (errno, strerror):
 		print "I/O error(%s): %s" % (errno, strerror)
@@ -346,19 +346,19 @@ def process_keysymstxt():
 
 	""" This is preferential treatment for Greek """
 	""" => we get more savings if used for Greek """
-	# keysymdb['dead_tilde'] = 0x342  		
+	# keysymdb['dead_tilde'] = 0x342
 	""" This is preferential treatment for Greek """
-	# keysymdb['combining_tilde'] = 0x342	
+	# keysymdb['combining_tilde'] = 0x342
 
 	""" This is for a missing keysym from Markus Kuhn's db """
 	keysymdb['dead_stroke'] = 0x338
 	""" This is for a missing keysym from Markus Kuhn's db """
-	keysymdb['Oslash'] = 0x0d8		
+	keysymdb['Oslash'] = 0x0d8
 
 	""" This is for a missing (recently added) keysym """
-	keysymdb['dead_psili'] = 0x313		
+	keysymdb['dead_psili'] = 0x313
 	""" This is for a missing (recently added) keysym """
-	keysymdb['dead_dasia'] = 0x314		
+	keysymdb['dead_dasia'] = 0x314
 
 	""" Allows to import Multi_key sequences """
 	keysymdb['Multi_key'] = 0xff20
@@ -429,7 +429,7 @@ keysymdatabase = process_gdkkeysymsh()
 
 """ Grab and open the compose file from upstream """
 filename_compose = download_file(URL_COMPOSE)
-try: 
+try:
 	composefile = open(filename_compose, 'r')
 except IOError, (errno, strerror):
 	print "I/O error(%s): %s" % (errno, strerror)
@@ -570,14 +570,14 @@ for line in xorg_compose_sequences_raw:
 			stats_sequence = copy(sequence)
 			base = sequence.pop()
 			basechar = keysymvalue(base, filename_compose, linenum_compose)
-			
+
 			if basechar < 0xFFFF:
 				counter = 1
 				unisequence = []
 				not_normalised = True
 				skipping_this = False
 				for i in range(0, len(sequence)):
-					""" If the sequence has dead_tilde and is for Greek, we don't do algorithmically 
+					""" If the sequence has dead_tilde and is for Greek, we don't do algorithmically
 					    because of lack of dead_perispomeni (i.e. conflict)
 					"""
 					bc = basechar
@@ -596,7 +596,7 @@ for line in xorg_compose_sequences_raw:
 						sequence[-1] = "dead_ogonek"
 					"""
 					unisequence.append(unichr(keysymunicodevalue(sequence.pop(), filename_compose, linenum_compose)))
-					
+
 				if skipping_this:
 					unisequence = []
 				for perm in all_permutations(unisequence):
@@ -617,7 +617,7 @@ for line in xorg_compose_sequences_raw:
 					original_sequence.append(codepoint)
 					xorg_compose_sequences.append(original_sequence)
 					""" print xorg_compose_sequences[-1] """
-					
+
 			else:
 				print "Error in base char !?!"
 				exit(-2)
@@ -740,7 +740,7 @@ zeroes = 0
 num_entries = 0
 num_algorithmic_greek = 0
 for sequence in xorg_compose_sequences:
-	if keysymvalue(firstitem) != keysymvalue(sequence[0]): 
+	if keysymvalue(firstitem) != keysymvalue(sequence[0]):
 		firstitem = sequence[0]
 		num_first_keysyms += 1
 	zeroes += 6 - len(sequence) + 1
@@ -750,7 +750,7 @@ for sequence in xorg_compose_sequences_algorithmic_uniqued:
 	ch = ord(sequence[-1:][0])
 	if ch >= 0x370 and ch <= 0x3ff or ch >= 0x1f00 and ch <= 0x1fff:
 		num_algorithmic_greek += 1
-		
+
 
 if opt_algorithmic:
 	for sequence in xorg_compose_sequences_algorithmic_uniqued:
@@ -772,9 +772,9 @@ def convert_UnotationToHex(arg):
 
 def addprefix_GDK(arg):
 	if match('^0x', arg):
-		return '%(arg)s, ' % { 'arg': arg } 
+		return '%(arg)s, ' % { 'arg': arg }
 	else:
-		return 'GDK_%(arg)s, ' % { 'arg': arg } 
+		return 'GDK_%(arg)s, ' % { 'arg': arg }
 
 if opt_gtk:
 	first_keysym = ""
@@ -835,7 +835,7 @@ if opt_gtk:
 			print '%(seq)s0x%(cp)04X, ' % { 'seq': "".join(map(addprefix_GDK, i[:-1])), 'cp':i[-1] }
 		else:
 			print '%(seq)s0x%(cp)04X, ' % { 'seq': "".join(map(addprefix_GDK, i[:-1][1:])), 'cp':i[-1] }
-	print headerfile_end 
+	print headerfile_end
 
 def redecompose(codepoint):
 	(name, decomposition, combiningclass) = unicodedatabase[codepoint]
@@ -850,7 +850,7 @@ def redecompose(codepoint):
 def process_unicodedata_file(verbose = False):
 	""" Grab from wget http://www.unicode.org/Public/UNIDATA/UnicodeData.txt """
 	filename_unicodedatatxt = download_file(URL_UNICODEDATATXT)
-	try: 
+	try:
 		unicodedatatxt = open(filename_unicodedatatxt, 'r')
 	except IOError, (errno, strerror):
 		print "I/O error(%s): %s" % (errno, strerror)
@@ -865,14 +865,14 @@ def process_unicodedata_file(verbose = False):
 		uniproperties = split(';', line)
 		codepoint = stringtohex(uniproperties[0])
 		""" We don't do Plane 1 or CJK blocks. The latter require reading additional files. """
-		if codepoint > 0xFFFF or (codepoint >= 0x4E00 and codepoint <= 0x9FFF) or (codepoint >= 0xF900 and codepoint <= 0xFAFF): 
+		if codepoint > 0xFFFF or (codepoint >= 0x4E00 and codepoint <= 0x9FFF) or (codepoint >= 0xF900 and codepoint <= 0xFAFF):
 			continue
 		name = uniproperties[1]
 		category = uniproperties[2]
 		combiningclass = uniproperties[3]
 		decomposition = uniproperties[5]
 		unicodedatabase[codepoint] = [name, split('\s+', decomposition), combiningclass]
-	
+
 	counter_combinations = 0
 	counter_combinations_greek = 0
 	counter_entries = 0
@@ -890,7 +890,7 @@ def process_unicodedata_file(verbose = False):
 			sequence = map(stringtohex, decomposition)
 			chrsequence = map(unichr, sequence)
 			normalized = normalize('NFC', "".join(chrsequence))
-			
+
 			""" print name, sequence, "Combining: ", "".join(chrsequence), normalized, len(normalized),  """
 			decomposedsequence = []
 			for subseq in map(redecompose, sequence):
@@ -920,7 +920,7 @@ def process_unicodedata_file(verbose = False):
 					print "], recomposed as", recomposedchar,
 					if unichr(item) == recomposedchar:
 						print "verified"
-	
+
 	if verbose == False:
 		print "Unicode statistics from UnicodeData.txt"
 		print "Number of entries that can be algorithmically produced     :", counter_entries
@@ -938,17 +938,17 @@ if opt_statistics:
 	print
 	print "Total number of compose sequences (from file)              :", len(xorg_compose_sequences) + len(xorg_compose_sequences_algorithmic)
 	print "  of which can be expressed algorithmically                :", len(xorg_compose_sequences_algorithmic)
-	print "  of which cannot be expressed algorithmically             :", len(xorg_compose_sequences) 
+	print "  of which cannot be expressed algorithmically             :", len(xorg_compose_sequences)
 	print "    of which have Multi_key                                :", counter_multikey
-	print 
+	print
 	print "Algorithmic (stats for Xorg Compose file)"
 	print "Number of sequences off due to algo from file (len(array)) :", len(xorg_compose_sequences_algorithmic)
 	print "Number of sequences off due to algo (uniq(sort(array)))    :", len(xorg_compose_sequences_algorithmic_uniqued)
 	print "  of which are for Greek                                   :", num_algorithmic_greek
-	print 
+	print
 	process_unicodedata_file()
 	print "Not algorithmic (stats from Xorg Compose file)"
-	print "Number of sequences                                        :", len(xorg_compose_sequences) 
+	print "Number of sequences                                        :", len(xorg_compose_sequences)
 	print "Flat array looks like                                      :", len(xorg_compose_sequences), "rows of 6 integers (2 bytes per int, or 12 bytes per row)"
 	print "Flat array would have taken up (in bytes)                  :", num_entries * 2 * 6, "bytes from the GTK+ library"
 	print "Number of items in flat array                              :", len(xorg_compose_sequences) * 6
@@ -956,7 +956,7 @@ if opt_statistics:
 	print "Number of different first items                            :", num_first_keysyms
 	print "Number of max bytes (if using flat array)                  :", num_entries * 2 * 6
 	print "Number of savings                                          :", zeroes * 2 - num_first_keysyms * 2 * 5
-	print 
+	print
 	print "Memory needs if both algorithmic+optimised table in latest Xorg compose file"
 	print "                                                           :", num_entries * 2 * 6 - zeroes * 2 + num_first_keysyms * 2 * 5
 	print

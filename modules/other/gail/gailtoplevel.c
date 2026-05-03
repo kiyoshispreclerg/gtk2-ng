@@ -86,14 +86,14 @@ gail_toplevel_init (GailToplevel *toplevel)
   GtkWidget *widget;
   GList *l;
   guint signal_id;
-  
+
   l = toplevel->window_list = gtk_window_list_toplevels ();
 
   while (l)
     {
       window = GTK_WINDOW (l->data);
       widget = GTK_WIDGET (window);
-      if (!window || 
+      if (!window ||
           !gtk_widget_get_visible (widget) ||
           is_attached_menu_window (widget) ||
           GTK_WIDGET (window)->parent ||
@@ -106,7 +106,7 @@ gail_toplevel_init (GailToplevel *toplevel)
         }
       else
         {
-          g_signal_connect (G_OBJECT (window), 
+          g_signal_connect (G_OBJECT (window),
                             "destroy",
                             G_CALLBACK (gail_toplevel_window_destroyed),
                             toplevel);
@@ -215,7 +215,7 @@ gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
     return TRUE;
 
   widget = GTK_WIDGET (object);
-  if (widget->parent || 
+  if (widget->parent ||
       is_attached_menu_window (widget) ||
       is_combo_window (widget) ||
       GTK_IS_PLUG (widget))
@@ -227,7 +227,7 @@ gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
       return TRUE;
     }
 
-  /* 
+  /*
    * Add the window to the list & emit the signal.
    * Don't do this for tooltips (Bug #150649).
    */
@@ -246,11 +246,11 @@ gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
    */
   atk_object_set_parent (child, atk_obj);
   g_signal_emit_by_name (atk_obj, "children-changed::add",
-                         n_children - 1, 
+                         n_children - 1,
                          child, NULL);
 
   /* Connect destroy signal callback */
-  g_signal_connect (G_OBJECT(object), 
+  g_signal_connect (G_OBJECT(object),
                     "destroy",
                     G_CALLBACK (gail_toplevel_window_destroyed),
                     toplevel);
@@ -283,7 +283,7 @@ gail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
  * Common code used by destroy and hide events on GtkWindow
  */
 static void
-_gail_toplevel_remove_child (GailToplevel *toplevel, 
+_gail_toplevel_remove_child (GailToplevel *toplevel,
                              GtkWindow    *window)
 {
   AtkObject *atk_obj = ATK_OBJECT (toplevel);
@@ -307,7 +307,7 @@ _gail_toplevel_remove_child (GailToplevel *toplevel,
                                                      l->data);
               child = gtk_widget_get_accessible (GTK_WIDGET (window));
               g_signal_emit_by_name (atk_obj, "children-changed::remove",
-                                     window_count, 
+                                     window_count,
                                      child, NULL);
               atk_object_set_parent (child, NULL);
               break;

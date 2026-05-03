@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -98,8 +98,8 @@ gtk_object_get_type (void)
 	(GInstanceInitFunc) gtk_object_init,
 	NULL,		/* value_table */
       };
-      
-      object_type = g_type_register_static (G_TYPE_INITIALLY_UNOWNED, I_("GtkObject"), 
+
+      object_type = g_type_register_static (G_TYPE_INITIALLY_UNOWNED, I_("GtkObject"),
 					    &object_info, G_TYPE_FLAG_ABSTRACT);
     }
 
@@ -224,7 +224,7 @@ gtk_object_add_arg_type (const gchar *arg_name,
   GParamSpec *pspec;
   gchar *type_name, *pname;
   GType type;
-  
+
   g_return_if_fail (arg_name != NULL);
   g_return_if_fail (arg_type > G_TYPE_NONE);
   g_return_if_fail (arg_id > 0);
@@ -366,7 +366,7 @@ gtk_object_class_init (GtkObjectClass *class)
 
   g_object_class_install_property (gobject_class,
 				   PROP_USER_DATA,
-				   g_param_spec_pointer ("user-data", 
+				   g_param_spec_pointer ("user-data",
 							 P_("User Data"),
 							 P_("Anonymous User Data Pointer"),
 							 GTK_PARAM_READWRITE));
@@ -401,7 +401,7 @@ gtk_object_destroy (GtkObject *object)
 {
   g_return_if_fail (object != NULL);
   g_return_if_fail (GTK_IS_OBJECT (object));
-  
+
   if (!(GTK_OBJECT_FLAGS (object) & GTK_IN_DESTRUCTION))
     g_object_run_dispose (G_OBJECT (object));
 }
@@ -417,9 +417,9 @@ gtk_object_dispose (GObject *gobject)
   if (!(GTK_OBJECT_FLAGS (object) & GTK_IN_DESTRUCTION))
     {
       GTK_OBJECT_SET_FLAGS (object, GTK_IN_DESTRUCTION);
-      
+
       g_signal_emit (object, object_signals[DESTROY], 0);
-      
+
       GTK_OBJECT_UNSET_FLAGS (object, GTK_IN_DESTRUCTION);
     }
 
@@ -444,9 +444,9 @@ gtk_object_finalize (GObject *gobject)
 		 "reference; the initial floating reference is not owned by anyone\n"
 		 "and must be removed with g_object_ref_sink().");
     }
-  
+
   gtk_object_notify_weaks (object);
-  
+
   G_OBJECT_CLASS (parent_class)->finalize (gobject);
 }
 
@@ -503,15 +503,15 @@ gtk_object_sink (GtkObject *object)
  * Weak refs are very similar to the old "destroy" signal.  They allow
  * one to register a callback that is called when the weakly
  * referenced object is finalized.
- *  
+ *
  * They are not implemented as a signal because they really are
  * special and need to be used with great care.  Unlike signals, which
  * should be able to execute any code whatsoever.
- * 
+ *
  * A weakref callback is not allowed to retain a reference to the
  * object.  Object data keys may be retrieved in a weak reference
  * callback.
- * 
+ *
  * A weakref callback is called at most once.
  *
  *****************************************/
@@ -579,9 +579,9 @@ gtk_object_notify_weaks (GtkObject *object)
   if (quark_weakrefs)
     {
       GtkWeakRef *w1, *w2;
-      
+
       w1 = g_object_get_qdata (G_OBJECT (object), quark_weakrefs);
-      
+
       while (w1)
 	{
 	  w1->notify (w1->data);
@@ -615,9 +615,9 @@ gtk_object_get (GtkObject   *object,
 		...)
 {
   va_list var_args;
-  
+
   g_return_if_fail (GTK_IS_OBJECT (object));
-  
+
   va_start (var_args, first_property_name);
   g_object_get_valist (G_OBJECT (object), first_property_name, var_args);
   va_end (var_args);
@@ -629,9 +629,9 @@ gtk_object_set (GtkObject   *object,
 		...)
 {
   va_list var_args;
-  
+
   g_return_if_fail (GTK_IS_OBJECT (object));
-  
+
   va_start (var_args, first_property_name);
   g_object_set_valist (G_OBJECT (object), first_property_name, var_args);
   va_end (var_args);
@@ -648,7 +648,7 @@ gtk_object_set_data_by_id (GtkObject        *object,
 			   gpointer          data)
 {
   g_return_if_fail (GTK_IS_OBJECT (object));
-  
+
   g_datalist_id_set_data (&G_OBJECT (object)->qdata, data_id, data);
 }
 
@@ -659,7 +659,7 @@ gtk_object_set_data (GtkObject        *object,
 {
   g_return_if_fail (GTK_IS_OBJECT (object));
   g_return_if_fail (key != NULL);
-  
+
   g_datalist_set_data (&G_OBJECT (object)->qdata, key, data);
 }
 

@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Global clipboard abstraction. 
+ * Global clipboard abstraction.
  */
 
 #include "config.h"
@@ -53,7 +53,7 @@ typedef struct _RequestImageInfo RequestImageInfo;
 typedef struct _RequestURIInfo RequestURIInfo;
 typedef struct _RequestTargetsInfo RequestTargetsInfo;
 
-struct _GtkClipboard 
+struct _GtkClipboard
 {
   GObject parent_instance;
 
@@ -177,14 +177,14 @@ gtk_clipboard_class_init (GtkClipboardClass *class)
   /**
    * GtkClipboard::owner-change:
    * @clipboard: the #GtkClipboard on which the signal is emitted
-   * @event: the @GdkEventOwnerChange event 
+   * @event: the @GdkEventOwnerChange event
    *
    * The ::owner-change signal is emitted when GTK+ receives an
-   * event that indicates that the ownership of the selection 
+   * event that indicates that the ownership of the selection
    * associated with @clipboard has changed.
    *
    * Since: 2.6
-   */ 
+   */
   clipboard_signals[OWNER_CHANGE] =
     g_signal_new (I_("owner-change"),
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -214,7 +214,7 @@ gtk_clipboard_finalize (GObject *object)
 
       clipboards = g_slist_remove (clipboards, clipboard);
 
-      g_object_set_data (G_OBJECT (clipboard->display), "gtk-clipboard-list", 
+      g_object_set_data (G_OBJECT (clipboard->display), "gtk-clipboard-list",
                          clipboards);
 
       /* don't use get_clipboard_widget() here because it would create the
@@ -234,7 +234,7 @@ gtk_clipboard_finalize (GObject *object)
 
   if (clipboard->notify_signal_id != 0)
     g_signal_handler_disconnect (clipboard_widget, clipboard->notify_signal_id);
-  
+
   g_free (clipboard->storable_targets);
   g_free (clipboard->cached_targets);
 
@@ -260,7 +260,7 @@ clipboard_display_closed (GdkDisplay   *display,
  * @display: the display for which the clipboard is to be retrieved or created
  * @selection: a #GdkAtom which identifies the clipboard
  *             to use.
- * 
+ *
  * Returns the clipboard object for the given selection.
  * Cut/copy/paste menu items and keyboard shortcuts should use
  * the default clipboard, returned by passing %GDK_SELECTION_CLIPBOARD for @selection.
@@ -286,7 +286,7 @@ clipboard_display_closed (GdkDisplay   *display,
  * underscore-prefixed), and namespace it as well. For example,
  * if your application called "Foo" has a special-purpose
  * clipboard, you might call it "_FOO_SPECIAL_CLIPBOARD".
- * 
+ *
  * Return value: (transfer none): the appropriate clipboard object. If no
  *             clipboard already exists, a new one will
  *             be created. Once a clipboard object has
@@ -297,7 +297,7 @@ clipboard_display_closed (GdkDisplay   *display,
  * Since: 2.2
  **/
 GtkClipboard *
-gtk_clipboard_get_for_display (GdkDisplay *display, 
+gtk_clipboard_get_for_display (GdkDisplay *display,
 			       GdkAtom     selection)
 {
   g_return_val_if_fail (display != NULL, NULL); /* See bgo#463773; this is needed because Flash Player sucks */
@@ -326,7 +326,7 @@ gtk_clipboard_get (GdkAtom selection)
   return gtk_clipboard_get_for_display (gdk_display_get_default (), selection);
 }
 
-static void 
+static void
 selection_get_cb (GtkWidget          *widget,
 		  GtkSelectionData   *selection_data,
 		  guint               info,
@@ -355,7 +355,7 @@ selection_clear_event_cb (GtkWidget	    *widget,
 }
 
 static GtkWidget *
-make_clipboard_widget (GdkDisplay *display, 
+make_clipboard_widget (GdkDisplay *display,
 		       gboolean    provider)
 {
   GtkWidget *widget = gtk_invisible_new_for_screen (gdk_display_get_default_screen (display));
@@ -367,7 +367,7 @@ make_clipboard_widget (GdkDisplay *display,
     {
       /* We need this for gdk_x11_get_server_time() */
       gtk_widget_add_events (widget, GDK_PROPERTY_CHANGE_MASK);
-      
+
       g_signal_connect (widget, "selection-get",
 			G_CALLBACK (selection_get_cb), NULL);
       g_signal_connect (widget, "selection-clear-event",
@@ -466,7 +466,7 @@ clipboard_owner_destroyed (gpointer data)
 
       tmp_list = tmp_list->next;
     }
-  
+
   g_slist_free (clipboards);
 }
 
@@ -475,7 +475,7 @@ clipboard_add_owner_notify (GtkClipboard *clipboard)
 {
   if (!clipboards_owned_key_id)
     clipboards_owned_key_id = g_quark_from_static_string (clipboards_owned_key);
-  
+
   if (clipboard->have_owner)
     g_object_set_qdata_full (clipboard->user_data, clipboards_owned_key_id,
 			     g_slist_prepend (g_object_steal_qdata (clipboard->user_data,
@@ -494,7 +494,7 @@ clipboard_remove_owner_notify (GtkClipboard *clipboard)
 					      clipboard),
 			      clipboard_owner_destroyed);
 }
-	  
+
 static gboolean
 gtk_clipboard_set_contents (GtkClipboard         *clipboard,
 			    const GtkTargetEntry *targets,
@@ -528,7 +528,7 @@ gtk_clipboard_set_contents (GtkClipboard         *clipboard,
 	  if (clipboard->get_func)
 	    {
 	      /* Calling unset() caused the clipboard contents to be reset!
-	       * Avoid leaking and return 
+	       * Avoid leaking and return
 	       */
 	      if (!(clipboard->have_owner && have_owner) ||
 		  clipboard->user_data != user_data)
@@ -546,7 +546,7 @@ gtk_clipboard_set_contents (GtkClipboard         *clipboard,
 	      if (have_owner)
 		clipboard_add_owner_notify (clipboard);
 	    }
-	  
+
  	}
 
       clipboard->get_func = get_func;
@@ -572,11 +572,11 @@ gtk_clipboard_set_contents (GtkClipboard         *clipboard,
  * @clear_func: when the clipboard contents are set again, this function will
  *              be called, and @get_func will not be subsequently called.
  * @user_data:  user data to pass to @get_func and @clear_func.
- * 
+ *
  * Virtually sets the contents of the specified clipboard by providing
  * a list of supported formats for the clipboard data and a function
  * to call to get the actual data when it is requested.
- * 
+ *
  * Return value: %TRUE if setting the clipboard data succeeded. If setting
  *               the clipboard data failed the provided callback functions
  *               will be ignored.
@@ -608,16 +608,16 @@ gtk_clipboard_set_with_data (GtkClipboard          *clipboard,
  * @clear_func: when the clipboard contents are set again, this function will
  *              be called, and @get_func will not be subsequently called.
  * @owner:      an object that "owns" the data. This object will be passed
- *              to the callbacks when called. 
- * 
+ *              to the callbacks when called.
+ *
  * Virtually sets the contents of the specified clipboard by providing
  * a list of supported formats for the clipboard data and a function
  * to call to get the actual data when it is requested.
  *
  * The difference between this function and gtk_clipboard_set_with_data()
  * is that instead of an generic @user_data pointer, a #GObject is passed
- * in. 
- * 
+ * in.
+ *
  * Return value: %TRUE if setting the clipboard data succeeded. If setting
  *               the clipboard data failed the provided callback functions
  *               will be ignored.
@@ -643,12 +643,12 @@ gtk_clipboard_set_with_owner (GtkClipboard          *clipboard,
 /**
  * gtk_clipboard_get_owner:
  * @clipboard: a #GtkClipboard
- * 
- * If the clipboard contents callbacks were set with 
- * gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or 
- * gtk_clipboard_clear() has not subsequently called, returns the owner set 
+ *
+ * If the clipboard contents callbacks were set with
+ * gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
+ * gtk_clipboard_clear() has not subsequently called, returns the owner set
  * by gtk_clipboard_set_with_owner().
- * 
+ *
  * Return value: (transfer none): the owner of the clipboard, if any; otherwise %NULL.
  **/
 GObject *
@@ -669,12 +669,12 @@ clipboard_unset (GtkClipboard *clipboard)
   gpointer old_data;
   gboolean old_have_owner;
   gint old_n_storable_targets;
-  
+
   old_clear_func = clipboard->clear_func;
   old_data = clipboard->user_data;
   old_have_owner = clipboard->have_owner;
   old_n_storable_targets = clipboard->n_storable_targets;
-  
+
   if (old_have_owner)
     {
       clipboard_remove_owner_notify (clipboard);
@@ -684,11 +684,11 @@ clipboard_unset (GtkClipboard *clipboard)
   clipboard->n_storable_targets = -1;
   g_free (clipboard->storable_targets);
   clipboard->storable_targets = NULL;
-      
+
   clipboard->get_func = NULL;
   clipboard->clear_func = NULL;
   clipboard->user_data = NULL;
-  
+
   if (old_clear_func)
     old_clear_func (clipboard, old_data);
 
@@ -703,7 +703,7 @@ clipboard_unset (GtkClipboard *clipboard)
 /**
  * gtk_clipboard_clear:
  * @clipboard:  a #GtkClipboard
- * 
+ *
  * Clears the contents of the clipboard. Generally this should only
  * be called between the time you call gtk_clipboard_set_with_owner()
  * or gtk_clipboard_set_with_data(),
@@ -716,13 +716,13 @@ gtk_clipboard_clear (GtkClipboard *clipboard)
   g_return_if_fail (clipboard != NULL);
 
   if (clipboard->have_selection)
-    gtk_selection_owner_set_for_display (clipboard->display, 
+    gtk_selection_owner_set_for_display (clipboard->display,
 					 NULL,
 					 clipboard->selection,
 					 clipboard_get_timestamp (clipboard));
 }
 
-static void 
+static void
 text_get_func (GtkClipboard     *clipboard,
 	       GtkSelectionData *selection_data,
 	       guint             info,
@@ -731,7 +731,7 @@ text_get_func (GtkClipboard     *clipboard,
   gtk_selection_data_set_text (selection_data, data, -1);
 }
 
-static void 
+static void
 text_clear_func (GtkClipboard *clipboard,
 		 gpointer      data)
 {
@@ -745,13 +745,13 @@ text_clear_func (GtkClipboard *clipboard,
  * @text:      a UTF-8 string.
  * @len:       length of @text, in bytes, or -1, in which case
  *             the length will be determined with <function>strlen()</function>.
- * 
+ *
  * Sets the contents of the clipboard to the given UTF-8 string. GTK+ will
  * make a copy of the text and take responsibility for responding
  * for requests for the text, and for converting the text into
  * the requested format.
  **/
-void 
+void
 gtk_clipboard_set_text (GtkClipboard *clipboard,
 			const gchar  *text,
 			gint          len)
@@ -767,11 +767,11 @@ gtk_clipboard_set_text (GtkClipboard *clipboard,
   gtk_target_list_add_text_targets (list, 0);
 
   targets = gtk_target_table_new_from_list (list, &n_targets);
-  
+
   if (len < 0)
     len = strlen (text);
-  
-  gtk_clipboard_set_with_data (clipboard, 
+
+  gtk_clipboard_set_with_data (clipboard,
 			       targets, n_targets,
 			       text_get_func, text_clear_func,
 			       g_strndup (text, len));
@@ -781,7 +781,7 @@ gtk_clipboard_set_text (GtkClipboard *clipboard,
   gtk_target_list_unref (list);
 }
 
-static void 
+static void
 pixbuf_get_func (GtkClipboard     *clipboard,
 		 GtkSelectionData *selection_data,
 		 guint             info,
@@ -790,7 +790,7 @@ pixbuf_get_func (GtkClipboard     *clipboard,
   gtk_selection_data_set_pixbuf (selection_data, data);
 }
 
-static void 
+static void
 pixbuf_clear_func (GtkClipboard *clipboard,
 		   gpointer      data)
 {
@@ -800,13 +800,13 @@ pixbuf_clear_func (GtkClipboard *clipboard,
 /**
  * gtk_clipboard_set_image:
  * @clipboard: a #GtkClipboard object
- * @pixbuf:    a #GdkPixbuf 
- * 
- * Sets the contents of the clipboard to the given #GdkPixbuf. 
- * GTK+ will take responsibility for responding for requests 
- * for the image, and for converting the image into the 
+ * @pixbuf:    a #GdkPixbuf
+ *
+ * Sets the contents of the clipboard to the given #GdkPixbuf.
+ * GTK+ will take responsibility for responding for requests
+ * for the image, and for converting the image into the
  * requested format.
- * 
+ *
  * Since: 2.6
  **/
 void
@@ -825,7 +825,7 @@ gtk_clipboard_set_image (GtkClipboard *clipboard,
 
   targets = gtk_target_table_new_from_list (list, &n_targets);
 
-  gtk_clipboard_set_with_data (clipboard, 
+  gtk_clipboard_set_with_data (clipboard,
 			       targets, n_targets,
 			       pixbuf_get_func, pixbuf_clear_func,
 			       g_object_ref (pixbuf));
@@ -854,15 +854,15 @@ get_request_contents_info (GtkWidget *widget)
     return g_object_get_qdata (G_OBJECT (widget), request_contents_key_id);
 }
 
-static void 
+static void
 selection_received (GtkWidget            *widget,
 		    GtkSelectionData     *selection_data,
 		    guint                 time)
 {
   RequestContentsInfo *request_info = get_request_contents_info (widget);
   set_request_contents_info (widget, NULL);
-  
-  request_info->callback (gtk_widget_get_clipboard (widget, selection_data->selection), 
+
+  request_info->callback (gtk_widget_get_clipboard (widget, selection_data->selection),
 			  selection_data,
 			  request_info->user_data);
 
@@ -882,12 +882,12 @@ selection_received (GtkWidget            *widget,
  *             the length field of @selection_data will be
  *             negative.
  * @user_data: user data to pass to @callback
- * 
+ *
  * Requests the contents of clipboard as the given target.
  * When the results of the result are later received the supplied callback
  * will be called.
  **/
-void 
+void
 gtk_clipboard_request_contents (GtkClipboard            *clipboard,
 				GdkAtom                  target,
 				GtkClipboardReceivedFunc callback,
@@ -900,7 +900,7 @@ gtk_clipboard_request_contents (GtkClipboard            *clipboard,
   g_return_if_fail (clipboard != NULL);
   g_return_if_fail (target != GDK_NONE);
   g_return_if_fail (callback != NULL);
-  
+
   clipboard_widget = get_clipboard_widget (clipboard->display);
 
   if (get_request_contents_info (clipboard_widget))
@@ -918,7 +918,7 @@ gtk_clipboard_request_contents (GtkClipboard            *clipboard,
 			 clipboard_get_timestamp (clipboard));
 }
 
-static void 
+static void
 request_text_received_func (GtkClipboard     *clipboard,
 			    GtkSelectionData *selection_data,
 			    gpointer          data)
@@ -937,14 +937,14 @@ request_text_received_func (GtkClipboard     *clipboard,
       if (selection_data->target == gdk_atom_intern_static_string ("UTF8_STRING"))
 	{
 	  gtk_clipboard_request_contents (clipboard,
-					  gdk_atom_intern_static_string ("COMPOUND_TEXT"), 
+					  gdk_atom_intern_static_string ("COMPOUND_TEXT"),
 					  request_text_received_func, info);
 	  return;
 	}
       else if (selection_data->target == gdk_atom_intern_static_string ("COMPOUND_TEXT"))
 	{
 	  gtk_clipboard_request_contents (clipboard,
-					  GDK_TARGET_STRING, 
+					  GDK_TARGET_STRING,
 					  request_text_received_func, info);
 	  return;
 	}
@@ -962,26 +962,26 @@ request_text_received_func (GtkClipboard     *clipboard,
  *             or the retrieval fails. (It will always be called
  *             one way or the other.)
  * @user_data: user data to pass to @callback.
- * 
+ *
  * Requests the contents of the clipboard as text. When the text is
  * later received, it will be converted to UTF-8 if necessary, and
- * @callback will be called. 
+ * @callback will be called.
  *
  * The @text parameter to @callback will contain the resulting text if
  * the request succeeded, or %NULL if it failed. This could happen for
  * various reasons, in particular if the clipboard was empty or if the
  * contents of the clipboard could not be converted into text form.
  **/
-void 
+void
 gtk_clipboard_request_text (GtkClipboard                *clipboard,
 			    GtkClipboardTextReceivedFunc callback,
 			    gpointer                     user_data)
 {
   RequestTextInfo *info;
-  
+
   g_return_if_fail (clipboard != NULL);
   g_return_if_fail (callback != NULL);
-  
+
   info = g_new (RequestTextInfo, 1);
   info->callback = callback;
   info->user_data = user_data;
@@ -1065,7 +1065,7 @@ gtk_clipboard_request_rich_text (GtkClipboard                    *clipboard,
 				  info);
 }
 
-static void 
+static void
 request_image_received_func (GtkClipboard     *clipboard,
 			     GtkSelectionData *selection_data,
 			     gpointer          data)
@@ -1085,21 +1085,21 @@ request_image_received_func (GtkClipboard     *clipboard,
       if (selection_data->target == gdk_atom_intern_static_string ("image/png"))
 	{
 	  gtk_clipboard_request_contents (clipboard,
-					  gdk_atom_intern_static_string ("image/jpeg"), 
+					  gdk_atom_intern_static_string ("image/jpeg"),
 					  request_image_received_func, info);
 	  return;
 	}
       else if (selection_data->target == gdk_atom_intern_static_string ("image/jpeg"))
 	{
 	  gtk_clipboard_request_contents (clipboard,
-					  gdk_atom_intern_static_string ("image/gif"), 
+					  gdk_atom_intern_static_string ("image/gif"),
 					  request_image_received_func, info);
 	  return;
 	}
       else if (selection_data->target == gdk_atom_intern_static_string ("image/gif"))
 	{
 	  gtk_clipboard_request_contents (clipboard,
-					  gdk_atom_intern_static_string ("image/bmp"), 
+					  gdk_atom_intern_static_string ("image/bmp"),
 					  request_image_received_func, info);
 	  return;
 	}
@@ -1119,40 +1119,40 @@ request_image_received_func (GtkClipboard     *clipboard,
  *             or the retrieval fails. (It will always be called
  *             one way or the other.)
  * @user_data: user data to pass to @callback.
- * 
+ *
  * Requests the contents of the clipboard as image. When the image is
  * later received, it will be converted to a #GdkPixbuf, and
- * @callback will be called. 
+ * @callback will be called.
  *
- * The @pixbuf parameter to @callback will contain the resulting 
- * #GdkPixbuf if the request succeeded, or %NULL if it failed. This 
- * could happen for various reasons, in particular if the clipboard 
- * was empty or if the contents of the clipboard could not be 
+ * The @pixbuf parameter to @callback will contain the resulting
+ * #GdkPixbuf if the request succeeded, or %NULL if it failed. This
+ * could happen for various reasons, in particular if the clipboard
+ * was empty or if the contents of the clipboard could not be
  * converted into an image.
  *
  * Since: 2.6
  **/
-void 
+void
 gtk_clipboard_request_image (GtkClipboard                  *clipboard,
 			     GtkClipboardImageReceivedFunc  callback,
 			     gpointer                       user_data)
 {
   RequestImageInfo *info;
-  
+
   g_return_if_fail (clipboard != NULL);
   g_return_if_fail (callback != NULL);
-  
+
   info = g_new (RequestImageInfo, 1);
   info->callback = callback;
   info->user_data = user_data;
 
-  gtk_clipboard_request_contents (clipboard, 
+  gtk_clipboard_request_contents (clipboard,
 				  gdk_atom_intern_static_string ("image/png"),
 				  request_image_received_func,
 				  info);
 }
 
-static void 
+static void
 request_uris_received_func (GtkClipboard     *clipboard,
 			    GtkSelectionData *selection_data,
 			    gpointer          data)
@@ -1174,7 +1174,7 @@ request_uris_received_func (GtkClipboard     *clipboard,
  *             or the retrieval fails. (It will always be called
  *             one way or the other.)
  * @user_data: user data to pass to @callback.
- * 
+ *
  * Requests the contents of the clipboard as URIs. When the URIs are
  * later received @callback will be called.
  *
@@ -1185,16 +1185,16 @@ request_uris_received_func (GtkClipboard     *clipboard,
  *
  * Since: 2.14
  **/
-void 
+void
 gtk_clipboard_request_uris (GtkClipboard                *clipboard,
 			    GtkClipboardURIReceivedFunc  callback,
 			    gpointer                     user_data)
 {
   RequestURIInfo *info;
-  
+
   g_return_if_fail (clipboard != NULL);
   g_return_if_fail (callback != NULL);
-  
+
   info = g_slice_new (RequestURIInfo);
   info->callback = callback;
   info->user_data = user_data;
@@ -1204,7 +1204,7 @@ gtk_clipboard_request_uris (GtkClipboard                *clipboard,
 				  info);
 }
 
-static void 
+static void
 request_targets_received_func (GtkClipboard     *clipboard,
 			       GtkSelectionData *selection_data,
 			       gpointer          data)
@@ -1228,22 +1228,22 @@ request_targets_received_func (GtkClipboard     *clipboard,
  *             or the retrieval fails. (It will always be called
  *             one way or the other.)
  * @user_data: user data to pass to @callback.
- * 
- * Requests the contents of the clipboard as list of supported targets. 
- * When the list is later received, @callback will be called. 
+ *
+ * Requests the contents of the clipboard as list of supported targets.
+ * When the list is later received, @callback will be called.
  *
  * The @targets parameter to @callback will contain the resulting targets if
  * the request succeeded, or %NULL if it failed.
  *
  * Since: 2.4
  **/
-void 
+void
 gtk_clipboard_request_targets (GtkClipboard                *clipboard,
 			       GtkClipboardTargetsReceivedFunc callback,
 			       gpointer                     user_data)
 {
   RequestTargetsInfo *info;
-  
+
   g_return_if_fail (clipboard != NULL);
   g_return_if_fail (callback != NULL);
 
@@ -1254,7 +1254,7 @@ gtk_clipboard_request_targets (GtkClipboard                *clipboard,
       (* callback) (clipboard, clipboard->cached_targets, clipboard->n_cached_targets, user_data);
       return;
     }
-  
+
   info = g_new (RequestTargetsInfo, 1);
   info->callback = callback;
   info->user_data = user_data;
@@ -1272,7 +1272,7 @@ typedef struct
   gsize length; /* used by rich text */
 } WaitResults;
 
-static void 
+static void
 clipboard_received_func (GtkClipboard     *clipboard,
 			 GtkSelectionData *selection_data,
 			 gpointer          data)
@@ -1281,7 +1281,7 @@ clipboard_received_func (GtkClipboard     *clipboard,
 
   if (selection_data->length >= 0)
     results->data = gtk_selection_data_copy (selection_data);
-  
+
   g_main_loop_quit (results->loop);
 }
 
@@ -1290,14 +1290,14 @@ clipboard_received_func (GtkClipboard     *clipboard,
  * @clipboard: a #GtkClipboard
  * @target: an atom representing the form into which the clipboard
  *          owner should convert the selection.
- * 
+ *
  * Requests the contents of the clipboard using the given target.
- * This function waits for the data to be received using the main 
+ * This function waits for the data to be received using the main
  * loop, so events, timeouts, etc, may be dispatched during the wait.
- * 
+ *
  * Return value: a newly-allocated #GtkSelectionData object or %NULL
  *               if retrieving the given target failed. If non-%NULL,
- *               this value must be freed with gtk_selection_data_free() 
+ *               this value must be freed with gtk_selection_data_free()
  *               when you are finished with it.
  **/
 GtkSelectionData *
@@ -1308,11 +1308,11 @@ gtk_clipboard_wait_for_contents (GtkClipboard *clipboard,
 
   g_return_val_if_fail (clipboard != NULL, NULL);
   g_return_val_if_fail (target != GDK_NONE, NULL);
-  
+
   results.data = NULL;
   results.loop = g_main_loop_new (NULL, TRUE);
 
-  gtk_clipboard_request_contents (clipboard, target, 
+  gtk_clipboard_request_contents (clipboard, target,
 				  clipboard_received_func,
 				  &results);
 
@@ -1328,7 +1328,7 @@ gtk_clipboard_wait_for_contents (GtkClipboard *clipboard,
   return results.data;
 }
 
-static void 
+static void
 clipboard_text_received_func (GtkClipboard *clipboard,
 			      const gchar  *text,
 			      gpointer      data)
@@ -1342,12 +1342,12 @@ clipboard_text_received_func (GtkClipboard *clipboard,
 /**
  * gtk_clipboard_wait_for_text:
  * @clipboard: a #GtkClipboard
- * 
+ *
  * Requests the contents of the clipboard as text and converts
  * the result to UTF-8 if necessary. This function waits for
  * the data to be received using the main loop, so events,
  * timeouts, etc, may be dispatched during the wait.
- * 
+ *
  * Return value: a newly-allocated UTF-8 string which must
  *               be freed with g_free(), or %NULL if retrieving
  *               the selection data failed. (This could happen
@@ -1361,7 +1361,7 @@ gtk_clipboard_wait_for_text (GtkClipboard *clipboard)
   WaitResults results;
 
   g_return_val_if_fail (clipboard != NULL, NULL);
-  
+
   results.data = NULL;
   results.loop = g_main_loop_new (NULL, TRUE);
 
@@ -1452,7 +1452,7 @@ gtk_clipboard_wait_for_rich_text (GtkClipboard  *clipboard,
   return results.data;
 }
 
-static void 
+static void
 clipboard_image_received_func (GtkClipboard *clipboard,
 			       GdkPixbuf    *pixbuf,
 			       gpointer      data)
@@ -1468,17 +1468,17 @@ clipboard_image_received_func (GtkClipboard *clipboard,
 /**
  * gtk_clipboard_wait_for_image:
  * @clipboard: a #GtkClipboard
- * 
+ *
  * Requests the contents of the clipboard as image and converts
  * the result to a #GdkPixbuf. This function waits for
  * the data to be received using the main loop, so events,
  * timeouts, etc, may be dispatched during the wait.
- * 
+ *
  * Return value: (transfer full): a newly-allocated #GdkPixbuf object which must
- *               be disposed with g_object_unref(), or %NULL if 
- *               retrieving the selection data failed. (This 
- *               could happen for various reasons, in particular 
- *               if the clipboard was empty or if the contents of 
+ *               be disposed with g_object_unref(), or %NULL if
+ *               retrieving the selection data failed. (This
+ *               could happen for various reasons, in particular
+ *               if the clipboard was empty or if the contents of
  *               the clipboard could not be converted into an image.)
  *
  * Since: 2.6
@@ -1489,7 +1489,7 @@ gtk_clipboard_wait_for_image (GtkClipboard *clipboard)
   WaitResults results;
 
   g_return_val_if_fail (clipboard != NULL, NULL);
-  
+
   results.data = NULL;
   results.loop = g_main_loop_new (NULL, TRUE);
 
@@ -1509,7 +1509,7 @@ gtk_clipboard_wait_for_image (GtkClipboard *clipboard)
   return results.data;
 }
 
-static void 
+static void
 clipboard_uris_received_func (GtkClipboard *clipboard,
 			      gchar       **uris,
 			      gpointer      data)
@@ -1523,7 +1523,7 @@ clipboard_uris_received_func (GtkClipboard *clipboard,
 /**
  * gtk_clipboard_wait_for_uris:
  * @clipboard: a #GtkClipboard
- * 
+ *
  * Requests the contents of the clipboard as URIs. This function waits
  * for the data to be received using the main loop, so events,
  * timeouts, etc, may be dispatched during the wait.
@@ -1544,7 +1544,7 @@ gtk_clipboard_wait_for_uris (GtkClipboard *clipboard)
   WaitResults results;
 
   g_return_val_if_fail (clipboard != NULL, NULL);
-  
+
   results.data = NULL;
   results.loop = g_main_loop_new (NULL, TRUE);
 
@@ -1585,17 +1585,17 @@ gtk_clipboard_get_display (GtkClipboard *clipboard)
 /**
  * gtk_clipboard_wait_is_text_available:
  * @clipboard: a #GtkClipboard
- * 
+ *
  * Test to see if there is text available to be pasted
  * This is done by requesting the TARGETS atom and checking
- * if it contains any of the supported text targets. This function 
- * waits for the data to be received using the main loop, so events, 
+ * if it contains any of the supported text targets. This function
+ * waits for the data to be received using the main loop, so events,
  * timeouts, etc, may be dispatched during the wait.
  *
  * This function is a little faster than calling
  * gtk_clipboard_wait_for_text() since it doesn't need to retrieve
  * the actual text.
- * 
+ *
  * Return value: %TRUE is there is text available, %FALSE otherwise.
  **/
 gboolean
@@ -1656,17 +1656,17 @@ gtk_clipboard_wait_is_rich_text_available (GtkClipboard  *clipboard,
 /**
  * gtk_clipboard_wait_is_image_available:
  * @clipboard: a #GtkClipboard
- * 
+ *
  * Test to see if there is an image available to be pasted
  * This is done by requesting the TARGETS atom and checking
- * if it contains any of the supported image targets. This function 
- * waits for the data to be received using the main loop, so events, 
+ * if it contains any of the supported image targets. This function
+ * waits for the data to be received using the main loop, so events,
  * timeouts, etc, may be dispatched during the wait.
  *
  * This function is a little faster than calling
  * gtk_clipboard_wait_for_image() since it doesn't need to retrieve
  * the actual image data.
- * 
+ *
  * Return value: %TRUE is there is an image available, %FALSE otherwise.
  *
  * Since: 2.6
@@ -1677,7 +1677,7 @@ gtk_clipboard_wait_is_image_available (GtkClipboard *clipboard)
   GtkSelectionData *data;
   gboolean result = FALSE;
 
-  data = gtk_clipboard_wait_for_contents (clipboard, 
+  data = gtk_clipboard_wait_for_contents (clipboard,
 					  gdk_atom_intern_static_string ("TARGETS"));
   if (data)
     {
@@ -1691,17 +1691,17 @@ gtk_clipboard_wait_is_image_available (GtkClipboard *clipboard)
 /**
  * gtk_clipboard_wait_is_uris_available:
  * @clipboard: a #GtkClipboard
- * 
+ *
  * Test to see if there is a list of URIs available to be pasted
  * This is done by requesting the TARGETS atom and checking
  * if it contains the URI targets. This function
- * waits for the data to be received using the main loop, so events, 
+ * waits for the data to be received using the main loop, so events,
  * timeouts, etc, may be dispatched during the wait.
  *
  * This function is a little faster than calling
  * gtk_clipboard_wait_for_uris() since it doesn't need to retrieve
  * the actual URI data.
- * 
+ *
  * Return value: %TRUE is there is an URI list available, %FALSE otherwise.
  *
  * Since: 2.14
@@ -1712,7 +1712,7 @@ gtk_clipboard_wait_is_uris_available (GtkClipboard *clipboard)
   GtkSelectionData *data;
   gboolean result = FALSE;
 
-  data = gtk_clipboard_wait_for_contents (clipboard, 
+  data = gtk_clipboard_wait_for_contents (clipboard,
 					  gdk_atom_intern_static_string ("TARGETS"));
   if (data)
     {
@@ -1726,15 +1726,15 @@ gtk_clipboard_wait_is_uris_available (GtkClipboard *clipboard)
 /**
  * gtk_clipboard_wait_for_targets
  * @clipboard: a #GtkClipboard
- * @targets: (out) (array length=n_targets) (transfer container):  
+ * @targets: (out) (array length=n_targets) (transfer container):
  *           location to store an array of targets. The result
  *           stored here must be freed with g_free().
  * @n_targets: location to store number of items in @targets.
  *
  * Returns a list of targets that are present on the clipboard, or %NULL
- * if there aren't any targets available. The returned list must be 
+ * if there aren't any targets available. The returned list must be
  * freed with g_free().
- * This function waits for the data to be received using the main 
+ * This function waits for the data to be received using the main
  * loop, so events, timeouts, etc, may be dispatched during the wait.
  *
  * Return value: %TRUE if any targets are present on the clipboard,
@@ -1743,13 +1743,13 @@ gtk_clipboard_wait_is_uris_available (GtkClipboard *clipboard)
  * Since: 2.4
  */
 gboolean
-gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard, 
+gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard,
 				GdkAtom      **targets,
 				gint          *n_targets)
 {
   GtkSelectionData *data;
   gboolean result = FALSE;
-  
+
   g_return_val_if_fail (clipboard != NULL, FALSE);
 
   /* If the display supports change notification we cache targets */
@@ -1758,19 +1758,19 @@ gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard,
     {
       if (n_targets)
  	*n_targets = clipboard->n_cached_targets;
- 
+
       if (targets)
  	*targets = g_memdup2 (clipboard->cached_targets,
  			     clipboard->n_cached_targets * sizeof (GdkAtom));
 
        return TRUE;
     }
-  
+
   if (n_targets)
     *n_targets = 0;
-      
+
   if (targets)
-    *targets = NULL;      
+    *targets = NULL;
 
   data = gtk_clipboard_wait_for_contents (clipboard, gdk_atom_intern_static_string ("TARGETS"));
 
@@ -1778,24 +1778,24 @@ gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard,
     {
       GdkAtom *tmp_targets;
       gint tmp_n_targets;
-       
+
       result = gtk_selection_data_get_targets (data, &tmp_targets, &tmp_n_targets);
- 
+
       if (gdk_display_supports_selection_notification (gtk_clipboard_get_display (clipboard)))
  	{
  	  clipboard->n_cached_targets = tmp_n_targets;
  	  clipboard->cached_targets = g_memdup2 (tmp_targets,
  						tmp_n_targets * sizeof (GdkAtom));
  	}
- 
+
       if (n_targets)
  	*n_targets = tmp_n_targets;
- 
+
       if (targets)
  	*targets = tmp_targets;
       else
  	g_free (tmp_targets);
-      
+
       gtk_selection_data_free (data);
     }
 
@@ -1803,7 +1803,7 @@ gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard,
 }
 
 static GtkClipboard *
-clipboard_peek (GdkDisplay *display, 
+clipboard_peek (GdkDisplay *display,
 		GdkAtom     selection,
 		gboolean    only_if_exists)
 {
@@ -1839,7 +1839,7 @@ clipboard_peek (GdkDisplay *display,
 			G_CALLBACK (clipboard_display_closed), clipboard);
       gdk_display_request_selection_notification (display, selection);
     }
-  
+
   return clipboard;
 }
 
@@ -1878,7 +1878,7 @@ gtk_clipboard_wait_is_target_available (GtkClipboard *clipboard,
   GdkAtom *targets;
   gint i, n_targets;
   gboolean retval = FALSE;
-    
+
   if (!gtk_clipboard_wait_for_targets (clipboard, &targets, &n_targets))
     return FALSE;
 
@@ -1892,29 +1892,29 @@ gtk_clipboard_wait_is_target_available (GtkClipboard *clipboard,
     }
 
   g_free (targets);
-  
+
   return retval;
 }
 
 /**
  * _gtk_clipboard_handle_event:
  * @event: a owner change event
- * 
+ *
  * Emits the #GtkClipboard::owner-change signal on the appropriate @clipboard.
  *
  * Since: 2.6
  **/
-void 
+void
 _gtk_clipboard_handle_event (GdkEventOwnerChange *event)
 {
   GdkDisplay *display;
   GtkClipboard *clipboard;
-  
+
   display = gdk_window_get_display (event->window);
   clipboard = clipboard_peek (display, event->selection, TRUE);
-      
+
   if (clipboard)
-    g_signal_emit (clipboard, 
+    g_signal_emit (clipboard,
 		   clipboard_signals[OWNER_CHANGE], 0, event, NULL);
 }
 
@@ -1922,7 +1922,7 @@ static gboolean
 gtk_clipboard_store_timeout (GtkClipboard *clipboard)
 {
   g_main_loop_quit (clipboard->store_loop);
-  
+
   return FALSE;
 }
 
@@ -1940,7 +1940,7 @@ gtk_clipboard_store_timeout (GtkClipboard *clipboard)
  * This value is reset when the clipboard owner changes.
  * Where the clipboard data is stored is platform dependent,
  * see gdk_display_store_clipboard () for more information.
- * 
+ *
  * Since: 2.6
  */
 void
@@ -1953,22 +1953,22 @@ gtk_clipboard_set_can_store (GtkClipboard         *clipboard,
   static const GtkTargetEntry save_targets[] = {
     { "SAVE_TARGETS", 0, TARGET_SAVE_TARGETS }
   };
-  
+
   g_return_if_fail (GTK_IS_CLIPBOARD (clipboard));
   g_return_if_fail (n_targets >= 0);
 
   if (clipboard->selection != GDK_SELECTION_CLIPBOARD)
     return;
-  
+
   g_free (clipboard->storable_targets);
-  
+
   clipboard_widget = get_clipboard_widget (clipboard->display);
 
   /* n_storable_targets being -1 means that
    * gtk_clipboard_set_can_store hasn't been called since the
-   * clipboard owner changed. We only want to add SAVE_TARGETS and 
+   * clipboard owner changed. We only want to add SAVE_TARGETS and
    * ref the owner once , so we do that here
-   */  
+   */
   if (clipboard->n_storable_targets == -1)
     {
       gtk_selection_add_targets (clipboard_widget, clipboard->selection,
@@ -1978,7 +1978,7 @@ gtk_clipboard_set_can_store (GtkClipboard         *clipboard,
       if (clipboard->have_owner)
 	g_object_ref (clipboard->user_data);
     }
-  
+
   clipboard->n_storable_targets = n_targets;
   clipboard->storable_targets = g_new (GdkAtom, n_targets);
   for (i = 0; i < n_targets; i++)
@@ -2015,7 +2015,7 @@ gtk_clipboard_store (GtkClipboard *clipboard)
 
   if (clipboard->n_storable_targets < 0)
     return;
-  
+
   if (!gdk_display_supports_clipboard_persistence (clipboard->display))
     return;
 
@@ -2044,15 +2044,15 @@ gtk_clipboard_store (GtkClipboard *clipboard)
       g_main_loop_run (clipboard->store_loop);
       GDK_THREADS_ENTER ();
     }
-  
+
   g_main_loop_unref (clipboard->store_loop);
   clipboard->store_loop = NULL;
-  
+
   g_source_remove (clipboard->store_timeout);
   clipboard->store_timeout = 0;
   g_signal_handler_disconnect (clipboard_widget, clipboard->notify_signal_id);
   clipboard->notify_signal_id = 0;
-  
+
   clipboard->storing_selection = FALSE;
 
   g_object_unref (clipboard);
@@ -2066,7 +2066,7 @@ _gtk_clipboard_store_all (void)
 {
   GtkClipboard *clipboard;
   GSList *displays, *list;
-  
+
   displays = gdk_display_manager_list_displays (gdk_display_manager_get ());
 
   list = displays;
@@ -2078,11 +2078,11 @@ _gtk_clipboard_store_all (void)
 
       if (clipboard)
 	gtk_clipboard_store (clipboard);
-      
+
       list = list->next;
     }
   g_slist_free (displays);
-  
+
 }
 
 #define __GTK_CLIPBOARD_C__

@@ -86,11 +86,11 @@ static void	             gail_button_get_image_position
 static void                  gail_button_get_image_size (AtkImage       *image,
                                                          gint           *width,
                                                          gint           *height);
-static gboolean              gail_button_set_image_description 
+static gboolean              gail_button_set_image_description
                                                         (AtkImage       *image,
                                                          const gchar    *description);
 
-/* atktext.h */ 
+/* atktext.h */
 static void	  atk_text_interface_init	   (AtkTextIface	*iface);
 
 static gchar*	  gail_button_get_text		   (AtkText	      *text,
@@ -125,7 +125,7 @@ static gint gail_button_get_offset_at_point        (AtkText           *text,
                                                     gint              x,
                                                     gint              y,
 			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_button_get_run_attributes 
+static AtkAttributeSet* gail_button_get_run_attributes
                                                    (AtkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
@@ -209,7 +209,7 @@ gail_button_get_name (AtkObject *obj)
 
       child = get_label_from_button (widget, 0, FALSE);
       if (GTK_IS_LABEL (child))
-        name = gtk_label_get_text (GTK_LABEL (child)); 
+        name = gtk_label_get_text (GTK_LABEL (child));
       else
         {
           GtkImage *image;
@@ -291,14 +291,14 @@ gail_button_real_initialize (AtkObject *obj,
     {
       if (gtk_widget_get_mapped (label))
         gail_button_init_textutil (button, label);
-      else 
+      else
         g_signal_connect (label,
                           "map",
                           G_CALLBACK (gail_button_label_map_gtk),
                           button);
     }
   button->default_is_press = gail_button_is_default_press (widget);
-    
+
   set_role_for_button (obj, data);
 }
 
@@ -306,7 +306,7 @@ static void
 gail_button_label_map_gtk (GtkWidget *widget,
                            gpointer data)
 {
-  GailButton *button; 
+  GailButton *button;
 
   button = GAIL_BUTTON (data);
   gail_button_init_textutil (button, widget);
@@ -402,7 +402,7 @@ gail_button_init_textutil (GailButton  *button,
   g_signal_connect (label,
                     "notify",
                     (GCallback) gail_button_notify_label_gtk,
-                    button);     
+                    button);
 }
 
 static gint
@@ -462,14 +462,14 @@ gail_button_do_action (AtkAction *action,
   if (!gtk_widget_is_sensitive (widget) || !gtk_widget_get_visible (widget))
     return FALSE;
 
-  button = GAIL_BUTTON (action); 
+  button = GAIL_BUTTON (action);
 
   switch (i)
     {
     case 0:
     case 1:
     case 2:
-      if (!button->action_queue) 
+      if (!button->action_queue)
 	{
 	  button->action_queue = g_queue_new ();
 	}
@@ -481,13 +481,13 @@ gail_button_do_action (AtkAction *action,
       return_value = FALSE;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static gboolean
 idle_do_action (gpointer data)
 {
-  GtkButton *button; 
+  GtkButton *button;
   GtkWidget *widget;
   GailButton *gail_button;
   GdkEvent tmp_event;
@@ -515,8 +515,8 @@ idle_do_action (gpointer data)
       gtk_widget_event (widget, &tmp_event);
     }
 
-  button = GTK_BUTTON (widget); 
-  while (!g_queue_is_empty (gail_button->action_queue)) 
+  button = GTK_BUTTON (widget);
+  while (!g_queue_is_empty (gail_button->action_queue))
     {
       gint action_number = GPOINTER_TO_INT(g_queue_pop_head (gail_button->action_queue));
       if (gail_button->default_is_press)
@@ -529,13 +529,13 @@ idle_do_action (gpointer data)
       switch (action_number)
 	{
 	case 0:
-	  /* first a press */ 
+	  /* first a press */
 
 	  button->in_button = TRUE;
 	  g_signal_emit_by_name (button, "enter");
 	  /*
 	   * Simulate a button press event. calling gtk_button_pressed() does
-	   * not get the job done for a GtkOptionMenu.  
+	   * not get the job done for a GtkOptionMenu.
 	   */
 	  tmp_event.button.type = GDK_BUTTON_PRESS;
 	  tmp_event.button.window = widget->window;
@@ -543,7 +543,7 @@ idle_do_action (gpointer data)
 	  tmp_event.button.send_event = TRUE;
 	  tmp_event.button.time = GDK_CURRENT_TIME;
 	  tmp_event.button.axes = NULL;
-	  
+
 	  gtk_widget_event (widget, &tmp_event);
 
 	  /* then a release */
@@ -557,7 +557,7 @@ idle_do_action (gpointer data)
 	  g_signal_emit_by_name (button, "enter");
 	  /*
 	   * Simulate a button press event. calling gtk_button_pressed() does
-	   * not get the job done for a GtkOptionMenu.  
+	   * not get the job done for a GtkOptionMenu.
 	   */
 	  tmp_event.button.type = GDK_BUTTON_PRESS;
 	  tmp_event.button.window = widget->window;
@@ -565,7 +565,7 @@ idle_do_action (gpointer data)
 	  tmp_event.button.send_event = TRUE;
 	  tmp_event.button.time = GDK_CURRENT_TIME;
 	  tmp_event.button.axes = NULL;
-	  
+
 	  gtk_widget_event (widget, &tmp_event);
 	  break;
 	case 2:
@@ -618,7 +618,7 @@ gail_button_get_description (AtkAction *action,
       return_value = NULL;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static const gchar*
@@ -645,7 +645,7 @@ gail_button_get_keybinding (AtkAction *action,
          */
         GtkWidget *widget;
         GtkWidget *label;
-        guint key_val; 
+        guint key_val;
 
         widget = GTK_ACCESSIBLE (button)->widget;
         if (widget == NULL)
@@ -659,7 +659,7 @@ gail_button_get_keybinding (AtkAction *action,
         label = get_label_from_button (widget, 0, FALSE);
         if (GTK_IS_LABEL (label))
           {
-            key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label)); 
+            key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label));
             if (key_val != GDK_VoidSymbol)
               return_value = gtk_accelerator_name (key_val, GDK_MOD1_MASK);
           }
@@ -676,21 +676,21 @@ gail_button_get_keybinding (AtkAction *action,
               {
                 relation = atk_relation_set_get_relation_by_type (set, ATK_RELATION_LABELLED_BY);
                 if (relation)
-                  {              
+                  {
                     target = atk_relation_get_target (relation);
-            
+
                     target_object = g_ptr_array_index (target, 0);
                     if (GTK_IS_ACCESSIBLE (target_object))
                       {
                         label = GTK_ACCESSIBLE (target_object)->widget;
-                      } 
+                      }
                   }
                 g_object_unref (set);
               }
 
             if (GTK_IS_LABEL (label))
               {
-                key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label)); 
+                key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label));
                 if (key_val != GDK_VoidSymbol)
                   return_value = gtk_accelerator_name (key_val, GDK_MOD1_MASK);
               }
@@ -702,7 +702,7 @@ gail_button_get_keybinding (AtkAction *action,
     default:
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static const gchar*
@@ -727,7 +727,7 @@ gail_button_action_get_name (AtkAction *action,
       /*
        * This action is a "click" to activate a button or "toggle" to change
        * the state of a toggle button check box or radio button.
-       */ 
+       */
       return_value = "click";
       break;
     case 1:
@@ -739,7 +739,7 @@ gail_button_action_get_name (AtkAction *action,
       break;
     case 2:
       /*
-       * This action simulates releasing the left mouse button outside the 
+       * This action simulates releasing the left mouse button outside the
        * button.
        *
        * To simulate releasing the left mouse button inside the button use
@@ -751,7 +751,7 @@ gail_button_action_get_name (AtkAction *action,
       return_value = NULL;
       break;
     }
-  return return_value; 
+  return return_value;
 }
 
 static gboolean
@@ -850,9 +850,9 @@ gail_button_ref_child (AtkObject *obj,
     child_widget = get_nth_attached_menu (widget, i);
   }
   else
-    child_widget = NULL;    
+    child_widget = NULL;
 
-  if (!child_widget) 
+  if (!child_widget)
     {
       if (get_n_labels_from_button (widget) > 1)
         {
@@ -990,7 +990,7 @@ gail_button_get_image_description (AtkImage *image) {
       obj = gtk_widget_get_accessible (GTK_WIDGET (button_image));
       return atk_image_get_image_description (ATK_IMAGE (obj));
     }
-  else 
+  else
     return NULL;
 }
 
@@ -1021,7 +1021,7 @@ gail_button_get_image_position (AtkImage     *image,
   if (button_image != NULL)
     {
       obj = gtk_widget_get_accessible (GTK_WIDGET (button_image));
-      atk_component_get_position (ATK_COMPONENT (obj), x, y, coord_type); 
+      atk_component_get_position (ATK_COMPONENT (obj), x, y, coord_type);
     }
   else
     {
@@ -1056,7 +1056,7 @@ gail_button_get_image_size (AtkImage *image,
   if (button_image != NULL)
     {
       obj = gtk_widget_get_accessible (GTK_WIDGET (button_image));
-      atk_image_get_image_size (ATK_IMAGE (obj), width, height); 
+      atk_image_get_image_size (ATK_IMAGE (obj), width, height);
     }
   else
     {
@@ -1083,12 +1083,12 @@ gail_button_set_image_description (AtkImage    *image,
 
   button_image = get_image_from_button (widget);
 
-  if (button_image != NULL) 
+  if (button_image != NULL)
     {
       obj = gtk_widget_get_accessible (GTK_WIDGET (button_image));
       return atk_image_set_image_description (ATK_IMAGE (obj), description);
     }
-  else 
+  else
     return FALSE;
 }
 
@@ -1130,7 +1130,7 @@ gail_button_get_text (AtkText *text,
     return NULL;
 
   button = GAIL_BUTTON (text);
-  if (!button->textutil) 
+  if (!button->textutil)
     gail_button_init_textutil (button, label);
 
   label_text = gtk_label_get_text (GTK_LABEL (label));
@@ -1139,7 +1139,7 @@ gail_button_get_text (AtkText *text,
     return NULL;
   else
   {
-    return gail_text_util_get_substring (button->textutil, 
+    return gail_text_util_get_substring (button->textutil,
                                          start_pos, end_pos);
   }
 }
@@ -1154,13 +1154,13 @@ gail_button_get_text_before_offset (AtkText         *text,
   GtkWidget *widget;
   GtkWidget *label;
   GailButton *button;
-  
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = get_label_from_button (widget, 0, FALSE);
 
@@ -1172,8 +1172,8 @@ gail_button_get_text_before_offset (AtkText         *text,
     gail_button_init_textutil (button, label);
 
   return gail_text_util_get_text (button->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET, 
-                           boundary_type, offset, start_offset, end_offset); 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET,
+                           boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
@@ -1186,13 +1186,13 @@ gail_button_get_text_at_offset (AtkText         *text,
   GtkWidget *widget;
   GtkWidget *label;
   GailButton *button;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = get_label_from_button (widget, 0, FALSE);
 
@@ -1204,7 +1204,7 @@ gail_button_get_text_at_offset (AtkText         *text,
     gail_button_init_textutil (button, label);
 
   return gail_text_util_get_text (button->textutil,
-                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET, 
+                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
 }
 
@@ -1220,13 +1220,13 @@ gail_button_get_text_after_offset (AtkText         *text,
   GailButton *button;
 
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
   {
     /* State is defunct */
     return NULL;
   }
-  
+
   /* Get label */
   label = get_label_from_button (widget, 0, FALSE);
 
@@ -1238,7 +1238,7 @@ gail_button_get_text_after_offset (AtkText         *text,
     gail_button_init_textutil (button, label);
 
   return gail_text_util_get_text (button->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET, 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET,
                            boundary_type, offset, start_offset, end_offset);
 }
 
@@ -1275,7 +1275,7 @@ gail_button_get_character_extents (AtkText      *text,
   PangoRectangle char_rect;
   gint index, x_layout, y_layout;
   const gchar *label_text;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
@@ -1286,22 +1286,22 @@ gail_button_get_character_extents (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   index = g_utf8_offset_to_pointer (label_text, offset) - label_text;
   pango_layout_index_to_pos (gtk_label_get_layout (GTK_LABEL (label)), index, &char_rect);
-  
-  gail_misc_get_extents_from_pango_rectangle (label, &char_rect, 
-                    x_layout, y_layout, x, y, width, height, coords);
-} 
 
-static gint 
+  gail_misc_get_extents_from_pango_rectangle (label, &char_rect,
+                    x_layout, y_layout, x, y, width, height, coords);
+}
+
+static gint
 gail_button_get_offset_at_point (AtkText      *text,
                                  gint         x,
                                  gint         y,
 			         AtkCoordType coords)
-{ 
+{
   GtkWidget *widget;
   GtkWidget *label;
   gint index, x_layout, y_layout;
@@ -1315,11 +1315,11 @@ gail_button_get_offset_at_point (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return -1;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
-  
-  index = gail_misc_get_index_at_point_in_layout (label, 
-                                              gtk_label_get_layout (GTK_LABEL (label)), 
+
+  index = gail_misc_get_index_at_point_in_layout (label,
+                                              gtk_label_get_layout (GTK_LABEL (label)),
                                               x_layout, y_layout, x, y, coords);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   if (index == -1)
@@ -1327,10 +1327,10 @@ gail_button_get_offset_at_point (AtkText      *text,
       if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
         return g_utf8_strlen (label_text, -1);
 
-      return index;  
+      return index;
     }
   else
-    return g_utf8_pointer_to_offset (label_text, label_text + index);  
+    return g_utf8_pointer_to_offset (label_text, label_text + index);
 }
 
 static AtkAttributeSet*
@@ -1354,19 +1354,19 @@ gail_button_get_run_attributes (AtkText        *text,
 
   if (!GTK_IS_LABEL(label))
     return NULL;
-  
+
   /* Get values set for entire label, if any */
   justify = gtk_label_get_justify (GTK_LABEL (label));
   if (justify != GTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_JUSTIFICATION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
   dir = gtk_widget_get_direction (label);
   if (dir == GTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_DIRECTION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
     }
@@ -1403,7 +1403,7 @@ gail_button_get_default_attributes (AtkText        *text)
   return at_set;
 }
 
-static gunichar 
+static gunichar
 gail_button_get_character_at_offset (AtkText	         *text,
                                      gint	         offset)
 {
@@ -1461,11 +1461,11 @@ find_label_child (GtkContainer *container,
 {
   GList *children, *tmp_list;
   GtkWidget *child;
- 
+
   children = gtk_container_get_children (container);
 
   child = NULL;
-  for (tmp_list = children; tmp_list != NULL; tmp_list = tmp_list->next) 
+  for (tmp_list = children; tmp_list != NULL; tmp_list = tmp_list->next)
     {
       if (GTK_IS_LABEL (tmp_list->data))
         {
@@ -1489,7 +1489,7 @@ find_label_child (GtkContainer *container,
 	    }
         }
        /*
-        * Label for button which are GtkTreeView column headers are in a 
+        * Label for button which are GtkTreeView column headers are in a
         * GtkHBox in a GtkAlignment.
         */
       else if (GTK_IS_ALIGNMENT (tmp_list->data))
@@ -1524,7 +1524,7 @@ find_label_child (GtkContainer *container,
           child = find_label_child (GTK_CONTAINER (tmp_list->data), index, allow_many);
           if (child)
             break;
-        } 
+        }
     }
   g_list_free (children);
   return child;
@@ -1557,17 +1557,17 @@ count_labels (GtkContainer *container,
               gint         *n_labels)
 {
   GList *children, *tmp_list;
- 
+
   children = gtk_container_get_children (container);
 
-  for (tmp_list = children; tmp_list != NULL; tmp_list = tmp_list->next) 
+  for (tmp_list = children; tmp_list != NULL; tmp_list = tmp_list->next)
     {
       if (GTK_IS_LABEL (tmp_list->data))
         {
           (*n_labels)++;
         }
        /*
-        * Label for button which are GtkTreeView column headers are in a 
+        * Label for button which are GtkTreeView column headers are in a
         * GtkHBox in a GtkAlignment.
         */
       else if (GTK_IS_ALIGNMENT (tmp_list->data))
@@ -1581,7 +1581,7 @@ count_labels (GtkContainer *container,
       else if (GTK_IS_CONTAINER (tmp_list->data))
         {
           count_labels (GTK_CONTAINER (tmp_list->data), n_labels);
-        } 
+        }
     }
   g_list_free (children);
 }
@@ -1635,7 +1635,7 @@ static gint
 get_n_attached_menus (GtkWidget  *widget)
 {
   GList *list_menus;
-  
+
   if (widget == NULL)
     return 0;
 

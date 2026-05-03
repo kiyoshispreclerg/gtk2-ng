@@ -55,7 +55,7 @@ GQuark     gtk_print_backend_error_quark      (void);
 #define GTK_IS_PRINT_BACKEND_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINT_BACKEND))
 #define GTK_PRINT_BACKEND_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINT_BACKEND, GtkPrintBackendClass))
 
-typedef enum 
+typedef enum
 {
   GTK_PRINT_BACKEND_STATUS_UNKNOWN,
   GTK_PRINT_BACKEND_STATUS_OK,
@@ -153,7 +153,7 @@ void        gtk_print_backend_print_stream         (GtkPrintBackend         *pri
 						    GDestroyNotify           dnotify);
 GList *     gtk_print_backend_load_modules         (void);
 void        gtk_print_backend_destroy              (GtkPrintBackend         *print_backend);
-void        gtk_print_backend_set_password         (GtkPrintBackend         *backend, 
+void        gtk_print_backend_set_password         (GtkPrintBackend         *backend,
                                                     gchar                  **auth_info_required,
                                                     gchar                  **auth_info);
 

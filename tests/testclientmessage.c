@@ -28,7 +28,7 @@ send_known (void)
   GdkEvent *event = gdk_event_new (GDK_CLIENT_EVENT);
   static int counter = 42;
   int i;
-  
+
   event->client.window = NULL;
   event->client.message_type = my_type;
   event->client.data_format = 32;
@@ -37,7 +37,7 @@ send_known (void)
     event->client.data.l[i] = 0;
 
   gdk_screen_broadcast_client_message (gdk_display_get_default_screen (gdk_display_get_default ()), event);
-  
+
   gdk_event_free (event);
 }
 
@@ -47,7 +47,7 @@ send_random (void)
   GdkEvent *event = gdk_event_new (GDK_CLIENT_EVENT);
   static int counter = 1;
   int i;
-  
+
   event->client.window = NULL;
   event->client.message_type = random_type;
   event->client.data_format = 32;
@@ -56,7 +56,7 @@ send_random (void)
     event->client.data.l[i] = 0;
 
   gdk_screen_broadcast_client_message (gdk_display_get_default_screen (gdk_display_get_default ()), event);
-  
+
   gdk_event_free (event);
 }
 

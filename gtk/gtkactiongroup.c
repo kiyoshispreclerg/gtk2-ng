@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 2003.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -47,7 +47,7 @@
 
 #define GTK_ACTION_GROUP_GET_PRIVATE(obj) ((GtkActionGroupPrivate *) gtk_action_group_get_instance_private (GTK_ACTION_GROUP (obj)))
 
-struct _GtkActionGroupPrivate 
+struct _GtkActionGroupPrivate
 {
   gchar           *name;
   gboolean	   sensitive;
@@ -68,7 +68,7 @@ gtk_action_group_get_instance_private (GtkActionGroup *self)
   return (GtkActionGroupPrivate *) G_STRUCT_MEMBER_P (self, gtk_action_group_private_offset);
 }
 
-enum 
+enum
 {
   CONNECT_PROXY,
   DISCONNECT_PROXY,
@@ -77,7 +77,7 @@ enum
   LAST_SIGNAL
 };
 
-enum 
+enum
 {
   PROP_0,
   PROP_NAME,
@@ -207,15 +207,15 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
    * @action: the action
    * @proxy: the proxy
    *
-   * The ::connect-proxy signal is emitted after connecting a proxy to 
-   * an action in the group. Note that the proxy may have been connected 
+   * The ::connect-proxy signal is emitted after connecting a proxy to
+   * an action in the group. Note that the proxy may have been connected
    * to a different action before.
    *
    * This is intended for simple customizations for which a custom action
    * class would be too clumsy, e.g. showing tooltips for menuitems in the
    * statusbar.
    *
-   * #GtkUIManager proxies the signal and provides global notification 
+   * #GtkUIManager proxies the signal and provides global notification
    * just before any action is connected to a proxy, which is probably more
    * convenient to use.
    *
@@ -235,10 +235,10 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
    * @action: the action
    * @proxy: the proxy
    *
-   * The ::disconnect-proxy signal is emitted after disconnecting a proxy 
-   * from an action in the group. 
+   * The ::disconnect-proxy signal is emitted after disconnecting a proxy
+   * from an action in the group.
    *
-   * #GtkUIManager proxies the signal and provides global notification 
+   * #GtkUIManager proxies the signal and provides global notification
    * just before any action is connected to a proxy, which is probably more
    * convenient to use.
    *
@@ -249,7 +249,7 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
 		  G_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _gtk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2, 
+		  G_TYPE_NONE, 2,
 		  GTK_TYPE_ACTION, GTK_TYPE_WIDGET);
 
   /**
@@ -270,7 +270,7 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
 		  G_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _gtk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, 
+		  G_TYPE_NONE, 1,
 		  GTK_TYPE_ACTION);
 
   /**
@@ -291,13 +291,13 @@ gtk_action_group_class_init (GtkActionGroupClass *klass)
 		  G_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _gtk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, 
+		  G_TYPE_NONE, 1,
 		  GTK_TYPE_ACTION);
 }
 
 
-static void 
-remove_action (GtkAction *action) 
+static void
+remove_action (GtkAction *action)
 {
   g_object_set (action, I_("action-group"), NULL, NULL);
   g_object_unref (action);
@@ -439,19 +439,19 @@ gtk_action_group_buildable_custom_tag_end (GtkBuildable *buildable,
 					   gpointer     *user_data)
 {
   AcceleratorParserData *data;
-  
+
   if (strcmp (tagname, "accelerator") == 0)
     {
       GtkActionGroup *action_group;
       GtkActionGroupPrivate *private;
       GtkAction *action;
       gchar *accel_path;
-      
+
       data = (AcceleratorParserData*)user_data;
       action_group = GTK_ACTION_GROUP (buildable);
       private = GTK_ACTION_GROUP_GET_PRIVATE (action_group);
       action = GTK_ACTION (child);
-	
+
       accel_path = g_strconcat ("<Actions>/",
 				private->name, "/",
 				gtk_action_get_name (action), NULL);
@@ -462,7 +462,7 @@ gtk_action_group_buildable_custom_tag_end (GtkBuildable *buildable,
 	gtk_accel_map_add_entry (accel_path, data->key, data->modifiers);
 
       gtk_action_set_accel_path (action, accel_path);
-      
+
       g_free (accel_path);
       g_slice_free (AcceleratorParserData, data);
     }
@@ -473,7 +473,7 @@ gtk_action_group_buildable_custom_tag_end (GtkBuildable *buildable,
  * @name: the name of the action group.
  *
  * Creates a new #GtkActionGroup object. The name of the action group
- * is used when associating <link linkend="Action-Accel">keybindings</link> 
+ * is used when associating <link linkend="Action-Accel">keybindings</link>
  * with the actions.
  *
  * Returns: the new #GtkActionGroup
@@ -523,7 +523,7 @@ gtk_action_group_set_property (GObject         *object,
   GtkActionGroup *self;
   GtkActionGroupPrivate *private;
   gchar *tmp;
-  
+
   self = GTK_ACTION_GROUP (object);
   private = GTK_ACTION_GROUP_GET_PRIVATE (self);
 
@@ -554,7 +554,7 @@ gtk_action_group_get_property (GObject    *object,
 {
   GtkActionGroup *self;
   GtkActionGroupPrivate *private;
-  
+
   self = GTK_ACTION_GROUP (object);
   private = GTK_ACTION_GROUP_GET_PRIVATE (self);
 
@@ -593,7 +593,7 @@ gtk_action_group_real_get_action (GtkActionGroup *self,
  * Gets the name of the action group.
  *
  * Returns: the name of the action group.
- * 
+ *
  * Since: 2.4
  */
 const gchar *
@@ -616,7 +616,7 @@ gtk_action_group_get_name (GtkActionGroup *action_group)
  * can only be logically sensitive (see gtk_action_is_sensitive()) if
  * they are sensitive (see gtk_action_get_sensitive()) and their group
  * is sensitive.
- * 
+ *
  * Return value: %TRUE if the group is sensitive.
  *
  * Since: 2.4
@@ -634,10 +634,10 @@ gtk_action_group_get_sensitive (GtkActionGroup *action_group)
 }
 
 static void
-cb_set_action_sensitivity (const gchar *name, 
+cb_set_action_sensitivity (const gchar *name,
 			   GtkAction   *action)
 {
-  /* Minor optimization, the action_groups state only affects actions 
+  /* Minor optimization, the action_groups state only affects actions
    * that are themselves sensitive */
   g_object_notify (G_OBJECT (action), "sensitive");
 
@@ -649,11 +649,11 @@ cb_set_action_sensitivity (const gchar *name,
  * @sensitive: new sensitivity
  *
  * Changes the sensitivity of @action_group
- * 
+ *
  * Since: 2.4
  */
 void
-gtk_action_group_set_sensitive (GtkActionGroup *action_group, 
+gtk_action_group_set_sensitive (GtkActionGroup *action_group,
 				gboolean        sensitive)
 {
   GtkActionGroupPrivate *private;
@@ -666,7 +666,7 @@ gtk_action_group_set_sensitive (GtkActionGroup *action_group,
   if (private->sensitive != sensitive)
     {
       private->sensitive = sensitive;
-      g_hash_table_foreach (private->actions, 
+      g_hash_table_foreach (private->actions,
 			    (GHFunc) cb_set_action_sensitivity, NULL);
 
       g_object_notify (G_OBJECT (action_group), "sensitive");
@@ -681,9 +681,9 @@ gtk_action_group_set_sensitive (GtkActionGroup *action_group,
  * can only be logically visible (see gtk_action_is_visible()) if
  * they are visible (see gtk_action_get_visible()) and their group
  * is visible.
- * 
+ *
  * Return value: %TRUE if the group is visible.
- * 
+ *
  * Since: 2.4
  */
 gboolean
@@ -699,10 +699,10 @@ gtk_action_group_get_visible (GtkActionGroup *action_group)
 }
 
 static void
-cb_set_action_visiblity (const gchar *name, 
+cb_set_action_visiblity (const gchar *name,
 			 GtkAction   *action)
 {
-  /* Minor optimization, the action_groups state only affects actions 
+  /* Minor optimization, the action_groups state only affects actions
    * that are themselves visible */
   g_object_notify (G_OBJECT (action), "visible");
 }
@@ -713,11 +713,11 @@ cb_set_action_visiblity (const gchar *name,
  * @visible: new visiblity
  *
  * Changes the visible of @action_group.
- * 
+ *
  * Since: 2.4
  */
 void
-gtk_action_group_set_visible (GtkActionGroup *action_group, 
+gtk_action_group_set_visible (GtkActionGroup *action_group,
 			      gboolean        visible)
 {
   GtkActionGroupPrivate *private;
@@ -730,7 +730,7 @@ gtk_action_group_set_visible (GtkActionGroup *action_group,
   if (private->visible != visible)
     {
       private->visible = visible;
-      g_hash_table_foreach (private->actions, 
+      g_hash_table_foreach (private->actions,
 			    (GHFunc) cb_set_action_visiblity, NULL);
 
       g_object_notify (G_OBJECT (action_group), "visible");
@@ -787,7 +787,7 @@ check_unique_action (GtkActionGroup *action_group,
  * does not set up the accel path of the action, which can lead to problems
  * if a user tries to modify the accelerator of a menuitem associated with
  * the action. Therefore you must either set the accel path yourself with
- * gtk_action_set_accel_path(), or use 
+ * gtk_action_set_accel_path(), or use
  * <literal>gtk_action_group_add_action_with_accel (..., NULL)</literal>.
  *
  * Since: 2.4
@@ -804,13 +804,13 @@ gtk_action_group_add_action (GtkActionGroup *action_group,
 
   name = gtk_action_get_name (action);
   g_return_if_fail (name != NULL);
-  
+
   if (!check_unique_action (action_group, name))
     return;
 
   private = GTK_ACTION_GROUP_GET_PRIVATE (action_group);
 
-  g_hash_table_insert (private->actions, 
+  g_hash_table_insert (private->actions,
 		       (gpointer) name,
                        g_object_ref (action));
   g_object_set (action, I_("action-group"), action_group, NULL);
@@ -826,8 +826,8 @@ gtk_action_group_add_action (GtkActionGroup *action_group,
  *
  * Adds an action object to the action group and sets up the accelerator.
  *
- * If @accelerator is %NULL, attempts to use the accelerator associated 
- * with the stock_id of the action. 
+ * If @accelerator is %NULL, attempts to use the accelerator associated
+ * with the stock_id of the action.
  *
  * Accel paths are set to
  * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.
@@ -855,7 +855,7 @@ gtk_action_group_add_action_with_accel (GtkActionGroup *action_group,
 
   if (accelerator)
     {
-      if (accelerator[0] == 0) 
+      if (accelerator[0] == 0)
 	accel_key = 0;
       else
 	{
@@ -865,7 +865,7 @@ gtk_action_group_add_action_with_accel (GtkActionGroup *action_group,
 		       accelerator, name);
 	}
     }
-  else 
+  else
     {
       gchar *stock_id;
       GtkStockItem stock_item;
@@ -918,8 +918,8 @@ gtk_action_group_remove_action (GtkActionGroup *action_group,
 }
 
 static void
-add_single_action (gpointer key, 
-		   gpointer value, 
+add_single_action (gpointer key,
+		   gpointer value,
 		   gpointer user_data)
 {
   GList **list = user_data;
@@ -946,7 +946,7 @@ gtk_action_group_list_actions (GtkActionGroup *action_group)
   g_return_val_if_fail (GTK_IS_ACTION_GROUP (action_group), NULL);
 
   private = GTK_ACTION_GROUP_GET_PRIVATE (action_group);
-  
+
   g_hash_table_foreach (private->actions, add_single_action, &actions);
 
   return g_list_reverse (actions);
@@ -960,13 +960,13 @@ gtk_action_group_list_actions (GtkActionGroup *action_group)
  * @n_entries: the number of entries
  * @user_data: data to pass to the action callbacks
  *
- * This is a convenience function to create a number of actions and add them 
+ * This is a convenience function to create a number of actions and add them
  * to the action group.
  *
- * The "activate" signals of the actions are connected to the callbacks and 
- * their accel paths are set to 
- * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.  
- * 
+ * The "activate" signals of the actions are connected to the callbacks and
+ * their accel paths are set to
+ * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.
+ *
  * Since: 2.4
  */
 void
@@ -975,8 +975,8 @@ gtk_action_group_add_actions (GtkActionGroup       *action_group,
 			      guint                 n_entries,
 			      gpointer              user_data)
 {
-  gtk_action_group_add_actions_full (action_group, 
-				     entries, n_entries, 
+  gtk_action_group_add_actions_full (action_group,
+				     entries, n_entries,
 				     user_data, NULL);
 }
 
@@ -1013,8 +1013,8 @@ shared_data_unref (gpointer data)
  * @destroy: destroy notification callback for @user_data
  *
  * This variant of gtk_action_group_add_actions() adds a #GDestroyNotify
- * callback for @user_data. 
- * 
+ * callback for @user_data.
+ *
  * Since: 2.4
  */
 void
@@ -1025,7 +1025,7 @@ gtk_action_group_add_actions_full (GtkActionGroup       *action_group,
 				   GDestroyNotify        destroy)
 {
 
-  /* Keep this in sync with the other 
+  /* Keep this in sync with the other
    * gtk_action_group_add_..._actions_full() functions.
    */
   guint i;
@@ -1055,27 +1055,27 @@ gtk_action_group_add_actions_full (GtkActionGroup       *action_group,
 			       tooltip,
 			       NULL);
 
-      if (entries[i].stock_id) 
+      if (entries[i].stock_id)
 	{
 	  g_object_set (action, "stock-id", entries[i].stock_id, NULL);
-	  if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (), 
+	  if (gtk_icon_theme_has_icon (gtk_icon_theme_get_default (),
 				       entries[i].stock_id))
 	    g_object_set (action, "icon-name", entries[i].stock_id, NULL);
 	}
-	  
+
       if (entries[i].callback)
 	{
 	  GClosure *closure;
 
 	  closure = g_cclosure_new (entries[i].callback, user_data, NULL);
-	  g_closure_add_finalize_notifier (closure, shared_data, 
+	  g_closure_add_finalize_notifier (closure, shared_data,
 					   (GClosureNotify)shared_data_unref);
 	  shared_data->ref_count++;
 
 	  g_signal_connect_closure (action, "activate", closure, FALSE);
 	}
-	  
-      gtk_action_group_add_action_with_accel (action_group, 
+
+      gtk_action_group_add_action_with_accel (action_group,
 					      action,
 					      entries[i].accelerator);
       g_object_unref (action);
@@ -1091,13 +1091,13 @@ gtk_action_group_add_actions_full (GtkActionGroup       *action_group,
  * @n_entries: the number of entries
  * @user_data: data to pass to the action callbacks
  *
- * This is a convenience function to create a number of toggle actions and add them 
+ * This is a convenience function to create a number of toggle actions and add them
  * to the action group.
  *
- * The "activate" signals of the actions are connected to the callbacks and 
- * their accel paths are set to 
- * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.  
- * 
+ * The "activate" signals of the actions are connected to the callbacks and
+ * their accel paths are set to
+ * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.
+ *
  * Since: 2.4
  */
 void
@@ -1106,8 +1106,8 @@ gtk_action_group_add_toggle_actions (GtkActionGroup             *action_group,
 				     guint                       n_entries,
 				     gpointer                    user_data)
 {
-  gtk_action_group_add_toggle_actions_full (action_group, 
-					    entries, n_entries, 
+  gtk_action_group_add_toggle_actions_full (action_group,
+					    entries, n_entries,
 					    user_data, NULL);
 }
 
@@ -1120,9 +1120,9 @@ gtk_action_group_add_toggle_actions (GtkActionGroup             *action_group,
  * @user_data: data to pass to the action callbacks
  * @destroy: destroy notification callback for @user_data
  *
- * This variant of gtk_action_group_add_toggle_actions() adds a 
- * #GDestroyNotify callback for @user_data. 
- * 
+ * This variant of gtk_action_group_add_toggle_actions() adds a
+ * #GDestroyNotify callback for @user_data.
+ *
  * Since: 2.4
  */
 void
@@ -1132,7 +1132,7 @@ gtk_action_group_add_toggle_actions_full (GtkActionGroup             *action_gro
 					  gpointer                    user_data,
 					  GDestroyNotify              destroy)
 {
-  /* Keep this in sync with the other 
+  /* Keep this in sync with the other
    * gtk_action_group_add_..._actions_full() functions.
    */
   guint i;
@@ -1162,7 +1162,7 @@ gtk_action_group_add_toggle_actions_full (GtkActionGroup             *action_gro
 				      tooltip,
 				      NULL);
 
-      if (entries[i].stock_id) 
+      if (entries[i].stock_id)
 	{
 	  if (gtk_icon_factory_lookup_default (entries[i].stock_id))
 	    g_object_set (action, "stock-id", entries[i].stock_id, NULL);
@@ -1177,14 +1177,14 @@ gtk_action_group_add_toggle_actions_full (GtkActionGroup             *action_gro
 	  GClosure *closure;
 
 	  closure = g_cclosure_new (entries[i].callback, user_data, NULL);
-	  g_closure_add_finalize_notifier (closure, shared_data, 
+	  g_closure_add_finalize_notifier (closure, shared_data,
 					   (GClosureNotify)shared_data_unref);
 	  shared_data->ref_count++;
 
 	  g_signal_connect_closure (action, "activate", closure, FALSE);
 	}
-	  
-      gtk_action_group_add_action_with_accel (action_group, 
+
+      gtk_action_group_add_action_with_accel (action_group,
 					      GTK_ACTION (action),
 					      entries[i].accelerator);
       g_object_unref (action);
@@ -1202,17 +1202,17 @@ gtk_action_group_add_toggle_actions_full (GtkActionGroup             *action_gro
  *   no action should be activated
  * @on_change: the callback to connect to the changed signal
  * @user_data: data to pass to the action callbacks
- * 
- * This is a convenience routine to create a group of radio actions and
- * add them to the action group. 
  *
- * The "changed" signal of the first radio action is connected to the 
- * @on_change callback and the accel paths of the actions are set to 
- * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.  
- * 
+ * This is a convenience routine to create a group of radio actions and
+ * add them to the action group.
+ *
+ * The "changed" signal of the first radio action is connected to the
+ * @on_change callback and the accel paths of the actions are set to
+ * <literal>&lt;Actions&gt;/<replaceable>group-name</replaceable>/<replaceable>action-name</replaceable></literal>.
+ *
  * Since: 2.4
  **/
-void            
+void
 gtk_action_group_add_radio_actions (GtkActionGroup            *action_group,
 				    const GtkRadioActionEntry *entries,
 				    guint                      n_entries,
@@ -1220,8 +1220,8 @@ gtk_action_group_add_radio_actions (GtkActionGroup            *action_group,
 				    GCallback                  on_change,
 				    gpointer                   user_data)
 {
-  gtk_action_group_add_radio_actions_full (action_group, 
-					   entries, n_entries, 
+  gtk_action_group_add_radio_actions_full (action_group,
+					   entries, n_entries,
 					   value,
 					   on_change, user_data, NULL);
 }
@@ -1237,12 +1237,12 @@ gtk_action_group_add_radio_actions (GtkActionGroup            *action_group,
  * @user_data: data to pass to the action callbacks
  * @destroy: destroy notification callback for @user_data
  *
- * This variant of gtk_action_group_add_radio_actions() adds a 
- * #GDestroyNotify callback for @user_data. 
- * 
+ * This variant of gtk_action_group_add_radio_actions() adds a
+ * #GDestroyNotify callback for @user_data.
+ *
  * Since: 2.4
  **/
-void            
+void
 gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group,
 					 const GtkRadioActionEntry *entries,
 					 guint                      n_entries,
@@ -1251,7 +1251,7 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
 					 gpointer                   user_data,
 					 GDestroyNotify             destroy)
 {
-  /* Keep this in sync with the other 
+  /* Keep this in sync with the other
    * gtk_action_group_add_..._actions_full() functions.
    */
   guint i;
@@ -1264,7 +1264,7 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
     {
       GtkRadioAction *action;
       const gchar *label;
-      const gchar *tooltip; 
+      const gchar *tooltip;
 
       if (!check_unique_action (action_group, entries[i].name))
         continue;
@@ -1278,7 +1278,7 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
 				     NULL,
 				     entries[i].value);
 
-      if (entries[i].stock_id) 
+      if (entries[i].stock_id)
 	{
 	  if (gtk_icon_factory_lookup_default (entries[i].stock_id))
 	    g_object_set (action, "stock-id", entries[i].stock_id, NULL);
@@ -1286,7 +1286,7 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
 	    g_object_set (action, "icon-name", entries[i].stock_id, NULL);
 	}
 
-      if (i == 0) 
+      if (i == 0)
 	first_action = action;
 
       gtk_radio_action_set_group (action, group);
@@ -1295,7 +1295,7 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
       if (value == entries[i].value)
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (action), TRUE);
 
-      gtk_action_group_add_action_with_accel (action_group, 
+      gtk_action_group_add_action_with_accel (action_group,
 					      GTK_ACTION (action),
 					      entries[i].accelerator);
       g_object_unref (action);
@@ -1303,7 +1303,7 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
 
   if (on_change && first_action)
     g_signal_connect_data (first_action, "changed",
-			   on_change, user_data, 
+			   on_change, user_data,
 			   (GClosureNotify)destroy, 0);
 }
 
@@ -1315,13 +1315,13 @@ gtk_action_group_add_radio_actions_full (GtkActionGroup            *action_group
  * @notify: a #GDestroyNotify function to be called when @action_group is
  *   destroyed and when the translation function is changed again
  *
- * Sets a function to be used for translating the @label and @tooltip of 
+ * Sets a function to be used for translating the @label and @tooltip of
  * #GtkActionGroupEntry<!-- -->s added by gtk_action_group_add_actions().
  *
  * If you're using gettext(), it is enough to set the translation domain
  * with gtk_action_group_set_translation_domain().
  *
- * Since: 2.4 
+ * Since: 2.4
  **/
 void
 gtk_action_group_set_translate_func (GtkActionGroup   *action_group,
@@ -1332,24 +1332,24 @@ gtk_action_group_set_translate_func (GtkActionGroup   *action_group,
   GtkActionGroupPrivate *private;
 
   g_return_if_fail (GTK_IS_ACTION_GROUP (action_group));
-  
+
   private = GTK_ACTION_GROUP_GET_PRIVATE (action_group);
 
   if (private->translate_notify)
     private->translate_notify (private->translate_data);
-      
+
   private->translate_func = func;
   private->translate_data = data;
   private->translate_notify = notify;
 }
 
 static gchar *
-dgettext_swapped (const gchar *msgid, 
+dgettext_swapped (const gchar *msgid,
 		  const gchar *domainname)
 {
   /* Pass through g_dgettext if and only if msgid is nonempty. */
-  if (msgid && *msgid) 
-    return (gchar*) g_dgettext (domainname, msgid); 
+  if (msgid && *msgid)
+    return (gchar*) g_dgettext (domainname, msgid);
   else
     return (gchar*) msgid;
 }
@@ -1358,27 +1358,27 @@ dgettext_swapped (const gchar *msgid,
  * gtk_action_group_set_translation_domain:
  * @action_group: a #GtkActionGroup
  * @domain: the translation domain to use for g_dgettext() calls
- * 
- * Sets the translation domain and uses g_dgettext() for translating the 
- * @label and @tooltip of #GtkActionEntry<!-- -->s added by 
+ *
+ * Sets the translation domain and uses g_dgettext() for translating the
+ * @label and @tooltip of #GtkActionEntry<!-- -->s added by
  * gtk_action_group_add_actions().
  *
- * If you're not using gettext() for localization, see 
+ * If you're not using gettext() for localization, see
  * gtk_action_group_set_translate_func().
  *
  * Since: 2.4
  **/
-void 
+void
 gtk_action_group_set_translation_domain (GtkActionGroup *action_group,
 					 const gchar    *domain)
 {
   g_return_if_fail (GTK_IS_ACTION_GROUP (action_group));
 
-  gtk_action_group_set_translate_func (action_group, 
+  gtk_action_group_set_translate_func (action_group,
 				       (GtkTranslateFunc)dgettext_swapped,
 				       g_strdup (domain),
 				       g_free);
-} 
+}
 
 
 /**
@@ -1400,9 +1400,9 @@ gtk_action_group_translate_string (GtkActionGroup *action_group,
   GtkActionGroupPrivate *private;
   GtkTranslateFunc translate_func;
   gpointer translate_data;
-  
+
   g_return_val_if_fail (GTK_IS_ACTION_GROUP (action_group), string);
-  
+
   if (string == NULL)
     return NULL;
 
@@ -1410,7 +1410,7 @@ gtk_action_group_translate_string (GtkActionGroup *action_group,
 
   translate_func = private->translate_func;
   translate_data = private->translate_data;
-  
+
   if (translate_func)
     return translate_func (string, translate_data);
   else
@@ -1423,7 +1423,7 @@ _gtk_action_group_emit_connect_proxy  (GtkActionGroup *action_group,
                                        GtkAction      *action,
                                        GtkWidget      *proxy)
 {
-  g_signal_emit (action_group, action_group_signals[CONNECT_PROXY], 0, 
+  g_signal_emit (action_group, action_group_signals[CONNECT_PROXY], 0,
                  action, proxy);
 }
 
@@ -1432,7 +1432,7 @@ _gtk_action_group_emit_disconnect_proxy  (GtkActionGroup *action_group,
                                           GtkAction      *action,
                                           GtkWidget      *proxy)
 {
-  g_signal_emit (action_group, action_group_signals[DISCONNECT_PROXY], 0, 
+  g_signal_emit (action_group, action_group_signals[DISCONNECT_PROXY], 0,
                  action, proxy);
 }
 

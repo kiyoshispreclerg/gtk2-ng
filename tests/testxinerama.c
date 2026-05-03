@@ -87,16 +87,16 @@ main (int argc, char *argv[])
 
   for (i = 0; i < num_monitors; i++)
     {
-      GdkRectangle monitor; 
+      GdkRectangle monitor;
       gchar *str;
-      
+
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      
+
       gdk_screen_get_monitor_geometry (screen, i, &monitor);
       gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
       gtk_window_move (GTK_WINDOW (window), (monitor.width - 200) / 2 + monitor.x,
 		       (monitor.height - 200) / 2 + monitor.y);
-      
+
       label = gtk_label_new (NULL);
       str = g_strdup_printf ("<big><span foreground='white' background='black'>"
 			     "Monitor %d of %d</span></big>\n"

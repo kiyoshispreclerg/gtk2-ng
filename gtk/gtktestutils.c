@@ -44,7 +44,7 @@
  * gtk_test_init:
  * @argcp: Address of the <parameter>argc</parameter> parameter of the
  *        main() function. Changed if any arguments were handled.
- * @argvp: (inout) (array length=argcp): Address of the 
+ * @argvp: (inout) (array length=argcp): Address of the
  *        <parameter>argv</parameter> parameter of main().
  *        Any parameters understood by g_test_init() or gtk_init() are
  *        stripped before return.
@@ -53,8 +53,8 @@
  * This function is used to initialize a GTK+ test program.
  *
  * It will in turn call g_test_init() and gtk_init() to properly
- * initialize the testing framework and graphical toolkit. It'll 
- * also set the program's locale to "C" and prevent loading of rc 
+ * initialize the testing framework and graphical toolkit. It'll
+ * also set the program's locale to "C" and prevent loading of rc
  * files and Gtk+ modules. This is done to make tets program
  * environments as deterministic as possible.
  *

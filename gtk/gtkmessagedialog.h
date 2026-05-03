@@ -50,9 +50,9 @@ typedef struct _GtkMessageDialogClass   GtkMessageDialogClass;
 struct _GtkMessageDialog
 {
   /*< private >*/
-  
+
   GtkDialog parent_instance;
-  
+
   GtkWidget *GSEAL (image);
   GtkWidget *GSEAL (label);
 };

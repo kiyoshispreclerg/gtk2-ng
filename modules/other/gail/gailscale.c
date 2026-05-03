@@ -34,7 +34,7 @@ static void         gail_scale_notify            (GObject       *obj,
                                                   GParamSpec    *pspec);
 static void         gail_scale_finalize          (GObject        *object);
 
-/* atktext.h */ 
+/* atktext.h */
 static void	    atk_text_interface_init        (AtkTextIface      *iface);
 
 static gchar*	    gail_scale_get_text	           (AtkText	      *text,
@@ -73,7 +73,7 @@ static gint        gail_scale_get_offset_at_point  (AtkText           *text,
                                                     gint              x,
                                                     gint              y,
 			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_scale_get_run_attributes 
+static AtkAttributeSet* gail_scale_get_run_attributes
                                                    (AtkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
@@ -84,7 +84,7 @@ static AtkAttributeSet* gail_scale_get_default_attributes
 G_DEFINE_TYPE_WITH_CODE (GailScale, gail_scale, GAIL_TYPE_RANGE,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT, atk_text_interface_init))
 
-static void	 
+static void
 gail_scale_class_init (GailScaleClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -202,7 +202,7 @@ gail_scale_get_text (AtkText *text,
     return NULL;
 
   scale = GAIL_SCALE (text);
-  return gail_text_util_get_substring (scale->textutil, 
+  return gail_text_util_get_substring (scale->textutil,
                                        start_pos, end_pos);
 }
 
@@ -217,20 +217,20 @@ gail_scale_get_text_before_offset (AtkText         *text,
   GailScale *scale;
   PangoLayout *layout;
   gchar *txt;
-  
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   scale = GAIL_SCALE (text);
   layout = gtk_scale_get_layout (GTK_SCALE (widget));
   if (layout)
     {
       txt =  gail_text_util_get_text (scale->textutil,
-                           layout, GAIL_BEFORE_OFFSET, 
-                           boundary_type, offset, start_offset, end_offset); 
+                           layout, GAIL_BEFORE_OFFSET,
+                           boundary_type, offset, start_offset, end_offset);
     }
   else
     txt = NULL;
@@ -249,19 +249,19 @@ gail_scale_get_text_at_offset (AtkText         *text,
   GailScale *scale;
   PangoLayout *layout;
   gchar *txt;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   scale = GAIL_SCALE (text);
   layout = gtk_scale_get_layout (GTK_SCALE (widget));
   if (layout)
     {
       txt =  gail_text_util_get_text (scale->textutil,
-                              layout, GAIL_AT_OFFSET, 
+                              layout, GAIL_AT_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
     }
   else
@@ -283,17 +283,17 @@ gail_scale_get_text_after_offset (AtkText         *text,
   gchar *txt;
 
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   scale = GAIL_SCALE (text);
   layout = gtk_scale_get_layout (GTK_SCALE (widget));
   if (layout)
     {
       txt =  gail_text_util_get_text (scale->textutil,
-                              layout, GAIL_AFTER_OFFSET, 
+                              layout, GAIL_AFTER_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
     }
   else
@@ -336,7 +336,7 @@ gail_scale_get_character_extents (AtkText      *text,
   PangoLayout *layout;
   gint index, x_layout, y_layout;
   const gchar *scale_text;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
@@ -353,16 +353,16 @@ gail_scale_get_character_extents (AtkText      *text,
   index = g_utf8_offset_to_pointer (scale_text, offset) - scale_text;
   gtk_scale_get_layout_offsets (scale, &x_layout, &y_layout);
   pango_layout_index_to_pos (layout, index, &char_rect);
-  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect, 
+  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect,
                     x_layout, y_layout, x, y, width, height, coords);
-} 
+}
 
-static gint 
+static gint
 gail_scale_get_offset_at_point (AtkText      *text,
                                 gint         x,
                                 gint         y,
 	          		AtkCoordType coords)
-{ 
+{
   GtkWidget *widget;
   GtkScale *scale;
   PangoLayout *layout;
@@ -381,10 +381,10 @@ gail_scale_get_offset_at_point (AtkText      *text,
   scale_text = pango_layout_get_text (layout);
   if (!scale_text)
     return -1;
-  
+
   gtk_scale_get_layout_offsets (scale, &x_layout, &y_layout);
-  index = gail_misc_get_index_at_point_in_layout (widget, 
-                                              layout, 
+  index = gail_misc_get_index_at_point_in_layout (widget,
+                                              layout,
                                               x_layout, y_layout, x, y, coords);
   if (index == -1)
     {
@@ -392,7 +392,7 @@ gail_scale_get_offset_at_point (AtkText      *text,
         index = g_utf8_strlen (scale_text, -1);
     }
   else
-    index = g_utf8_pointer_to_offset (scale_text, scale_text + index);  
+    index = g_utf8_pointer_to_offset (scale_text, scale_text + index);
 
   return index;
 }
@@ -427,7 +427,7 @@ gail_scale_get_run_attributes (AtkText *text,
   dir = gtk_widget_get_direction (widget);
   if (dir == GTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_DIRECTION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
     }
@@ -463,7 +463,7 @@ gail_scale_get_default_attributes (AtkText *text)
   return at_set;
 }
 
-static gunichar 
+static gunichar
 gail_scale_get_character_at_offset (AtkText *text,
                                     gint    offset)
 {

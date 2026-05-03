@@ -52,10 +52,10 @@
     <glossdef>
       <para>
 	GTK+ contains several widgets which display data in columns,
-        e.g. the #GtkTreeView. 
-        These <glossterm linkend="view-column">view columns</glossterm> in 
+        e.g. the #GtkTreeView.
+        These <glossterm linkend="view-column">view columns</glossterm> in
         the tree view are represented by #GtkTreeViewColumn
-        objects inside GTK+. They should not be confused with 
+        objects inside GTK+. They should not be confused with
         <glossterm linkend="model-column">model columns</glossterm> which
         are used to organize the data in tree models.
       </para>
@@ -72,10 +72,10 @@
 	<emphasis>parent</emphasis> of the <emphasis>child</emphasis>
 	widgets.  Some containers don't draw anything on their own,
 	but rather just organize their children's <glossterm
-	linkend="geometry">geometry</glossterm>; for example, #GtkVBox lays out 
+	linkend="geometry">geometry</glossterm>; for example, #GtkVBox lays out
         its children vertically without painting anything on its own.  Other
-	containers include decorative elements; for example, #GtkFrame contains 
-        the frame's child and a label in addition to the shaded frame it draws.  
+	containers include decorative elements; for example, #GtkFrame contains
+        the frame's child and a label in addition to the shaded frame it draws.
         The base class for containers is #GtkContainer.
       </para>
       <glossseealso>
@@ -91,8 +91,8 @@
       <para>
         GDK inherited the concept of display from the X window system,
         which considers a display to be the combination
-        of a keyboard, a pointing device and one or more 
-        <glossterm linkend="screen">screens</glossterm>. 
+        of a keyboard, a pointing device and one or more
+        <glossterm linkend="screen">screens</glossterm>.
         Applications open a display to show windows and interact with the user.
         In GDK, a display is represented by a #GdkDisplay.
       </para>
@@ -115,7 +115,7 @@
     <glossdef>
       <para>
         Events are the way in which GDK informs GTK+ about external events
-        like pointer motion, button clicks, key presses, etc. 
+        like pointer motion, button clicks, key presses, etc.
       </para>
     </glossdef>
   </glossentry>
@@ -160,9 +160,9 @@
     <glossterm>model column</glossterm>
     <glossdef>
       <para>
-        A column in a tree model, holding data of a certain type. 
-        The types which can be stored in the columns of a model 
-        have to be specified when the model is constructed, see 
+        A column in a tree model, holding data of a certain type.
+        The types which can be stored in the columns of a model
+        have to be specified when the model is constructed, see
         e.g. gtk_list_store_new().
       </para>
       <glossseealso>
@@ -176,14 +176,14 @@
     <glossdef>
       <para>
         These widgets follow the well-known model-view pattern, which separates
-        the data (the model) to be displayed from the component which does the 
-        actual visualization (the view). Examples of this pattern in GTK+ are 
+        the data (the model) to be displayed from the component which does the
+        actual visualization (the view). Examples of this pattern in GTK+ are
         the #GtkTreeView/#GtkTreeModel and #GtkTextView/#GtkTextBuffer
       </para>
       <para>
-        One important advantage of this pattern is that it is possible to 
-        display the same model in multiple views; another one that the 
-        separation of the model allows a great deal of flexibility, as 
+        One important advantage of this pattern is that it is possible to
+        display the same model in multiple views; another one that the
+        separation of the model allows a great deal of flexibility, as
         demonstrated by e.g. #GtkTreeModelSort or #GtkTreeModelFilter.
       </para>
     </glossdef>
@@ -231,8 +231,8 @@
 
       <para>
 	Widgets that don't own the GdkWindow on which they draw are
-	called <glossterm linkend="no-window">no-window widgets</glossterm>.  
-        This can be tested with the GTK_WIDGET_NO_WINDOW() macro.  Normally, 
+	called <glossterm linkend="no-window">no-window widgets</glossterm>.
+        This can be tested with the GTK_WIDGET_NO_WINDOW() macro.  Normally,
         these widgets draw on their parent's GdkWindow.
       </para>
 
@@ -268,9 +268,9 @@
     <glossterm>screen</glossterm>
     <glossdef>
       <para>
-	GDK inherited the concept of screen from the X window system, 
-        which considers a screen to be a rectangular area, on which 
-        applications may place their windows. Screens under X may have 
+	GDK inherited the concept of screen from the X window system,
+        which considers a screen to be a rectangular area, on which
+        applications may place their windows. Screens under X may have
         quite dissimilar <glossterm linkend="visual">visuals</glossterm>.
         Each screen can stretch across multiple physical monitors.
       </para>
@@ -285,7 +285,7 @@
     <glossdef>
       <para>
         A style encapsulates what GTK+ needs to know in order to draw
-        a widget. Styles can be modified with 
+        a widget. Styles can be modified with
         <link linkend="gtk-Resource-Files">resource files</link>.
       </para>
     </glossdef>
@@ -296,7 +296,7 @@
     <glossdef>
       <para>
 	A <glossterm linkend="widget">widget</glossterm> that does not
-	require a <glossterm linkend="parent">parent</glossterm> container.  
+	require a <glossterm linkend="parent">parent</glossterm> container.
         The only toplevel widgets in GTK+ are #GtkWindow and widgets derived from it.
       </para>
       <glossseealso>
@@ -327,7 +327,7 @@
       </glossseealso>
     </glossdef>
   </glossentry>
- 
+
   <glossentry id="visual">
     <glossterm>visual</glossterm>
     <glossdef>
@@ -335,17 +335,17 @@
         A visual describes how color information is stored in pixels.
         A <glossterm linkend="screen">screen</glossterm> may support
         multiple visuals. On modern hardware, the most common visuals
-        are truecolor visuals, which store a fixed number of bits 
+        are truecolor visuals, which store a fixed number of bits
         (typically 8) for the red, green and blue components of a color.
       </para>
       <para>
-        On ancient hardware, one may still meet indexed visuals, which 
+        On ancient hardware, one may still meet indexed visuals, which
         store color information as an index into a color map, or even
-        monochrome visuals. 
+        monochrome visuals.
       </para>
     </glossdef>
   </glossentry>
- 
+
   <glossentry id="widget">
     <glossterm>widget</glossterm>
     <glossdef>

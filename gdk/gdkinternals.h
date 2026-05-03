@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /* Uninstalled header defining types and functions internal to GDK */
@@ -40,7 +40,7 @@
 G_BEGIN_DECLS
 
 /**********************
- * General Facilities * 
+ * General Facilities *
  **********************/
 
 /* Debugging support */
@@ -129,7 +129,7 @@ extern gboolean _gdk_native_windows;
 
 /* Arg parsing */
 
-typedef enum 
+typedef enum
 {
   GDK_ARG_STRING,
   GDK_ARG_INT,
@@ -204,15 +204,15 @@ struct _GdkWindowObject
   /* vvvvvvv THIS PART IS PUBLIC. DON'T CHANGE vvvvvvvvvvvvvv */
   GdkDrawable parent_instance;
 
-  GdkDrawable *impl; /* window-system-specific delegate object */  
-  
+  GdkDrawable *impl; /* window-system-specific delegate object */
+
   GdkWindowObject *parent;
 
   gpointer user_data;
 
   gint x;
   gint y;
-  
+
   gint extension_events;
 
   GList *filters;
@@ -220,29 +220,29 @@ struct _GdkWindowObject
 
   GdkColor bg_color;
   GdkPixmap *bg_pixmap;
-  
+
   GSList *paint_stack;
-  
+
   GdkRegion *update_area;
   guint update_freeze_count;
-  
+
   guint8 window_type;
   guint8 depth;
   guint8 resize_count;
 
   GdkWindowState state;
-  
+
   guint guffaw_gravity : 1;
   guint input_only : 1;
   guint modal_hint : 1;
   guint composited : 1;
-  
+
   guint destroyed : 2;
 
   guint accept_focus : 1;
   guint focus_on_map : 1;
   guint shaped : 1;
-  
+
   GdkEventMask event_mask;
 
   guint update_and_descendants_freeze_count;
@@ -250,11 +250,11 @@ struct _GdkWindowObject
   GdkWindowRedirect *redirect;
 
   /* ^^^^^^^^^^ THIS PART IS PUBLIC. DON'T CHANGE ^^^^^^^^^^ */
-  
+
   /* The GdkWindowObject that has the impl, ref:ed if another window.
    * This ref is required to keep the wrapper of the impl window alive
    * for as long as any GdkWindow references the impl. */
-  GdkWindowObject *impl_window; 
+  GdkWindowObject *impl_window;
   int abs_x, abs_y; /* Absolute offset in impl */
   gint width, height;
   guint32 clip_tag;
@@ -277,7 +277,7 @@ struct _GdkWindowObject
 
   GdkRegion *shape;
   GdkRegion *input_shape;
-  
+
   cairo_surface_t *cairo_surface;
   guint outstanding_surfaces; /* only set on impl window */
 
@@ -531,7 +531,7 @@ typedef struct _GdkPaintableIface   GdkPaintableIface;
 struct _GdkPaintableIface
 {
   GTypeInterface g_iface;
-  
+
   void (* begin_paint_region)       (GdkPaintable    *paintable,
                                      GdkWindow       *window,
                                      const GdkRegion *region);
@@ -550,7 +550,7 @@ GType _gdk_pixmap_impl_get_type (void) G_GNUC_CONST;
  * @gc: a #GdkGC
  * @region: the new clip region
  * @reset_origin: if TRUE, reset the clip_x/y_origin values to 0
- * 
+ *
  * Do any window-system specific processing necessary
  * for a change in clip region. Since the clip origin
  * will likely change before the GC is used with the
@@ -568,14 +568,14 @@ void _gdk_windowing_gc_set_clip_region (GdkGC           *gc,
  * _gdk_windowing_gc_copy:
  * @dst_gc: a #GdkGC from the GDK backend
  * @src_gc: a #GdkGC from the GDK backend
- * 
+ *
  * Copies backend specific state from @src_gc to @dst_gc.
  * This is called before the generic state is copied, so
  * the old generic state is still available from @dst_gc
  **/
 void _gdk_windowing_gc_copy (GdkGC *dst_gc,
 			     GdkGC *src_gc);
-     
+
 /* Queries the current foreground color of a GdkGC */
 void _gdk_windowing_gc_get_foreground (GdkGC    *gc,
 				       GdkColor *color);
@@ -594,9 +594,9 @@ struct GdkAppLaunchContextPrivate
 };
 
 char *_gdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
-					    GAppInfo          *info, 
+					    GAppInfo          *info,
 					    GList             *files);
-void  _gdk_windowing_launch_failed         (GAppLaunchContext *context, 
+void  _gdk_windowing_launch_failed         (GAppLaunchContext *context,
 				            const char        *startup_notify_id);
 
 GdkPointerGrabInfo *_gdk_display_get_active_pointer_grab (GdkDisplay *display);

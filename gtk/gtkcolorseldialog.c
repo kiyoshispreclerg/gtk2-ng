@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 #include "config.h"
 #include <string.h>
@@ -139,11 +139,11 @@ gtk_color_selection_dialog_init (GtkColorSelectionDialog *colorseldiag)
 
   colorseldiag->colorsel = gtk_color_selection_new ();
   gtk_container_set_border_width (GTK_CONTAINER (colorseldiag->colorsel), 5);
-  gtk_color_selection_set_has_palette (GTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE); 
+  gtk_color_selection_set_has_palette (GTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE);
   gtk_color_selection_set_has_opacity_control (GTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (colorseldiag)->vbox), colorseldiag->colorsel);
   gtk_widget_show (colorseldiag->colorsel);
-  
+
   colorseldiag->cancel_button = gtk_dialog_add_button (GTK_DIALOG (colorseldiag),
                                                        GTK_STOCK_CANCEL,
                                                        GTK_RESPONSE_CANCEL);
@@ -151,9 +151,9 @@ gtk_color_selection_dialog_init (GtkColorSelectionDialog *colorseldiag)
   colorseldiag->ok_button = gtk_dialog_add_button (GTK_DIALOG (colorseldiag),
                                                    GTK_STOCK_OK,
                                                    GTK_RESPONSE_OK);
-                                                   
+
   gtk_widget_grab_default (colorseldiag->ok_button);
-  
+
   colorseldiag->help_button = gtk_dialog_add_button (GTK_DIALOG (colorseldiag),
                                                      GTK_STOCK_HELP,
                                                      GTK_RESPONSE_HELP);
@@ -176,14 +176,14 @@ GtkWidget*
 gtk_color_selection_dialog_new (const gchar *title)
 {
   GtkColorSelectionDialog *colorseldiag;
-  
+
   colorseldiag = g_object_new (GTK_TYPE_COLOR_SELECTION_DIALOG, NULL);
 
   if (title)
     gtk_window_set_title (GTK_WINDOW (colorseldiag), title);
 
   gtk_window_set_resizable (GTK_WINDOW (colorseldiag), FALSE);
-  
+
   return GTK_WIDGET (colorseldiag);
 }
 

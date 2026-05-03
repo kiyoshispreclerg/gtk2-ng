@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_DRAWABLE_X11_H__
@@ -60,17 +60,17 @@ struct _GdkDrawableImplX11
   GdkDrawable parent_instance;
 
   GdkDrawable *wrapper;
-  
+
   GdkColormap *colormap;
-  
+
   Window xid;
   GdkScreen *screen;
 
   Picture picture;
   cairo_surface_t *cairo_surface;
 };
- 
-struct _GdkDrawableImplX11Class 
+
+struct _GdkDrawableImplX11Class
 {
   GdkDrawableClass parent_class;
 

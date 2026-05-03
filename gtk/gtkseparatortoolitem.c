@@ -67,14 +67,14 @@ get_space_size (GtkToolItem *tool_item)
 {
   gint space_size = _gtk_toolbar_get_default_space_size();
   GtkWidget *parent = GTK_WIDGET (tool_item)->parent;
-  
+
   if (GTK_IS_TOOLBAR (parent))
     {
       gtk_widget_style_get (parent,
 			    "space-size", &space_size,
 			    NULL);
     }
-  
+
   return space_size;
 }
 
@@ -85,7 +85,7 @@ gtk_separator_tool_item_class_init (GtkSeparatorToolItemClass *class)
   GtkContainerClass *container_class;
   GtkToolItemClass *toolitem_class;
   GtkWidgetClass *widget_class;
-  
+
   object_class = (GObjectClass *)class;
   container_class = (GtkContainerClass *)class;
   toolitem_class = (GtkToolItemClass *)class;
@@ -96,9 +96,9 @@ gtk_separator_tool_item_class_init (GtkSeparatorToolItemClass *class)
   widget_class->size_request = gtk_separator_tool_item_size_request;
   widget_class->expose_event = gtk_separator_tool_item_expose;
   toolitem_class->create_menu_proxy = gtk_separator_tool_item_create_menu_proxy;
-  
+
   container_class->add = gtk_separator_tool_item_add;
-  
+
   g_object_class_install_property (object_class,
 				   PROP_DRAW,
 				   g_param_spec_boolean ("draw",
@@ -126,11 +126,11 @@ static gboolean
 gtk_separator_tool_item_create_menu_proxy (GtkToolItem *item)
 {
   GtkWidget *menu_item = NULL;
-  
+
   menu_item = gtk_separator_menu_item_new();
-  
+
   gtk_tool_item_set_proxy_menu_item (item, MENU_ID, menu_item);
-  
+
   return TRUE;
 }
 
@@ -141,7 +141,7 @@ gtk_separator_tool_item_set_property (GObject      *object,
 				      GParamSpec   *pspec)
 {
   GtkSeparatorToolItem *item = GTK_SEPARATOR_TOOL_ITEM (object);
-  
+
   switch (prop_id)
     {
     case PROP_DRAW:
@@ -160,7 +160,7 @@ gtk_separator_tool_item_get_property (GObject      *object,
 				      GParamSpec   *pspec)
 {
   GtkSeparatorToolItem *item = GTK_SEPARATOR_TOOL_ITEM (object);
-  
+
   switch (prop_id)
     {
     case PROP_DRAW:
@@ -178,7 +178,7 @@ gtk_separator_tool_item_size_request (GtkWidget      *widget,
 {
   GtkToolItem *item = GTK_TOOL_ITEM (widget);
   GtkOrientation orientation = gtk_tool_item_get_orientation (item);
-  
+
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
       requisition->width = get_space_size (item);
@@ -207,46 +207,46 @@ gtk_separator_tool_item_expose (GtkWidget      *widget,
       _gtk_toolbar_paint_space_line (widget, toolbar,
 				     &(event->area), &widget->allocation);
     }
-  
+
   return FALSE;
 }
 
 /**
  * gtk_separator_tool_item_new:
- * 
+ *
  * Create a new #GtkSeparatorToolItem
- * 
+ *
  * Return value: the new #GtkSeparatorToolItem
- * 
+ *
  * Since: 2.4
  */
 GtkToolItem *
 gtk_separator_tool_item_new (void)
 {
   GtkToolItem *self;
-  
+
   self = g_object_new (GTK_TYPE_SEPARATOR_TOOL_ITEM,
 		       NULL);
-  
+
   return self;
 }
 
 /**
  * gtk_separator_tool_item_get_draw:
- * @item: a #GtkSeparatorToolItem 
- * 
- * Returns whether @item is drawn as a line, or just blank. 
+ * @item: a #GtkSeparatorToolItem
+ *
+ * Returns whether @item is drawn as a line, or just blank.
  * See gtk_separator_tool_item_set_draw().
- * 
+ *
  * Return value: %TRUE if @item is drawn as a line, or just blank.
- * 
+ *
  * Since: 2.4
  */
 gboolean
 gtk_separator_tool_item_get_draw (GtkSeparatorToolItem *item)
 {
   g_return_val_if_fail (GTK_IS_SEPARATOR_TOOL_ITEM (item), FALSE);
-  
+
   return item->priv->draw;
 }
 
@@ -254,11 +254,11 @@ gtk_separator_tool_item_get_draw (GtkSeparatorToolItem *item)
  * gtk_separator_tool_item_set_draw:
  * @item: a #GtkSeparatorToolItem
  * @draw: whether @item is drawn as a vertical line
- * 
+ *
  * Whether @item is drawn as a vertical line, or just blank.
  * Setting this to %FALSE along with gtk_tool_item_set_expand() is useful
  * to create an item that forces following items to the end of the toolbar.
- * 
+ *
  * Since: 2.4
  */
 void

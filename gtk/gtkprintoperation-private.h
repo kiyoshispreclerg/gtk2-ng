@@ -64,11 +64,11 @@ struct _GtkPrintOperationPrivate
   guint show_progress_timeout_id;
 
   GtkPrintContext *print_context;
-  
+
   GtkPrintPages print_pages;
   GtkPageRange *page_ranges;
   gint num_page_ranges;
-  
+
   gint manual_num_copies;
   guint manual_collation   : 1;
   guint manual_reverse     : 1;
@@ -80,7 +80,7 @@ struct _GtkPrintOperationPrivate
 
   GtkWidget *custom_widget;
   gchar *custom_tab_label;
-  
+
   gpointer platform_data;
   GDestroyNotify free_platform_data;
 

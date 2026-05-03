@@ -57,10 +57,10 @@ static AtkObject *current_obj = NULL;
 gboolean g_done = FALSE;
 gboolean g_properties = TRUE;
 
-/* 
+/*
  * destroy
  *
- * Destroy Callback 
+ * Destroy Callback
  *
  */
 static void destroy (GtkWidget *widget, gpointer data)
@@ -85,18 +85,18 @@ static void choicecb (GtkWidget *widget, gpointer data)
     indexstr = gtk_entry_get_text(GTK_ENTRY(tc->index_entry));
     index = string_to_int((gchar *)indexstr);
 
-    ref_selection_runtest(obj, index); 
+    ref_selection_runtest(obj, index);
   }
   else if (GTK_TOGGLE_BUTTON(tc->tb_ref_at)->active)
   {
     const gchar *rowstr, *colstr;
     gint row, col;
- 
+
     rowstr = gtk_entry_get_text(GTK_ENTRY(tc->row_entry));
     colstr = gtk_entry_get_text(GTK_ENTRY(tc->col_entry));
     row = string_to_int((gchar *)rowstr);
     col = string_to_int((gchar *)colstr);
- 
+
     ref_at_runtest(obj, row, col);
   }
   else if (GTK_TOGGLE_BUTTON(tc->tb_ref_accessible_child)->active)
@@ -123,7 +123,7 @@ static void _check_table (AtkObject *in_obj)
     g_properties = FALSE;
   if (no_gui != NULL)
     g_visibleGUI = 1;
-  
+
   obj = find_object_by_type(in_obj, "GailTreeView");
   if (obj != NULL)
     g_print("Found GailTreeView table in child!\n");
@@ -209,7 +209,7 @@ static void _check_table (AtkObject *in_obj)
     nogui_runtest(obj);
 }
 
-static 
+static
 void other_runtest(AtkObject *obj)
 {
   AtkObject *header_obj;
@@ -260,7 +260,7 @@ void other_runtest(AtkObject *obj)
       g_print("%d: Column description is <NULL>\n", i);
 
     /* check setting a new value */
-    
+
     g_string_printf(out_desc, "new column description %d", i);
 
     if (out_string == NULL || strcmp (out_string, out_desc->str) != 0)
@@ -309,7 +309,7 @@ void other_runtest(AtkObject *obj)
 
     header_obj = atk_table_get_row_header(ATK_TABLE(obj), i);
     _display_header_info("Row", header_obj, i);
-    
+
     for (j=0; j <n_cols; j++)
     {
       gint index = atk_table_get_index_at(ATK_TABLE(obj), i, j);
@@ -329,7 +329,7 @@ void other_runtest(AtkObject *obj)
       if (!tested_set_headers)
       {
         tested_set_headers = TRUE;
-   
+
         /* Hardcode to 1,1 for now */
         g_print(
           "Testing set_column_header for column %d, to table\n",
@@ -363,7 +363,7 @@ void ref_accessible_child_runtest(AtkObject *obj, gint child)
      _process_child(child_obj);
 }
 
-static 
+static
 void ref_selection_runtest (AtkObject *obj, gint index)
 {
   AtkObject *child_obj;
@@ -375,7 +375,7 @@ void ref_selection_runtest (AtkObject *obj, gint index)
     g_print("child_obj gotten from atk_selection_ref_selection\n");
     g_object_unref (child_obj);
   }
-  else 
+  else
     g_print("NULL returned by atk_selection_ref_selection\n");
 
   _selection_tests(obj);
@@ -454,10 +454,10 @@ _process_child(AtkObject *child_obj)
     g_print("Child is NULL!\n");
   }
 }
-       
+
 /**
- * Combined tests on AtkTable and AtkSelection on individual rows rather than 
- * all of them 
+ * Combined tests on AtkTable and AtkSelection on individual rows rather than
+ * all of them
  **/
 static void
 _selection_tests(AtkObject *obj)
@@ -474,10 +474,10 @@ _selection_tests(AtkObject *obj)
   n_rows = atk_table_get_selected_rows(table, &selected);
   for (i = 0; i < n_rows; i++)
   {
-    g_print("atk_table_get_selected_row returns : %d\n", 
+    g_print("atk_table_get_selected_row returns : %d\n",
               selected[i]);
     if (!atk_table_is_row_selected (table, selected[i]))
-      g_print("atk_table_is_row_selected returns false for selected row %d\n", 
+      g_print("atk_table_is_row_selected returns false for selected row %d\n",
               selected[i]);
   }
   g_free (selected);
@@ -487,7 +487,7 @@ _selection_tests(AtkObject *obj)
   for (i = 0; i < n_cols; i++)
     g_print("atk_table_get_selected_columns returns : %d\n", selected[i]);
   g_free (selected);
-	
+
   selection_count = atk_selection_get_selection_count(ATK_SELECTION(obj));
   g_print("atk_selection_get_selection_count returns %d\n", selection_count);
 
@@ -630,7 +630,7 @@ _display_header_info(gchar *type, AtkObject *header_obj, gint header_num)
           type);
       }
     }
-    else 
+    else
     {
       g_print ("%d: %s header is of type %s!\n", header_num,
         type, atk_role_get_name (role));
@@ -655,7 +655,7 @@ static void _property_signal_connect (AtkObject *obj)
   }
 }
 
-static void 
+static void
 _property_change_handler (AtkObject         *obj,
                           AtkPropertyValues *values)
 {
@@ -665,7 +665,7 @@ _property_change_handler (AtkObject         *obj,
   if (g_table != NULL)
   {
     gint index = atk_object_get_index_in_parent(obj);
-    
+
     if (index >= 0)
       g_print("Index is %d, row is %d, col is %d\n", index,
               atk_table_get_row_at_index(g_table, index),
@@ -703,7 +703,7 @@ _property_change_handler (AtkObject         *obj,
       else
         g_print ("value was <NULL>\n");
       break;
-    default: 
+    default:
       g_print("value was <unknown type>\n");
       break;
     }
@@ -729,7 +729,7 @@ _property_change_handler (AtkObject         *obj,
       else
         g_print ("value is <NULL>\n");
       break;
-    default: 
+    default:
       g_print("value is <unknown type>\n");
       break;
     }
@@ -756,7 +756,7 @@ void test_choice_gui(AtkObject **obj)
 
 
   tc = (TestChoice *) g_malloc (sizeof(TestChoice));
-  
+
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title(GTK_WINDOW(window), "Test to run");
 
@@ -776,7 +776,7 @@ void test_choice_gui(AtkObject **obj)
   tc->index_entry = gtk_entry_new();
   gtk_entry_set_text(GTK_ENTRY(tc->index_entry), "1");
   gtk_box_pack_start (GTK_BOX (hbox), tc->index_entry, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0); 
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
 
   hbox = gtk_hbox_new(FALSE, 0);
   gtk_box_set_spacing(GTK_BOX(hbox), 10);
@@ -792,14 +792,14 @@ void test_choice_gui(AtkObject **obj)
   tc->col_entry = gtk_entry_new();
   gtk_entry_set_text(GTK_ENTRY(tc->col_entry), "1");
   gtk_box_pack_start (GTK_BOX (hbox), tc->col_entry, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0); 
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
 
   hbox = gtk_hbox_new(FALSE, 0);
   gtk_box_set_spacing(GTK_BOX(hbox), 10);
   tc->tb_ref_accessible_child = gtk_toggle_button_new_with_label("ref_accessible_child");
   gtk_box_pack_start (GTK_BOX (hbox), tc->tb_ref_accessible_child, TRUE, TRUE, 0);
   child_label = gtk_label_new("Child no:");
-  gtk_box_pack_start (GTK_BOX (hbox), child_label, TRUE, TRUE, 0); 
+  gtk_box_pack_start (GTK_BOX (hbox), child_label, TRUE, TRUE, 0);
   tc->child_entry = gtk_entry_new();
   gtk_entry_set_text(GTK_ENTRY(tc->child_entry), "1");
   gtk_box_pack_start (GTK_BOX (hbox), tc->child_entry, TRUE, TRUE, 0);
@@ -807,7 +807,7 @@ void test_choice_gui(AtkObject **obj)
 
   tc->tb_others = gtk_toggle_button_new_with_label("others");
   gtk_box_pack_start (GTK_BOX (vbox), tc->tb_others, TRUE, TRUE, 0);
-  
+
   hseparator = gtk_hseparator_new();
   gtk_box_pack_start (GTK_BOX (vbox), hseparator, TRUE, TRUE, 0);
 
@@ -845,7 +845,7 @@ nogui_ref_at_runtest (AtkObject *obj)
   gint rows_to_loop = 5;
 
   n_cols = atk_table_get_n_columns (ATK_TABLE(obj));
-  
+
   if (atk_table_get_n_rows(ATK_TABLE(obj)) < rows_to_loop)
     rows_to_loop = atk_table_get_n_rows (ATK_TABLE(obj));
 
@@ -867,7 +867,7 @@ nogui_ref_at_runtest (AtkObject *obj)
         /* use atk_selection_ref_selection just once to check it works */
         child_obj = atk_selection_ref_selection(ATK_SELECTION(obj), index );
       }
-      else	
+      else
       {
         child_obj = atk_table_ref_at(ATK_TABLE(obj), i, j);
       }
@@ -918,7 +918,7 @@ nogui_process_child (AtkObject *obj)
       AtkAction *action = ATK_ACTION(obj);
       gint n_actions, i;
       const gchar *name, *description;
-      
+
       n_actions = atk_action_get_n_actions (action);
       g_print ("Child supports %d actions.\n", n_actions);
       for (i = 0; i < n_actions; i++)
@@ -930,7 +930,7 @@ nogui_process_child (AtkObject *obj)
              name = default_val;
           if (description == NULL)
              description = default_val;
-          
+
 	  g_print (" %d: name = <%s>\n", i, name);
           g_print ("    description = <%s>\n", description);
 	}

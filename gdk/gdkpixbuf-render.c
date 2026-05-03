@@ -71,7 +71,7 @@ gdk_pixbuf_render_threshold_alpha (GdkPixbuf *pixbuf,
                         gdk_pixbuf_get_n_channels (pixbuf) == 4);
   g_return_if_fail (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
 
-  if (width == -1) 
+  if (width == -1)
     width = gdk_pixbuf_get_width (pixbuf);
   if (height == -1)
     height = gdk_pixbuf_get_height (pixbuf);
@@ -107,28 +107,28 @@ gdk_pixbuf_render_threshold_alpha (GdkPixbuf *pixbuf,
     {
       p = (gdk_pixbuf_get_pixels (pixbuf) + (y + src_y) * gdk_pixbuf_get_rowstride (pixbuf) + src_x * gdk_pixbuf_get_n_channels (pixbuf)
 	   + gdk_pixbuf_get_n_channels (pixbuf) - 1);
-	    
+
       start = 0;
       start_status = *p < alpha_threshold;
-	    
+
       for (x = 0; x < width; x++)
 	{
 	  status = *p < alpha_threshold;
-	  
+
 	  if (status != start_status)
 	    {
 	      if (!start_status)
 		gdk_draw_line (bitmap, gc,
 			       start + dest_x, y + dest_y,
 			       x - 1 + dest_x, y + dest_y);
-	      
+
 	      start = x;
 	      start_status = status;
 	    }
-	  
+
 	  p += gdk_pixbuf_get_n_channels (pixbuf);
 	}
-      
+
       if (!start_status)
 	gdk_draw_line (bitmap, gc,
 		       start + dest_x, y + dest_y,
@@ -298,7 +298,7 @@ gdk_pixbuf_render_pixmap_and_mask_for_colormap (GdkPixbuf   *pixbuf,
   g_return_if_fail (GDK_IS_COLORMAP (colormap));
 
   screen = gdk_colormap_get_screen (colormap);
-  
+
   if (pixmap_return)
     {
       GdkGC *gc;
@@ -321,13 +321,13 @@ gdk_pixbuf_render_pixmap_and_mask_for_colormap (GdkPixbuf   *pixbuf,
                                GDK_RGB_DITHER_NORMAL,
                                gdk_pixbuf_get_pixels (pixbuf), gdk_pixbuf_get_rowstride (pixbuf));
       else
-        gdk_draw_pixbuf (*pixmap_return, gc, pixbuf, 
+        gdk_draw_pixbuf (*pixmap_return, gc, pixbuf,
                          0, 0, 0, 0,
                          gdk_pixbuf_get_width (pixbuf), gdk_pixbuf_get_height (pixbuf),
                          GDK_RGB_DITHER_NORMAL,
                          0, 0);
     }
-  
+
   if (mask_return)
     {
       if (gdk_pixbuf_get_has_alpha (pixbuf))

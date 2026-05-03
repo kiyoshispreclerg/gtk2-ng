@@ -62,7 +62,7 @@ main (int argc, char *argv[])
       GSList *list;
       gchar *path, *rpath;
       gboolean result;
-      
+
       list = _gtk_rc_parse_widget_class_path (tests[i].pattern);
       path = g_strdup (tests[i].test);
       rpath = g_utf8_strreverse (path, -1);

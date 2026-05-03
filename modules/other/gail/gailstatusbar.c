@@ -40,7 +40,7 @@ static void         gail_statusbar_finalize            (GObject            *obje
 static void         gail_statusbar_init_textutil       (GailStatusbar      *statusbar,
                                                         GtkWidget          *label);
 
-/* atktext.h */ 
+/* atktext.h */
 static void	  atk_text_interface_init	   (AtkTextIface	*iface);
 
 static gchar*	  gail_statusbar_get_text	   (AtkText	      *text,
@@ -79,7 +79,7 @@ static gint      gail_statusbar_get_offset_at_point(AtkText           *text,
                                                     gint              x,
                                                     gint              y,
 			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_statusbar_get_run_attributes 
+static AtkAttributeSet* gail_statusbar_get_run_attributes
                                                    (AtkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
@@ -148,7 +148,7 @@ gail_statusbar_get_name (AtkObject *obj)
      label = get_label_from_statusbar (widget);
      if (GTK_IS_LABEL (label))
        return gtk_label_get_label (GTK_LABEL (label));
-     else 
+     else
        return NULL;
    }
 }
@@ -227,7 +227,7 @@ gail_statusbar_real_initialize (AtkObject *obj,
 }
 
 static gint
-gail_statusbar_notify (GObject    *obj, 
+gail_statusbar_notify (GObject    *obj,
                        GParamSpec *pspec,
                        gpointer   user_data)
 {
@@ -273,7 +273,7 @@ gail_statusbar_init_textutil (GailStatusbar *statusbar,
   g_signal_connect (label,
                     "notify",
                     (GCallback) gail_statusbar_notify,
-                    statusbar);     
+                    statusbar);
 }
 
 static void
@@ -326,7 +326,7 @@ gail_statusbar_get_text (AtkText *text,
     return NULL;
 
   statusbar = GAIL_STATUSBAR (text);
-  if (!statusbar->textutil) 
+  if (!statusbar->textutil)
     gail_statusbar_init_textutil (statusbar, label);
 
   label_text = gtk_label_get_text (GTK_LABEL (label));
@@ -335,7 +335,7 @@ gail_statusbar_get_text (AtkText *text,
     return NULL;
   else
   {
-    return gail_text_util_get_substring (statusbar->textutil, 
+    return gail_text_util_get_substring (statusbar->textutil,
                                          start_pos, end_pos);
   }
 }
@@ -350,13 +350,13 @@ gail_statusbar_get_text_before_offset (AtkText         *text,
   GtkWidget *widget;
   GtkWidget *label;
   GailStatusbar *statusbar;
-  
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = get_label_from_statusbar (widget);
 
@@ -368,8 +368,8 @@ gail_statusbar_get_text_before_offset (AtkText         *text,
     gail_statusbar_init_textutil (statusbar, label);
 
   return gail_text_util_get_text (statusbar->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET, 
-                           boundary_type, offset, start_offset, end_offset); 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET,
+                           boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
@@ -382,13 +382,13 @@ gail_statusbar_get_text_at_offset (AtkText         *text,
   GtkWidget *widget;
   GtkWidget *label;
   GailStatusbar *statusbar;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = get_label_from_statusbar (widget);
 
@@ -400,7 +400,7 @@ gail_statusbar_get_text_at_offset (AtkText         *text,
     gail_statusbar_init_textutil (statusbar, label);
 
   return gail_text_util_get_text (statusbar->textutil,
-                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET, 
+                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
 }
 
@@ -416,13 +416,13 @@ gail_statusbar_get_text_after_offset (AtkText         *text,
   GailStatusbar *statusbar;
 
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
   {
     /* State is defunct */
     return NULL;
   }
-  
+
   /* Get label */
   label = get_label_from_statusbar (widget);
 
@@ -434,7 +434,7 @@ gail_statusbar_get_text_after_offset (AtkText         *text,
     gail_statusbar_init_textutil (statusbar, label);
 
   return gail_text_util_get_text (statusbar->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET, 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET,
                            boundary_type, offset, start_offset, end_offset);
 }
 
@@ -471,7 +471,7 @@ gail_statusbar_get_character_extents (AtkText      *text,
   PangoRectangle char_rect;
   gint index, x_layout, y_layout;
   const gchar *label_text;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
@@ -482,22 +482,22 @@ gail_statusbar_get_character_extents (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   index = g_utf8_offset_to_pointer (label_text, offset) - label_text;
   pango_layout_index_to_pos (gtk_label_get_layout (GTK_LABEL (label)), index, &char_rect);
-  
-  gail_misc_get_extents_from_pango_rectangle (label, &char_rect, 
-                    x_layout, y_layout, x, y, width, height, coords);
-} 
 
-static gint 
+  gail_misc_get_extents_from_pango_rectangle (label, &char_rect,
+                    x_layout, y_layout, x, y, width, height, coords);
+}
+
+static gint
 gail_statusbar_get_offset_at_point (AtkText      *text,
                                     gint         x,
                                     gint         y,
 	          		    AtkCoordType coords)
-{ 
+{
   GtkWidget *widget;
   GtkWidget *label;
   gint index, x_layout, y_layout;
@@ -512,11 +512,11 @@ gail_statusbar_get_offset_at_point (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return -1;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
-  
-  index = gail_misc_get_index_at_point_in_layout (label, 
-                                              gtk_label_get_layout (GTK_LABEL (label)), 
+
+  index = gail_misc_get_index_at_point_in_layout (label,
+                                              gtk_label_get_layout (GTK_LABEL (label)),
                                               x_layout, y_layout, x, y, coords);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   if (index == -1)
@@ -524,10 +524,10 @@ gail_statusbar_get_offset_at_point (AtkText      *text,
       if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
         return g_utf8_strlen (label_text, -1);
 
-      return index;  
+      return index;
     }
   else
-    return g_utf8_pointer_to_offset (label_text, label_text + index);  
+    return g_utf8_pointer_to_offset (label_text, label_text + index);
 }
 
 static AtkAttributeSet*
@@ -551,19 +551,19 @@ gail_statusbar_get_run_attributes (AtkText *text,
 
   if (!GTK_IS_LABEL(label))
     return NULL;
-  
+
   /* Get values set for entire label, if any */
   justify = gtk_label_get_justify (GTK_LABEL (label));
   if (justify != GTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_JUSTIFICATION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
   dir = gtk_widget_get_direction (label);
   if (dir == GTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_DIRECTION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
     }
@@ -600,7 +600,7 @@ gail_statusbar_get_default_attributes (AtkText *text)
   return at_set;
 }
 
-static gunichar 
+static gunichar
 gail_statusbar_get_character_at_offset (AtkText *text,
                                         gint	offset)
 {

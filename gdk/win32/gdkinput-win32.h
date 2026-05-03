@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_INPUT_WIN32_H__
@@ -39,7 +39,7 @@ struct _GdkAxisInfo
   /* calibrated resolution (for aspect ratio) - only relative values
      between axes used */
   gint resolution;
-  
+
   /* calibrated minimum/maximum values */
   gint min_value, max_value;
 };

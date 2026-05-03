@@ -308,7 +308,7 @@ gtk_paned_class_init (GtkPanedClass *class)
    */
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_RESIZE,
-					      g_param_spec_boolean ("resize", 
+					      g_param_spec_boolean ("resize",
 								    P_("Resize"),
 								    P_("If TRUE, the child expands and shrinks along with the paned widget"),
 								    TRUE,
@@ -324,7 +324,7 @@ gtk_paned_class_init (GtkPanedClass *class)
    */
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_SHRINK,
-					      g_param_spec_boolean ("shrink", 
+					      g_param_spec_boolean ("shrink",
 								    P_("Shrink"),
 								    P_("If TRUE, the child can be made smaller than its requisition"),
 								    TRUE,
@@ -335,7 +335,7 @@ gtk_paned_class_init (GtkPanedClass *class)
    * @widget: the object that received the signal
    * @reversed: whether cycling backward or forward
    *
-   * The ::cycle-child-focus signal is a 
+   * The ::cycle-child-focus signal is a
    * <link linkend="keybinding-signals">keybinding signal</link>
    * which gets emitted to cycle the focus between the children of the paned.
    *
@@ -357,9 +357,9 @@ gtk_paned_class_init (GtkPanedClass *class)
    * GtkPaned::toggle-handle-focus:
    * @widget: the object that received the signal
    *
-   * The ::toggle-handle-focus is a 
+   * The ::toggle-handle-focus is a
    * <link linkend="keybinding-signals">keybinding signal</link>
-   * which gets emitted to accept the current position of the handle and then 
+   * which gets emitted to accept the current position of the handle and then
    * move focus to the next widget in the focus chain.
    *
    * The default binding is Tab.
@@ -380,9 +380,9 @@ gtk_paned_class_init (GtkPanedClass *class)
    * @widget: the object that received the signal
    * @scroll_type: a #GtkScrollType
    *
-   * The ::move-handle signal is a 
+   * The ::move-handle signal is a
    * <link linkend="keybinding-signals">keybinding signal</link>
-   * which gets emitted to move the handle when the user is using key bindings 
+   * which gets emitted to move the handle when the user is using key bindings
    * to move it.
    *
    * Since: 2.0
@@ -402,7 +402,7 @@ gtk_paned_class_init (GtkPanedClass *class)
    * @widget: the object that received the signal
    * @reversed: whether cycling backward or forward
    *
-   * The ::cycle-handle-focus signal is a 
+   * The ::cycle-handle-focus signal is a
    * <link linkend="keybinding-signals">keybinding signal</link>
    * which gets emitted to cycle whether the paned should grab focus to allow
    * the user to change position of the handle by using key bindings.
@@ -425,9 +425,9 @@ gtk_paned_class_init (GtkPanedClass *class)
    * GtkPaned::accept-position:
    * @widget: the object that received the signal
    *
-   * The ::accept-position signal is a 
+   * The ::accept-position signal is a
    * <link linkend="keybinding-signals">keybinding signal</link>
-   * which gets emitted to accept the current position of the handle when 
+   * which gets emitted to accept the current position of the handle when
    * moving it using key bindings.
    *
    * The default binding for this signal is Return or Space.
@@ -447,10 +447,10 @@ gtk_paned_class_init (GtkPanedClass *class)
    * GtkPaned::cancel-position:
    * @widget: the object that received the signal
    *
-   * The ::cancel-position signal is a 
+   * The ::cancel-position signal is a
    * <link linkend="keybinding-signals">keybinding signal</link>
-   * which gets emitted to cancel moving the position of the handle using key 
-   * bindings. The position of the handle will be reset to the value prior to 
+   * which gets emitted to cancel moving the position of the handle using key
+   * bindings. The position of the handle will be reset to the value prior to
    * moving it.
    *
    * The default binding for this signal is Escape.
@@ -471,7 +471,7 @@ gtk_paned_class_init (GtkPanedClass *class)
   /* F6 and friends */
   gtk_binding_entry_add_signal (binding_set,
                                 GDK_F6, 0,
-                                "cycle-child-focus", 1, 
+                                "cycle-child-focus", 1,
                                 G_TYPE_BOOLEAN, FALSE);
   gtk_binding_entry_add_signal (binding_set,
 				GDK_F6, GDK_SHIFT_MASK,
@@ -483,12 +483,12 @@ gtk_paned_class_init (GtkPanedClass *class)
 				GDK_F8, 0,
 				"cycle-handle-focus", 1,
 				G_TYPE_BOOLEAN, FALSE);
- 
+
   gtk_binding_entry_add_signal (binding_set,
 				GDK_F8, GDK_SHIFT_MASK,
 				"cycle-handle-focus", 1,
 				G_TYPE_BOOLEAN, TRUE);
- 
+
   add_tab_bindings (binding_set, 0);
   add_tab_bindings (binding_set, GDK_CONTROL_MASK);
   add_tab_bindings (binding_set, GDK_SHIFT_MASK);
@@ -576,7 +576,7 @@ gtk_paned_init (GtkPaned *paned)
   paned->handle = NULL;
   paned->xor_gc = NULL;
   paned->cursor_type = GDK_CROSS;
-  
+
   paned->handle_pos.width = 5;
   paned->handle_pos.height = 5;
   paned->position_set = FALSE;
@@ -588,7 +588,7 @@ gtk_paned_init (GtkPaned *paned)
   paned->in_recursion = FALSE;
   paned->handle_prelit = FALSE;
   paned->original_position = -1;
-  
+
   paned->handle_pos.x = -1;
   paned->handle_pos.y = -1;
 
@@ -720,7 +720,7 @@ gtk_paned_get_child_property (GtkContainer *container,
   GtkPaned *paned = GTK_PANED (container);
 
   g_assert (child == paned->child1 || child == paned->child2);
-  
+
   switch (property_id)
     {
     case CHILD_PROP_RESIZE:
@@ -745,7 +745,7 @@ static void
 gtk_paned_finalize (GObject *object)
 {
   GtkPaned *paned = GTK_PANED (object);
-  
+
   gtk_paned_set_saved_focus (paned, NULL);
   gtk_paned_set_first_paned (paned, NULL);
 
@@ -982,7 +982,7 @@ gtk_paned_realize (GtkWidget *widget)
 
   widget->window = gtk_widget_get_parent_window (widget);
   g_object_ref (widget->window);
-  
+
   attributes.window_type = GDK_WINDOW_CHILD;
   attributes.wclass = GDK_INPUT_ONLY;
   attributes.x = paned->handle_pos.x;
@@ -1057,7 +1057,7 @@ static void
 gtk_paned_unmap (GtkWidget *widget)
 {
   GtkPaned *paned = GTK_PANED (widget);
-    
+
   gdk_window_hide (paned->handle);
 
   GTK_WIDGET_CLASS (gtk_paned_parent_class)->unmap (widget);
@@ -1074,14 +1074,14 @@ gtk_paned_expose (GtkWidget      *widget,
       paned->child2 && gtk_widget_get_visible (paned->child2))
     {
       GtkStateType state;
-      
+
       if (gtk_widget_is_focus (widget))
 	state = GTK_STATE_SELECTED;
       else if (paned->handle_prelit)
 	state = GTK_STATE_PRELIGHT;
       else
 	state = gtk_widget_get_state (widget);
-      
+
       gtk_paint_handle (widget->style, widget->window,
 			state, GTK_SHADOW_NONE,
 			&paned->handle_pos, widget, "paned",
@@ -1092,7 +1092,7 @@ gtk_paned_expose (GtkWidget      *widget,
 
   /* Chain up to draw children */
   GTK_WIDGET_CLASS (gtk_paned_parent_class)->expose_event (widget, event);
-  
+
   return FALSE;
 }
 
@@ -1127,7 +1127,7 @@ update_drag (GtkPaned *paned)
       gtk_widget_style_get (GTK_WIDGET (paned),
 			    "handle-size", &handle_size,
 			    NULL);
-      
+
       size = GTK_WIDGET (paned)->allocation.width - pos - handle_size;
     }
   else
@@ -1136,7 +1136,7 @@ update_drag (GtkPaned *paned)
     }
 
   size -= GTK_CONTAINER (paned)->border_width;
-  
+
   size = CLAMP (size, paned->min_position, paned->max_position);
 
   if (size != paned->child1_size)
@@ -1148,7 +1148,7 @@ gtk_paned_enter (GtkWidget        *widget,
 		 GdkEventCrossing *event)
 {
   GtkPaned *paned = GTK_PANED (widget);
-  
+
   if (paned->in_drag)
     update_drag (paned);
   else
@@ -1160,7 +1160,7 @@ gtk_paned_enter (GtkWidget        *widget,
 				  paned->handle_pos.width,
 				  paned->handle_pos.height);
     }
-  
+
   return TRUE;
 }
 
@@ -1169,7 +1169,7 @@ gtk_paned_leave (GtkWidget        *widget,
 		 GdkEventCrossing *event)
 {
   GtkPaned *paned = GTK_PANED (widget);
-  
+
   if (paned->in_drag)
     update_drag (paned);
   else
@@ -1191,7 +1191,7 @@ gtk_paned_focus (GtkWidget        *widget,
 
 {
   gboolean retval;
-  
+
   /* This is a hack, but how can this be done without
    * excessive cut-and-paste from gtkcontainer.c?
    */
@@ -1282,7 +1282,7 @@ gtk_paned_state_changed (GtkWidget    *widget,
     {
       if (gtk_widget_is_sensitive (widget))
         cursor = gdk_cursor_new_for_display (gtk_widget_get_display (widget),
-                                             paned->cursor_type); 
+                                             paned->cursor_type);
       else
         cursor = NULL;
 
@@ -1314,13 +1314,13 @@ gtk_paned_motion (GtkWidget      *widget,
 		  GdkEventMotion *event)
 {
   GtkPaned *paned = GTK_PANED (widget);
-  
+
   if (paned->in_drag)
     {
       update_drag (paned);
       return TRUE;
     }
-  
+
   return FALSE;
 }
 
@@ -1466,9 +1466,9 @@ gtk_paned_forall (GtkContainer *container,
 /**
  * gtk_paned_get_position:
  * @paned: a #GtkPaned widget
- * 
+ *
  * Obtains the position of the divider between the two panes.
- * 
+ *
  * Return value: position of the divider
  **/
 gint
@@ -1484,7 +1484,7 @@ gtk_paned_get_position (GtkPaned  *paned)
  * @paned: a #GtkPaned widget
  * @position: pixel position of divider, a negative value means that the position
  *            is unset.
- * 
+ *
  * Sets the position of the divider between the two panes.
  **/
 void
@@ -1492,14 +1492,14 @@ gtk_paned_set_position (GtkPaned *paned,
 			gint      position)
 {
   GObject *object;
-  
+
   g_return_if_fail (GTK_IS_PANED (paned));
 
   if (paned->child1_size == position)
     return;
 
   object = G_OBJECT (paned);
-  
+
   if (position >= 0)
     {
       /* We don't clamp here - the assumption is that
@@ -1536,9 +1536,9 @@ gtk_paned_set_position (GtkPaned *paned,
 /**
  * gtk_paned_get_child1:
  * @paned: a #GtkPaned widget
- * 
+ *
  * Obtains the first child of the paned widget.
- * 
+ *
  * Return value: (transfer none): first child, or %NULL if it is not set.
  *
  * Since: 2.4
@@ -1554,9 +1554,9 @@ gtk_paned_get_child1 (GtkPaned *paned)
 /**
  * gtk_paned_get_child2:
  * @paned: a #GtkPaned widget
- * 
+ *
  * Obtains the second child of the paned widget.
- * 
+ *
  * Return value: (transfer none): second child, or %NULL if it is not set.
  *
  * Since: 2.4
@@ -1632,9 +1632,9 @@ gtk_paned_calc_position (GtkPaned *paned,
 
   if (paned->child1)
     gtk_widget_set_child_visible (paned->child1, paned->child1_size != 0);
-  
+
   if (paned->child2)
-    gtk_widget_set_child_visible (paned->child2, paned->child1_size != allocation); 
+    gtk_widget_set_child_visible (paned->child2, paned->child1_size != allocation);
 
   g_object_freeze_notify (G_OBJECT (paned));
   if (paned->child1_size != old_position)
@@ -1721,16 +1721,16 @@ gtk_paned_set_focus_child (GtkContainer *container,
 			   GtkWidget    *focus_child)
 {
   GtkPaned *paned;
-  
+
   g_return_if_fail (GTK_IS_PANED (container));
 
   paned = GTK_PANED (container);
- 
+
   if (focus_child == NULL)
     {
       GtkWidget *last_focus;
       GtkWidget *w;
-      
+
       last_focus = paned_get_focus_widget (paned);
 
       if (last_focus)
@@ -1741,7 +1741,7 @@ gtk_paned_set_focus_child (GtkContainer *container,
 	  for (w = last_focus; w != GTK_WIDGET (paned); w = w->parent)
 	    if (GTK_IS_PANED (w))
 	      last_focus = w;
-	  
+
 	  if (container->focus_child == paned->child1)
 	    gtk_paned_set_last_child1_focus (paned, last_focus);
 	  else if (container->focus_child == paned->child2)
@@ -1867,13 +1867,13 @@ gtk_paned_cycle_child_focus (GtkPaned *paned,
 {
   GList *cycle_chain = NULL;
   GList *list;
-  
+
   GtkDirectionType direction = reversed? GTK_DIR_TAB_BACKWARD : GTK_DIR_TAB_FORWARD;
 
   /* ignore f6 if the handle is focused */
   if (gtk_widget_is_focus (GTK_WIDGET (paned)))
     return TRUE;
-  
+
   /* we can't just let the event propagate up the hierarchy,
    * because the paned will want to cycle focus _unless_ an
    * ancestor paned handles the event
@@ -1885,7 +1885,7 @@ gtk_paned_cycle_child_focus (GtkPaned *paned,
       break;
 
   g_list_free (cycle_chain);
-  
+
   return TRUE;
 }
 
@@ -1899,7 +1899,7 @@ get_child_panes (GtkWidget  *widget,
   if (GTK_IS_PANED (widget))
     {
       GtkPaned *paned = GTK_PANED (widget);
-      
+
       get_child_panes (paned->child1, panes);
       *panes = g_list_prepend (*panes, widget);
       get_child_panes (paned->child2, panes);
@@ -1917,7 +1917,7 @@ get_all_panes (GtkPaned *paned)
   GtkPaned *topmost = NULL;
   GList *result = NULL;
   GtkWidget *w;
-  
+
   for (w = GTK_WIDGET (paned); w != NULL; w = w->parent)
     {
       if (GTK_IS_PANED (w))
@@ -1945,7 +1945,7 @@ gtk_paned_find_neighbours (GtkPaned  *paned,
   this_link = g_list_find (all_panes, paned);
 
   g_assert (this_link);
-  
+
   if (this_link->next)
     *next = this_link->next->data;
   else
@@ -1968,15 +1968,15 @@ gtk_paned_move_handle (GtkPaned      *paned,
       gint old_position;
       gint new_position;
       gint increment;
-      
+
       enum {
 	SINGLE_STEP_SIZE = 1,
 	PAGE_STEP_SIZE   = 75
       };
-      
+
       new_position = old_position = gtk_paned_get_position (paned);
       increment = 0;
-      
+
       switch (scroll)
 	{
 	case GTK_SCROLL_STEP_LEFT:
@@ -1984,29 +1984,29 @@ gtk_paned_move_handle (GtkPaned      *paned,
 	case GTK_SCROLL_STEP_BACKWARD:
 	  increment = - SINGLE_STEP_SIZE;
 	  break;
-	  
+
 	case GTK_SCROLL_STEP_RIGHT:
 	case GTK_SCROLL_STEP_DOWN:
 	case GTK_SCROLL_STEP_FORWARD:
 	  increment = SINGLE_STEP_SIZE;
 	  break;
-	  
+
 	case GTK_SCROLL_PAGE_LEFT:
 	case GTK_SCROLL_PAGE_UP:
 	case GTK_SCROLL_PAGE_BACKWARD:
 	  increment = - PAGE_STEP_SIZE;
 	  break;
-	  
+
 	case GTK_SCROLL_PAGE_RIGHT:
 	case GTK_SCROLL_PAGE_DOWN:
 	case GTK_SCROLL_PAGE_FORWARD:
 	  increment = PAGE_STEP_SIZE;
 	  break;
-	  
+
 	case GTK_SCROLL_START:
 	  new_position = paned->min_position;
 	  break;
-	  
+
 	case GTK_SCROLL_END:
 	  new_position = paned->max_position;
 	  break;
@@ -2019,12 +2019,12 @@ gtk_paned_move_handle (GtkPaned      *paned,
 	{
 	  if (is_rtl (paned))
 	    increment = -increment;
-	  
+
 	  new_position = old_position + increment;
 	}
-      
+
       new_position = CLAMP (new_position, paned->min_position, paned->max_position);
-      
+
       if (old_position != new_position)
 	gtk_paned_set_position (paned, new_position);
 
@@ -2052,16 +2052,16 @@ gtk_paned_restore_focus (GtkPaned *paned)
 	   * if that didn't work,
 	   *   2) unset focus for the window if there is one
 	   */
-	  
+
 	  if (!gtk_widget_child_focus (GTK_WIDGET (paned), GTK_DIR_TAB_FORWARD))
 	    {
 	      GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (paned));
-	      
+
 	      if (GTK_IS_WINDOW (toplevel))
 		gtk_window_set_focus (GTK_WINDOW (toplevel), NULL);
 	    }
 	}
-      
+
       gtk_paned_set_saved_focus (paned, NULL);
       gtk_paned_set_first_paned (paned, NULL);
     }
@@ -2105,7 +2105,7 @@ gtk_paned_cycle_handle_focus (GtkPaned *paned,
 			      gboolean  reversed)
 {
   GtkPaned *next, *prev;
-  
+
   if (gtk_widget_is_focus (GTK_WIDGET (paned)))
     {
       GtkPaned *focus = NULL;
@@ -2116,10 +2116,10 @@ gtk_paned_cycle_handle_focus (GtkPaned *paned,
 	   * we make the currently focused paned the first_paned. To the
 	   * user this will seem like the paned cycling has been reset.
 	   */
-	  
+
 	  gtk_paned_set_first_paned (paned, paned);
 	}
-      
+
       gtk_paned_find_neighbours (paned, &next, &prev);
 
       if (reversed && prev &&
@@ -2139,15 +2139,15 @@ gtk_paned_cycle_handle_focus (GtkPaned *paned,
 	}
 
       g_assert (focus);
-      
+
       gtk_paned_set_saved_focus (focus, paned->priv->saved_focus);
       gtk_paned_set_first_paned (focus, paned->priv->first_paned);
-      
+
       gtk_paned_set_saved_focus (paned, NULL);
       gtk_paned_set_first_paned (paned, NULL);
-      
+
       gtk_widget_grab_focus (GTK_WIDGET (focus));
-      
+
       if (!gtk_widget_is_focus (GTK_WIDGET (paned)))
 	{
 	  paned->original_position = -1;
@@ -2209,11 +2209,11 @@ gtk_paned_cycle_handle_focus (GtkPaned *paned,
       if (GTK_IS_WINDOW (toplevel))
 	gtk_paned_set_saved_focus (focus, GTK_WINDOW (toplevel)->focus_widget);
       gtk_paned_set_first_paned (focus, first);
-      focus->original_position = gtk_paned_get_position (focus); 
+      focus->original_position = gtk_paned_get_position (focus);
 
       gtk_widget_grab_focus (GTK_WIDGET (focus));
    }
-  
+
   return TRUE;
 }
 

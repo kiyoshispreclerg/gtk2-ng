@@ -57,7 +57,7 @@
 #ifdef GDK_WINDOWING_QUARTZ
 #include "gtkicontheme.h"
 #include "gtklabel.h"
-#endif	
+#endif
 
 #include "gdkkeysyms.h"
 
@@ -86,7 +86,7 @@ enum
   PROP_TITLE
 };
 
-enum 
+enum
 {
   ACTIVATE_SIGNAL,
   POPUP_MENU_SIGNAL,
@@ -120,7 +120,7 @@ struct _GtkStatusIconPrivate
   gchar         *tooltip_text;
   gchar         *title;
 #endif
-	
+
 #ifdef GDK_WINDOWING_QUARTZ
   GtkWidget     *dummy_widget;
   GtkQuartzStatusIcon *status_item;
@@ -233,7 +233,7 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
 							P_("Stock ID for a stock image to display"),
 							NULL,
 							GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class,
                                    PROP_ICON_NAME,
                                    g_param_spec_string ("icon-name",
@@ -310,7 +310,7 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
 
 
   /**
-   * GtkStatusIcon:embedded: 
+   * GtkStatusIcon:embedded:
    *
    * %TRUE if the statusicon is embedded in a notification area.
    *
@@ -327,8 +327,8 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
   /**
    * GtkStatusIcon:orientation:
    *
-   * The orientation of the tray in which the statusicon 
-   * is embedded. 
+   * The orientation of the tray in which the statusicon
+   * is embedded.
    *
    * Since: 2.12
    */
@@ -397,7 +397,7 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
    * GtkStatusIcon:tooltip-markup:
    *
    * Sets the text of tooltip to be the given string, which is marked up
-   * with the <link linkend="PangoMarkupFormat">Pango text markup 
+   * with the <link linkend="PangoMarkupFormat">Pango text markup
    * language</link>. Also see gtk_tooltip_set_markup().
    *
    * This is a convenience property which will take care of getting the
@@ -440,10 +440,10 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
    * GtkStatusIcon::activate:
    * @status_icon: the object which received the signal
    *
-   * Gets emitted when the user activates the status icon. 
+   * Gets emitted when the user activates the status icon.
    * If and how status icons can activated is platform-dependent.
    *
-   * Unlike most G_SIGNAL_ACTION signals, this signal is meant to 
+   * Unlike most G_SIGNAL_ACTION signals, this signal is meant to
    * be used by applications and should be wrapped by language bindings.
    *
    * Since: 2.10
@@ -462,19 +462,19 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
   /**
    * GtkStatusIcon::popup-menu:
    * @status_icon: the object which received the signal
-   * @button: the button that was pressed, or 0 if the 
+   * @button: the button that was pressed, or 0 if the
    *   signal is not emitted in response to a button press event
    * @activate_time: the timestamp of the event that
    *   triggered the signal emission
    *
    * Gets emitted when the user brings up the context menu
-   * of the status icon. Whether status icons can have context 
+   * of the status icon. Whether status icons can have context
    * menus and how these are activated is platform-dependent.
    *
-   * The @button and @activate_time parameters should be 
+   * The @button and @activate_time parameters should be
    * passed as the last to arguments to gtk_menu_popup().
    *
-   * Unlike most G_SIGNAL_ACTION signals, this signal is meant to 
+   * Unlike most G_SIGNAL_ACTION signals, this signal is meant to
    * be used by applications and should be wrapped by language bindings.
    *
    * Since: 2.10
@@ -575,12 +575,12 @@ gtk_status_icon_class_init (GtkStatusIconClass *class)
    * @event: the #GdkEventScroll which triggered this signal
    *
    * The ::scroll-event signal is emitted when a button in the 4 to 7
-   * range is pressed. Wheel mice are usually configured to generate 
+   * range is pressed. Wheel mice are usually configured to generate
    * button press events for buttons 4 and 5 when the wheel is turned.
    *
    * Whether this event is emitted is platform-dependent.
    *
-   * Returns: %TRUE to stop other handlers from being invoked for the event. 
+   * Returns: %TRUE to stop other handlers from being invoked for the event.
    *   %FALSE to propagate the event further.
    */
   status_icon_signals[SCROLL_EVENT_SIGNAL] =
@@ -748,7 +748,7 @@ wndproc (HWND   hwnd,
     {
       ButtonCallbackData *bc;
       guint button;
-      
+
       switch (lparam)
 	{
 	case WM_LBUTTONDOWN:
@@ -858,7 +858,7 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
 
   priv = gtk_status_icon_get_instance_private (status_icon);
   status_icon->priv = priv;
-  
+
   priv->storage_type = GTK_IMAGE_EMPTY;
   priv->visible      = TRUE;
 
@@ -910,7 +910,7 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
   /* Get position and orientation of Windows taskbar. */
   {
     APPBARDATA abd;
-    
+
     abd.cbSize = sizeof (abd);
     SHAppBarMessage (ABM_GETTASKBARPOS, &abd);
     if (abd.rc.bottom - abd.rc.top > abd.rc.right - abd.rc.left)
@@ -957,7 +957,7 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
   status_icons = g_slist_append (status_icons, status_icon);
 
 #endif
-	
+
 #ifdef GDK_WINDOWING_QUARTZ
   priv->dummy_widget = gtk_label_new ("");
 
@@ -970,7 +970,7 @@ gtk_status_icon_init (GtkStatusIcon *status_icon)
 
   QUARTZ_POOL_RELEASE;
 
-#endif 
+#endif
 }
 
 static GObject*
@@ -991,7 +991,7 @@ gtk_status_icon_constructor (GType                  type,
 #ifdef GDK_WINDOWING_X11
   status_icon = GTK_STATUS_ICON (object);
   priv = status_icon->priv;
-  
+
   if (priv->visible)
     gtk_widget_show (priv->tray_icon);
 #endif
@@ -1006,7 +1006,7 @@ gtk_status_icon_finalize (GObject *object)
   GtkStatusIconPrivate *priv = status_icon->priv;
 
   gtk_status_icon_disable_blinking (status_icon);
-  
+
   gtk_status_icon_reset_image_data (status_icon);
 
   if (priv->blank_icon)
@@ -1045,7 +1045,7 @@ gtk_status_icon_finalize (GObject *object)
 
   status_icons = g_slist_remove (status_icons, status_icon);
 #endif
-	
+
 #ifdef GDK_WINDOWING_QUARTZ
   QUARTZ_POOL_ALLOC;
   [priv->status_item release];
@@ -1195,9 +1195,9 @@ gtk_status_icon_get_property (GObject    *object,
 
 /**
  * gtk_status_icon_new:
- * 
+ *
  * Creates an empty status icon object.
- * 
+ *
  * Return value: a new #GtkStatusIcon
  *
  * Since: 2.10
@@ -1211,12 +1211,12 @@ gtk_status_icon_new (void)
 /**
  * gtk_status_icon_new_from_pixbuf:
  * @pixbuf: a #GdkPixbuf
- * 
- * Creates a status icon displaying @pixbuf. 
  *
- * The image will be scaled down to fit in the available 
+ * Creates a status icon displaying @pixbuf.
+ *
+ * The image will be scaled down to fit in the available
  * space in the notification area, if necessary.
- * 
+ *
  * Return value: a new #GtkStatusIcon
  *
  * Since: 2.10
@@ -1232,12 +1232,12 @@ gtk_status_icon_new_from_pixbuf (GdkPixbuf *pixbuf)
 /**
  * gtk_status_icon_new_from_file:
  * @filename: a filename
- * 
- * Creates a status icon displaying the file @filename. 
  *
- * The image will be scaled down to fit in the available 
+ * Creates a status icon displaying the file @filename.
+ *
+ * The image will be scaled down to fit in the available
  * space in the notification area, if necessary.
- * 
+ *
  * Return value: a new #GtkStatusIcon
  *
  * Since: 2.10
@@ -1253,11 +1253,11 @@ gtk_status_icon_new_from_file (const gchar *filename)
 /**
  * gtk_status_icon_new_from_stock:
  * @stock_id: a stock icon id
- * 
+ *
  * Creates a status icon displaying a stock icon. Sample stock icon
- * names are #GTK_STOCK_OPEN, #GTK_STOCK_QUIT. You can register your 
- * own stock icon names, see gtk_icon_factory_add_default() and 
- * gtk_icon_factory_add(). 
+ * names are #GTK_STOCK_OPEN, #GTK_STOCK_QUIT. You can register your
+ * own stock icon names, see gtk_icon_factory_add_default() and
+ * gtk_icon_factory_add().
  *
  * Return value: a new #GtkStatusIcon
  *
@@ -1274,11 +1274,11 @@ gtk_status_icon_new_from_stock (const gchar *stock_id)
 /**
  * gtk_status_icon_new_from_icon_name:
  * @icon_name: an icon name
- * 
+ *
  * Creates a status icon displaying an icon from the current icon theme.
- * If the current icon theme is changed, the icon will be updated 
+ * If the current icon theme is changed, the icon will be updated
  * appropriately.
- * 
+ *
  * Return value: a new #GtkStatusIcon
  *
  * Since: 2.10
@@ -1335,7 +1335,7 @@ emit_size_changed_signal (GtkStatusIcon *status_icon,
 			  gint           size)
 {
   gboolean handled = FALSE;
-  
+
   g_signal_emit (status_icon,
 		 status_icon_signals [SIZE_CHANGED_SIGNAL], 0,
 		 size,
@@ -1369,7 +1369,7 @@ gtk_status_icon_blank_icon (GtkStatusIcon *status_icon)
     }
 
   priv->blank_icon = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-				     priv->image_width, 
+				     priv->image_width,
 				     priv->image_height);
   if (priv->blank_icon)
     gdk_pixbuf_fill (priv->blank_icon, 0);
@@ -1380,7 +1380,7 @@ gtk_status_icon_blank_icon (GtkStatusIcon *status_icon)
 #ifdef GDK_WINDOWING_X11
 
 static GtkIconSize
-find_icon_size (GtkWidget *widget, 
+find_icon_size (GtkWidget *widget,
 		gint       pixel_size)
 {
   GdkScreen *screen;
@@ -1394,7 +1394,7 @@ find_icon_size (GtkWidget *widget,
     return GTK_ICON_SIZE_MENU;
 
   settings = gtk_settings_get_for_screen (screen);
-  
+
   dist = G_MAXINT;
   size = GTK_ICON_SIZE_MENU;
 
@@ -1411,7 +1411,7 @@ find_icon_size (GtkWidget *widget,
 	    }
 	}
     }
-  
+
   return size;
 }
 
@@ -1495,7 +1495,7 @@ gtk_status_icon_update_image (GtkStatusIcon *status_icon)
       [priv->status_item setImage:scaled];
       QUARTZ_POOL_RELEASE;
 #endif
-			
+
 	    g_object_unref (scaled);
 	  }
 	else
@@ -1555,11 +1555,11 @@ gtk_status_icon_update_image (GtkStatusIcon *status_icon)
 	  [priv->status_item setImage:pixbuf];
 	  QUARTZ_POOL_RELEASE;
 	  g_object_unref (pixbuf);
-	}	
+	}
 #endif
       }
       break;
-      
+
     case GTK_IMAGE_ICON_NAME:
       {
 #ifdef GDK_WINDOWING_X11
@@ -1575,7 +1575,7 @@ gtk_status_icon_update_image (GtkStatusIcon *status_icon)
 				      priv->image_data.icon_name,
 				      priv->size,
 				      0, NULL);
-	  
+
 	  prev_hicon = priv->nid.hIcon;
 	  priv->nid.hIcon = gdk_win32_pixbuf_to_hicon_libgtk_only (pixbuf);
 	  priv->nid.uFlags |= NIF_ICON;
@@ -1602,7 +1602,7 @@ gtk_status_icon_update_image (GtkStatusIcon *status_icon)
 	  g_object_unref (pixbuf);
 	}
 #endif
-	
+
       }
       break;
 
@@ -1873,7 +1873,7 @@ gtk_status_icon_reset_image_data (GtkStatusIcon *status_icon)
 
       g_object_notify (G_OBJECT (status_icon), "stock");
       break;
-      
+
     case GTK_IMAGE_ICON_NAME:
       g_free (priv->image_data.icon_name);
       priv->image_data.icon_name = NULL;
@@ -1914,7 +1914,7 @@ gtk_status_icon_set_image (GtkStatusIcon *status_icon,
   priv->storage_type = storage_type;
   g_object_notify (G_OBJECT (status_icon), "storage-type");
 
-  switch (storage_type) 
+  switch (storage_type)
     {
     case GTK_IMAGE_PIXBUF:
       priv->image_data.pixbuf = (GdkPixbuf *)data;
@@ -1969,25 +1969,25 @@ gtk_status_icon_set_from_pixbuf (GtkStatusIcon *status_icon,
  * gtk_status_icon_set_from_file:
  * @status_icon: a #GtkStatusIcon
  * @filename: a filename
- * 
+ *
  * Makes @status_icon display the file @filename.
  * See gtk_status_icon_new_from_file() for details.
  *
- * Since: 2.10 
+ * Since: 2.10
  **/
 void
 gtk_status_icon_set_from_file (GtkStatusIcon *status_icon,
  			       const gchar   *filename)
 {
   GdkPixbuf *pixbuf;
-  
+
   g_return_if_fail (GTK_IS_STATUS_ICON (status_icon));
   g_return_if_fail (filename != NULL);
-  
+
   pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
-  
+
   gtk_status_icon_set_from_pixbuf (status_icon, pixbuf);
-  
+
   if (pixbuf)
     g_object_unref (pixbuf);
 }
@@ -1996,11 +1996,11 @@ gtk_status_icon_set_from_file (GtkStatusIcon *status_icon,
  * gtk_status_icon_set_from_stock:
  * @status_icon: a #GtkStatusIcon
  * @stock_id: a stock icon id
- * 
+ *
  * Makes @status_icon display the stock icon with the id @stock_id.
  * See gtk_status_icon_new_from_stock() for details.
  *
- * Since: 2.10 
+ * Since: 2.10
  **/
 void
 gtk_status_icon_set_from_stock (GtkStatusIcon *status_icon,
@@ -2017,12 +2017,12 @@ gtk_status_icon_set_from_stock (GtkStatusIcon *status_icon,
  * gtk_status_icon_set_from_icon_name:
  * @status_icon: a #GtkStatusIcon
  * @icon_name: an icon name
- * 
- * Makes @status_icon display the icon named @icon_name from the 
+ *
+ * Makes @status_icon display the icon named @icon_name from the
  * current icon theme.
  * See gtk_status_icon_new_from_icon_name() for details.
  *
- * Since: 2.10 
+ * Since: 2.10
  **/
 void
 gtk_status_icon_set_from_icon_name (GtkStatusIcon *status_icon,
@@ -2062,11 +2062,11 @@ gtk_status_icon_set_from_gicon (GtkStatusIcon *status_icon,
 /**
  * gtk_status_icon_get_storage_type:
  * @status_icon: a #GtkStatusIcon
- * 
+ *
  * Gets the type of representation being used by the #GtkStatusIcon
  * to store image data. If the #GtkStatusIcon has no image data,
- * the return value will be %GTK_IMAGE_EMPTY. 
- * 
+ * the return value will be %GTK_IMAGE_EMPTY.
+ *
  * Return value: the image representation being used
  *
  * Since: 2.10
@@ -2081,13 +2081,13 @@ gtk_status_icon_get_storage_type (GtkStatusIcon *status_icon)
 /**
  * gtk_status_icon_get_pixbuf:
  * @status_icon: a #GtkStatusIcon
- * 
+ *
  * Gets the #GdkPixbuf being displayed by the #GtkStatusIcon.
  * The storage type of the status icon must be %GTK_IMAGE_EMPTY or
  * %GTK_IMAGE_PIXBUF (see gtk_status_icon_get_storage_type()).
  * The caller of this function does not own a reference to the
  * returned pixbuf.
- * 
+ *
  * Return value: (transfer none): the displayed pixbuf,
  *     or %NULL if the image is empty.
  *
@@ -2114,13 +2114,13 @@ gtk_status_icon_get_pixbuf (GtkStatusIcon *status_icon)
 /**
  * gtk_status_icon_get_stock:
  * @status_icon: a #GtkStatusIcon
- * 
+ *
  * Gets the id of the stock icon being displayed by the #GtkStatusIcon.
  * The storage type of the status icon must be %GTK_IMAGE_EMPTY or
  * %GTK_IMAGE_STOCK (see gtk_status_icon_get_storage_type()).
  * The returned string is owned by the #GtkStatusIcon and should not
  * be freed or modified.
- * 
+ *
  * Return value: stock id of the displayed stock icon,
  *   or %NULL if the image is empty.
  *
@@ -2137,7 +2137,7 @@ gtk_status_icon_get_stock (GtkStatusIcon *status_icon)
 
   g_return_val_if_fail (priv->storage_type == GTK_IMAGE_STOCK ||
 			priv->storage_type == GTK_IMAGE_EMPTY, NULL);
-  
+
   if (priv->storage_type == GTK_IMAGE_EMPTY)
     priv->image_data.stock_id = NULL;
 
@@ -2147,13 +2147,13 @@ gtk_status_icon_get_stock (GtkStatusIcon *status_icon)
 /**
  * gtk_status_icon_get_icon_name:
  * @status_icon: a #GtkStatusIcon
- * 
+ *
  * Gets the name of the icon being displayed by the #GtkStatusIcon.
  * The storage type of the status icon must be %GTK_IMAGE_EMPTY or
  * %GTK_IMAGE_ICON_NAME (see gtk_status_icon_get_storage_type()).
  * The returned string is owned by the #GtkStatusIcon and should not
  * be freed or modified.
- * 
+ *
  * Return value: name of the displayed icon, or %NULL if the image is empty.
  *
  * Since: 2.10
@@ -2162,7 +2162,7 @@ const gchar *
 gtk_status_icon_get_icon_name (GtkStatusIcon *status_icon)
 {
   GtkStatusIconPrivate *priv;
-  
+
   g_return_val_if_fail (GTK_IS_STATUS_ICON (status_icon), NULL);
 
   priv = status_icon->priv;
@@ -2213,16 +2213,16 @@ gtk_status_icon_get_gicon (GtkStatusIcon *status_icon)
 /**
  * gtk_status_icon_get_size:
  * @status_icon: a #GtkStatusIcon
- * 
- * Gets the size in pixels that is available for the image. 
+ *
+ * Gets the size in pixels that is available for the image.
  * Stock icons and named icons adapt their size automatically
  * if the size of the notification area changes. For other
  * storage types, the size-changed signal can be used to
  * react to size changes.
  *
- * Note that the returned size is only meaningful while the 
+ * Note that the returned size is only meaningful while the
  * status icon is embedded (see gtk_status_icon_is_embedded()).
- * 
+ *
  * Return value: the size that is available for the image
  *
  * Since: 2.10
@@ -2301,7 +2301,7 @@ static gboolean
 gtk_status_icon_blinker (GtkStatusIcon *status_icon)
 {
   GtkStatusIconPrivate *priv = status_icon->priv;
-  
+
   priv->blink_off = !priv->blink_off;
 
   gtk_status_icon_update_image (status_icon);
@@ -2313,14 +2313,14 @@ static void
 gtk_status_icon_enable_blinking (GtkStatusIcon *status_icon)
 {
   GtkStatusIconPrivate *priv = status_icon->priv;
-  
+
   if (!priv->blinking_timeout)
     {
       gtk_status_icon_blinker (status_icon);
 
       priv->blinking_timeout =
-	gdk_threads_add_timeout (BLINK_TIMEOUT, 
-		       (GSourceFunc) gtk_status_icon_blinker, 
+	gdk_threads_add_timeout (BLINK_TIMEOUT,
+		       (GSourceFunc) gtk_status_icon_blinker,
 		       status_icon);
     }
 }
@@ -2329,7 +2329,7 @@ static void
 gtk_status_icon_disable_blinking (GtkStatusIcon *status_icon)
 {
   GtkStatusIconPrivate *priv = status_icon->priv;
-  
+
   if (priv->blinking_timeout)
     {
       g_source_remove (priv->blinking_timeout);
@@ -2344,7 +2344,7 @@ gtk_status_icon_disable_blinking (GtkStatusIcon *status_icon)
  * gtk_status_icon_set_visible:
  * @status_icon: a #GtkStatusIcon
  * @visible: %TRUE to show the status icon, %FALSE to hide it
- * 
+ *
  * Shows or hides a status icon.
  *
  * Since: 2.10
@@ -2395,12 +2395,12 @@ gtk_status_icon_set_visible (GtkStatusIcon *status_icon,
 /**
  * gtk_status_icon_get_visible:
  * @status_icon: a #GtkStatusIcon
- * 
- * Returns whether the status icon is visible or not. 
- * Note that being visible does not guarantee that 
- * the user can actually see the icon, see also 
+ *
+ * Returns whether the status icon is visible or not.
+ * Note that being visible does not guarantee that
+ * the user can actually see the icon, see also
  * gtk_status_icon_is_embedded().
- * 
+ *
  * Return value: %TRUE if the status icon is visible
  *
  * Since: 2.10
@@ -2417,8 +2417,8 @@ gtk_status_icon_get_visible (GtkStatusIcon *status_icon)
  * gtk_status_icon_set_blinking:
  * @status_icon: a #GtkStatusIcon
  * @blinking: %TRUE to turn blinking on, %FALSE to turn it off
- * 
- * Makes the status icon start or stop blinking. 
+ *
+ * Makes the status icon start or stop blinking.
  * Note that blinking user interface elements may be problematic
  * for some users, and thus may be turned off, in which case
  * this setting has no effect.
@@ -2455,10 +2455,10 @@ gtk_status_icon_set_blinking (GtkStatusIcon *status_icon,
 /**
  * gtk_status_icon_get_blinking:
  * @status_icon: a #GtkStatusIcon
- * 
- * Returns whether the icon is blinking, see 
+ *
+ * Returns whether the icon is blinking, see
  * gtk_status_icon_set_blinking().
- * 
+ *
  * Return value: %TRUE if the icon is blinking
  *
  * Since: 2.10
@@ -2476,10 +2476,10 @@ gtk_status_icon_get_blinking (GtkStatusIcon *status_icon)
 /**
  * gtk_status_icon_is_embedded:
  * @status_icon: a #GtkStatusIcon
- * 
+ *
  * Returns whether the status icon is embedded in a notification
- * area. 
- * 
+ * area.
+ *
  * Return value: %TRUE if the status icon is embedded in
  *   a notification area.
  *
@@ -2521,7 +2521,7 @@ gtk_status_icon_is_embedded (GtkStatusIcon *status_icon)
  *
  * Menu positioning function to use with gtk_menu_popup()
  * to position @menu aligned to the status icon @user_data.
- * 
+ *
  * Since: 2.10
  **/
 void
@@ -2541,7 +2541,7 @@ gtk_status_icon_position_menu (GtkMenu  *menu,
   GtkRequisition menu_req;
   GdkRectangle monitor;
   gint monitor_num, height, width, xoffset, yoffset;
-  
+
   g_return_if_fail (GTK_IS_MENU (menu));
   g_return_if_fail (GTK_IS_STATUS_ICON (user_data));
 
@@ -2563,7 +2563,7 @@ gtk_status_icon_position_menu (GtkMenu  *menu,
   gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
 
   gdk_window_get_origin (widget->window, x, y);
-  
+
   gtk_widget_size_request (GTK_WIDGET (menu), &menu_req);
 
   if (_gtk_tray_icon_get_orientation (tray_icon) == GTK_ORIENTATION_VERTICAL)
@@ -2600,7 +2600,7 @@ gtk_status_icon_position_menu (GtkMenu  *menu,
         *x -= menu_req.width - width;
       else if ((monitor.x + monitor.width - (*x + xoffset)) > *x)
         *x += xoffset;
-      else 
+      else
         *x -= menu_req.width - width;
     }
 
@@ -2610,7 +2610,7 @@ gtk_status_icon_position_menu (GtkMenu  *menu,
     *y -= menu_req.height - height;
   else if (monitor.y + monitor.height - (*y + yoffset) > *y)
     *y += yoffset;
-  else 
+  else
     *y -= menu_req.height - height;
 
   *push_in = FALSE;
@@ -2620,7 +2620,7 @@ gtk_status_icon_position_menu (GtkMenu  *menu,
   GtkStatusIcon *status_icon;
   GtkStatusIconPrivate *priv;
   GtkRequisition menu_req;
-  
+
   g_return_if_fail (GTK_IS_MENU (menu));
   g_return_if_fail (GTK_IS_STATUS_ICON (user_data));
 
@@ -2649,30 +2649,30 @@ gtk_status_icon_position_menu (GtkMenu  *menu,
  *    at the left or right is vertical.
  *
  * Obtains information about the location of the status icon
- * on screen. This information can be used to e.g. position 
- * popups like notification bubbles. 
+ * on screen. This information can be used to e.g. position
+ * popups like notification bubbles.
  *
- * See gtk_status_icon_position_menu() for a more convenient 
+ * See gtk_status_icon_position_menu() for a more convenient
  * alternative for positioning menus.
  *
- * Note that some platforms do not allow GTK+ to provide 
+ * Note that some platforms do not allow GTK+ to provide
  * this information, and even on platforms that do allow it,
  * the information is not reliable unless the status icon
  * is embedded in a notification area, see
  * gtk_status_icon_is_embedded().
  *
- * Return value: %TRUE if the location information has 
+ * Return value: %TRUE if the location information has
  *               been filled in
  *
  * Since: 2.10
  */
-gboolean  
+gboolean
 gtk_status_icon_get_geometry (GtkStatusIcon    *status_icon,
 			      GdkScreen       **screen,
 			      GdkRectangle     *area,
 			      GtkOrientation   *orientation)
 {
-#ifdef GDK_WINDOWING_X11   
+#ifdef GDK_WINDOWING_X11
   GtkWidget *widget;
   GtkStatusIconPrivate *priv;
   gint x, y;
@@ -2954,16 +2954,16 @@ gtk_status_icon_get_tooltip_markup (GtkStatusIcon *status_icon)
  *
  * This function is only useful on the X11/freedesktop.org platform.
  * It returns a window ID for the widget in the underlying
- * status icon implementation.  This is useful for the Galago 
- * notification service, which can send a window ID in the protocol 
- * in order for the server to position notification windows 
+ * status icon implementation.  This is useful for the Galago
+ * notification service, which can send a window ID in the protocol
+ * in order for the server to position notification windows
  * pointing to a status icon reliably.
  *
  * This function is not intended for other use cases which are
  * more likely to be met by one of the non-X11 specific methods, such
  * as gtk_status_icon_position_menu().
  *
- * Return value: An 32 bit unsigned integer identifier for the 
+ * Return value: An 32 bit unsigned integer identifier for the
  * underlying X11 Window
  *
  * Since: 2.14
@@ -2982,10 +2982,10 @@ gtk_status_icon_get_x11_window_id (GtkStatusIcon *status_icon)
 /**
  * gtk_status_icon_set_title:
  * @status_icon: a #GtkStatusIcon
- * @title: the title 
+ * @title: the title
  *
  * Sets the title of this tray icon.
- * This should be a short, human-readable, localized string 
+ * This should be a short, human-readable, localized string
  * describing the tray icon. It may be used by tools like screen
  * readers to render the tray icon.
  *

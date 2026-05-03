@@ -38,7 +38,7 @@ gchar *gail_boolean_cell_property_list[] = {
 
 G_DEFINE_TYPE (GailBooleanCell, gail_boolean_cell, GAIL_TYPE_RENDERER_CELL)
 
-static void 
+static void
 gail_boolean_cell_class_init (GailBooleanCellClass *klass)
 {
   GailRendererCellClass *renderer_cell_class = GAIL_RENDERER_CELL_CLASS (klass);
@@ -52,7 +52,7 @@ gail_boolean_cell_init (GailBooleanCell *cell)
 {
 }
 
-AtkObject* 
+AtkObject*
 gail_boolean_cell_new (void)
 {
   GObject *object;
@@ -78,7 +78,7 @@ gail_boolean_cell_new (void)
 }
 
 static gboolean
-gail_boolean_cell_update_cache (GailRendererCell *cell, 
+gail_boolean_cell_update_cache (GailRendererCell *cell,
                                 gboolean         emit_change_signal)
 {
   GailBooleanCell *boolean_cell = GAIL_BOOLEAN_CELL (cell);

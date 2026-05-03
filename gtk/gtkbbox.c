@@ -142,7 +142,7 @@ gtk_button_box_class_init (GtkButtonBoxClass *class)
 
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_SECONDARY,
-					      g_param_spec_boolean ("secondary", 
+					      g_param_spec_boolean ("secondary",
 								    P_("Secondary"),
 								    P_("If TRUE, the child appears in a secondary group of children, suitable for, e.g., help buttons"),
 								    FALSE,
@@ -224,8 +224,8 @@ gtk_button_box_get_child_property (GtkContainer *container,
   switch (property_id)
     {
     case CHILD_PROP_SECONDARY:
-      g_value_set_boolean (value, 
-			   gtk_button_box_get_child_secondary (GTK_BUTTON_BOX (container), 
+      g_value_set_boolean (value,
+			   gtk_button_box_get_child_secondary (GTK_BUTTON_BOX (container),
 							       child));
       break;
     default:
@@ -236,8 +236,8 @@ gtk_button_box_get_child_property (GtkContainer *container,
 
 /* set per widget values for spacing, child size and child internal padding */
 
-void 
-gtk_button_box_set_child_size (GtkButtonBox *widget, 
+void
+gtk_button_box_set_child_size (GtkButtonBox *widget,
                                gint width, gint height)
 {
   g_return_if_fail (GTK_IS_BUTTON_BOX (widget));
@@ -246,7 +246,7 @@ gtk_button_box_set_child_size (GtkButtonBox *widget,
   widget->child_min_height = height;
 }
 
-void 
+void
 gtk_button_box_set_child_ipadding (GtkButtonBox *widget,
                                    gint ipad_x, gint ipad_y)
 {
@@ -257,7 +257,7 @@ gtk_button_box_set_child_ipadding (GtkButtonBox *widget,
 }
 
 void
-gtk_button_box_set_layout (GtkButtonBox      *widget, 
+gtk_button_box_set_layout (GtkButtonBox      *widget,
                            GtkButtonBoxStyle  layout_style)
 {
   g_return_if_fail (GTK_IS_BUTTON_BOX (widget));
@@ -275,7 +275,7 @@ gtk_button_box_set_layout (GtkButtonBox      *widget,
 
 /* get per widget values for spacing, child size and child internal padding */
 
-void 
+void
 gtk_button_box_get_child_size (GtkButtonBox *widget,
                                gint *width, gint *height)
 {
@@ -299,26 +299,26 @@ gtk_button_box_get_child_ipadding (GtkButtonBox *widget,
   *ipad_y = widget->child_ipad_y;
 }
 
-GtkButtonBoxStyle 
+GtkButtonBoxStyle
 gtk_button_box_get_layout (GtkButtonBox *widget)
 {
   g_return_val_if_fail (GTK_IS_BUTTON_BOX (widget), GTK_BUTTONBOX_SPREAD);
-  
+
   return widget->layout_style;
 }
 
 /**
  * gtk_button_box_get_child_secondary:
  * @widget: a #GtkButtonBox
- * @child: a child of @widget 
- * 
+ * @child: a child of @widget
+ *
  * Returns whether @child should appear in a secondary group of children.
  *
  * Return value: whether @child should appear in a secondary group of children.
  *
  * Since: 2.4
  **/
-gboolean 
+gboolean
 gtk_button_box_get_child_secondary (GtkButtonBox *widget,
 				    GtkWidget    *child)
 {
@@ -364,13 +364,13 @@ gtk_button_box_get_child_secondary (GtkButtonBox *widget,
  * the other end of the button box from the main children. For the
  * other styles, they appear immediately next to the main children.
  **/
-void 
-gtk_button_box_set_child_secondary (GtkButtonBox *widget, 
+void
+gtk_button_box_set_child_secondary (GtkButtonBox *widget,
 				    GtkWidget    *child,
 				    gboolean      is_secondary)
 {
   GList *list;
-  
+
   g_return_if_fail (GTK_IS_BUTTON_BOX (widget));
   g_return_if_fail (GTK_IS_WIDGET (child));
   g_return_if_fail (child->parent == GTK_WIDGET (widget));
@@ -395,7 +395,7 @@ gtk_button_box_set_child_secondary (GtkButtonBox *widget,
     gtk_widget_queue_resize (child);
 }
 
-/* Ask children how much space they require and round up 
+/* Ask children how much space they require and round up
    to match minimum size and internal padding.
    Returns the size each single child should have. */
 void
@@ -419,12 +419,12 @@ _gtk_button_box_child_requisition (GtkWidget *widget,
   gint height_default;
   gint ipad_x_default;
   gint ipad_y_default;
-  
+
   gint child_min_width;
   gint child_min_height;
   gint ipad_x;
   gint ipad_y;
-  
+
   g_return_if_fail (GTK_IS_BUTTON_BOX (widget));
 
   bbox = GTK_BUTTON_BOX (widget);
@@ -433,9 +433,9 @@ _gtk_button_box_child_requisition (GtkWidget *widget,
                         "child-min-width", &width_default,
                         "child-min-height", &height_default,
                         "child-internal-pad-x", &ipad_x_default,
-                        "child-internal-pad-y", &ipad_y_default, 
+                        "child-internal-pad-y", &ipad_y_default,
 			NULL);
-  
+
   child_min_width = bbox->child_min_width   != GTK_BUTTONBOX_DEFAULT
 	  ? bbox->child_min_width : width_default;
   child_min_height = bbox->child_min_height !=GTK_BUTTONBOX_DEFAULT
@@ -449,10 +449,10 @@ _gtk_button_box_child_requisition (GtkWidget *widget,
   nsecondaries = 0;
   children = GTK_BOX(bbox)->children;
   needed_width = child_min_width;
-  needed_height = child_min_height;  
+  needed_height = child_min_height;
   ipad_w = ipad_x * 2;
   ipad_h = ipad_y * 2;
-  
+
   while (children)
     {
       child = children->data;

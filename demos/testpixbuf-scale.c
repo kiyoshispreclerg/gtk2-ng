@@ -8,7 +8,7 @@ GdkInterpType interp_type = GDK_INTERP_BILINEAR;
 int overall_alpha = 255;
 GdkPixbuf *pixbuf;
 GtkWidget *darea;
-  
+
 void
 set_interp_type (GtkWidget *widget, gpointer data)
 {
@@ -38,7 +38,7 @@ expose_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
   cairo_t *cr;
 
   gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
-  
+
   dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, event->area.width, event->area.height);
 
   gdk_pixbuf_composite_color (pixbuf, dest,
@@ -57,7 +57,7 @@ expose_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
 
   cairo_destroy (cr);
   g_object_unref (dest);
-  
+
   return TRUE;
 }
 
@@ -74,7 +74,7 @@ main(int argc, char **argv)
 	GtkRequisition scratch_requisition;
         const gchar *creator;
         GError *error;
-        
+
 	pixbuf_init ();
 
 	gtk_init (&argc, &argv);
@@ -100,7 +100,7 @@ main(int argc, char **argv)
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	g_signal_connect (window, "destroy",
 			  G_CALLBACK (gtk_main_quit), NULL);
-	
+
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (window), vbox);
 
@@ -116,7 +116,7 @@ main(int argc, char **argv)
         g_signal_connect (combo_box, "changed",
                           G_CALLBACK (set_interp_type),
                           NULL);
-	
+
 	alignment = gtk_alignment_new (0.0, 0.0, 0.0, 0.5);
 	gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
 
@@ -129,7 +129,7 @@ main(int argc, char **argv)
 	adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (overall_alpha, 0, 255, 1, 10, 0));
 	g_signal_connect (adjustment, "value_changed",
 			  G_CALLBACK (overall_changed_cb), NULL);
-	
+
 	hscale = gtk_hscale_new (adjustment);
 	gtk_scale_set_digits (GTK_SCALE (hscale), 0);
 	gtk_box_pack_start (GTK_BOX (hbox), hscale, TRUE, TRUE, 0);
@@ -149,7 +149,7 @@ main(int argc, char **argv)
 	gtk_window_set_default_size (GTK_WINDOW (window),
 				     gdk_pixbuf_get_width (pixbuf),
 				     scratch_requisition.height + gdk_pixbuf_get_height (pixbuf));
-	
+
 	gtk_widget_show_all (window);
 
 	gtk_main ();

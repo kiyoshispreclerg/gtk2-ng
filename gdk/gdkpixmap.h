@@ -50,7 +50,7 @@ typedef struct _GdkPixmapObjectClass GdkPixmapObjectClass;
 struct _GdkPixmapObject
 {
   GdkDrawable parent_instance;
-  
+
   GdkDrawable *GSEAL (impl);  /* window-system-specific delegate object */
 
   gint GSEAL (depth);

@@ -76,11 +76,11 @@ struct _GdkDragContext {
   GObject parent_instance;
 
   /*< public >*/
-  
+
   GdkDragProtocol GSEAL (protocol);
 
   gboolean GSEAL (is_source);
-  
+
   GdkWindow *GSEAL (source_window);
   GdkWindow *GSEAL (dest_window);
 
@@ -92,7 +92,7 @@ struct _GdkDragContext {
   guint32 GSEAL (start_time);
 
   /*< private >*/
-  
+
   gpointer GSEAL (windowing_data);
 };
 
@@ -170,7 +170,7 @@ void    gdk_drag_find_window  (GdkDragContext   *context,
 gboolean        gdk_drag_motion      (GdkDragContext *context,
 				      GdkWindow      *dest_window,
 				      GdkDragProtocol protocol,
-				      gint            x_root, 
+				      gint            x_root,
 				      gint            y_root,
 				      GdkDragAction   suggested_action,
 				      GdkDragAction   possible_actions,

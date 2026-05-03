@@ -536,19 +536,19 @@ struct _GtkWidget
    *  GtkObject pointer.
    */
   GtkObject object;
-  
+
   /* 16 bits of internally used private flags.
    * this will be packed into the same 4 byte alignment frame that
    * state and saved_state go. we therefore don't waste any new
    * space on this.
    */
   guint16 GSEAL (private_flags);
-  
+
   /* The state of the widget. There are actually only
    *  5 widget states (defined in "gtkenums.h").
    */
   guint8 GSEAL (state);
-  
+
   /* The saved state of the widget. When a widget's state
    *  is changed to GTK_STATE_INSENSITIVE via
    *  "gtk_widget_set_state" or "gtk_widget_set_sensitive"
@@ -556,7 +556,7 @@ struct _GtkWidget
    *  will be restored once the widget gets sensitive again.
    */
   guint8 GSEAL (saved_state);
-  
+
   /* The widget's name. If the widget does not have a name
    *  (the name is NULL), then its name (as returned by
    *  "gtk_widget_get_name") is its class's name.
@@ -564,7 +564,7 @@ struct _GtkWidget
    *  the style to use for a widget.
    */
   gchar *GSEAL (name);
-  
+
   /*< public >*/
 
   /* The style for the widget. The style contains the
@@ -573,21 +573,21 @@ struct _GtkWidget
    *  the font to use for text.
    */
   GtkStyle *GSEAL (style);
-  
+
   /* The widget's desired size.
    */
   GtkRequisition GSEAL (requisition);
-  
+
   /* The widget's allocated size.
    */
   GtkAllocation GSEAL (allocation);
-  
+
   /* The widget's window or its parent window if it does
    *  not have a window. (Which will be indicated by the
    *  GTK_NO_WINDOW flag being set).
    */
   GdkWindow *GSEAL (window);
-  
+
   /* The widget's parent.
    */
   GtkWidget *GSEAL (parent);
@@ -622,13 +622,13 @@ struct _GtkWidgetClass
   GtkObjectClass parent_class;
 
   /*< public >*/
-  
+
   guint activate_signal;
 
   guint set_scroll_adjustments_signal;
 
   /*< private >*/
-  
+
   /* seldomly overidden */
   void (*dispatch_child_properties_changed) (GtkWidget   *widget,
 					     guint        n_pspecs,
@@ -661,16 +661,16 @@ struct _GtkWidgetClass
 				gboolean          was_grabbed);
   void (* child_notify)        (GtkWidget	 *widget,
 				GParamSpec       *pspec);
-  
+
   /* Mnemonics */
   gboolean (* mnemonic_activate) (GtkWidget    *widget,
 				  gboolean      group_cycling);
-  
+
   /* explicit focus */
   void     (* grab_focus)      (GtkWidget        *widget);
   gboolean (* focus)           (GtkWidget        *widget,
                                 GtkDirectionType  direction);
-  
+
   /* events */
   gboolean (* event)			(GtkWidget	     *widget,
 					 GdkEvent	     *event);
@@ -726,7 +726,7 @@ struct _GtkWidgetClass
 					 GdkEventAny	     *event);
   gboolean (* window_state_event)	(GtkWidget	     *widget,
 					 GdkEventWindowState *event);
-  
+
   /* selection */
   void (* selection_get)           (GtkWidget          *widget,
 				    GtkSelectionData   *selection_data,
@@ -781,8 +781,8 @@ struct _GtkWidgetClass
    */
   gboolean (* show_help)           (GtkWidget          *widget,
                                     GtkWidgetHelpType   help_type);
-  
-  /* accessibility support 
+
+  /* accessibility support
    */
   AtkObject*   (*get_accessible)     (GtkWidget *widget);
 
@@ -920,7 +920,7 @@ gboolean   gtk_widget_activate		     (GtkWidget	       *widget);
 gboolean   gtk_widget_set_scroll_adjustments (GtkWidget        *widget,
 					      GtkAdjustment    *hadjustment,
 					      GtkAdjustment    *vadjustment);
-     
+
 void	   gtk_widget_reparent		  (GtkWidget	       *widget,
 					   GtkWidget	       *new_parent);
 gboolean   gtk_widget_intersect		  (GtkWidget	       *widget,
@@ -1200,7 +1200,7 @@ GdkPixbuf    *gtk_widget_render_icon          (GtkWidget   *widget,
 void   gtk_widget_set_composite_name	(GtkWidget	*widget,
 					 const gchar   	*name);
 gchar* gtk_widget_get_composite_name	(GtkWidget	*widget);
-     
+
 /* Descend recursively and set rc-style on all widgets without user styles */
 void       gtk_widget_reset_rc_styles   (GtkWidget      *widget);
 

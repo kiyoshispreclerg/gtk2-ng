@@ -77,7 +77,7 @@ static gchar *var_name = "-";
 static struct stat cache_stat;
 static gboolean cache_up_to_date;
 
-static int check_dir_mtime (const char        *dir, 
+static int check_dir_mtime (const char        *dir,
                             const struct stat *sb,
                             int                tf)
 {
@@ -101,7 +101,7 @@ static int check_dir_mtime (const char        *dir,
   cache_path = g_build_filename (path, CACHE_NAME, NULL);
   retval = g_stat (cache_path, &cache_stat);
   g_free (cache_path);
-  
+
   if (retval < 0)
     {
       /* Cache file not found */
@@ -122,11 +122,11 @@ is_cache_up_to_date (const gchar *path)
 {
   GStatBuf path_stat, cache_stat;
   gchar *cache_path;
-  int retval; 
-  
+  int retval;
+
   retval = g_stat (path, &path_stat);
 
-  if (retval < 0) 
+  if (retval < 0)
     {
       /* We can't stat the path,
        * assume we have a updated cache */
@@ -136,7 +136,7 @@ is_cache_up_to_date (const gchar *path)
   cache_path = g_build_filename (path, CACHE_NAME, NULL);
   retval = g_stat (cache_path, &cache_stat);
   g_free (cache_path);
-  
+
   if (retval < 0)
     {
       /* Cache file not found */
@@ -158,7 +158,7 @@ has_theme_index (const gchar *path)
   index_path = g_build_filename (path, "index.theme", NULL);
 
   result = g_file_test (index_path, G_FILE_TEST_IS_REGULAR);
-  
+
   g_free (index_path);
 
   return result;
@@ -174,14 +174,14 @@ typedef struct
   guint size;
 } ImageData;
 
-typedef struct 
+typedef struct
 {
   int has_embedded_rect;
   int x0, y0, x1, y1;
-  
+
   int n_attach_points;
   int *attach_points;
-  
+
   int n_display_names;
   char **display_names;
 
@@ -211,7 +211,7 @@ foreach_remove_func (gpointer key, gpointer value, gpointer user_data)
   Image *image = (Image *)value;
   GHashTable *files = user_data;
   GList *list;
-  gboolean free_key = FALSE;  
+  gboolean free_key = FALSE;
 
   if (image->flags == HAS_ICON_FILE)
     {
@@ -225,13 +225,13 @@ foreach_remove_func (gpointer key, gpointer value, gpointer user_data)
   list = g_hash_table_lookup (files, key);
   if (list)
     free_key = TRUE;
-  
+
   list = g_list_prepend (list, value);
   g_hash_table_insert (files, key, list);
-  
+
   if (free_key)
     g_free (key);
-  
+
   return TRUE;
 }
 
@@ -249,7 +249,7 @@ load_icon_data (const char *path)
   gchar **keys;
   gsize n_keys;
   IconData *data;
-  
+
   icon_file = g_key_file_new ();
   g_key_file_set_list_separator (icon_file, ',');
   g_key_file_load_from_file (icon_file, path, G_KEY_FILE_KEEP_TRANSLATIONS, &error);
@@ -263,7 +263,7 @@ load_icon_data (const char *path)
 
   data = g_new0 (IconData, 1);
 
-  ivalues = g_key_file_get_integer_list (icon_file, 
+  ivalues = g_key_file_get_integer_list (icon_file,
 					 "Icon Data", "EmbeddedTextRectangle",
 					 &length, NULL);
   if (ivalues)
@@ -276,15 +276,15 @@ load_icon_data (const char *path)
 	  data->x1 = ivalues[2];
 	  data->y1 = ivalues[3];
 	}
-      
+
       g_free (ivalues);
     }
-      
+
   str = g_key_file_get_string (icon_file, "Icon Data", "AttachPoints", NULL);
   if (str)
     {
       split = g_strsplit (str, "|", -1);
-      
+
       data->n_attach_points = g_strv_length (split);
       data->attach_points = g_new (int, 2 * data->n_attach_points);
 
@@ -301,23 +301,23 @@ load_icon_data (const char *path)
 	    }
 	  i++;
 	}
-      
+
       g_strfreev (split);
       g_free (str);
     }
-      
+
   keys = g_key_file_get_keys (icon_file, "Icon Data", &n_keys, &error);
-  data->display_names = g_new0 (gchar *, 2 * n_keys + 1); 
+  data->display_names = g_new0 (gchar *, 2 * n_keys + 1);
   data->n_display_names = 0;
-  
+
   for (i = 0; i < n_keys; i++)
     {
       gchar *lang, *name;
-      
+
       if (g_str_has_prefix (keys[i], "DisplayName"))
 	{
 	  gchar *open, *close = NULL;
-	  
+
 	  open = strchr (keys[i], '[');
 
 	  if (open)
@@ -326,18 +326,18 @@ load_icon_data (const char *path)
 	  if (open && close)
 	    {
 	      lang = g_strndup (open + 1, close - open - 1);
-	      name = g_key_file_get_locale_string (icon_file, 
+	      name = g_key_file_get_locale_string (icon_file,
 						   "Icon Data", "DisplayName",
 						   lang, NULL);
 	    }
 	  else
 	    {
 	      lang = g_strdup ("C");
-	      name = g_key_file_get_string (icon_file, 
+	      name = g_key_file_get_string (icon_file,
 					    "Icon Data", "DisplayName",
 					    NULL);
 	    }
-	  
+
 	  data->display_names[2 * data->n_display_names] = lang;
 	  data->display_names[2 * data->n_display_names + 1] = name;
 	  data->n_display_names++;
@@ -345,12 +345,12 @@ load_icon_data (const char *path)
     }
 
   g_strfreev (keys);
-  
+
   g_key_file_free (icon_file);
 
   /* -1 means not computed yet, the real value depends
-   * on string pool state, and will be computed 
-   * later 
+   * on string pool state, and will be computed
+   * later
    */
   data->size = -1;
 
@@ -441,7 +441,7 @@ follow_links (const gchar *path)
   while (g_file_test (path2, G_FILE_TEST_IS_SYMLINK))
     {
       target = g_file_read_link (path2, NULL);
-      
+
       if (target)
 	{
 	  if (g_path_is_absolute (target))
@@ -470,10 +470,10 @@ follow_links (const gchar *path)
 }
 
 static void
-maybe_cache_image_data (Image       *image, 
+maybe_cache_image_data (Image       *image,
 			const gchar *path)
 {
-  if (!index_only && !image->image_data && 
+  if (!index_only && !image->image_data &&
       (g_str_has_suffix (path, ".png") || g_str_has_suffix (path, ".xpm")))
     {
       GdkPixbuf *pixbuf;
@@ -488,7 +488,7 @@ maybe_cache_image_data (Image       *image,
 	  ImageData *idata2;
 
 	  canonicalize_filename (path2);
-  
+
 	  idata2 = g_hash_table_lookup (image_data_hash, path2);
 
 	  if (idata && idata2 && idata != idata2)
@@ -504,13 +504,13 @@ maybe_cache_image_data (Image       *image,
 	      idata = idata2;
 	    }
 	}
-      
+
       if (!idata)
 	{
 	  idata = g_new0 (ImageData, 1);
 	  g_hash_table_insert (image_data_hash, g_strdup (path), idata);
 	  if (path2)
-	    g_hash_table_insert (image_data_hash, g_strdup (path2), idata);  
+	    g_hash_table_insert (image_data_hash, g_strdup (path2), idata);
 	}
 
         if (!idata->has_pixdata)
@@ -560,7 +560,7 @@ maybe_cache_icon_data (Image       *image,
 	  IconData *idata2;
 
 	  canonicalize_filename (path2);
-  
+
 	  idata2 = g_hash_table_lookup (icon_data_hash, path2);
 
 	  if (idata && idata2 && idata != idata2)
@@ -576,13 +576,13 @@ maybe_cache_icon_data (Image       *image,
 	      idata = idata2;
 	    }
 	}
-      
+
       if (!idata)
 	{
 	  idata = load_icon_data (path);
 	  g_hash_table_insert (icon_data_hash, g_strdup (path), idata);
 	  if (path2)
-	    g_hash_table_insert (icon_data_hash, g_strdup (path2), idata);  
+	    g_hash_table_insert (icon_data_hash, g_strdup (path2), idata);
         }
 
       image->icon_data = idata;
@@ -609,9 +609,9 @@ replace_backslashes_with_slashes (gchar *path)
 }
 
 static GList *
-scan_directory (const gchar *base_path, 
-		const gchar *subdir, 
-		GHashTable  *files, 
+scan_directory (const gchar *base_path,
+		const gchar *subdir,
+		GHashTable  *files,
 		GList       *directories,
 		gint         depth)
 {
@@ -621,15 +621,15 @@ scan_directory (const gchar *base_path,
   gchar *dir_path;
   gboolean dir_added = FALSE;
   guint dir_index = 0xffff;
-  
+
   dir_path = g_build_path ("/", base_path, subdir, NULL);
 
   /* FIXME: Use the gerror */
   dir = g_dir_open (dir_path, 0, NULL);
-  
+
   if (!dir)
     return directories;
-  
+
   dir_hash = g_hash_table_new (g_str_hash, g_str_equal);
 
   while ((name = g_dir_read_name (dir)))
@@ -651,7 +651,7 @@ scan_directory (const gchar *base_path,
 	    subsubdir = g_build_path ("/", subdir, name, NULL);
 	  else
 	    subsubdir = g_strdup (name);
-	  directories = scan_directory (base_path, subsubdir, files, 
+	  directories = scan_directory (base_path, subsubdir, files,
 					directories, depth + 1);
 	  g_free (subsubdir);
 
@@ -756,7 +756,7 @@ convert_to_hash (gpointer key, gpointer value, gpointer user_data)
   HashContext *context = user_data;
   guint hash;
   HashNode *node;
-  
+
   hash = icon_name_hash (key) % context->size;
 
   node = g_new0 (HashNode, 1);
@@ -768,12 +768,12 @@ convert_to_hash (gpointer key, gpointer value, gpointer user_data)
     node->next = context->nodes[hash];
 
   context->nodes[hash] = node;
-  
+
   return TRUE;
 }
 
 static GHashTable *string_pool = NULL;
- 
+
 static int
 find_string (const gchar *n)
 {
@@ -791,9 +791,9 @@ write_string (FILE *cache, const gchar *n)
 {
   gchar *s;
   int i, l;
-  
+
   l = ALIGN_VALUE (strlen (n) + 1, 4);
-  
+
   s = g_malloc0 (l);
   strcpy (s, n);
 
@@ -802,7 +802,7 @@ write_string (FILE *cache, const gchar *n)
   g_free (s);
 
   return i == 1;
-  
+
 }
 
 static gboolean
@@ -811,7 +811,7 @@ write_card16 (FILE *cache, guint16 n)
   int i;
 
   n = GUINT16_TO_BE (n);
-  
+
   i = fwrite ((char *)&n, 2, 1, cache);
 
   return i == 1;
@@ -823,7 +823,7 @@ write_card32 (FILE *cache, guint32 n)
   int i;
 
   n = GUINT32_TO_BE (n);
-  
+
   i = fwrite ((char *)&n, 4, 1, cache);
 
   return i == 1;
@@ -861,15 +861,15 @@ write_icon_data (FILE *cache, IconData *icon_data, int offset)
     {
       if (!write_card32 (cache, ofs))
         return FALSE;
-	      
+
        ofs += 8;
-    }	      
+    }
   else
     {
       if (!write_card32 (cache, 0))
         return FALSE;
     }
-	      
+
   if (icon_data->n_attach_points > 0)
     {
       if (!write_card32 (cache, ofs))
@@ -907,12 +907,12 @@ write_icon_data (FILE *cache, IconData *icon_data, int offset)
     {
       if (!write_card32 (cache, icon_data->n_attach_points))
         return FALSE;
-		  
+
       for (j = 0; j < 2 * icon_data->n_attach_points; j++)
         {
           if (!write_card16 (cache, icon_data->attach_points[j]))
             return FALSE;
-        }		  
+        }
     }
 
   if (icon_data->n_display_names > 0)
@@ -931,7 +931,7 @@ write_icon_data (FILE *cache, IconData *icon_data, int offset)
               tmp2 = tmp;
               tmp += ALIGN_VALUE (strlen (icon_data->display_names[j]) + 1, 4);
               /* We're playing a little game with negative
-               * offsets here to handle duplicate strings in 
+               * offsets here to handle duplicate strings in
                * the array.
                */
               add_string (icon_data->display_names[j], -tmp2);
@@ -960,7 +960,7 @@ write_icon_data (FILE *cache, IconData *icon_data, int offset)
                 return FALSE;
             }
         }
-    }	     
+    }
 
   return TRUE;
 }
@@ -982,7 +982,7 @@ get_image_meta_data_size (Image *image)
   /* The complication with storing the size in both
    * IconData and Image is necessary since we attribute
    * the size of the IconData only to the first Image
-   * using it (at which time it is written out in the 
+   * using it (at which time it is written out in the
    * cache). Later Images just refer to the written out
    * IconData via the offset.
    */
@@ -1010,7 +1010,7 @@ get_image_meta_data_size (Image *image)
               data->size += 4 + 8 * data->n_display_names;
 
               for (i = 0; data->display_names[i]; i++)
-                { 
+                {
                   int poolv;
                   if ((poolv = find_string (data->display_names[i])) == 0)
                     {
@@ -1024,7 +1024,7 @@ get_image_meta_data_size (Image *image)
                       add_string (data->display_names[i], -1);
                     }
                 }
-           } 
+           }
 
 	  image->icon_data_size = data->size;
 	  data->size = 0;
@@ -1042,13 +1042,13 @@ get_image_pixel_data_size (Image *image)
   /* The complication with storing the size in both
    * ImageData and Image is necessary since we attribute
    * the size of the ImageData only to the first Image
-   * using it (at which time it is written out in the 
+   * using it (at which time it is written out in the
    * cache). Later Images just refer to the written out
    * ImageData via the offset.
    */
   if (image->pixel_data_size == 0)
     {
-      if (image->image_data && 
+      if (image->image_data &&
 	  image->image_data->has_pixdata)
 	{
 	  image->pixel_data_size = image->image_data->size;
@@ -1065,14 +1065,14 @@ static gint
 get_image_data_size (Image *image)
 {
   gint len;
-  
+
   len = 0;
 
   len += get_image_pixel_data_size (image);
   len += get_image_meta_data_size (image);
 
   /* Even if len is zero, we need to reserve space to
-   * write the ImageData, unless this is an .svg without 
+   * write the ImageData, unless this is an .svg without
    * .icon, in which case both image_data and icon_data
    * are NULL.
    */
@@ -1099,7 +1099,7 @@ get_single_node_size (HashNode *node, int *node_size, int *image_data_size)
 
   /* Image list */
   *node_size += 4 + g_list_length (node->image_list) * 8;
- 
+
   /* Image data */
   *image_data_size = 0;
   for (list = node->image_list; list; list = list->next)
@@ -1127,7 +1127,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
       g_assert (*offset == ftell (cache));
 
       node->offset = *offset;
-	  
+
       get_single_node_size (node, &node_size, &image_data_size);
       g_assert (node_size % 4 == 0);
       g_assert (image_data_size % 4 == 0);
@@ -1144,7 +1144,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 	  if (!write_card32 (cache, 0xffffffff))
 	    return FALSE;
 	}
-      
+
       name_size = 0;
       name_offset = find_string (node->name);
       if (name_offset <= 0)
@@ -1155,11 +1155,11 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
         }
       if (!write_card32 (cache, name_offset))
 	return FALSE;
-      
+
       image_list_offset = *offset + 12 + name_size;
       if (!write_card32 (cache, image_list_offset))
 	return FALSE;
-      
+
       /* Icon name */
       if (name_size > 0)
         {
@@ -1171,7 +1171,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
       len = g_list_length (node->image_list);
       if (!write_card32 (cache, len))
 	return FALSE;
-      
+
       /* Image data goes right after the image list */
       list = node->image_list;
       data_offset = image_data_offset;
@@ -1183,7 +1183,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 	  /* Directory index */
 	  if (!write_card16 (cache, image->dir_index))
 	    return FALSE;
-	  
+
 	  /* Flags */
 	  if (!write_card16 (cache, image->flags))
 	    return FALSE;
@@ -1195,7 +1195,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 		return FALSE;
 	      data_offset += image_data_size;
 	    }
-	  else 
+	  else
 	    {
 	      if (!write_card32 (cache, 0))
 		return FALSE;
@@ -1216,7 +1216,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 	    continue;
 
 	  /* Pixel data */
-	  if (pixel_data_size > 0) 
+	  if (pixel_data_size > 0)
 	    {
 	      image->image_data->offset = image_data_offset + 8;
 	      if (!write_card32 (cache, image->image_data->offset))
@@ -1245,7 +1245,7 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 	      if (!write_image_data (cache, image->image_data, image->image_data->offset))
 		return FALSE;
 	    }
-	  
+
 	  if (meta_data_size > 0)
 	    {
               if (!write_icon_data (cache, image->icon_data, image->icon_data->offset))
@@ -1254,11 +1254,11 @@ write_bucket (FILE *cache, HashNode *node, int *offset)
 
 	  image_data_offset += pixel_data_size + meta_data_size + 8;
 	}
-      
+
       *offset = next_offset;
       node = node->next;
     }
-  
+
   return TRUE;
 }
 
@@ -1274,7 +1274,7 @@ write_hash_table (FILE *cache, HashContext *context, int *new_offset)
 
   offset += 4;
   node_offset = offset + context->size * 4;
-  /* Just write zeros here, we will rewrite this later */  
+  /* Just write zeros here, we will rewrite this later */
   for (i = 0; i < context->size; i++)
     {
       if (!write_card32 (cache, 0))
@@ -1332,16 +1332,16 @@ write_dir_index (FILE *cache, int offset, GList *directories)
   for (d = directories; d; d = d->next)
     {
       dir = d->data;
-  
+
       tmp2 = find_string (dir);
-    
+
       if (tmp2 == 0 || tmp2 == -1)
         {
           tmp2 = tmp;
           tmp += ALIGN_VALUE (strlen (dir) + 1, 4);
           /* We're playing a little game with negative
-           * offsets here to handle duplicate strings in 
-           * the array, even though that should not 
+           * offsets here to handle duplicate strings in
+           * the array, even though that should not
            * really happen for the directory index.
            */
           add_string (dir, -tmp2);
@@ -1366,12 +1366,12 @@ write_dir_index (FILE *cache, int offset, GList *directories)
         {
           tmp2 = -tmp2;
           g_assert (tmp2 == ftell (cache));
-          add_string (dir, tmp2); 
+          add_string (dir, tmp2);
           if (!write_string (cache, dir))
 	    return FALSE;
         }
     }
-  
+
   return TRUE;
 }
 
@@ -1386,7 +1386,7 @@ write_file (FILE *cache, GHashTable *files, GList *directories)
    */
   context.size = g_spaced_primes_closest (g_hash_table_size (files) / 3);
   context.nodes = g_new0 (HashNode *, context.size);
-  
+
   g_hash_table_foreach_remove (files, convert_to_hash, &context);
 
   /* Now write the file */
@@ -1409,7 +1409,7 @@ write_file (FILE *cache, GHashTable *files, GList *directories)
       g_printerr (_("Failed to write folder index\n"));
       return FALSE;
     }
-  
+
   rewind (cache);
 
   if (!write_header (cache, new_offset))
@@ -1417,7 +1417,7 @@ write_file (FILE *cache, GHashTable *files, GList *directories)
       g_printerr (_("Failed to rewrite header\n"));
       return FALSE;
     }
-    
+
   return TRUE;
 }
 
@@ -1436,12 +1436,12 @@ validate_file (const gchar *file)
   info.n_directories = 0;
   info.flags = CHECK_OFFSETS|CHECK_STRINGS|CHECK_PIXBUFS;
 
-  if (!_gtk_icon_cache_validate (&info)) 
+  if (!_gtk_icon_cache_validate (&info))
     {
       g_mapped_file_unref (map);
       return FALSE;
     }
-  
+
   g_mapped_file_unref (map);
 
   return TRUE;
@@ -1451,7 +1451,7 @@ validate_file (const gchar *file)
  * safe_fclose:
  * @f: A FILE* stream, must have underlying fd
  *
- * Unix defaults for data preservation after system crash 
+ * Unix defaults for data preservation after system crash
  * are unspecified, and many systems will eat your data
  * in this situation unless you explicitly fsync().
  *
@@ -1519,12 +1519,12 @@ opentmp:
       g_printerr (_("Failed to write cache file: %s\n"), g_strerror (errno));
       exit (1);
     }
-  
+
   files = g_hash_table_new (g_str_hash, g_str_equal);
   image_data_hash = g_hash_table_new (g_str_hash, g_str_equal);
   icon_data_hash = g_hash_table_new (g_str_hash, g_str_equal);
   string_pool = g_hash_table_new (g_str_hash, g_str_equal);
- 
+
   directories = scan_directory (path, NULL, files, NULL, 0);
 
   if (g_hash_table_size (files) == 0)
@@ -1536,7 +1536,7 @@ opentmp:
       g_unlink (cache_path);
       exit (0);
     }
-    
+
   /* FIXME: Handle failure */
   if (!write_file (cache, files, directories))
     {
@@ -1554,7 +1554,7 @@ opentmp:
 
   g_list_foreach (directories, (GFunc)g_free, NULL);
   g_list_free (directories);
-  
+
   if (!validate_file (tmp_cache_path))
     {
       g_printerr (_("The generated cache was invalid.\n"));
@@ -1636,11 +1636,11 @@ write_csource (const gchar *path)
   cache_path = g_build_filename (path, CACHE_NAME, NULL);
   if (!g_file_get_contents (cache_path, &data, &len, NULL))
     exit (1);
-  
+
   g_printf ("#ifdef __SUNPRO_C\n");
-  g_printf ("#pragma align 4 (%s)\n", var_name);   
+  g_printf ("#pragma align 4 (%s)\n", var_name);
   g_printf ("#endif\n");
-  
+
   g_printf ("#ifdef __GNUC__\n");
   g_printf ("static const guint8 %s[] __attribute__ ((__aligned__ (4))) = \n", var_name);
   g_printf ("#else\n");
@@ -1656,7 +1656,7 @@ write_csource (const gchar *path)
       if (i % 12 == 11)
         g_printf ("\n");
     }
-  
+
   g_printf ("0x%02x\n};\n", (guint8)data[i]);
 }
 
@@ -1685,13 +1685,13 @@ printerr_handler (const gchar *string)
       gchar *result;
 
       result = g_convert_with_fallback (string, -1, charset, "UTF-8", "?", NULL, NULL, NULL);
-      
+
       if (result)
         {
           fputs (result, stderr);
           g_free (result);
         }
-   
+
       fflush (stderr);
     }
 }
@@ -1707,7 +1707,7 @@ main (int argc, char **argv)
     return 0;
 
   g_set_printerr_handler (printerr_handler);
-  
+
   setlocale (LC_ALL, "");
 
 #ifdef ENABLE_NLS
@@ -1721,12 +1721,12 @@ main (int argc, char **argv)
   g_option_context_add_main_entries (context, args, GETTEXT_PACKAGE);
 
   g_option_context_parse (context, &argc, &argv, NULL);
-  
+
   path = argv[1];
 #ifdef G_OS_WIN32
   path = g_locale_to_utf8 (path, -1, NULL, NULL, NULL);
 #endif
-  
+
   if (validate)
     {
        gchar *file = g_build_filename (path, CACHE_NAME, NULL);
@@ -1743,7 +1743,7 @@ main (int argc, char **argv)
              g_printerr (_("Not a valid icon cache: %s\n"), file);
            exit (1);
          }
-       else 
+       else
          {
            exit (0);
          }
@@ -1763,7 +1763,7 @@ main (int argc, char **argv)
 
       return 1;
     }
-  
+
   if (!force_update && is_cache_up_to_date (path))
     return 0;
 

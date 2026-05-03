@@ -54,11 +54,11 @@ struct _GdkDrawable
 {
   GObject parent_instance;
 };
- 
-struct _GdkDrawableClass 
+
+struct _GdkDrawableClass
 {
   GObjectClass parent_class;
-  
+
   GdkGC *(*create_gc)    (GdkDrawable    *drawable,
 		          GdkGCValues    *values,
 		          GdkGCValuesMask mask);
@@ -135,7 +135,7 @@ struct _GdkDrawableClass
                           gint	       ydest,
                           gint	       width,
                           gint	       height);
-  
+
   gint (*get_depth)      (GdkDrawable  *drawable);
   void (*get_size)       (GdkDrawable  *drawable,
                           gint         *width,
@@ -185,7 +185,7 @@ struct _GdkDrawableClass
 				  gint            dest_y,
 				  gint            width,
 				  gint            height);
-  
+
   void (*draw_glyphs_transformed) (GdkDrawable      *drawable,
 				   GdkGC	    *gc,
 				   PangoMatrix      *matrix,

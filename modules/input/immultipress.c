@@ -1,5 +1,5 @@
 /* Copyright (C) 2006 Openismus GmbH
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -23,10 +23,10 @@
 #include <string.h> /* For strcmp() */
 
 #define CONTEXT_ID "multipress"
- 
+
 /** NOTE: Change the default language from "" to "*" to enable this input method by default for all locales.
  */
-static const GtkIMContextInfo info = { 
+static const GtkIMContextInfo info = {
   CONTEXT_ID,		   /* ID */
   N_("Multipress"),     /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain. Defined in configure.ac */

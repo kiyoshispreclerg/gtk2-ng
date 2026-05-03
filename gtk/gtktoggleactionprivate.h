@@ -25,7 +25,7 @@
  * Modified by the GTK+ Team and others 2003.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GTK_TOGGLE_ACTION_PRIVATE_H__
@@ -35,7 +35,7 @@
 #define GTK_TOGGLE_ACTION_GET_PRIVATE(obj) \
   ((GtkToggleActionPrivate *) gtk_toggle_action_get_instance_private (GTK_TOGGLE_ACTION (obj)))
 
-struct _GtkToggleActionPrivate 
+struct _GtkToggleActionPrivate
 {
   guint active        : 1;
   guint draw_as_radio : 1;

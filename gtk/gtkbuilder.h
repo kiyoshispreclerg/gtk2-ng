@@ -68,7 +68,7 @@ struct _GtkBuilder
 struct _GtkBuilderClass
 {
   GObjectClass parent_class;
-  
+
   GType (* get_type_from_name) (GtkBuilder *builder,
                                 const char *type_name);
 

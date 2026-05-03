@@ -126,8 +126,8 @@ struct _RoundtripState
 static gboolean
 callback_idle (gpointer data)
 {
-  SendEventState *state = (SendEventState *)data;  
-  
+  SendEventState *state = (SendEventState *)data;
+
   state->callback (state->window, !state->have_error, state->data);
 
   g_free (state);
@@ -142,7 +142,7 @@ send_event_handler (Display *dpy,
 		    int      len,
 		    XPointer data)
 {
-  SendEventState *state = (SendEventState *)data;  
+  SendEventState *state = (SendEventState *)data;
 
   if (dpy->last_request_read == state->send_event_req)
     {
@@ -162,7 +162,7 @@ send_event_handler (Display *dpy,
        * 'repl' variable entirely and cast the _XGetAsyncReply() call
        * to (void) instead.
        */
-      
+
       if (rep->generic.type != X_Error)
 	{
 	  /* Actually does nothing, since there are no additional bytes
@@ -202,7 +202,7 @@ client_message_to_wire (XClientMessageEvent *ev,
   event->u.u.detail = ev->format;
   switch (ev->format)
     {
-    case 8:	
+    case 8:
       event->u.clientMessage.u.b.type   = ev->message_type;
       for (i = 0; i < 20; i++)
 	event->u.clientMessage.u.b.bytes[i] = ev->data.b[i];
@@ -235,8 +235,8 @@ client_message_to_wire (XClientMessageEvent *ev,
 }
 
 void
-_gdk_x11_send_client_message_async (GdkDisplay           *display, 
-				    Window                window, 
+_gdk_x11_send_client_message_async (GdkDisplay           *display,
+				    Window                window,
 				    gboolean              propagate,
 				    glong                 event_mask,
 				    XClientMessageEvent  *event_send,
@@ -245,7 +245,7 @@ _gdk_x11_send_client_message_async (GdkDisplay           *display,
 {
   Display *dpy;
   SendEventState *state;
-  
+
   dpy = GDK_DISPLAY_XDISPLAY (display);
 
   state = g_new (SendEventState, 1);
@@ -255,7 +255,7 @@ _gdk_x11_send_client_message_async (GdkDisplay           *display,
   state->callback = callback;
   state->data = data;
   state->have_error = FALSE;
-  
+
   LockDisplay(dpy);
 
   state->async.next = dpy->async_handlers;
@@ -266,20 +266,20 @@ _gdk_x11_send_client_message_async (GdkDisplay           *display,
   {
     register xSendEventReq *req;
     xEvent ev;
-    
+
     client_message_to_wire (event_send, &ev);
-      
+
     GetReq(SendEvent, req);
     req->destination = window;
     req->propagate = propagate;
     req->eventMask = event_mask;
     /* gross, matches Xproto.h */
-#ifdef WORD64			
+#ifdef WORD64
     memcpy ((char *) req->eventdata, (char *) &ev, SIZEOF(xEvent));
-#else    
+#else
     memcpy ((char *) &req->event, (char *) &ev, SIZEOF(xEvent));
 #endif
-    
+
     state->send_event_req = dpy->request;
   }
 
@@ -294,7 +294,7 @@ _gdk_x11_send_client_message_async (GdkDisplay           *display,
     * GetEmptyReq() call first and keep only the request number
     * assignment below.
     */
-    
+
     GetEmptyReq(GetInputFocus, req);
 
    /*
@@ -308,7 +308,7 @@ _gdk_x11_send_client_message_async (GdkDisplay           *display,
     */
     state->get_input_focus_req = dpy->request;
   }
-  
+
   UnlockDisplay(dpy);
   SyncHandle();
 }
@@ -320,7 +320,7 @@ set_input_focus_handler (Display *dpy,
 			 int      len,
 			 XPointer data)
 {
-  SetInputFocusState *state = (SetInputFocusState *)data;  
+  SetInputFocusState *state = (SetInputFocusState *)data;
 
   if (dpy->last_request_read == state->set_input_focus_req)
     {
@@ -333,7 +333,7 @@ set_input_focus_handler (Display *dpy,
 	  return True;
 	}
     }
-  
+
   if (dpy->last_request_read == state->get_input_focus_req)
     {
       xGetInputFocusReply replbuf;
@@ -343,7 +343,7 @@ set_input_focus_handler (Display *dpy,
        * 'repl' variable entirely and cast the _XGetAsyncReply() call
        * to (void) instead.
        */
-      
+
       if (rep->generic.type != X_Error)
 	{
 	  /* Actually does nothing, since there are no additional bytes
@@ -365,7 +365,7 @@ set_input_focus_handler (Display *dpy,
       DeqAsyncHandler(state->dpy, &state->async);
 
       g_free (state);
-      
+
       return (rep->generic.type != X_Error);
     }
 
@@ -380,13 +380,13 @@ _gdk_x11_set_input_focus_safe (GdkDisplay             *display,
 {
   Display *dpy;
   SetInputFocusState *state;
-  
+
   dpy = GDK_DISPLAY_XDISPLAY (display);
 
   state = g_new (SetInputFocusState, 1);
 
   state->dpy = dpy;
-  
+
   LockDisplay(dpy);
 
   state->async.next = dpy->async_handlers;
@@ -396,7 +396,7 @@ _gdk_x11_set_input_focus_safe (GdkDisplay             *display,
 
   {
     xSetInputFocusReq *req;
-    
+
     GetReq(SetInputFocus, req);
     req->focus = window;
     req->revertTo = revert_to;
@@ -415,7 +415,7 @@ _gdk_x11_set_input_focus_safe (GdkDisplay             *display,
     * GetEmptyReq() call first and keep only the request number
     * assignment below.
     */
-    
+
     GetEmptyReq(GetInputFocus, req);
 
    /*
@@ -429,7 +429,7 @@ _gdk_x11_set_input_focus_safe (GdkDisplay             *display,
     */
     state->get_input_focus_req = dpy->request;
   }
-  
+
   UnlockDisplay(dpy);
   SyncHandle();
 }
@@ -445,7 +445,7 @@ list_children_handler (Display *dpy,
 
   if (dpy->last_request_read != state->get_property_req)
     return False;
-  
+
   if (rep->generic.type == X_Error)
     {
       state->have_error = TRUE;
@@ -455,7 +455,7 @@ list_children_handler (Display *dpy,
     {
       xGetPropertyReply replbuf;
       xGetPropertyReply *repl;
-	    
+
       repl = (xGetPropertyReply *)
 	_XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			(sizeof(xGetPropertyReply) - sizeof(xReply)) >> 2,
@@ -491,7 +491,7 @@ list_children_and_wm_state (Display      *dpy,
   *children = NULL;
   *nchildren = 0;
   *has_wm_state = FALSE;
-  
+
   state.have_error = FALSE;
   state.has_wm_state = FALSE;
 
@@ -509,10 +509,10 @@ list_children_and_wm_state (Display      *dpy,
       prop_req->delete = False;
       prop_req->longOffset = 0;
       prop_req->longLength = 0;
-      
+
       state.get_property_req = dpy->request;
     }
-  
+
   GetResReq(QueryTree, w, req);
   if (!_XReply(dpy, (xReply *)&rep, 0, xFalse))
     {
@@ -540,7 +540,7 @@ list_children_and_wm_state (Display      *dpy,
     DeqAsyncHandler(dpy, &async);
   UnlockDisplay(dpy);
   SyncHandle();
-  
+
   return !state.have_error;
 }
 
@@ -560,7 +560,7 @@ handle_get_geometry_reply (Display           *dpy,
 			   xGetGeometryReply *repl)
 {
   GdkChildInfoX11 *child = &state->child_info[state->n_children_found];
-  
+
   child->x = cvtINT16toInt (repl->x);
   child->y = cvtINT16toInt (repl->y);
   child->width = repl->width;
@@ -611,12 +611,12 @@ get_child_info_handler (Display *dpy,
 			XPointer data)
 {
   Bool result = True;
-  
+
   ChildInfoState *state = (ChildInfoState *)data;
 
   if (dpy->last_request_read != state->child_states[state->current_child].seq[state->current_request])
     return False;
-  
+
   if (rep->generic.type == X_Error)
     {
       state->child_has_error = TRUE;
@@ -635,12 +635,12 @@ get_child_info_handler (Display *dpy,
 	  {
 	    xGetPropertyReply replbuf;
 	    xGetPropertyReply *repl;
-	    
+
 	    repl = (xGetPropertyReply *)
 	      _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			      (sizeof(xGetPropertyReply) - sizeof(xReply)) >> 2,
 			      True);
-	    
+
 	    handle_get_property_reply (dpy, state, repl);
 	  }
 	  break;
@@ -648,12 +648,12 @@ get_child_info_handler (Display *dpy,
 	  {
 	    xGetWindowAttributesReply replbuf;
 	    xGetWindowAttributesReply *repl;
-	    
+
 	    repl = (xGetWindowAttributesReply *)
 	      _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			      (sizeof(xGetWindowAttributesReply) - sizeof(xReply)) >> 2,
 			      True);
-	    
+
 	    handle_get_wa_reply (dpy, state, repl);
 	  }
 	  break;
@@ -661,12 +661,12 @@ get_child_info_handler (Display *dpy,
 	  {
 	    xGetGeometryReply replbuf;
 	    xGetGeometryReply *repl;
-	    
+
 	    repl = (xGetGeometryReply *)
 	      _XGetAsyncReply(dpy, (char *)&replbuf, rep, buf, len,
 			      (sizeof(xGetGeometryReply) - sizeof(xReply)) >> 2,
 			      True);
-	    
+
 	    handle_get_geometry_reply (dpy, state, repl);
 	  }
 	  break;
@@ -696,7 +696,7 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
 
   *children = NULL;
   *nchildren = 0;
-  
+
   dpy = GDK_DISPLAY_XDISPLAY (display);
   if (get_wm_state)
     wm_state_atom = gdk_x11_get_xatom_by_name_for_display (display, "WM_STATE");
@@ -749,13 +749,13 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
   async.handler = get_child_info_handler;
   async.data = (XPointer) &state;
   dpy->async_handlers = &async;
-  
+
   for (i = 0; i < state.nchildren; i++)
     {
       xResourceReq *resource_req;
       xGetPropertyReq *prop_req;
       Window window = state.children[i];
-      
+
       if (get_wm_state)
 	{
 	  GetReq (GetProperty, prop_req);
@@ -768,10 +768,10 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
 
 	  state.child_states[i].seq[CHILD_INFO_GET_PROPERTY] = dpy->request;
 	}
-      
+
       GetResReq(GetWindowAttributes, window, resource_req);
       state.child_states[i].seq[CHILD_INFO_GET_WA] = dpy->request;
-      
+
       GetResReq(GetGeometry, window, resource_req);
       state.child_states[i].seq[CHILD_INFO_GET_GEOMETRY] = dpy->request;
     }
@@ -802,7 +802,7 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
 
   g_free (state.children);
   g_free (state.child_states);
-  
+
   DeqAsyncHandler(dpy, &async);
   UnlockDisplay(dpy);
   SyncHandle();
@@ -813,8 +813,8 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
 static gboolean
 roundtrip_callback_idle (gpointer data)
 {
-  RoundtripState *state = (RoundtripState *)data;  
-  
+  RoundtripState *state = (RoundtripState *)data;
+
   state->callback (state->display, state->data, state->get_input_focus_req);
 
   g_free (state);
@@ -829,8 +829,8 @@ roundtrip_handler (Display *dpy,
 		   int      len,
 		   XPointer data)
 {
-  RoundtripState *state = (RoundtripState *)data;  
-  
+  RoundtripState *state = (RoundtripState *)data;
+
   if (dpy->last_request_read == state->get_input_focus_req)
     {
       xGetInputFocusReply replbuf;
@@ -840,7 +840,7 @@ roundtrip_handler (Display *dpy,
        * 'repl' variable entirely and cast the _XGetAsyncReply() call
        * to (void) instead.
        */
-      
+
       if (rep->generic.type != X_Error)
 	{
 	  /* Actually does nothing, since there are no additional bytes
@@ -859,7 +859,7 @@ roundtrip_handler (Display *dpy,
            */
 	}
 
-      
+
       if (state->callback)
         gdk_threads_add_idle (roundtrip_callback_idle, state);
 
@@ -872,13 +872,13 @@ roundtrip_handler (Display *dpy,
 }
 
 void
-_gdk_x11_roundtrip_async (GdkDisplay           *display, 
+_gdk_x11_roundtrip_async (GdkDisplay           *display,
 			  GdkRoundTripCallback callback,
 			  gpointer              data)
 {
   Display *dpy;
   RoundtripState *state;
-  
+
   dpy = GDK_DISPLAY_XDISPLAY (display);
 
   state = g_new (RoundtripState, 1);
@@ -887,7 +887,7 @@ _gdk_x11_roundtrip_async (GdkDisplay           *display,
   state->dpy = dpy;
   state->callback = callback;
   state->data = data;
-  
+
   LockDisplay(dpy);
 
   state->async.next = dpy->async_handlers;
@@ -906,7 +906,7 @@ _gdk_x11_roundtrip_async (GdkDisplay           *display,
     * GetEmptyReq() call first and keep only the request number
     * assignment below.
     */
-    
+
     GetEmptyReq(GetInputFocus, req);
 
    /*
@@ -920,7 +920,7 @@ _gdk_x11_roundtrip_async (GdkDisplay           *display,
     */
     state->get_input_focus_req = dpy->request;
   }
-  
+
   UnlockDisplay(dpy);
   SyncHandle();
 }

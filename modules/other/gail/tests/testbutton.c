@@ -29,7 +29,7 @@ static gint _finish_button_action (gpointer data);
 
 #define NUM_VALID_ROLES 4
 
-static void 
+static void
 _check_object (AtkObject *obj)
 {
   AtkRole role;
@@ -98,7 +98,7 @@ static gint _toggle_inconsistent (gpointer data)
     gtk_toggle_button_set_inconsistent (toggle_button, TRUE);
   }
   return FALSE;
-} 
+}
 
 static gint _do_button_action (gpointer data)
 {
@@ -136,7 +136,7 @@ button_pressed_handler (GtkButton *button)
     }
 }
 
-static void 
+static void
 _print_states (AtkObject *obj)
 {
   AtkStateSet *state_set;
@@ -164,7 +164,7 @@ _print_states (AtkObject *obj)
   g_print ("*** End states ***\n");
 }
 
-static void 
+static void
 _print_button_image_info(AtkObject *obj) {
 
   gint height, width;
@@ -172,7 +172,7 @@ _print_button_image_info(AtkObject *obj) {
 
   height = width = 0;
 
-  if(!ATK_IS_IMAGE(obj)) 
+  if(!ATK_IS_IMAGE(obj))
 	return;
 
   g_print("*** Start Button Image Info ***\n");

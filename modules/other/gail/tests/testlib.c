@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "testlib.h" 
+#include "testlib.h"
 
 static gint	_get_position_in_array		(gint		window,
 						gchar		*the_test_name);
@@ -31,7 +31,7 @@ static void	_destroy			(GtkWidget	*widget,
  * which is of an #AtkRole type specified in the @roles array.
  *
  * Returns: the #AtkObject that meets the specified criteria or NULL
- * if no object is found. 
+ * if no object is found.
  **/
 AtkObject*
 find_object_by_role (AtkObject *obj,
@@ -94,7 +94,7 @@ find_object_by_role (AtkObject *obj,
  * also has the GTK widget name specified in @name.
  *
  * Returns: the #AtkObject that meets the specified criteria or NULL
- * if no object is found. 
+ * if no object is found.
  **/
 AtkObject*
 find_object_by_name_and_role(AtkObject   *obj,
@@ -127,7 +127,7 @@ find_object_by_name_and_role(AtkObject   *obj,
   for (i = 0; i < n_children; i++)
     {
       AtkObject* found_obj;
- 
+
       child = atk_object_ref_accessible_child (obj, i);
 
       if (child == NULL)
@@ -161,11 +161,11 @@ find_object_by_name_and_role(AtkObject   *obj,
  * @num_roles: The number of entries in @roles
  *
  * Find the #AtkObject which is a decendant of the specified @obj
- * which has the specified @name and matches one of the 
+ * which has the specified @name and matches one of the
  * specified @roles.
- * 
+ *
  * Returns: the #AtkObject that meets the specified criteria or NULL
- * if no object is found. 
+ * if no object is found.
  */
 AtkObject*
 find_object_by_accessible_name_and_role (AtkObject   *obj,
@@ -210,7 +210,7 @@ find_object_by_accessible_name_and_role (AtkObject   *obj,
                 return child;
             }
         }
-      found_obj = find_object_by_accessible_name_and_role (child, name, 
+      found_obj = find_object_by_accessible_name_and_role (child, name,
                                                            roles, num_roles);
       g_object_unref (child);
       if (found_obj)
@@ -222,16 +222,16 @@ find_object_by_accessible_name_and_role (AtkObject   *obj,
 /**
  * find_object_by_name_and_role:
  * @obj: An #AtkObject
- * @type: The type 
+ * @type: The type
  *
  * Find the #AtkObject which is a decendant of the specified @obj
  * which has the specified @type.
- * 
+ *
  * Returns: the #AtkObject that meets the specified criteria or NULL
- * if no object is found. 
+ * if no object is found.
  */
 AtkObject*
-find_object_by_type (AtkObject *obj, 
+find_object_by_type (AtkObject *obj,
                      gchar     *type)
 {
   /*
@@ -281,7 +281,7 @@ find_object_by_type (AtkObject *obj,
  * @obj: An #AtkObject
  *
  * Keeps a static GPtrArray of objects that have been passed into this
- * function. 
+ * function.
  *
  * Returns: TRUE if @obj has been passed into this function before
  * and FALSE otherwise.
@@ -326,8 +326,8 @@ already_accessed_atk_object (AtkObject *obj)
  * Displays the hierarchy of widgets starting from @obj.
  **/
 void
-display_children (AtkObject *obj, 
-                  gint      depth, 
+display_children (AtkObject *obj,
+                  gint      depth,
                   gint      child_number)
 {
   display_children_to_depth(obj, -1, depth, child_number);
@@ -451,7 +451,7 @@ gint                   counter;
 /* A global for keeping track of the window numbers */
 static gint 	       window_no = 0;
 /* An array containing the names of the tests that are "on" */
-static gchar           *onTests[MAX_WINDOWS][MAX_TESTS]; 
+static gchar           *onTests[MAX_WINDOWS][MAX_TESTS];
 static gint            g_visibleDialog = 0;
 static gint	       testcount[MAX_WINDOWS];
 static TestCB          testcb[MAX_WINDOWS];
@@ -461,11 +461,11 @@ static TestCB          testcb[MAX_WINDOWS];
  * @obj: An #AtkObject
  * @runtest: The callback function to run when the "Run Tests" button
  *   is clicked.
- * @outwin: The output window to use.  If NULL is passed in, then 
+ * @outwin: The output window to use.  If NULL is passed in, then
  *   create a new one.
  *
  * Creates the test window and the output window (if @outwin is NULL)
- * Runs _create_output_window() and _create_select_tests_window() 
+ * Runs _create_output_window() and _create_select_tests_window()
  * and sets g_visibleDialog to 1
  *
  * Returns: The window number of the created window if successful, -1 otherwise.
@@ -475,11 +475,11 @@ create_windows (AtkObject    *obj,
                 TLruntest    runtest,
                 OutputWindow **outwin)
 {
-  gboolean valid;  
+  gboolean valid;
   gint tmp;
 
   g_visibleDialog = 1;
-  _create_output_window(outwin); 
+  _create_output_window(outwin);
   valid = _create_select_tests_window(obj, runtest, outwin);
   if (valid)
     {
@@ -491,7 +491,7 @@ create_windows (AtkObject    *obj,
     return -1;
 }
 
-/** 
+/**
  * _create_output_window
  * @outwin: If outwin is passed in as NULL, a new output window is created
  *   otherwise, the outwin passed in is shared.
@@ -508,12 +508,12 @@ _create_output_window (OutputWindow **outwin)
   if (*outwin == NULL)
     {
       localow = (OutputWindow *) malloc (sizeof(OutputWindow));
-   
+
       localow->outputBuffer = gtk_text_buffer_new(NULL);
       view = gtk_text_view_new_with_buffer(GTK_TEXT_BUFFER(localow->outputBuffer));
       gtk_widget_set_size_request (view, 700, 500);
       gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD);
-      gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);	
+      gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
 
       localow->outputWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
       gtk_window_set_title(GTK_WINDOW(localow->outputWindow), "Test Output");
@@ -537,14 +537,14 @@ _create_output_window (OutputWindow **outwin)
     }
 }
 
-/** 
+/**
  * _create_select_tests_window:
  * @obj: An #AtkObject
  * @runtest: The callback function that is run when the "Run Tests"
  *   button is clicked.
  * @outwin: The output window to use.
  *
- * Creates the Test Select Window 
+ * Creates the Test Select Window
  *
  * Returns: TRUE if successful, FALSE otherwise
  **/
@@ -559,7 +559,7 @@ _create_select_tests_window (AtkObject    *obj,
   if (window_no >= 0 && window_no < MAX_WINDOWS)
     {
       md[window_no] = (MainDialog *) malloc (sizeof(MainDialog));
-     
+
       /* Setup Window */
       md[window_no]->selecttestsTitle = "Test Setting";
       md[window_no]->selecttestsWindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -568,20 +568,20 @@ _create_select_tests_window (AtkObject    *obj,
       gtk_window_set_resizable (GTK_WINDOW(md[window_no]->selecttestsWindow),
                                 FALSE);
       gtk_window_set_position (GTK_WINDOW(md[window_no]->selecttestsWindow),
-                               GTK_WIN_POS_CENTER); 
-      g_signal_connect (GTK_OBJECT(md[window_no]->selecttestsWindow), 
+                               GTK_WIN_POS_CENTER);
+      g_signal_connect (GTK_OBJECT(md[window_no]->selecttestsWindow),
                         "destroy",
                         G_CALLBACK (_destroy),
                         &md[window_no]->selecttestsWindow);
-     
+
       /* Setup Scrolling */
       scrolledWindow = gtk_scrolled_window_new(NULL, NULL);
       gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledWindow),
-                                      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC); 
+                                      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
       gtk_widget_set_size_request (scrolledWindow, 500, 600);
-      gtk_container_add (GTK_CONTAINER (md[window_no]->selecttestsWindow), 
+      gtk_container_add (GTK_CONTAINER (md[window_no]->selecttestsWindow),
                          scrolledWindow);
-      
+
       /* Setup Layout */
       md[window_no]->vbox = gtk_vbox_new (TRUE, 0);
       md[window_no]->button = gtk_button_new_with_mnemonic ("_Run Tests");
@@ -597,17 +597,17 @@ _create_select_tests_window (AtkObject    *obj,
 
       testcb[window_no].runtest = runtest;
       testcb[window_no].obj = obj;
-      testcb[window_no].win_num = window_no; 
-      g_signal_connect (GTK_OBJECT (md[window_no]->button), 
+      testcb[window_no].win_num = window_no;
+      g_signal_connect (GTK_OBJECT (md[window_no]->button),
                         "clicked",
                         G_CALLBACK (_testselectioncb),
                         (gpointer)&testcb[window_no]);
-     
+
       /* Show all */
       gtk_widget_grab_focus (md[window_no]->button);
       gtk_widget_show (md[window_no]->button);
-      gtk_widget_show (hbuttonbox); 
-      gtk_widget_show (scrolledWindow); 
+      gtk_widget_show (hbuttonbox);
+      gtk_widget_show (scrolledWindow);
       gtk_widget_show_all (GTK_WIDGET (md[window_no]->selecttestsWindow));
       return TRUE;
     }
@@ -615,7 +615,7 @@ _create_select_tests_window (AtkObject    *obj,
     return FALSE;
 }
 
-/** 
+/**
  * add_test
  * @window: The window number
  * @name: The test name
@@ -623,14 +623,14 @@ _create_select_tests_window (AtkObject    *obj,
  * @parameter_names: The names of each argument.
  * @default_names: The default values of each argument.
  *
- * Adds a Test with the passed-in details to the Tests Select Window.  
+ * Adds a Test with the passed-in details to the Tests Select Window.
  *
  * Returns: FALSE if the num_params passed in is greater than
- * MAX_PARAMS, otherwise returns TRUE 
+ * MAX_PARAMS, otherwise returns TRUE
  *
  **/
 gboolean
-add_test (gint   window, 
+add_test (gint   window,
           gchar  *name,
           gint   num_params,
           gchar* parameter_names[],
@@ -652,7 +652,7 @@ add_test (gint   window,
           listoftests[window][testcount[window]].toggleButton, FALSE, FALSE, 0);
       listoftests[window][testcount[window]].testName = name;
       listoftests[window][testcount[window]].numParameters = num_params;
-      for (i=0; i<num_params; i++) 
+      for (i=0; i<num_params; i++)
         {
      	  listoftests[window][testcount[window]].parameterLabel[i] =
             gtk_label_new (parameter_names[i]);
@@ -682,10 +682,10 @@ add_test (gint   window,
       testcount[window]++;
       counter++;
       return TRUE;
-    }  
+    }
 }
 
-/** 
+/**
  * tests_set:
  * @window: The window number
  * @count: Passes back the number of tests on.
@@ -720,14 +720,14 @@ gchar **tests_set(gint window, int *count)
 
               if (input != NULL && (! strcmp(input, "")))
                 nullparam = TRUE;
-            } 
+            }
           if (!nullparam)
             {
               onTests[window][*count] = listoftests[window][i].testName;
-              *count = *count + 1; 
+              *count = *count + 1;
             }
         }
-    } 
+    }
   return onTests[window];
 }
 
@@ -745,7 +745,7 @@ _get_position_in_array(gint  window,
                        gchar *the_test_name)
 {
   gint        i;
-  
+
   for (i = 0; i < testcount[window]; i++)
     {
       if (strcmp(listoftests[window][i].testName, the_test_name) == 0)
@@ -763,7 +763,7 @@ _get_position_in_array(gint  window,
  * Gets the index of the passed-in parameter @label.
  *
  * Returns: the position in parameterLabel[] (a member of
- * listoftests[]) of @label 
+ * listoftests[]) of @label
  **/
 static gint
 _get_position_in_parameters(gint  window,
@@ -772,10 +772,10 @@ _get_position_in_parameters(gint  window,
 {
   gint                    i;
   const gchar    *label_string;
-  
+
   for (i = 0; i < MAX_PARAMS; i++)
     {
-      label_string = gtk_label_get_text( 
+      label_string = gtk_label_get_text(
                GTK_LABEL (listoftests[window][position].parameterLabel[i]));
 
       if (strcmp(label_string, label) == 0)
@@ -784,11 +784,11 @@ _get_position_in_parameters(gint  window,
   return -1;
 }
 
-/** 
+/**
  * set_output_buffer:
  * @output: The string to add to the output buffer
- * 
- * Tidies up the output Window 
+ *
+ * Tidies up the output Window
  **/
 void
 set_output_buffer(gchar *output)
@@ -867,7 +867,7 @@ get_arg_of_func (gint  window,
  * string_to_int:
  * @the_string: The string to convert
  *
- * Converts the passed-in string to an integer 
+ * Converts the passed-in string to an integer
  *
  * Returns: An integer corresponding to @the_string.
  **/
@@ -876,7 +876,7 @@ string_to_int (const char *the_string)
 {
   char *end_ptr;
   double ret_val;
-  int int_ret_val; 
+  int int_ret_val;
 
   while (1)
     {
@@ -886,17 +886,17 @@ string_to_int (const char *the_string)
       else
         printf("\nError: input must be a number\n");
     }
-   
+
   int_ret_val = (int) ret_val;
   return (int_ret_val);
 }
 
-/** 
+/**
  * _toggle_selectedcb:
  * @widget: The ToggleButton widget
  * @test: user data containing the TestList structure.
  *
- * Toggle Button Callback, activating the text entry fields 
+ * Toggle Button Callback, activating the text entry fields
  **/
 static void
 _toggle_selectedcb (GtkWidget *widget,
@@ -921,12 +921,12 @@ _toggle_selectedcb (GtkWidget *widget,
     }
 }
 
-/* 
+/*
  * _testselectioncb:
  * widget: The Button widget
  * data: The user data containing a TestCB structure
  *
- * Callback for when the "Run Tests" button is pressed 
+ * Callback for when the "Run Tests" button is pressed
  **/
 static void
 _testselectioncb (GtkWidget *widget,

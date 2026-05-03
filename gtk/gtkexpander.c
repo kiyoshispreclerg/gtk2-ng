@@ -63,7 +63,7 @@ struct _GtkExpanderPrivate
 
   guint             expanded : 1;
   guint             use_underline : 1;
-  guint             use_markup : 1; 
+  guint             use_markup : 1;
   guint             button_down : 1;
   guint             prelight : 1;
   guint             label_fill : 1;
@@ -322,7 +322,7 @@ gtk_expander_set_property (GObject      *object,
 			   GParamSpec   *pspec)
 {
   GtkExpander *expander = GTK_EXPANDER (object);
-                                                                                                             
+
   switch (prop_id)
     {
     case PROP_EXPANDED:
@@ -396,13 +396,13 @@ static void
 gtk_expander_destroy (GtkObject *object)
 {
   GtkExpanderPrivate *priv = GTK_EXPANDER (object)->priv;
-  
+
   if (priv->animation_timeout)
     {
       g_source_remove (priv->animation_timeout);
       priv->animation_timeout = 0;
     }
-  
+
   GTK_OBJECT_CLASS (gtk_expander_parent_class)->destroy (object);
 }
 
@@ -422,7 +422,7 @@ gtk_expander_realize (GtkWidget *widget)
   border_width = GTK_CONTAINER (widget)->border_width;
 
   get_expander_bounds (GTK_EXPANDER (widget), &expander_rect);
-  
+
   if (priv->label_widget && gtk_widget_get_visible (priv->label_widget))
     {
       GtkRequisition label_requisition;
@@ -865,7 +865,7 @@ gtk_expander_paint_focus (GtkExpander  *expander,
 			NULL);
 
   ltr = gtk_widget_get_direction (widget) != GTK_TEXT_DIR_RTL;
-  
+
   width = height = 0;
 
   if (priv->label_widget)
@@ -910,7 +910,7 @@ gtk_expander_paint_focus (GtkExpander  *expander,
       width = rect.width + 2 * focus_pad;
       height = rect.height + 2 * focus_pad;
     }
-      
+
   gtk_paint_focus (widget->style, widget->window, gtk_widget_get_state (widget),
 		   area, widget, "expander",
 		   x, y, width, height);
@@ -1220,16 +1220,16 @@ gtk_expander_focus (GtkWidget        *widget,
 		    GtkDirectionType  direction)
 {
   GtkExpander *expander = GTK_EXPANDER (widget);
-  
+
   if (!focus_current_site (expander, direction))
     {
       GtkWidget *old_focus_child;
       gboolean widget_is_focus;
       FocusSite site = FOCUS_NONE;
-      
+
       widget_is_focus = gtk_widget_is_focus (widget);
       old_focus_child = GTK_CONTAINER (widget)->focus_child;
-      
+
       if (old_focus_child && old_focus_child == expander->priv->label_widget)
 	site = FOCUS_LABEL;
       else if (old_focus_child)
@@ -1296,9 +1296,9 @@ gtk_expander_activate (GtkExpander *expander)
 /**
  * gtk_expander_new:
  * @label: the text of the label
- * 
+ *
  * Creates a new expander using @label as the text of the label.
- * 
+ *
  * Return value: a new #GtkExpander widget.
  *
  * Since: 2.4
@@ -1316,11 +1316,11 @@ gtk_expander_new (const gchar *label)
  *
  * Creates a new expander using @label as the text of the label.
  * If characters in @label are preceded by an underscore, they are underlined.
- * If you need a literal underscore character in a label, use '__' (two 
- * underscores). The first underlined character represents a keyboard 
+ * If you need a literal underscore character in a label, use '__' (two
+ * underscores). The first underlined character represents a keyboard
  * accelerator called a mnemonic.
  * Pressing Alt and that key activates the button.
- * 
+ *
  * Return value: a new #GtkExpander widget.
  *
  * Since: 2.4

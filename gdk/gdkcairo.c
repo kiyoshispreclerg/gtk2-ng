@@ -1,5 +1,5 @@
 /* GDK - The GIMP Drawing Kit
- * Copyright (C) 2005 Red Hat, Inc. 
+ * Copyright (C) 2005 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,18 +33,18 @@ gdk_ensure_surface_flush (gpointer surface)
 /**
  * gdk_cairo_create:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Creates a Cairo context for drawing to @drawable.
  *
  * <note><para>
- * Note that due to double-buffering, Cairo contexts created 
- * in a GTK+ expose event handler cannot be cached and reused 
- * between different expose events. 
+ * Note that due to double-buffering, Cairo contexts created
+ * in a GTK+ expose event handler cannot be cached and reused
+ * between different expose events.
  * </para></note>
  *
  * Return value: A newly created Cairo context. Free with
  *  cairo_destroy() when you are done drawing.
- * 
+ *
  * Since: 2.8
  **/
 cairo_t *
@@ -53,7 +53,7 @@ gdk_cairo_create (GdkDrawable *drawable)
   static const cairo_user_data_key_t key;
   cairo_surface_t *surface;
   cairo_t *cr;
-    
+
   g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
 
   surface = _gdk_drawable_ref_cairo_surface (drawable);
@@ -61,7 +61,7 @@ gdk_cairo_create (GdkDrawable *drawable)
 
   if (GDK_DRAWABLE_GET_CLASS (drawable)->set_cairo_clip)
     GDK_DRAWABLE_GET_CLASS (drawable)->set_cairo_clip (drawable, cr);
-    
+
   /* Ugly workaround for GTK not ensuring to flush surfaces before
    * directly accessing the drawable backed by the surface. Not visible
    * on X11 (where flushing is a no-op). For details, see
@@ -104,7 +104,7 @@ gdk_cairo_reset_clip (cairo_t            *cr,
  * gdk_cairo_set_source_color:
  * @cr: a #cairo_t
  * @color: a #GdkColor
- * 
+ *
  * Sets the specified #GdkColor as the source color of @cr.
  *
  * Since: 2.8
@@ -115,7 +115,7 @@ gdk_cairo_set_source_color (cairo_t        *cr,
 {
   g_return_if_fail (cr != NULL);
   g_return_if_fail (color != NULL);
-    
+
   cairo_set_source_rgb (cr,
 			color->red / 65535.,
 			color->green / 65535.,
@@ -126,7 +126,7 @@ gdk_cairo_set_source_color (cairo_t        *cr,
  * gdk_cairo_rectangle:
  * @cr: a #cairo_t
  * @rectangle: a #GdkRectangle
- * 
+ *
  * Adds the given rectangle to the current path of @cr.
  *
  * Since: 2.8
@@ -147,7 +147,7 @@ gdk_cairo_rectangle (cairo_t            *cr,
  * gdk_cairo_region:
  * @cr: a #cairo_t
  * @region: a #GdkRegion
- * 
+ *
  * Adds the given region to the current path of @cr.
  *
  * Since: 2.8
@@ -179,7 +179,7 @@ gdk_cairo_region (cairo_t         *cr,
  * @pixbuf: a #GdkPixbuf
  * @pixbuf_x: X coordinate of location to place upper left corner of @pixbuf
  * @pixbuf_y: Y coordinate of location to place upper left corner of @pixbuf
- * 
+ *
  * Sets the given pixbuf as the source pattern for the Cairo context.
  * The pattern has an extend mode of %CAIRO_EXTEND_NONE and is aligned
  * so that the origin of @pixbuf is @pixbuf_x, @pixbuf_y
@@ -232,14 +232,14 @@ gdk_cairo_set_source_pixbuf (cairo_t         *cr,
       if (n_channels == 3)
 	{
 	  guchar *end = p + 3 * width;
-	  
+
 	  while (p < end)
 	    {
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
 	      q[0] = p[2];
 	      q[1] = p[1];
 	      q[2] = p[0];
-#else	  
+#else
 	      q[1] = p[0];
 	      q[2] = p[1];
 	      q[3] = p[2];
@@ -252,7 +252,7 @@ gdk_cairo_set_source_pixbuf (cairo_t         *cr,
 	{
 	  guchar *end = p + 4 * width;
 	  guint t1,t2,t3;
-	    
+
 #define MULT(d,c,a,t) G_STMT_START { t = c * a + 0x80; d = ((t >> 8) + t) >> 8; } G_STMT_END
 
 	  while (p < end)
@@ -262,17 +262,17 @@ gdk_cairo_set_source_pixbuf (cairo_t         *cr,
 	      MULT(q[1], p[1], p[3], t2);
 	      MULT(q[2], p[0], p[3], t3);
 	      q[3] = p[3];
-#else	  
+#else
 	      q[0] = p[3];
 	      MULT(q[1], p[0], p[3], t1);
 	      MULT(q[2], p[1], p[3], t2);
 	      MULT(q[3], p[2], p[3], t3);
 #endif
-	      
+
 	      p += 4;
 	      q += 4;
 	    }
-	  
+
 #undef MULT
 	}
 
@@ -291,7 +291,7 @@ out:
  * @pixmap: a #GdkPixmap
  * @pixmap_x: X coordinate of location to place upper left corner of @pixmap
  * @pixmap_y: Y coordinate of location to place upper left corner of @pixmap
- * 
+ *
  * Sets the given pixmap as the source pattern for the Cairo context.
  * The pattern has an extend mode of %CAIRO_EXTEND_NONE and is aligned
  * so that the origin of @pixmap is @pixmap_x, @pixmap_y
@@ -309,7 +309,7 @@ gdk_cairo_set_source_pixmap (cairo_t   *cr,
 			     double     pixmap_y)
 {
   cairo_surface_t *surface;
-  
+
   surface = _gdk_drawable_ref_cairo_surface (GDK_DRAWABLE (pixmap));
   cairo_set_source_surface (cr, surface, pixmap_x, pixmap_y);
   cairo_surface_destroy (surface);

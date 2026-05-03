@@ -50,7 +50,7 @@ gtk_printer_option_set_finalize (GObject *object)
   g_hash_table_destroy (set->hash);
   g_ptr_array_foreach (set->array, (GFunc)g_object_unref, NULL);
   g_ptr_array_free (set->array, TRUE);
-  
+
   G_OBJECT_CLASS (gtk_printer_option_set_parent_class)->finalize (object);
 }
 
@@ -96,7 +96,7 @@ gtk_printer_option_set_remove (GtkPrinterOptionSet *set,
 			       GtkPrinterOption    *option)
 {
   int i;
-  
+
   for (i = 0; i < set->array->len; i++)
     {
       if (g_ptr_array_index (set->array, i) == option)
@@ -116,10 +116,10 @@ gtk_printer_option_set_add (GtkPrinterOptionSet *set,
 			    GtkPrinterOption    *option)
 {
   g_object_ref (option);
-  
+
   if (gtk_printer_option_set_lookup (set, option->name))
     gtk_printer_option_set_remove (set, option);
-    
+
   g_ptr_array_add (set->array, option);
   g_hash_table_insert (set->hash, option->name, option);
   g_signal_connect_object (option, "changed", G_CALLBACK (emit_changed), set, G_CONNECT_SWAPPED);

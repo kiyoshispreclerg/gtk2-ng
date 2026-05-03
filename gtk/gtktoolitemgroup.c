@@ -1598,7 +1598,7 @@ gtk_tool_item_group_class_init (GtkToolItemGroupClass *cls)
                                                                     P_("Expand"),
                                                                     P_("Whether the item should receive extra space when the group grows"),
                                                                     FALSE,
-                                                                    GTK_PARAM_READWRITE)); 
+                                                                    GTK_PARAM_READWRITE));
 
   gtk_container_class_install_child_property (cclass, CHILD_PROP_FILL,
                                               g_param_spec_boolean ("fill",

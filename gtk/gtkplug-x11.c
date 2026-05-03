@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "gtkmain.h"
@@ -75,7 +75,7 @@ _gtk_plug_windowing_add_grabbed_key (GtkPlug        *plug,
 				     guint           accelerator_key,
 				     GdkModifierType accelerator_mods)
 {
-  _gtk_xembed_send_message (plug->socket_window, XEMBED_GTK_GRAB_KEY, 0, 
+  _gtk_xembed_send_message (plug->socket_window, XEMBED_GTK_GRAB_KEY, 0,
 			    accelerator_key, accelerator_mods);
 }
 
@@ -84,7 +84,7 @@ _gtk_plug_windowing_remove_grabbed_key (GtkPlug        *plug,
 					guint           accelerator_key,
 					GdkModifierType accelerator_mods)
 {
-  _gtk_xembed_send_message (plug->socket_window, XEMBED_GTK_UNGRAB_KEY, 0, 
+  _gtk_xembed_send_message (plug->socket_window, XEMBED_GTK_UNGRAB_KEY, 0,
 			    accelerator_key, accelerator_mods);
 }
 
@@ -93,7 +93,7 @@ _gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
 				     GtkDirectionType direction)
 {
   XEmbedMessageType message = XEMBED_FOCUS_PREV; /* Quiet GCC */
-  
+
   switch (direction)
     {
     case GTK_DIR_UP:
@@ -107,7 +107,7 @@ _gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
       message = XEMBED_FOCUS_NEXT;
       break;
     }
-  
+
   _gtk_xembed_send_focus_message (plug->socket_window, message, 0);
 }
 
@@ -142,7 +142,7 @@ handle_xembed_message (GtkPlug           *plug,
 
   GTK_NOTE (PLUGSOCKET,
 	    g_message ("GtkPlug: %s received", _gtk_xembed_message_name (message)));
-  
+
   switch (message)
     {
     case XEMBED_EMBEDDED_NOTIFY:
@@ -153,7 +153,7 @@ handle_xembed_message (GtkPlug           *plug,
     case XEMBED_WINDOW_DEACTIVATE:
       _gtk_window_set_is_active (window, FALSE);
       break;
-      
+
     case XEMBED_MODALITY_ON:
       _gtk_plug_handle_modality_on (plug);
       break;
@@ -179,7 +179,7 @@ handle_xembed_message (GtkPlug           *plug,
     case XEMBED_FOCUS_OUT:
       _gtk_window_set_has_toplevel_focus (window, FALSE);
       break;
-      
+
     case XEMBED_GRAB_KEY:
     case XEMBED_UNGRAB_KEY:
     case XEMBED_GTK_GRAB_KEY:
@@ -189,7 +189,7 @@ handle_xembed_message (GtkPlug           *plug,
     case XEMBED_FOCUS_PREV:
       g_warning ("GtkPlug: Invalid _XEMBED message %s received", _gtk_xembed_message_name (message));
       break;
-      
+
     default:
       GTK_NOTE(PLUGSOCKET,
 	       g_message ("GtkPlug: Ignoring unknown _XEMBED message of type %d", message));
@@ -208,7 +208,7 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
   XEvent *xevent = (XEvent *)gdk_xevent;
 
   GdkFilterReturn return_val;
-  
+
   return_val = GDK_FILTER_CONTINUE;
 
   switch (xevent->type)
@@ -244,19 +244,19 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
 	GTK_NOTE (PLUGSOCKET, g_message("GtkPlug: ReparentNotify received"));
 
 	return_val = GDK_FILTER_REMOVE;
-	
+
 	g_object_ref (plug);
-	
+
 	if (was_embedded)
 	  {
 	    /* End of embedding protocol for previous socket */
-	    
+
 	    GTK_NOTE (PLUGSOCKET, g_message ("GtkPlug: end of embedding"));
 	    /* FIXME: race if we remove from another socket and
 	     * then add to a local window before we get notification
 	     * Probably need check in _gtk_plug_add_to_socket
 	     */
-	    
+
 	    if (xre->parent != GDK_WINDOW_XWINDOW (plug->socket_window))
 	      {
 		GtkWidget *widget = GTK_WIDGET (plug);
@@ -323,7 +323,7 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
 
       done:
 	g_object_unref (plug);
-	
+
 	break;
       }
     }

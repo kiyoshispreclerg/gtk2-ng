@@ -76,7 +76,7 @@ struct _GtkFileChooserIface
 					    GFile             *file,
 					    GError           **error);
   GSList *       (*list_shortcut_folders)  (GtkFileChooser    *chooser);
-  
+
   /* Signals
    */
   void (*current_folder_changed) (GtkFileChooser *chooser);
@@ -100,7 +100,7 @@ GSList *       _gtk_file_chooser_list_shortcut_folder_files (GtkFileChooser *cho
 struct _GtkFileChooserDialogPrivate
 {
   GtkWidget *widget;
-  
+
   char *file_system;
 
   /* for use with GtkFileChooserEmbed */
@@ -251,7 +251,7 @@ struct _GtkFileChooserDefault
    * the separator that we use for the "Save in folder" combo.
    */
   GtkTreeModel *shortcuts_pane_filter_model;
-  
+
   /* Handles */
   GSList *loading_shortcuts;
   GSList *reload_icon_cancellables;

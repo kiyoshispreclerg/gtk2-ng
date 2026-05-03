@@ -156,7 +156,7 @@ pixbuf_rc_style_register_type (GTypeModule *module)
     0,              /* n_preallocs */
     (GInstanceInitFunc) pixbuf_rc_style_init,
   };
-  
+
   pixbuf_type_rc_style = g_type_module_register_type (module,
 						      GTK_TYPE_RC_STYLE,
 						      "PixbufRcStyle",
@@ -179,7 +179,7 @@ pixbuf_rc_style_class_init (PixbufRcStyleClass *klass)
   rc_style_class->parse = pixbuf_rc_style_parse;
   rc_style_class->merge = pixbuf_rc_style_merge;
   rc_style_class->create_style = pixbuf_rc_style_create_style;
-  
+
   object_class->finalize = pixbuf_rc_style_finalize;
 }
 
@@ -187,7 +187,7 @@ static void
 pixbuf_rc_style_finalize (GObject *object)
 {
   PixbufRcStyle *rc_style = PIXBUF_RC_STYLE (object);
-  
+
   g_list_foreach (rc_style->img_list, (GFunc) theme_image_unref, NULL);
   g_list_free (rc_style->img_list);
 
@@ -279,9 +279,9 @@ theme_parse_border (GScanner     *scanner,
 
   if (!*theme_pb)
     *theme_pb = theme_pixbuf_new ();
-  
+
   theme_pixbuf_set_border (*theme_pb, left, right, top, bottom);
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -309,9 +309,9 @@ theme_parse_stretch(GScanner     *scanner,
 
   if (!*theme_pb)
     *theme_pb = theme_pixbuf_new ();
-  
+
   theme_pixbuf_set_stretch (*theme_pb, stretch);
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -380,7 +380,7 @@ theme_parse_detail(GScanner * scanner,
     return G_TOKEN_STRING;
 
   g_free (data->match_data.detail);
-  
+
   data->match_data.detail = g_strdup(scanner->value.v_string);
 
   return G_TOKEN_NONE;
@@ -415,7 +415,7 @@ theme_parse_state(GScanner * scanner,
     return TOKEN_NORMAL;
 
   data->match_data.flags |= THEME_MATCH_STATE;
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -448,7 +448,7 @@ theme_parse_shadow(GScanner * scanner,
     return TOKEN_NONE;
 
   data->match_data.flags |= THEME_MATCH_SHADOW;
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -479,7 +479,7 @@ theme_parse_arrow_direction(GScanner * scanner,
     return TOKEN_UP;
 
   data->match_data.flags |= THEME_MATCH_ARROW_DIRECTION;
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -511,7 +511,7 @@ theme_parse_gap_side(GScanner * scanner,
     return TOKEN_TOP;
 
   data->match_data.flags |= THEME_MATCH_GAP_SIDE;
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -539,7 +539,7 @@ theme_parse_orientation(GScanner * scanner,
     return TOKEN_HORIZONTAL;
 
   data->match_data.flags |= THEME_MATCH_ORIENTATION;
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -637,7 +637,7 @@ theme_parse_direction(GScanner * scanner,
     return TOKEN_LTR;
 
   data->match_data.flags |= THEME_MATCH_DIRECTION;
-  
+
   return G_TOKEN_NONE;
 }
 
@@ -829,7 +829,7 @@ static guint
 pixbuf_rc_style_parse (GtkRcStyle *rc_style,
 		       GtkSettings  *settings,
 		       GScanner   *scanner)
-		     
+
 {
   static GQuark scope_id = 0;
   PixbufRcStyle *pixbuf_style = PIXBUF_RC_STYLE (rc_style);
@@ -838,7 +838,7 @@ pixbuf_rc_style_parse (GtkRcStyle *rc_style,
   guint token;
   gint i;
   ThemeImage *img;
-  
+
   /* Set up a new scope in this scanner. */
 
   if (!scope_id)
@@ -903,14 +903,14 @@ pixbuf_rc_style_merge (GtkRcStyle *dest,
       PixbufRcStyle *pixbuf_dest = PIXBUF_RC_STYLE (dest);
       PixbufRcStyle *pixbuf_src = PIXBUF_RC_STYLE (src);
       GList *tmp_list1, *tmp_list2;
-      
+
       if (pixbuf_src->img_list)
 	{
 	  /* Copy src image list and append to dest image list */
-	  
+
 	  tmp_list2 = g_list_last (pixbuf_dest->img_list);
 	  tmp_list1 = pixbuf_src->img_list;
-	  
+
 	  while (tmp_list1)
 	    {
 	      if (tmp_list2)
@@ -918,7 +918,7 @@ pixbuf_rc_style_merge (GtkRcStyle *dest,
 		  tmp_list2->next = g_list_alloc();
 		  tmp_list2->next->data = tmp_list1->data;
 		  tmp_list2->next->prev = tmp_list2;
-		  
+
 		  tmp_list2 = tmp_list2->next;
 		}
 	      else
@@ -926,7 +926,7 @@ pixbuf_rc_style_merge (GtkRcStyle *dest,
 		  pixbuf_dest->img_list = g_list_append (NULL, tmp_list1->data);
 		  tmp_list2 = pixbuf_dest->img_list;
 		}
-	      
+
 	      theme_image_ref (tmp_list1->data);
 	      tmp_list1 = tmp_list1->next;
 	    }

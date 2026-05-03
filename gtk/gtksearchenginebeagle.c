@@ -44,13 +44,13 @@ typedef struct _BeagleQueryPart BeagleQueryPart;
 #define BEAGLE_REQUEST(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), beagle_request_get_type(), BeagleRequest))
 #define BEAGLE_QUERY_PART(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), beagle_query_part_get_type(), BeagleQueryPart))
 
-typedef enum 
+typedef enum
 {
   BEAGLE_QUERY_PART_LOGIC_REQUIRED   = 1,
   BEAGLE_QUERY_PART_LOGIC_PROHIBITED = 2
 } BeagleQueryPartLogic;
 
-typedef enum 
+typedef enum
   {
     BEAGLE_PROPERTY_TYPE_UNKNOWN = 0,
     BEAGLE_PROPERTY_TYPE_TEXT    = 1,
@@ -72,15 +72,15 @@ static void (*beagle_query_add_text) (BeagleQuery     *query,
 static void (*beagle_query_set_max_hits) (BeagleQuery *query,
 					  gint         max_hits) = NULL;
 static BeagleQueryPartProperty *(*beagle_query_part_property_new) (void) = NULL;
-static void (*beagle_query_part_set_logic) (BeagleQueryPart      *part, 
+static void (*beagle_query_part_set_logic) (BeagleQueryPart      *part,
 					    BeagleQueryPartLogic  logic) = NULL;
-static void (*beagle_query_part_property_set_key) (BeagleQueryPartProperty *part, 
+static void (*beagle_query_part_property_set_key) (BeagleQueryPartProperty *part,
 						   const char              *key) = NULL;
-static void (*beagle_query_part_property_set_value) (BeagleQueryPartProperty *part, 
+static void (*beagle_query_part_property_set_value) (BeagleQueryPartProperty *part,
 						     const char *             value) = NULL;
-static void (*beagle_query_part_property_set_property_type) (BeagleQueryPartProperty *part, 
+static void (*beagle_query_part_property_set_property_type) (BeagleQueryPartProperty *part,
 							     BeaglePropertyType       prop_type) = NULL;
-static void (*beagle_query_add_part) (BeagleQuery     *query, 
+static void (*beagle_query_add_part) (BeagleQuery     *query,
 				      BeagleQueryPart *part) = NULL;
 static GType (*beagle_request_get_type) (void) = NULL;
 static GType (*beagle_query_part_get_type) (void) = NULL;
@@ -114,7 +114,7 @@ static struct BeagleDlMapping
 #undef MAP
 };
 
-static void 
+static void
 open_libbeagle (void)
 {
   static gboolean done = FALSE;
@@ -123,16 +123,16 @@ open_libbeagle (void)
     {
       int i;
       GModule *beagle;
-      
+
       done = TRUE;
- 
+
       beagle = g_module_open ("libbeagle.so.1", G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
       if (!beagle)
         beagle = g_module_open ("libbeagle.so.0", G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 
       if (!beagle)
 	return;
-      
+
       for (i = 0; i < G_N_ELEMENTS (beagle_dl_mapping); i++)
 	{
 	  if (!g_module_symbol (beagle, beagle_dl_mapping[i].fn_name,
@@ -152,7 +152,7 @@ open_libbeagle (void)
 }
 
 
-struct _GtkSearchEngineBeaglePrivate 
+struct _GtkSearchEngineBeaglePrivate
 {
   BeagleClient *client;
   GtkQuery *query;
@@ -169,10 +169,10 @@ static void
 finalize (GObject *object)
 {
   GtkSearchEngineBeagle *beagle;
-  
+
   beagle = GTK_SEARCH_ENGINE_BEAGLE (object);
-  
-  if (beagle->priv->current_query) 
+
+  if (beagle->priv->current_query)
     {
       g_object_unref (beagle->priv->current_query);
       beagle->priv->current_query = NULL;
@@ -180,13 +180,13 @@ finalize (GObject *object)
       beagle->priv->current_query_uri_prefix = NULL;
     }
 
-  if (beagle->priv->query) 
+  if (beagle->priv->query)
     {
       g_object_unref (beagle->priv->query);
       beagle->priv->query = NULL;
     }
 
-  if (beagle->priv->client) 
+  if (beagle->priv->client)
     {
       g_object_unref (beagle->priv->client);
       beagle->priv->client = NULL;
@@ -196,28 +196,28 @@ finalize (GObject *object)
 }
 
 static void
-beagle_hits_added (BeagleQuery             *query, 
-		   BeagleHitsAddedResponse *response, 
+beagle_hits_added (BeagleQuery             *query,
+		   BeagleHitsAddedResponse *response,
 		   GtkSearchEngineBeagle   *engine)
 {
   GSList *hits, *list;
   GList *hit_uris;
   const gchar *uri;
-  
+
   hit_uris = NULL;
-  
+
   hits = beagle_hits_added_response_get_hits (response);
-  
-  for (list = hits; list != NULL; list = list->next) 
+
+  for (list = hits; list != NULL; list = list->next)
     {
       BeagleHit *hit = BEAGLE_HIT (list->data);
-      
+
       uri = beagle_hit_get_uri (hit);
-      
+
       if (engine->priv->current_query_uri_prefix &&
-	  !g_str_has_prefix (uri, engine->priv->current_query_uri_prefix)) 
+	  !g_str_has_prefix (uri, engine->priv->current_query_uri_prefix))
 	continue;
-		
+
       hit_uris = g_list_prepend (hit_uris, (char *)uri);
     }
 
@@ -226,18 +226,18 @@ beagle_hits_added (BeagleQuery             *query,
 }
 
 static void
-beagle_hits_subtracted (BeagleQuery                  *query, 
-			BeagleHitsSubtractedResponse *response, 
+beagle_hits_subtracted (BeagleQuery                  *query,
+			BeagleHitsSubtractedResponse *response,
 			GtkSearchEngineBeagle        *engine)
 {
   GSList *uris, *list;
   GList *hit_uris;
-  
+
   hit_uris = NULL;
-  
+
   uris = beagle_hits_subtracted_response_get_uris (response);
-  
-  for (list = uris; list != NULL; list = list->next) 
+
+  for (list = uris; list != NULL; list = list->next)
     {
       hit_uris = g_list_prepend (hit_uris, (char *)list->data);
     }
@@ -247,15 +247,15 @@ beagle_hits_subtracted (BeagleQuery                  *query,
 }
 
 static void
-beagle_finished (BeagleQuery            *query, 
+beagle_finished (BeagleQuery            *query,
 		 BeagleFinishedResponse *response,
 		 GtkSearchEngineBeagle  *engine)
 {
   /* For some reason we keep getting finished events,
    * only emit finished once */
-  if (engine->priv->query_finished) 
+  if (engine->priv->query_finished)
     return;
-  
+
   engine->priv->query_finished = TRUE;
   _gtk_search_engine_finished (GTK_SEARCH_ENGINE (engine));
 }
@@ -278,7 +278,7 @@ gtk_search_engine_beagle_start (GtkSearchEngine *engine)
 
   error = NULL;
   beagle = GTK_SEARCH_ENGINE_BEAGLE (engine);
-  
+
   g_return_if_fail (beagle->priv->query != NULL);
 
   if (beagle->priv->current_query)
@@ -294,20 +294,20 @@ gtk_search_engine_beagle_start (GtkSearchEngine *engine)
 		    "finished", G_CALLBACK (beagle_finished), engine);
   g_signal_connect (beagle->priv->current_query,
 		    "error", G_CALLBACK (beagle_error), engine);
-  
+
   /* We only want files */
-  
- 
+
+
   text = _gtk_query_get_text (beagle->priv->query);
   query = g_strconcat (text, " type:File", NULL);
-                          
+
   beagle_query_set_max_hits (beagle->priv->current_query, 1000);
   beagle_query_add_text (beagle->priv->current_query, query);
-  
+
   beagle->priv->current_query_uri_prefix = _gtk_query_get_location (beagle->priv->query);
-  
+
   if (!beagle_client_send_request_async (beagle->priv->client,
-					 BEAGLE_REQUEST (beagle->priv->current_query), &error)) 
+					 BEAGLE_REQUEST (beagle->priv->current_query), &error))
     {
       _gtk_search_engine_error (engine, error->message);
       g_error_free (error);
@@ -322,10 +322,10 @@ static void
 gtk_search_engine_beagle_stop (GtkSearchEngine *engine)
 {
   GtkSearchEngineBeagle *beagle;
-  
+
   beagle = GTK_SEARCH_ENGINE_BEAGLE (engine);
-  
-  if (beagle->priv->current_query) 
+
+  if (beagle->priv->current_query)
     {
       g_object_unref (beagle->priv->current_query);
       beagle->priv->current_query = NULL;
@@ -342,13 +342,13 @@ gtk_search_engine_beagle_is_indexed (GtkSearchEngine *engine)
 }
 
 static void
-gtk_search_engine_beagle_set_query (GtkSearchEngine *engine, 
+gtk_search_engine_beagle_set_query (GtkSearchEngine *engine,
 				    GtkQuery        *query)
 {
   GtkSearchEngineBeagle *beagle;
-  
+
   beagle = GTK_SEARCH_ENGINE_BEAGLE (engine);
-  
+
   if (query)
     g_object_ref (query);
 
@@ -393,17 +393,17 @@ _gtk_search_engine_beagle_new (void)
 
   /* check whether daemon is running as beagle_client_new
    * doesn't fail when a stale socket file exists */
-  if (!beagle_util_daemon_is_running ()) 
+  if (!beagle_util_daemon_is_running ())
       return NULL;
 
   client = beagle_client_new (NULL);
-  
+
   if (client == NULL)
     return NULL;
-	
+
   engine = g_object_new (GTK_TYPE_SEARCH_ENGINE_BEAGLE, NULL);
-  
+
   engine->priv->client = client;
-  
+
   return GTK_SEARCH_ENGINE (engine);
 }

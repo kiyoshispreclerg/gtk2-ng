@@ -193,11 +193,11 @@ single_string_accumulator (GSignalInvocationHint *ihint,
 {
   gboolean continue_emission;
   const gchar *str;
-  
+
   str = g_value_get_string (handler_return);
   g_value_set_string (return_accu, str);
   continue_emission = str == NULL;
-  
+
   return continue_emission;
 }
 
@@ -214,11 +214,11 @@ gtk_scale_class_init (GtkScaleClass *class)
   GtkWidgetClass *widget_class;
   GtkRangeClass  *range_class;
   GtkBindingSet  *binding_set;
-  
+
   gobject_class = G_OBJECT_CLASS (class);
   range_class = (GtkRangeClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  
+
   gobject_class->set_property = gtk_scale_set_property;
   gobject_class->get_property = gtk_scale_get_property;
   gobject_class->notify = gtk_scale_notify;
@@ -240,7 +240,7 @@ gtk_scale_class_init (GtkScaleClass *class)
    * @value: the value to format
    *
    * Signal which allows you to change how the scale value is displayed.
-   * Connect a signal handler which returns an allocated string representing 
+   * Connect a signal handler which returns an allocated string representing
    * @value. That string will then be used to display the scale's value.
    *
    * If no user-provided handlers are installed, the value will be displayed on
@@ -279,7 +279,7 @@ gtk_scale_class_init (GtkScaleClass *class)
 						     MAX_DIGITS,
 						     1,
 						     GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class,
                                    PROP_DRAW_VALUE,
                                    g_param_spec_boolean ("draw-value",
@@ -287,7 +287,7 @@ gtk_scale_class_init (GtkScaleClass *class)
 							 P_("Whether the current value is displayed as a string next to the slider"),
 							 TRUE,
 							 GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class,
                                    PROP_VALUE_POS,
                                    g_param_spec_enum ("value-pos",
@@ -314,11 +314,11 @@ gtk_scale_class_init (GtkScaleClass *class)
 							     G_MAXINT,
 							     2,
 							     GTK_PARAM_READABLE));
-  
+
   /* All bindings (even arrow keys) are on both h/v scale, because
    * blind users etc. don't care about scale orientation.
    */
-  
+
   binding_set = gtk_binding_set_by_class (class);
 
   add_slider_binding (binding_set, GDK_Left, 0,
@@ -368,19 +368,19 @@ gtk_scale_class_init (GtkScaleClass *class)
 
   add_slider_binding (binding_set, GDK_KP_Down, GDK_CONTROL_MASK,
                       GTK_SCROLL_PAGE_DOWN);
-   
+
   add_slider_binding (binding_set, GDK_Page_Up, GDK_CONTROL_MASK,
                       GTK_SCROLL_PAGE_LEFT);
 
   add_slider_binding (binding_set, GDK_KP_Page_Up, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_LEFT);  
+                      GTK_SCROLL_PAGE_LEFT);
 
   add_slider_binding (binding_set, GDK_Page_Up, 0,
                       GTK_SCROLL_PAGE_UP);
 
   add_slider_binding (binding_set, GDK_KP_Page_Up, 0,
                       GTK_SCROLL_PAGE_UP);
-  
+
   add_slider_binding (binding_set, GDK_Page_Down, GDK_CONTROL_MASK,
                       GTK_SCROLL_PAGE_RIGHT);
 
@@ -396,31 +396,31 @@ gtk_scale_class_init (GtkScaleClass *class)
   /* Logical bindings (vs. visual bindings above) */
 
   add_slider_binding (binding_set, GDK_plus, 0,
-                      GTK_SCROLL_STEP_FORWARD);  
+                      GTK_SCROLL_STEP_FORWARD);
 
   add_slider_binding (binding_set, GDK_minus, 0,
-                      GTK_SCROLL_STEP_BACKWARD);  
+                      GTK_SCROLL_STEP_BACKWARD);
 
   add_slider_binding (binding_set, GDK_plus, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_FORWARD);  
+                      GTK_SCROLL_PAGE_FORWARD);
 
   add_slider_binding (binding_set, GDK_minus, GDK_CONTROL_MASK,
                       GTK_SCROLL_PAGE_BACKWARD);
 
 
   add_slider_binding (binding_set, GDK_KP_Add, 0,
-                      GTK_SCROLL_STEP_FORWARD);  
+                      GTK_SCROLL_STEP_FORWARD);
 
   add_slider_binding (binding_set, GDK_KP_Subtract, 0,
-                      GTK_SCROLL_STEP_BACKWARD);  
+                      GTK_SCROLL_STEP_BACKWARD);
 
   add_slider_binding (binding_set, GDK_KP_Add, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_FORWARD);  
+                      GTK_SCROLL_PAGE_FORWARD);
 
   add_slider_binding (binding_set, GDK_KP_Subtract, GDK_CONTROL_MASK,
                       GTK_SCROLL_PAGE_BACKWARD);
-  
-  
+
+
   add_slider_binding (binding_set, GDK_Home, 0,
                       GTK_SCROLL_START);
 
@@ -592,9 +592,9 @@ gtk_scale_new_with_range (GtkOrientation orientation,
 /**
  * gtk_scale_set_digits:
  * @scale: a #GtkScale
- * @digits: the number of decimal places to display, 
+ * @digits: the number of decimal places to display,
  *     e.g. use 1 to display 1.0, 2 to display 1.00, etc
- * 
+ *
  * Sets the number of decimal places that are displayed in the value. Also
  * causes the value of the adjustment to be rounded to this number of digits,
  * so the retrieved value matches the displayed one, if #GtkScale:draw-value is
@@ -607,11 +607,11 @@ gtk_scale_set_digits (GtkScale *scale,
 		      gint      digits)
 {
   GtkRange *range;
-  
+
   g_return_if_fail (GTK_IS_SCALE (scale));
 
   range = GTK_RANGE (scale);
-  
+
   digits = CLAMP (digits, -1, MAX_DIGITS);
 
   if (scale->digits != digits)
@@ -619,7 +619,7 @@ gtk_scale_set_digits (GtkScale *scale,
       scale->digits = digits;
       if (scale->draw_value)
 	range->round_digits = digits;
-      
+
       _gtk_scale_clear_layout (scale);
       gtk_widget_queue_resize (GTK_WIDGET (scale));
 
@@ -647,8 +647,8 @@ gtk_scale_get_digits (GtkScale *scale)
  * gtk_scale_set_draw_value:
  * @scale: a #GtkScale
  * @draw_value: %TRUE to draw the value
- * 
- * Specifies whether the current value is displayed as a string next 
+ *
+ * Specifies whether the current value is displayed as a string next
  * to the slider.
  */
 void
@@ -679,7 +679,7 @@ gtk_scale_set_draw_value (GtkScale *scale,
  * gtk_scale_get_draw_value:
  * @scale: a #GtkScale
  *
- * Returns whether the current value is displayed as a string 
+ * Returns whether the current value is displayed as a string
  * next to the slider.
  *
  * Returns: whether the current value is displayed as a string
@@ -696,7 +696,7 @@ gtk_scale_get_draw_value (GtkScale *scale)
  * gtk_scale_set_value_pos:
  * @scale: a #GtkScale
  * @pos: the position in which the current value is displayed
- * 
+ *
  * Sets the position in which the current value is displayed.
  */
 void
@@ -744,7 +744,7 @@ gtk_scale_get_range_border (GtkRange  *range,
   GtkWidget *widget;
   GtkScale *scale;
   gint w, h;
-  
+
   widget = GTK_WIDGET (range);
   scale = GTK_SCALE (range);
   priv = GTK_SCALE_GET_PRIVATE (scale);
@@ -783,10 +783,10 @@ gtk_scale_get_range_border (GtkRange  *range,
       gint slider_width;
       gint value_spacing;
       gint n1, w1, h1, n2, w2, h2;
-  
-      gtk_widget_style_get (widget, 
+
+      gtk_widget_style_get (widget,
                             "slider-width", &slider_width,
-                            "value-spacing", &value_spacing, 
+                            "value-spacing", &value_spacing,
                             NULL);
 
 
@@ -796,7 +796,7 @@ gtk_scale_get_range_border (GtkRange  *range,
           if (n1 > 0)
             border->top += h1 + value_spacing + slider_width / 2;
           if (n2 > 0)
-            border->bottom += h2 + value_spacing + slider_width / 2; 
+            border->bottom += h2 + value_spacing + slider_width / 2;
         }
       else
         {
@@ -824,7 +824,7 @@ _gtk_scale_get_value_size (GtkScale *scale,
       PangoLayout *layout;
       PangoRectangle logical_rect;
       gchar *txt;
-      
+
       range = GTK_RANGE (scale);
 
       layout = gtk_widget_create_pango_layout (GTK_WIDGET (scale), NULL);
@@ -832,7 +832,7 @@ _gtk_scale_get_value_size (GtkScale *scale,
       txt = _gtk_scale_format_value (scale, range->adjustment->lower);
       pango_layout_set_text (layout, txt, -1);
       g_free (txt);
-      
+
       pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
       if (width)
@@ -843,7 +843,7 @@ _gtk_scale_get_value_size (GtkScale *scale,
       txt = _gtk_scale_format_value (scale, range->adjustment->upper);
       pango_layout_set_text (layout, txt, -1);
       g_free (txt);
-      
+
       pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
       if (width)
@@ -928,13 +928,13 @@ gtk_scale_style_set (GtkWidget *widget,
   GtkRange *range;
 
   range = GTK_RANGE (widget);
-  
+
   gtk_widget_style_get (widget,
                         "slider-length", &slider_length,
                         NULL);
-  
+
   range->min_slider_size = slider_length;
-  
+
   _gtk_scale_clear_layout (GTK_SCALE (widget));
 
   GTK_WIDGET_CLASS (gtk_scale_parent_class)->style_set (widget, previous);
@@ -956,7 +956,7 @@ gtk_scale_size_request (GtkWidget      *widget,
   gint slider_length;
 
   GTK_WIDGET_CLASS (gtk_scale_parent_class)->size_request (widget, requisition);
-  
+
   gtk_widget_style_get (widget, "slider-length", &slider_length, NULL);
 
 
@@ -993,7 +993,7 @@ find_next_pos (GtkWidget      *widget,
       if (mark->position == pos)
         return marks[i];
     }
-    
+
   if (GTK_RANGE(widget)->orientation == GTK_ORIENTATION_HORIZONTAL)
     return widget->allocation.width;
   else
@@ -1016,8 +1016,8 @@ gtk_scale_expose (GtkWidget      *widget,
 
   gtk_widget_style_get (widget,
                         "focus-padding", &focus_padding,
-                        "slider-width", &slider_width, 
-                        "value-spacing", &value_spacing, 
+                        "slider-width", &slider_width,
+                        "value-spacing", &value_spacing,
                         NULL);
 
   /* We need to chain up _first_ so the various geometry members of
@@ -1050,7 +1050,7 @@ gtk_scale_expose (GtkWidget      *widget,
       for (m = priv->marks, i = 0; m; m = m->next, i++)
         {
           GtkScaleMark *mark = m->data;
-    
+
           if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
             {
               x1 = widget->allocation.x + marks[i];
@@ -1125,7 +1125,7 @@ gtk_scale_expose (GtkWidget      *widget,
                 {
                   pango_layout_set_markup (layout, mark->markup, -1);
                   pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
-              
+
                   y3 = y1 - logical_rect.height / 2;
                   if (y3 < min_pos)
                     y3 = min_pos;
@@ -1149,7 +1149,7 @@ gtk_scale_expose (GtkWidget      *widget,
                                     x3, y3, layout);
                 }
             }
-        } 
+        }
 
       g_object_unref (layout);
       g_free (marks);
@@ -1274,9 +1274,9 @@ gtk_scale_real_get_layout_offsets (GtkScale *scale,
  * _gtk_scale_format_value:
  * @scale: a #GtkScale
  * @value: adjustment value
- * 
+ *
  * Emits the #GtkScale::format-value signal.
- * 
+ *
  * Return value: formatted value
  */
 gchar*
@@ -1336,7 +1336,7 @@ gtk_scale_get_layout (GtkScale *scale)
 	priv->layout = gtk_widget_create_pango_layout (GTK_WIDGET (scale), NULL);
     }
 
-  if (scale->draw_value) 
+  if (scale->draw_value)
     {
       txt = _gtk_scale_format_value (scale,
 				     GTK_RANGE (scale)->adjustment->value);
@@ -1353,22 +1353,22 @@ gtk_scale_get_layout (GtkScale *scale)
  * @x: (out) (allow-none): location to store X offset of layout, or %NULL
  * @y: (out) (allow-none): location to store Y offset of layout, or %NULL
  *
- * Obtains the coordinates where the scale will draw the 
+ * Obtains the coordinates where the scale will draw the
  * #PangoLayout representing the text in the scale. Remember
  * when using the #PangoLayout function you need to convert to
- * and from pixels using PANGO_PIXELS() or #PANGO_SCALE. 
+ * and from pixels using PANGO_PIXELS() or #PANGO_SCALE.
  *
- * If the #GtkScale:draw-value property is %FALSE, the return 
+ * If the #GtkScale:draw-value property is %FALSE, the return
  * values are undefined.
  *
  * Since: 2.4
  */
-void 
+void
 gtk_scale_get_layout_offsets (GtkScale *scale,
                               gint     *x,
                               gint     *y)
 {
-  gint local_x = 0; 
+  gint local_x = 0;
   gint local_y = 0;
 
   g_return_if_fail (GTK_IS_SCALE (scale));
@@ -1378,7 +1378,7 @@ gtk_scale_get_layout_offsets (GtkScale *scale,
 
   if (x)
     *x = local_x;
-  
+
   if (y)
     *y = local_y;
 }
@@ -1407,7 +1407,7 @@ gtk_scale_mark_free (GtkScaleMark *mark)
 /**
  * gtk_scale_clear_marks:
  * @scale: a #GtkScale
- * 
+ *
  * Removes any marks that have been added with gtk_scale_add_mark().
  *
  * Since: 2.16
@@ -1431,7 +1431,7 @@ gtk_scale_clear_marks (GtkScale *scale)
 /**
  * gtk_scale_add_mark:
  * @scale: a #GtkScale
- * @value: the value at which the mark is placed, must be between 
+ * @value: the value at which the mark is placed, must be between
  *   the lower and upper limits of the scales' adjustment
  * @position: where to draw the mark. For a horizontal scale, #GTK_POS_TOP
  *   is drawn above the scale, anything else below. For a vertical scale,
@@ -1440,13 +1440,13 @@ gtk_scale_clear_marks (GtkScale *scale)
  * @markup: (allow-none): Text to be shown at the mark, using <link linkend="PangoMarkupFormat">Pango markup</link>, or %NULL
  *
  *
- * Adds a mark at @value. 
+ * Adds a mark at @value.
  *
- * A mark is indicated visually by drawing a tick mark next to the scale, 
- * and GTK+ makes it easy for the user to position the scale exactly at the 
+ * A mark is indicated visually by drawing a tick mark next to the scale,
+ * and GTK+ makes it easy for the user to position the scale exactly at the
  * marks value.
  *
- * If @markup is not %NULL, text is shown next to the tick mark. 
+ * If @markup is not %NULL, text is shown next to the tick mark.
  *
  * To remove marks from a scale, use gtk_scale_clear_marks().
  *
@@ -1468,7 +1468,7 @@ gtk_scale_add_mark (GtkScale        *scale,
   mark->value = value;
   mark->markup = g_strdup (markup);
   mark->position = position;
- 
+
   priv->marks = g_slist_insert_sorted_with_data (priv->marks, mark,
                                                  (GCompareDataFunc) compare_marks,
                                                  GINT_TO_POINTER (
@@ -1482,7 +1482,7 @@ gtk_scale_add_mark (GtkScale        *scale,
       mark = m->data;
       values[i] = mark->value;
     }
-  
+
   _gtk_range_set_stop_values (GTK_RANGE (scale), values, n);
 
   g_free (values);

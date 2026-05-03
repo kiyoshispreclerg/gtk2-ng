@@ -6,7 +6,7 @@
 void button_add_clicked( gpointer data )
 {
     int indx;
- 
+
     /* Something silly to add to the list. 4 rows of 2 columns each */
     gchar *drink[4][2] = { { "Milk",    "3 Oz" },
                            { "Water",   "6 l" },
@@ -80,15 +80,15 @@ void selection_made( GtkWidget      *clist,
 
 int main( int    argc,
           gchar *argv[] )
-{                                  
+{
     GtkWidget *window;
     GtkWidget *vbox, *hbox;
     GtkWidget *scrolled_window, *clist;
-    GtkWidget *button_add, *button_clear, *button_hide_show;    
+    GtkWidget *button_add, *button_clear, *button_hide_show;
     gchar *titles[2] = { "Ingredients", "Amount" };
 
     gtk_init(&argc, &argv);
-    
+
     window=gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request (GTK_WIDGET (window), 300, 150);
 
@@ -96,12 +96,12 @@ int main( int    argc,
     g_signal_connect (G_OBJECT (window), "destroy",
                       G_CALLBACK (gtk_main_quit),
                       NULL);
-    
+
     vbox=gtk_vbox_new (FALSE, 5);
     gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
     gtk_container_add (GTK_CONTAINER (window), vbox);
     gtk_widget_show (vbox);
-    
+
     /* Create a scrolled window to pack the CList widget into */
     scrolled_window = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
@@ -168,6 +168,6 @@ int main( int    argc,
     gtk_widget_show (window);
 
     gtk_main();
-    
+
     return 0;
 }

@@ -80,13 +80,13 @@ struct _GtkWindow
   guint GSEAL (need_default_position) : 1;
   guint GSEAL (need_default_size) : 1;
   guint GSEAL (position) : 3;
-  guint GSEAL (type) : 4; /* GtkWindowType */ 
+  guint GSEAL (type) : 4; /* GtkWindowType */
   guint GSEAL (has_user_ref_count) : 1;
   guint GSEAL (has_focus) : 1;
 
   guint GSEAL (modal) : 1;
   guint GSEAL (destroy_with_parent) : 1;
-  
+
   guint GSEAL (has_frame) : 1;
 
   /* gtk_window_iconify() called before realization */
@@ -94,7 +94,7 @@ struct _GtkWindow
   guint GSEAL (stick_initially) : 1;
   guint GSEAL (maximize_initially) : 1;
   guint GSEAL (decorated) : 1;
-  
+
   guint GSEAL (type_hint) : 3; /* GdkWindowTypeHint if the hint is one of the original eight. If not, then
 				* it contains GDK_WINDOW_TYPE_HINT_NORMAL
 				*/
@@ -102,14 +102,14 @@ struct _GtkWindow
 
   guint GSEAL (is_active) : 1;
   guint GSEAL (has_toplevel_focus) : 1;
-  
+
   guint GSEAL (frame_left);
   guint GSEAL (frame_top);
   guint GSEAL (frame_right);
   guint GSEAL (frame_bottom);
 
   guint GSEAL (keys_changed_handler);
-  
+
   GdkModifierType GSEAL (mnemonic_modifier);
   GdkScreen      *GSEAL (screen);
 };
@@ -134,9 +134,9 @@ struct _GtkWindowClass
    */
   void     (* move_focus)              (GtkWindow       *window,
                                         GtkDirectionType direction);
-  
+
   void	   (*keys_changed)	       (GtkWindow	*window);
-  
+
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
   void (*_gtk_reserved2) (void);
@@ -203,13 +203,13 @@ void       gtk_window_set_default              (GtkWindow           *window,
 GtkWidget *gtk_window_get_default_widget       (GtkWindow           *window);
 gboolean   gtk_window_activate_default	       (GtkWindow           *window);
 
-void       gtk_window_set_transient_for        (GtkWindow           *window, 
+void       gtk_window_set_transient_for        (GtkWindow           *window,
 						GtkWindow           *parent);
 GtkWindow *gtk_window_get_transient_for        (GtkWindow           *window);
-void       gtk_window_set_opacity              (GtkWindow           *window, 
+void       gtk_window_set_opacity              (GtkWindow           *window,
 						gdouble              opacity);
 gdouble    gtk_window_get_opacity              (GtkWindow           *window);
-void       gtk_window_set_type_hint            (GtkWindow           *window, 
+void       gtk_window_set_type_hint            (GtkWindow           *window,
 						GdkWindowTypeHint    hint);
 GdkWindowTypeHint gtk_window_get_type_hint     (GtkWindow           *window);
 void       gtk_window_set_skip_taskbar_hint    (GtkWindow           *window,
@@ -258,15 +258,15 @@ gboolean   gtk_window_has_toplevel_focus       (GtkWindow           *window);
 
 #ifndef GTK_DISABLE_DEPRECATED
 /* gtk_window_set_has_frame () must be called before realizing the window_*/
-void       gtk_window_set_has_frame            (GtkWindow *window, 
+void       gtk_window_set_has_frame            (GtkWindow *window,
 						gboolean   setting);
 gboolean   gtk_window_get_has_frame            (GtkWindow *window);
-void       gtk_window_set_frame_dimensions     (GtkWindow *window, 
+void       gtk_window_set_frame_dimensions     (GtkWindow *window,
 						gint       left,
 						gint       top,
 						gint       right,
 						gint       bottom);
-void       gtk_window_get_frame_dimensions     (GtkWindow *window, 
+void       gtk_window_get_frame_dimensions     (GtkWindow *window,
 						gint      *left,
 						gint      *top,
 						gint      *right,

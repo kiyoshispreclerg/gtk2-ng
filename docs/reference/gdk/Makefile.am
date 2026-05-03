@@ -37,7 +37,7 @@ IGNORE_HFILES=			\
 
 # Extra files to add when scanning (relative to $srcdir)
 EXTRA_HFILES=			\
-	../../../gdk/x11/gdkx.h 
+	../../../gdk/x11/gdkx.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
@@ -139,7 +139,7 @@ HTML_IMAGES =				\
 	images/umbrella.png 		\
 	images/ur_angle.png 		\
 	images/watch.png 		\
-	images/xterm.png 
+	images/xterm.png
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS= \

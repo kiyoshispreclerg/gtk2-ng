@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -223,9 +223,9 @@ gtk_toggle_button_new_with_label (const gchar *label)
 GtkWidget*
 gtk_toggle_button_new_with_mnemonic (const gchar *label)
 {
-  return g_object_new (GTK_TYPE_TOGGLE_BUTTON, 
-		       "label", label, 
-		       "use-underline", TRUE, 
+  return g_object_new (GTK_TYPE_TOGGLE_BUTTON,
+		       "label", label,
+		       "use-underline", TRUE,
 		       NULL);
 }
 
@@ -309,7 +309,7 @@ gtk_toggle_button_set_mode (GtkToggleButton *toggle_button,
     {
       toggle_button->draw_indicator = draw_indicator;
       GTK_BUTTON (toggle_button)->depress_on_activate = !draw_indicator;
-      
+
       if (gtk_widget_get_visible (GTK_WIDGET (toggle_button)))
 	gtk_widget_queue_resize (GTK_WIDGET (toggle_button));
 
@@ -378,33 +378,33 @@ gtk_toggle_button_toggled (GtkToggleButton *toggle_button)
  * state again if the user toggles the toggle button. This has to be
  * done manually, gtk_toggle_button_set_inconsistent() only affects
  * visual appearance, it doesn't affect the semantics of the button.
- * 
+ *
  **/
 void
 gtk_toggle_button_set_inconsistent (GtkToggleButton *toggle_button,
                                     gboolean         setting)
 {
   g_return_if_fail (GTK_IS_TOGGLE_BUTTON (toggle_button));
-  
+
   setting = setting != FALSE;
 
   if (setting != toggle_button->inconsistent)
     {
       toggle_button->inconsistent = setting;
-      
+
       gtk_toggle_button_update_state (GTK_BUTTON (toggle_button));
       gtk_widget_queue_draw (GTK_WIDGET (toggle_button));
 
-      g_object_notify (G_OBJECT (toggle_button), "inconsistent");      
+      g_object_notify (G_OBJECT (toggle_button), "inconsistent");
     }
 }
 
 /**
  * gtk_toggle_button_get_inconsistent:
  * @toggle_button: a #GtkToggleButton
- * 
+ *
  * Gets the value set by gtk_toggle_button_set_inconsistent().
- * 
+ *
  * Return value: %TRUE if the button is displayed as inconsistent, %FALSE otherwise
  **/
 gboolean
@@ -427,7 +427,7 @@ gtk_toggle_button_expose (GtkWidget      *widget,
       GtkShadowType shadow_type;
 
       state_type = gtk_widget_get_state (widget);
-      
+
       if (GTK_TOGGLE_BUTTON (widget)->inconsistent)
         {
           if (state_type == GTK_STATE_ACTIVE)
@@ -443,7 +443,7 @@ gtk_toggle_button_expose (GtkWidget      *widget,
       if (child)
 	gtk_container_propagate_expose (GTK_CONTAINER (widget), child, event);
     }
-  
+
   return FALSE;
 }
 
@@ -452,7 +452,7 @@ gtk_toggle_button_mnemonic_activate (GtkWidget *widget,
                                      gboolean   group_cycling)
 {
   /*
-   * We override the standard implementation in 
+   * We override the standard implementation in
    * gtk_widget_real_mnemonic_activate() in order to focus the widget even
    * if there is no mnemonic conflict.
    */
@@ -522,13 +522,13 @@ gtk_toggle_button_update_state (GtkButton *button)
     depressed = TRUE;
   else
     depressed = toggle_button->active;
-      
+
   if (!touchscreen && button->in_button && (!button->button_down || toggle_button->draw_indicator))
     new_state = GTK_STATE_PRELIGHT;
   else
     new_state = depressed ? GTK_STATE_ACTIVE : GTK_STATE_NORMAL;
 
-  _gtk_button_set_depressed (button, depressed); 
+  _gtk_button_set_depressed (button, depressed);
   gtk_widget_set_state (GTK_WIDGET (toggle_button), new_state);
 }
 

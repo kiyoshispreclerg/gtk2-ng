@@ -43,7 +43,7 @@ gtk_printer_option_finalize (GObject *object)
 {
   GtkPrinterOption *option = GTK_PRINTER_OPTION (object);
   int i;
-  
+
   g_free (option->name);
   g_free (option->display_text);
   g_free (option->value);
@@ -55,7 +55,7 @@ gtk_printer_option_finalize (GObject *object)
   g_free (option->choices);
   g_free (option->choices_display);
   g_free (option->group);
-  
+
   G_OBJECT_CLASS (gtk_printer_option_parent_class)->finalize (object);
 }
 
@@ -94,7 +94,7 @@ gtk_printer_option_new (const char *name, const char *display_text,
   option->name = g_strdup (name);
   option->display_text = g_strdup (display_text);
   option->type = type;
-  
+
   return option;
 }
 
@@ -110,7 +110,7 @@ gtk_printer_option_set (GtkPrinterOption *option,
 {
   if (value == NULL)
     value = "";
-  
+
   if (strcmp (option->value, value) == 0)
     return;
 
@@ -119,7 +119,7 @@ gtk_printer_option_set (GtkPrinterOption *option,
       value != NULL)
     {
       int i;
-      
+
       for (i = 0; i < option->num_choices; i++)
 	{
 	  if (g_ascii_strcasecmp (value, option->choices[i]) == 0)
@@ -132,10 +132,10 @@ gtk_printer_option_set (GtkPrinterOption *option,
       if (i == option->num_choices)
 	return; /* Not found in available choices */
     }
-  
+
   g_free (option->value);
   option->value = g_strdup (value);
-  
+
   emit_changed (option);
 }
 
@@ -151,7 +151,7 @@ gtk_printer_option_set_has_conflict  (GtkPrinterOption *option,
 				      gboolean  has_conflict)
 {
   has_conflict = has_conflict != 0;
-  
+
   if (option->has_conflict == has_conflict)
     return;
 
@@ -192,7 +192,7 @@ gtk_printer_option_choices_from_array (GtkPrinterOption   *option,
 				       char              *choices_display[])
 {
   int i;
-  
+
   gtk_printer_option_allocate_choices (option, num_choices);
   for (i = 0; i < num_choices; i++)
     {
@@ -206,13 +206,13 @@ gtk_printer_option_has_choice (GtkPrinterOption     *option,
 			       const char           *choice)
 {
   int i;
-  
+
   for (i = 0; i < option->num_choices; i++)
     {
       if (strcmp (option->choices[i], choice) == 0)
 	return TRUE;
     }
-  
+
   return FALSE;
 }
 

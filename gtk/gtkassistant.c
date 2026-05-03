@@ -1,4 +1,4 @@
-/* 
+/*
  * GTK - The GIMP Toolkit
  * Copyright (C) 1999  Red Hat, Inc.
  * Copyright (C) 2002  Anders Carlsson <andersca@gnu.org>
@@ -239,7 +239,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-    
+
   /**
    * GtkAssistant::prepare:
    * @assistant: the #GtkAssistant
@@ -330,7 +330,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
    */
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PAGE_TYPE,
-					      g_param_spec_enum ("page-type", 
+					      g_param_spec_enum ("page-type",
 								 P_("Page type"),
 								 P_("The type of the assistant page"),
 								 GTK_TYPE_ASSISTANT_PAGE_TYPE,
@@ -348,7 +348,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
    */
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PAGE_TITLE,
-					      g_param_spec_string ("title", 
+					      g_param_spec_string ("title",
 								   P_("Page title"),
 								   P_("The title of the assistant page"),
 								   NULL,
@@ -365,7 +365,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
    */
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PAGE_HEADER_IMAGE,
-					      g_param_spec_object ("header-image", 
+					      g_param_spec_object ("header-image",
 								   P_("Header image"),
 								   P_("Header image for the assistant page"),
 								   GDK_TYPE_PIXBUF,
@@ -382,7 +382,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
    */
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PAGE_SIDEBAR_IMAGE,
-					      g_param_spec_object ("sidebar-image", 
+					      g_param_spec_object ("sidebar-image",
 								   P_("Sidebar image"),
 								   P_("Sidebar image for the assistant page"),
 								   GDK_TYPE_PIXBUF,
@@ -398,7 +398,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
    **/
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PAGE_COMPLETE,
-					      g_param_spec_boolean ("complete", 
+					      g_param_spec_boolean ("complete",
 								    P_("Page complete"),
 								    P_("Whether all required fields on the page have been filled out"),
 								    FALSE,
@@ -520,7 +520,7 @@ set_assistant_buttons_state (GtkAssistant *assistant)
 
   if (!priv->current_page)
     return;
-  
+
   switch (priv->current_page->type)
     {
     case GTK_ASSISTANT_PAGE_INTRO:
@@ -619,7 +619,7 @@ set_current_page (GtkAssistant     *assistant,
       gtk_widget_map (priv->current_page->page);
       gtk_widget_map (priv->current_page->title);
     }
-  
+
   if (old_page && gtk_widget_get_mapped (old_page->page))
     {
       gtk_widget_set_child_visible (old_page->page, FALSE);
@@ -795,7 +795,7 @@ gtk_assistant_init (GtkAssistant *assistant)
 
   /* Action area  */
   priv->action_area  = gtk_hbox_new (FALSE, 6);
-  
+
   assistant->close   = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
   assistant->apply   = gtk_button_new_from_stock (GTK_STOCK_APPLY);
   assistant->forward = gtk_button_new_from_stock (GTK_STOCK_GO_FORWARD);
@@ -946,7 +946,7 @@ on_page_notify_visibility (GtkWidget  *widget,
 }
 
 static void
-remove_page (GtkAssistant *assistant, 
+remove_page (GtkAssistant *assistant,
 	     GList        *element)
 {
   GtkAssistantPrivate *priv = assistant->priv;
@@ -1048,7 +1048,7 @@ gtk_assistant_destroy (GtkObject *object)
 
   while (priv->pages)
     remove_page (GTK_ASSISTANT (object), priv->pages);
-      
+
   GTK_OBJECT_CLASS (gtk_assistant_parent_class)->destroy (object);
 }
 
@@ -1058,7 +1058,7 @@ find_page (GtkAssistant  *assistant,
 {
   GtkAssistantPrivate *priv = assistant->priv;
   GList *child = priv->pages;
-  
+
   while (child)
     {
       GtkAssistantPage *page_info = child->data;
@@ -1067,7 +1067,7 @@ find_page (GtkAssistant  *assistant,
 
       child = child->next;
     }
-  
+
   return NULL;
 }
 
@@ -1386,7 +1386,7 @@ assistant_paint_colored_box (GtkWidget *widget)
 	content_x += priv->sidebar_image->allocation.width;
       content_width -= priv->sidebar_image->allocation.width;
     }
-  
+
   gdk_cairo_set_source_color (cr, &widget->style->bg[GTK_STATE_NORMAL]);
 
   cairo_rectangle (cr,
@@ -1525,7 +1525,7 @@ gtk_assistant_forall (GtkContainer *container,
 
 /**
  * gtk_assistant_new:
- * 
+ *
  * Creates a new #GtkAssistant.
  *
  * Return value: a newly created #GtkAssistant
@@ -1790,7 +1790,7 @@ gtk_assistant_insert_page (GtkAssistant *assistant,
  * Sets the page forwarding function to be @page_func, this function will
  * be used to determine what will be the next page when the user presses
  * the forward button. Setting @page_func to %NULL will make the assistant
- * to use the default forward function, which just goes to the next visible 
+ * to use the default forward function, which just goes to the next visible
  * page.
  *
  * Since: 2.10
@@ -1833,7 +1833,7 @@ gtk_assistant_set_forward_page_func (GtkAssistant         *assistant,
  * gtk_assistant_add_action_widget:
  * @assistant: a #GtkAssistant
  * @child: a #GtkWidget
- * 
+ *
  * Adds a widget to the action area of a #GtkAssistant.
  *
  * Since: 2.10
@@ -1886,7 +1886,7 @@ gtk_assistant_remove_action_widget (GtkAssistant *assistant,
  * @assistant: a #GtkAssistant
  * @page: a page of @assistant
  * @title: the new title for @page
- * 
+ *
  * Sets a title for @page. The title is displayed in the header
  * area of the assistant when @page is the current page.
  *
@@ -1918,9 +1918,9 @@ gtk_assistant_set_page_title (GtkAssistant *assistant,
  * gtk_assistant_get_page_title:
  * @assistant: a #GtkAssistant
  * @page: a page of @assistant
- * 
- * Gets the title for @page. 
- * 
+ *
+ * Gets the title for @page.
+ *
  * Return value: the title for @page.
  *
  * Since: 2.10
@@ -1949,7 +1949,7 @@ gtk_assistant_get_page_title (GtkAssistant *assistant,
  * @assistant: a #GtkAssistant
  * @page: a page of @assistant
  * @type: the new type for @page
- * 
+ *
  * Sets the page type for @page. The page type determines the page
  * behavior in the @assistant.
  *
@@ -2186,7 +2186,7 @@ gtk_assistant_get_page_side_image (GtkAssistant *assistant,
  * @assistant: a #GtkAssistant
  * @page: a page of @assistant
  * @complete: the completeness status of the page
- * 
+ *
  * Sets whether @page contents are complete. This will make
  * @assistant update the buttons state to be able to continue the task.
  *
@@ -2226,9 +2226,9 @@ gtk_assistant_set_page_complete (GtkAssistant *assistant,
  * gtk_assistant_get_page_complete:
  * @assistant: a #GtkAssistant
  * @page: a page of @assistant
- * 
+ *
  * Gets whether @page is complete.
- * 
+ *
  * Return value: %TRUE if @page is complete.
  *
  * Since: 2.10
@@ -2255,10 +2255,10 @@ gtk_assistant_get_page_complete (GtkAssistant *assistant,
 /**
  * gtk_assistant_update_buttons_state:
  * @assistant: a #GtkAssistant
- * 
+ *
  * Forces @assistant to recompute the buttons state.
- * 
- * GTK+ automatically takes care of this in most situations, 
+ *
+ * GTK+ automatically takes care of this in most situations,
  * e.g. when the user goes to a different page, or when the
  * visibility or completeness of a page changes.
  *
@@ -2321,7 +2321,7 @@ gtk_assistant_accessible_get_n_children (AtkObject *accessible)
     return 0;
 
   assistant = GTK_ASSISTANT (widget);
-   
+
   return g_list_length (assistant->priv->pages) + 1;
 }
 
@@ -2361,7 +2361,7 @@ gtk_assistant_accessible_ref_child (AtkObject *accessible,
     }
   else
     return NULL;
-  
+
   obj = gtk_widget_get_accessible (child);
 
   if (title)
@@ -2381,7 +2381,7 @@ static GType
 gtk_assistant_accessible_get_type (void)
 {
   static GType type = 0;
-  
+
   if (!type)
     {
       /*

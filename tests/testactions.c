@@ -141,7 +141,7 @@ static GtkActionEntry entries[] = {
     "Quit the application", G_CALLBACK (gtk_main_quit) },
   { "customise-accels", NULL, "Customise _Accels", NULL,
     "Customise keyboard shortcuts", G_CALLBACK (show_accel_dialog) },
-  { "toolbar-small-icons", NULL, "Small Icons", NULL, 
+  { "toolbar-small-icons", NULL, "Small Icons", NULL,
     NULL, G_CALLBACK (toolbar_size_small) },
   { "toolbar-large-icons", NULL, "Large Icons", NULL,
     NULL, G_CALLBACK (toolbar_size_large) }
@@ -150,7 +150,7 @@ static guint n_entries = G_N_ELEMENTS (entries);
 
 static GtkToggleActionEntry toggle_entries[] = {
   { "bold", GTK_STOCK_BOLD, "_Bold", "<control>B",
-    "Change to bold face", 
+    "Change to bold face",
     G_CALLBACK (toggle_action), FALSE },
   { "toggle-cnp", NULL, "Enable Cut/Copy/Paste", NULL,
     "Change the sensitivity of the cut, copy and paste actions",
@@ -258,7 +258,7 @@ add_widget (GtkUIManager *merge,
   gtk_box_pack_start (GTK_BOX (container), widget, FALSE, FALSE, 0);
   gtk_widget_show (widget);
 
-  if (GTK_IS_TOOLBAR (widget)) 
+  if (GTK_IS_TOOLBAR (widget))
     {
       toolbar = GTK_TOOLBAR (widget);
       gtk_toolbar_set_show_arrow (toolbar, TRUE);
@@ -274,16 +274,16 @@ ensure_update (GtkUIManager *manager)
   GTimer *timer;
   double seconds;
   gulong microsecs;
-  
+
   timer = g_timer_new ();
   g_timer_start (timer);
-  
+
   gtk_ui_manager_ensure_update (manager);
-  
+
   g_timer_stop (timer);
   seconds = g_timer_elapsed (timer, &microsecs);
   g_timer_destroy (timer);
-  
+
   g_print ("Time: %fs\n", seconds);
 }
 
@@ -295,35 +295,35 @@ add_cb (GtkWidget *button,
   GtkAction *action;
   int i, num;
   char *name, *label;
-  
+
   if (ui_id != 0 || dag != NULL)
     return;
-  
+
   spinbutton = g_object_get_data (G_OBJECT (button), "spinbutton");
   num = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spinbutton));
-  
+
   dag = gtk_action_group_new ("DynamicActions");
   gtk_ui_manager_insert_action_group (manager, dag, 0);
-  
+
   ui_id = gtk_ui_manager_new_merge_id (manager);
-  
+
   for (i = 0; i < num; i++)
     {
       name = g_strdup_printf ("DynAction%u", i);
       label = g_strdup_printf ("Dynamic Item %d", i);
-      
+
       action = g_object_new (GTK_TYPE_ACTION,
 			     "name", name,
 			     "label", label,
 			     NULL);
       gtk_action_group_add_action (dag, action);
       g_object_unref (action);
-      
+
       gtk_ui_manager_add_ui (manager, ui_id, "/menubar/DynamicMenu",
 			     name, name,
 			     GTK_UI_MANAGER_MENUITEM, FALSE);
     }
-  
+
   ensure_update (manager);
 }
 
@@ -333,11 +333,11 @@ remove_cb (GtkWidget *button,
 {
   if (ui_id == 0 || dag == NULL)
     return;
-  
+
   gtk_ui_manager_remove_ui (manager, ui_id);
   ensure_update (manager);
   ui_id = 0;
-  
+
   gtk_ui_manager_remove_action_group (manager, dag);
   g_object_unref (dag);
   dag = NULL;
@@ -367,7 +367,7 @@ create_window (GtkActionGroup *action_group)
   gtk_ui_manager_insert_action_group (merge, action_group, 0);
   g_signal_connect (merge, "add_widget", G_CALLBACK (add_widget), box);
 
-  gtk_window_add_accel_group (GTK_WINDOW (window), 
+  gtk_window_add_accel_group (GTK_WINDOW (window),
 			      gtk_ui_manager_get_accel_group (merge));
 
   if (!gtk_ui_manager_add_ui_from_string (merge, ui_info, -1, &error))
@@ -379,24 +379,24 @@ create_window (GtkActionGroup *action_group)
   hbox = gtk_hbox_new (FALSE, 0);
   gtk_box_pack_end (GTK_BOX (box), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
-  
+
   spinbutton = gtk_spin_button_new_with_range (100, 10000, 100);
   gtk_box_pack_start (GTK_BOX (hbox), spinbutton, FALSE, FALSE, 0);
   gtk_widget_show (spinbutton);
-  
+
   button = gtk_button_new_with_label ("Add");
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
-  
+
   g_object_set_data (G_OBJECT (button), "spinbutton", spinbutton);
   g_signal_connect (button, "clicked", G_CALLBACK (add_cb), merge);
-  
+
   button = gtk_button_new_with_label ("Remove");
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
   gtk_widget_show (button);
-  
+
   g_signal_connect (button, "clicked", G_CALLBACK (remove_cb), merge);
-  
+
   gtk_widget_show (window);
 }
 
@@ -421,18 +421,18 @@ main (int argc, char **argv)
                     NULL);
 
   action_group = gtk_action_group_new ("TestActions");
-  gtk_action_group_add_actions (action_group, 
-				entries, n_entries, 
+  gtk_action_group_add_actions (action_group,
+				entries, n_entries,
 				NULL);
-  gtk_action_group_add_toggle_actions (action_group, 
-				       toggle_entries, n_toggle_entries, 
+  gtk_action_group_add_toggle_actions (action_group,
+				       toggle_entries, n_toggle_entries,
 				       NULL);
-  gtk_action_group_add_radio_actions (action_group, 
-				      justify_entries, n_justify_entries, 
+  gtk_action_group_add_radio_actions (action_group,
+				      justify_entries, n_justify_entries,
 				      JUSTIFY_LEFT,
 				      G_CALLBACK (radio_action), NULL);
-  gtk_action_group_add_radio_actions (action_group, 
-				      toolbar_entries, n_toolbar_entries, 
+  gtk_action_group_add_radio_actions (action_group,
+				      toolbar_entries, n_toolbar_entries,
 				      GTK_TOOLBAR_BOTH,
 				      G_CALLBACK (toolbar_style), NULL);
   gtk_action_group_add_action_with_accel (action_group, action, NULL);
@@ -446,16 +446,16 @@ main (int argc, char **argv)
     GList *action;
 
     for (action = gtk_action_group_list_actions (action_group);
-	 action; 
+	 action;
 	 action = action->next)
       {
 	GtkAction *a = action->data;
-	g_print ("action %s ref count %d\n", 
+	g_print ("action %s ref count %d\n",
 		 gtk_action_get_name (a), G_OBJECT (a)->ref_count);
       }
   }
 #endif
-  
+
   g_object_unref (action);
   g_object_unref (action_group);
 

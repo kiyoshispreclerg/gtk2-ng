@@ -629,7 +629,7 @@ gtk_mount_operation_ask_password (GMountOperation   *mount_op,
                           FALSE, FALSE, 0);
 
       password_save = g_mount_operation_get_password_save (mount_op);
-      
+
       choice = gtk_radio_button_new_with_mnemonic (NULL, _("Forget password _immediately"));
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (choice),
                                     password_save == G_PASSWORD_SAVE_NEVER);

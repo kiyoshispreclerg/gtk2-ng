@@ -21,7 +21,7 @@ static void _check_children (AtkObject *obj)
 
   if (n_children > 1)
   {
-    g_print ("*** Unexpected number of children for combo box: %d\n", 
+    g_print ("*** Unexpected number of children for combo box: %d\n",
              n_children);
     return;
   }
@@ -32,7 +32,7 @@ static void _check_children (AtkObject *obj)
     j = atk_object_get_index_in_parent (child);
     if (j != 1)
      g_print ("*** inconsistency between parent and children %d %d ***\n",
-              1, j);       
+              1, j);
     g_object_unref (G_OBJECT (child));
   }
 
@@ -41,7 +41,7 @@ static void _check_children (AtkObject *obj)
   j = atk_object_get_index_in_parent (child);
   if (j != 0)
      g_print ("*** inconsistency between parent and children %d %d ***\n",
-              0, j);       
+              0, j);
 
   n_children = atk_object_get_n_accessible_children (child);
   for (i = 0; i < n_children; i++)
@@ -55,7 +55,7 @@ static void _check_children (AtkObject *obj)
   }
   g_object_unref (G_OBJECT (child));
 }
-  
+
 static void _test_selection (AtkObject *obj)
 {
   gint count;
@@ -66,14 +66,14 @@ static void _test_selection (AtkObject *obj)
   g_return_if_fail (count == 0);
 
   list = atk_object_ref_accessible_child (obj, 0);
-  n_children = atk_object_get_n_accessible_children (list); 
+  n_children = atk_object_get_n_accessible_children (list);
   g_object_unref (G_OBJECT (list));
 
   atk_selection_add_selection (ATK_SELECTION (obj), n_children - 1);
   count = atk_selection_get_selection_count (ATK_SELECTION (obj));
   g_return_if_fail (count == 1);
   g_return_if_fail (atk_selection_is_child_selected (ATK_SELECTION (obj),
-                     n_children - 1));	
+                     n_children - 1));
   atk_selection_add_selection (ATK_SELECTION (obj), 0);
   count = atk_selection_get_selection_count (ATK_SELECTION (obj));
   g_return_if_fail (count == 1);
@@ -127,7 +127,7 @@ static void _check_combo_box (AtkObject *obj)
 
   g_print ("*** Start ComboBox ***\n");
   _check_children (obj);
- 
+
   if (!done)
   {
     gtk_idle_add (_open_combo_list, obj);
@@ -161,7 +161,7 @@ static gint _close_combo_list (gpointer data)
   g_return_val_if_fail (count == 0, FALSE);
 
   list = atk_object_ref_accessible_child (obj, 0);
-  n_children = atk_object_get_n_accessible_children (list); 
+  n_children = atk_object_get_n_accessible_children (list);
   g_object_unref (G_OBJECT (list));
 
   atk_selection_add_selection (ATK_SELECTION (obj), n_children - 1);

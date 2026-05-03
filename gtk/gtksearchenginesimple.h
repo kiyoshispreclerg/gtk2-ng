@@ -38,7 +38,7 @@ typedef struct _GtkSearchEngineSimple GtkSearchEngineSimple;
 typedef struct _GtkSearchEngineSimpleClass GtkSearchEngineSimpleClass;
 typedef struct _GtkSearchEngineSimplePrivate GtkSearchEngineSimplePrivate;
 
-struct _GtkSearchEngineSimple 
+struct _GtkSearchEngineSimple
 {
   GtkSearchEngine parent;
 

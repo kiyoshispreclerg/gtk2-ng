@@ -50,7 +50,7 @@ ipa_register_type (GTypeModule *module)
     (GInstanceInitFunc) ipa_init,
   };
 
-  type_ipa = 
+  type_ipa =
     g_type_module_register_type (module,
 				 GTK_TYPE_IM_CONTEXT_SIMPLE,
 				 "GtkIMContextIpa",
@@ -140,7 +140,7 @@ ipa_init (GtkIMContextSimple *im_context)
 				   G_N_ELEMENTS (ipa_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo ipa_info = { 
+static const GtkIMContextInfo ipa_info = {
   "ipa",		   /* ID */
   N_("IPA"),                       /* Human readable name */
   GETTEXT_PACKAGE,		   /* Translation domain */

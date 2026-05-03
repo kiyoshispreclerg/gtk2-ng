@@ -32,7 +32,7 @@ drag_begin (GtkWidget      *widget,
   gtk_drag_set_icon_pixbuf (context, pixbuf, -2, -2);
 }
 
-void  
+void
 drag_data_get  (GtkWidget        *widget,
 		GdkDragContext   *context,
 		GtkSelectionData *selection_data,
@@ -136,7 +136,7 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (box), image);
   gtk_table_attach_defaults (GTK_TABLE (table), box, 2, 3, 1, 2);
 
-  gtk_drag_source_set (box, GDK_BUTTON1_MASK, 
+  gtk_drag_source_set (box, GDK_BUTTON1_MASK,
 		       NULL, 0,
 		       GDK_ACTION_COPY);
   gtk_drag_source_add_image_targets (box);
@@ -149,7 +149,7 @@ main (int argc, char **argv)
                      GTK_DEST_DEFAULT_DROP,
                      NULL, 0, GDK_ACTION_COPY);
   gtk_drag_dest_add_image_targets (box);
-  g_signal_connect (box, "drag_data_received", 
+  g_signal_connect (box, "drag_data_received",
 		    G_CALLBACK (drag_data_received), image);
 
   label = gtk_label_new ("GTK_IMAGE_STOCK");
@@ -189,7 +189,7 @@ main (int argc, char **argv)
   gtk_image_set_pixel_size (GTK_IMAGE (image), 30);
   gtk_table_attach_defaults (GTK_TABLE (table), image, 2, 3, 5, 6);
 
-  
+
   if (anim_filename)
     {
       label = gtk_label_new ("GTK_IMAGE_ANIMATION (from file)");

@@ -34,7 +34,7 @@ static void      gail_pixmap_initialize         (AtkObject       *accessible,
 static void  atk_image_interface_init   (AtkImageIface  *iface);
 static const gchar* gail_pixmap_get_image_description
                                         (AtkImage       *obj);
-static void  gail_pixmap_get_image_position    
+static void  gail_pixmap_get_image_position
                                         (AtkImage       *obj,
                                          gint           *x,
                                          gint           *y,
@@ -42,7 +42,7 @@ static void  gail_pixmap_get_image_position
 static void  gail_pixmap_get_image_size (AtkImage       *obj,
                                          gint           *width,
                                          gint           *height);
-static gboolean gail_pixmap_set_image_description 
+static gboolean gail_pixmap_set_image_description
                                         (AtkImage       *obj,
                                         const gchar    *description);
 static void  gail_pixmap_finalize       (GObject         *object);
@@ -50,12 +50,12 @@ static void  gail_pixmap_finalize       (GObject         *object);
 G_DEFINE_TYPE_WITH_CODE (GailPixmap, gail_pixmap, GAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_IMAGE, atk_image_interface_init))
 
-static void	 
+static void
 gail_pixmap_class_init (GailPixmapClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   AtkObjectClass *atk_object_class = ATK_OBJECT_CLASS (klass);
- 
+
   atk_object_class->initialize = gail_pixmap_initialize;
 
   gobject_class->finalize = gail_pixmap_finalize;
@@ -106,14 +106,14 @@ gail_pixmap_get_image_position (AtkImage       *obj,
   atk_component_get_position (ATK_COMPONENT (obj), x, y, coord_type);
 }
 
-static void  
+static void
 gail_pixmap_get_image_size (AtkImage       *obj,
                             gint           *width,
                             gint           *height)
 {
   GtkWidget *widget;
   GtkPixmap *pixmap;
- 
+
   *width = -1;
   *height = -1;
 
@@ -132,10 +132,10 @@ gail_pixmap_get_image_size (AtkImage       *obj,
     gdk_pixmap_get_size (pixmap->pixmap, width, height);
 }
 
-static gboolean 
+static gboolean
 gail_pixmap_set_image_description (AtkImage       *obj,
                                    const gchar    *description)
-{ 
+{
   GailPixmap* pixmap;
 
   g_return_val_if_fail (GAIL_IS_PIXMAP (obj), FALSE);

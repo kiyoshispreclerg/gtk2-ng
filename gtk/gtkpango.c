@@ -193,9 +193,9 @@ static void
 _gtk_fill_layout_renderer_class_init (GtkFillLayoutRendererClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  
+
   PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
-  
+
   renderer_class->draw_glyphs = gtk_fill_layout_renderer_draw_glyphs;
   renderer_class->draw_glyph_item = gtk_fill_layout_renderer_draw_glyph_item;
   renderer_class->draw_rectangle = gtk_fill_layout_renderer_draw_rectangle;

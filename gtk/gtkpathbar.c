@@ -178,7 +178,7 @@ gtk_path_bar_init (GtkPathBar *path_bar)
   path_bar->up_slider_button = get_slider_button (path_bar, GTK_ARROW_LEFT);
   path_bar->down_slider_button = get_slider_button (path_bar, GTK_ARROW_RIGHT);
   path_bar->icon_size = FALLBACK_ICON_SIZE;
-  
+
   g_signal_connect_swapped (path_bar->up_slider_button, "clicked",
                             G_CALLBACK (gtk_path_bar_scroll_up), path_bar);
   g_signal_connect_swapped (path_bar->down_slider_button, "clicked",
@@ -308,7 +308,7 @@ gtk_path_bar_dispose (GObject *object)
 }
 
 /* Size requisition:
- * 
+ *
  * Ideally, our size is determined by another widget, and we are just filling
  * available space.
  */
@@ -330,7 +330,7 @@ gtk_path_bar_size_request (GtkWidget      *widget,
     {
       button_data = BUTTON_DATA (list->data);
       gtk_widget_size_request (button_data->button, &child_requisition);
-      
+
       if (button_data->type == NORMAL_BUTTON)
 	/* Use 2*Height as button width because of ellipsized label.  */
 	requisition->width = MAX (child_requisition.height * 2, requisition->width);
@@ -509,7 +509,7 @@ gtk_path_bar_size_allocate (GtkWidget     *widget,
       else
 	first_button = path_bar->button_list;
       need_sliders = TRUE;
-      
+
       /* To see how much space we have, and how many buttons we can display.
        * We start at the first button, count forward until hit the new
        * button, then count backwards.
@@ -608,7 +608,7 @@ gtk_path_bar_size_allocate (GtkWidget     *widget,
 	}
       else if (gtk_widget_get_has_tooltip (child))
 	gtk_widget_set_tooltip_text (child, NULL);
-      
+
       gtk_widget_set_child_visible (child, TRUE);
       gtk_widget_size_allocate (child, &child_allocation);
 
@@ -639,7 +639,7 @@ gtk_path_bar_size_allocate (GtkWidget     *widget,
     }
   else
     gtk_widget_set_child_visible (path_bar->up_slider_button, FALSE);
-      
+
   if (need_sliders)
     {
       child_allocation.width = path_bar->slider_width;
@@ -650,7 +650,7 @@ gtk_path_bar_size_allocate (GtkWidget     *widget,
 	child_allocation.x = allocation->width - border_width - path_bar->slider_width;
 
       child_allocation.x += allocation->x;
-      
+
       gtk_widget_size_allocate (path_bar->down_slider_button, &child_allocation);
 
       gtk_widget_set_child_visible (path_bar->down_slider_button, TRUE);
@@ -753,7 +753,7 @@ gtk_path_bar_remove (GtkContainer *container,
 	  g_list_free (children);
 	  return;
 	}
-      
+
       children = children->next;
     }
 }
@@ -797,7 +797,7 @@ gtk_path_bar_scroll_down (GtkPathBar *path_bar)
   if (path_bar->ignore_click)
     {
       path_bar->ignore_click = FALSE;
-      return;   
+      return;
     }
 
   if (gtk_widget_get_child_visible (BUTTON_DATA (path_bar->button_list->data)->button))
@@ -824,8 +824,8 @@ gtk_path_bar_scroll_down (GtkPathBar *path_bar)
 		     - 2 * path_bar->spacing - 2 * path_bar->slider_width
 		     - BUTTON_DATA (down_button->data)->button->allocation.width);
   path_bar->first_scrolled_button = down_button;
-  
-  /* We have space_available free space that's not being used.  
+
+  /* We have space_available free space that's not being used.
    * So we walk down from the end, adding buttons until we use all free space.
    */
   while (space_available > 0)
@@ -847,7 +847,7 @@ gtk_path_bar_scroll_up (GtkPathBar *path_bar)
   if (path_bar->ignore_click)
     {
       path_bar->ignore_click = FALSE;
-      return;   
+      return;
     }
 
   list = g_list_last (path_bar->button_list);
@@ -884,7 +884,7 @@ gtk_path_bar_scroll_timeout (GtkPathBar *path_bar)
       else if (path_bar->scrolling_down)
 	gtk_path_bar_scroll_down (path_bar);
 
-      if (path_bar->need_timer) 
+      if (path_bar->need_timer)
 	{
           GtkSettings *settings = gtk_widget_get_settings (GTK_WIDGET (path_bar));
           guint        timeout;
@@ -904,7 +904,7 @@ gtk_path_bar_scroll_timeout (GtkPathBar *path_bar)
   return retval;
 }
 
-static void 
+static void
 gtk_path_bar_stop_scrolling (GtkPathBar *path_bar)
 {
   if (path_bar->timer)
@@ -972,7 +972,7 @@ gtk_path_bar_slider_down_defocus (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_path_bar_slider_button_press (GtkWidget      *widget, 
+gtk_path_bar_slider_button_press (GtkWidget      *widget,
 				  GdkEventButton *event,
 				  GtkPathBar     *path_bar)
 {
@@ -1011,7 +1011,7 @@ gtk_path_bar_slider_button_press (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_path_bar_slider_button_release (GtkWidget      *widget, 
+gtk_path_bar_slider_button_release (GtkWidget      *widget,
 				    GdkEventButton *event,
 				    GtkPathBar     *path_bar)
 {
@@ -1075,7 +1075,7 @@ reload_icons (GtkPathBar *path_bar)
 	  gtk_path_bar_update_button_appearance (path_bar, button_data, current_dir);
 	}
     }
-  
+
 }
 
 static void
@@ -1352,7 +1352,7 @@ label_size_request_cb (GtkWidget      *widget,
   gchar *markup;
 
   pango_layout_get_pixel_size (layout, &requisition->width, &requisition->height);
-  
+
   markup = g_markup_printf_escaped ("<b>%s</b>", dir_name);
   pango_layout_set_markup (layout, markup, -1);
   g_free (markup);
@@ -1360,7 +1360,7 @@ label_size_request_cb (GtkWidget      *widget,
   pango_layout_get_pixel_size (layout, &bold_width, &bold_height);
   requisition->width = MAX (requisition->width, bold_width);
   requisition->height = MAX (requisition->height, bold_height);
-  
+
   g_object_unref (layout);
 }
 
@@ -1763,7 +1763,7 @@ _gtk_path_bar_set_file_system (GtkPathBar    *path_bar,
       desktop = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
       if (desktop != NULL)
         path_bar->desktop_file = g_file_new_for_path (desktop);
-      else 
+      else
         path_bar->desktop_file = NULL;
     }
   else
@@ -1777,7 +1777,7 @@ _gtk_path_bar_set_file_system (GtkPathBar    *path_bar,
 /**
  * _gtk_path_bar_up:
  * @path_bar: a #GtkPathBar
- * 
+ *
  * If the selected button in the pathbar is not the furthest button "up" (in the
  * root direction), act as if the user clicked on the next button up.
  **/
@@ -1804,7 +1804,7 @@ _gtk_path_bar_up (GtkPathBar *path_bar)
 /**
  * _gtk_path_bar_down:
  * @path_bar: a #GtkPathBar
- * 
+ *
  * If the selected button in the pathbar is not the furthest button "down" (in the
  * leaf direction), act as if the user clicked on the next button down.
  **/

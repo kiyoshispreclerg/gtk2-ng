@@ -8,7 +8,7 @@
 
 #include "gdkprivate-quartz.h"
 
-/* 
+/*
  * This file implementations integration between the GLib main loop and
  * the native system of the Core Foundation run loop and Cocoa event
  * handling. There are basically two different cases that we need to
@@ -54,7 +54,7 @@ static int current_loop_level = 0;
 /* Run loop level at which we acquired ownership of the GLib main
  * loop. See note in run_loop_entry(). -1 means that we don't have
  * ownership
- */ 
+ */
 static int acquired_loop_level = -1;
 
 /* Between run_loop_before_waiting() and run_loop_after_waiting();
@@ -219,7 +219,7 @@ static void *
 select_thread_func (void *arg)
 {
   char c;
-  
+
   SELECT_THREAD_LOCK ();
 
   while (TRUE)
@@ -230,23 +230,23 @@ select_thread_func (void *arg)
 	  /* The select thread has not been started yet
 	   */
 	  g_assert_not_reached ();
-	  
+
 	case WAITING:
 	  /* Waiting for a set of file descriptors to be submitted by the main thread
 	   *
 	   *  => POLLING_QUEUED: main thread thread submits a set of file descriptors
-	   */ 
+	   */
 	  SELECT_THREAD_WAIT ();
 	  break;
-	  
+
 	case POLLING_QUEUED:
 	  /* Waiting for a set of file descriptors to be submitted by the main thread
 	   *
 	   *  => POLLING_DESCRIPTORS: select thread picks up the file descriptors to begin polling
-	   */ 
+	   */
 	  if (current_pollfds)
 	    g_free (current_pollfds);
-	  
+
 	  current_pollfds = next_pollfds;
 	  current_n_pollfds = next_n_pollfds;
 
@@ -255,7 +255,7 @@ select_thread_func (void *arg)
 
 	  select_thread_set_state (POLLING_DESCRIPTORS);
 	  break;
-	  
+
 	case POLLING_RESTART:
 	  /* Select thread is currently polling a set of file descriptors, main thread has
 	   * began a new iteration with the same set of file descriptors. We don't want to
@@ -275,7 +275,7 @@ select_thread_func (void *arg)
 	   *  => WAITING: polling completes when a file descriptor becomes active
 	   *  => POLLING_QUEUED: main thread submits a new set of file descriptors to be polled
 	   *  => POLLING_RESTART: main thread begins a new iteration with the same set file descriptors
-	   */ 
+	   */
 	  SELECT_THREAD_UNLOCK ();
 	  old_poll_func (current_pollfds, current_n_pollfds, -1);
 	  SELECT_THREAD_LOCK ();
@@ -292,7 +292,7 @@ select_thread_func (void *arg)
     }
 }
 
-static void 
+static void
 got_fd_activity (void *info)
 {
   NSEvent *event;
@@ -305,7 +305,7 @@ got_fd_activity (void *info)
 	                 windowNumber: 0
 	                      context: nil
                               subtype: GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP
-	                        data1: 0 
+	                        data1: 0
 	                        data2: 0];
 
   [NSApp postEvent:event atStart:YES];
@@ -315,17 +315,17 @@ static void
 select_thread_start (void)
 {
   g_return_if_fail (select_thread_state == BEFORE_START);
-  
+
   pipe (select_thread_wakeup_pipe);
   fcntl (select_thread_wakeup_pipe[0], F_SETFL, O_NONBLOCK);
 
   CFRunLoopSourceContext source_context = {0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, got_fd_activity };
   select_main_thread_source = CFRunLoopSourceCreate (NULL, 0, &source_context);
-  
+
   CFRunLoopAddSource (main_thread_run_loop, select_main_thread_source, kCFRunLoopCommonModes);
 
   select_thread_state = WAITING;
-  
+
   while (TRUE)
     {
       if (pthread_create (&select_thread, NULL, select_thread_func, NULL) == 0)
@@ -367,7 +367,7 @@ pollfds_equal (GPollFD *old_pollfds,
 	       guint    new_n_pollfds)
 {
   gint i;
-  
+
   if (old_n_pollfds != new_n_pollfds)
     return FALSE;
 
@@ -381,7 +381,7 @@ pollfds_equal (GPollFD *old_pollfds,
   return TRUE;
 }
 
-/* Begins a polling operation with the specified GPollFD array; the 
+/* Begins a polling operation with the specified GPollFD array; the
  * timeout is used only to tell if the polling operation is blocking
  * or non-blocking.
  *
@@ -405,7 +405,7 @@ select_thread_start_poll (GPollFD *ufds,
 	poll_fd_index = i;
 	break;
       }
-  
+
   if (nfds == 0 ||
       (nfds == 1 && poll_fd_index >= 0))
     {
@@ -432,17 +432,17 @@ select_thread_start_poll (GPollFD *ufds,
 	  dump_poll_result (ufds, nfds);
 	}
 #endif
-  
+
       return n_ready;
     }
-  
+
   SELECT_THREAD_LOCK ();
 
   if (select_thread_state == BEFORE_START)
     {
       select_thread_start ();
     }
-  
+
   if (select_thread_state == POLLING_QUEUED)
     {
       /* If the select thread hasn't picked up the set of file descriptors yet
@@ -453,7 +453,7 @@ select_thread_start_poll (GPollFD *ufds,
 	  g_free (next_pollfds);
 	  next_pollfds = NULL;
 	  next_n_pollfds = 0;
-	  
+
 	  have_new_pollfds = TRUE;
 	}
     }
@@ -477,7 +477,7 @@ select_thread_start_poll (GPollFD *ufds,
        *  Marks polling as complete
        *  Wakes main thread
        *                             Receives old stale file descriptor state
-       * 
+       *
        * To avoid this, when the new set of poll descriptors is the same as the current
        * one, we transition to the POLLING_RESTART stage at the point marked (*). When
        * the select thread wakes up from the poll because a file descriptor is active, if
@@ -508,16 +508,16 @@ select_thread_start_poll (GPollFD *ufds,
   if (have_new_pollfds)
     {
       GDK_NOTE (EVENTLOOP, g_print ("EventLoop: Submitting a new set of file descriptor to the select thread\n"));
-      
+
       g_assert (next_pollfds == NULL);
-      
+
       next_n_pollfds = nfds + 1;
       next_pollfds = g_new (GPollFD, nfds + 1);
       memcpy (next_pollfds, ufds, nfds * sizeof (GPollFD));
-  
+
       next_pollfds[nfds].fd = select_thread_wakeup_pipe[0];
       next_pollfds[nfds].events = G_IO_IN;
-  
+
       if (select_thread_state != POLLING_QUEUED && select_thread_state != WAITING)
 	{
 	  if (select_thread_wakeup_pipe[1])
@@ -526,10 +526,10 @@ select_thread_start_poll (GPollFD *ufds,
 	      write (select_thread_wakeup_pipe[1], &c, 1);
 	    }
 	}
-      
+
       select_thread_set_state (POLLING_QUEUED);
     }
-  
+
   SELECT_THREAD_UNLOCK ();
 
   return -1;
@@ -549,7 +549,7 @@ select_thread_collect_poll (GPollFD *ufds, guint nfds)
 {
   gint i;
   gint n_ready = 0;
-  
+
   SELECT_THREAD_LOCK ();
 
   if (select_thread_state == WAITING) /* The poll completed */
@@ -558,7 +558,7 @@ select_thread_collect_poll (GPollFD *ufds, guint nfds)
 	{
 	  if (ufds[i].fd == -1)
 	    continue;
-	  
+
 	  g_assert (ufds[i].fd == current_pollfds[i].fd);
 	  g_assert (ufds[i].events == current_pollfds[i].events);
 
@@ -568,7 +568,7 @@ select_thread_collect_poll (GPollFD *ufds, guint nfds)
 	      n_ready++;
 	    }
 	}
-      
+
 #ifdef G_ENABLE_DEBUG
       if (_gdk_debug_flags & GDK_DEBUG_EVENTLOOP)
 	{
@@ -747,7 +747,7 @@ poll_func (GPollFD *ufds,
    */
   if (last_ufds == ufds && n_ready < 0)
     n_ready = select_thread_collect_poll (ufds, nfds);
-      
+
   if (event &&
       [event type] == NSApplicationDefined &&
       [event subtype] == GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP)
@@ -759,7 +759,7 @@ poll_func (GPollFD *ufds,
       event = NULL;
     }
 
-  if (event) 
+  if (event)
     {
       if (!current_events)
         current_events = g_queue_new ();
@@ -782,7 +782,7 @@ query_main_context (GMainContext *context,
 		    int          *timeout)
 {
   gint nfds;
-  
+
   if (!run_loop_pollfds)
     {
       run_loop_pollfds_size = RUN_LOOP_POLLFDS_INITIAL_SIZE;
@@ -790,7 +790,7 @@ query_main_context (GMainContext *context,
     }
 
   while ((nfds = g_main_context_query (context, max_priority, timeout,
-				       run_loop_pollfds, 
+				       run_loop_pollfds,
 				       run_loop_pollfds_size)) > run_loop_pollfds_size)
     {
       g_free (run_loop_pollfds);
@@ -847,8 +847,8 @@ run_loop_before_sources (void)
    * sources are processed by the CFRunLoop, then processing will continue
    * on to the BeforeWaiting stage where we check for lower priority sources.
    */
-  
-  g_main_context_prepare (context, &max_priority); 
+
+  g_main_context_prepare (context, &max_priority);
   max_priority = MIN (max_priority, G_PRIORITY_DEFAULT);
 
   /* We ignore the timeout that query_main_context () returns since we'll
@@ -858,7 +858,7 @@ run_loop_before_sources (void)
 
   if (nfds)
     old_poll_func (run_loop_pollfds, nfds, 0);
-  
+
   if (g_main_context_check (context, max_priority, run_loop_pollfds, nfds))
     {
       GDK_NOTE (EVENTLOOP, g_print ("EventLoop: Dispatching high priority sources\n"));
@@ -886,9 +886,9 @@ run_loop_before_waiting (void)
    * go ahead and sleep. Before doing that, if there was a timeout from
    * GLib, we set up a CFRunLoopTimer to wake us up.
    */
-  
-  g_main_context_prepare (context, &run_loop_max_priority); 
-  
+
+  g_main_context_prepare (context, &run_loop_max_priority);
+
   run_loop_n_pollfds = query_main_context (context, run_loop_max_priority, &timeout);
 
   n_ready = select_thread_start_poll (run_loop_pollfds, run_loop_n_pollfds, timeout);
@@ -905,7 +905,7 @@ run_loop_before_waiting (void)
        * after the wait wakes up.
        */
       GDK_NOTE (EVENTLOOP, g_print ("EventLoop: Adding timer to wake us up in %d milliseconds\n", timeout));
-      
+
       run_loop_timer = CFRunLoopTimerCreate (NULL, /* allocator */
 					     CFAbsoluteTimeGetCurrent () + timeout / 1000.,
 					     0, /* interval (0=does not repeat) */
@@ -916,7 +916,7 @@ run_loop_before_waiting (void)
 
       CFRunLoopAddTimer (main_thread_run_loop, run_loop_timer, kCFRunLoopCommonModes);
     }
-  
+
   run_loop_polling_async = n_ready < 0;
 }
 
@@ -935,13 +935,13 @@ run_loop_after_waiting (void)
       CFRelease (run_loop_timer);
       run_loop_timer = NULL;
     }
-  
+
   if (run_loop_polling_async)
     {
       select_thread_collect_poll (run_loop_pollfds, run_loop_n_pollfds);
       run_loop_polling_async = FALSE;
     }
-  
+
   if (g_main_context_check (context, run_loop_max_priority, run_loop_pollfds, run_loop_n_pollfds))
     {
       GDK_NOTE (EVENTLOOP, g_print ("EventLoop: Dispatching after waiting\n"));
@@ -1021,7 +1021,7 @@ _gdk_quartz_event_loop_init (void)
   event_poll_fd.fd = -1;
 
   source = g_source_new (&event_funcs, sizeof (GSource));
-  g_source_set_name (source, "GDK Quartz event source"); 
+  g_source_set_name (source, "GDK Quartz event source");
   g_source_add_poll (source, &event_poll_fd);
   g_source_set_priority (source, GDK_PRIORITY_EVENTS);
   g_source_set_can_recurse (source, TRUE);
@@ -1029,7 +1029,7 @@ _gdk_quartz_event_loop_init (void)
 
   old_poll_func = g_main_context_get_poll_func (NULL);
   g_main_context_set_poll_func (NULL, poll_func);
-  
+
   /* Hook into the the CFRunLoop for the main thread */
 
   main_thread_run_loop = CFRunLoopGetCurrent ();
@@ -1040,9 +1040,9 @@ _gdk_quartz_event_loop_init (void)
 				      0, /* order (priority) */
 				      run_loop_observer_callback,
 				      NULL);
-				     
+
   CFRunLoopAddObserver (main_thread_run_loop, observer, kCFRunLoopCommonModes);
-  
+
   /* Initialize our autorelease pool */
 
   autorelease_pool = [[NSAutoreleasePool alloc] init];

@@ -36,7 +36,7 @@ gtk_separator_menu_item_class_init (GtkSeparatorMenuItemClass *class)
   GTK_CONTAINER_CLASS (class)->child_type = NULL;
 }
 
-static void 
+static void
 gtk_separator_menu_item_init (GtkSeparatorMenuItem *item)
 {
 }

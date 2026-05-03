@@ -57,34 +57,34 @@ typedef struct
 {
   gchar *name;
   gchar *exec;
-  
+
   guint count;
-  
+
   gint64 stamp;
 } RecentAppInfo;
 
 struct _GtkRecentInfo
 {
   gchar *uri;
-  
+
   gchar *display_name;
   gchar *description;
-  
+
   gint64 added;
   gint64 modified;
   gint64 visited;
-  
+
   gchar *mime_type;
-  
+
   GSList *applications;
   GHashTable *apps_lookup;
-  
+
   GSList *groups;
-  
+
   gboolean is_private;
-  
+
   GdkPixbuf *icon;
-  
+
   gint ref_count;
 };
 
@@ -93,7 +93,7 @@ struct _GtkRecentManagerPrivate
   gchar *filename;
 
   guint is_dirty : 1;
-  
+
   gint limit;
   gint size;
 
@@ -109,7 +109,7 @@ enum
 {
   PROP_0,
 
-  PROP_FILENAME,  
+  PROP_FILENAME,
   PROP_LIMIT,
   PROP_SIZE
 };
@@ -160,8 +160,8 @@ static GtkRecentManager *recent_manager_singleton = NULL;
 G_DEFINE_TYPE_WITH_PRIVATE (GtkRecentManager, gtk_recent_manager, G_TYPE_OBJECT)
 
 static void
-filename_warning (const gchar *format, 
-                  const gchar *filename, 
+filename_warning (const gchar *format,
+                  const gchar *filename,
                   const gchar *message)
 {
   gchar *utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
@@ -221,7 +221,7 @@ recent_time_to_time_t (gint64 value)
  * insensitive. haystack may be UTF-8, but needle must
  * contain only lowercase ascii. */
 static gboolean
-has_case_prefix (const gchar *haystack, 
+has_case_prefix (const gchar *haystack,
                  const gchar *needle)
 {
   const gchar *h, *n;
@@ -249,12 +249,12 @@ static void
 gtk_recent_manager_class_init (GtkRecentManagerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  
+
   gobject_class->set_property = gtk_recent_manager_set_property;
   gobject_class->get_property = gtk_recent_manager_get_property;
   gobject_class->dispose = gtk_recent_manager_dispose;
   gobject_class->finalize = gtk_recent_manager_finalize;
-  
+
   /**
    * GtkRecentManager:filename
    *
@@ -294,7 +294,7 @@ gtk_recent_manager_class_init (GtkRecentManagerClass *klass)
                                                      G_PARAM_READWRITE | G_PARAM_DEPRECATED));
   /**
    * GtkRecentManager:size
-   * 
+   *
    * The size of the recently used resources list.
    *
    * Since: 2.10
@@ -308,7 +308,7 @@ gtk_recent_manager_class_init (GtkRecentManagerClass *klass)
 						     G_MAXINT,
 						     0,
 						     G_PARAM_READABLE));
-  
+
   /**
    * GtkRecentManager::changed
    * @recent_manager: the recent manager
@@ -326,7 +326,7 @@ gtk_recent_manager_class_init (GtkRecentManagerClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  
+
   klass->changed = gtk_recent_manager_real_changed;
 }
 
@@ -336,7 +336,7 @@ gtk_recent_manager_init (GtkRecentManager *manager)
   GtkRecentManagerPrivate *priv;
 
   manager->priv = priv = gtk_recent_manager_get_instance_private (manager);
-  
+
   priv->limit = DEFAULT_LIMIT;
   priv->size = 0;
 
@@ -350,12 +350,12 @@ gtk_recent_manager_set_property (GObject               *object,
 				 GParamSpec            *pspec)
 {
   GtkRecentManager *recent_manager = GTK_RECENT_MANAGER (object);
- 
+
   switch (prop_id)
     {
     case PROP_FILENAME:
       gtk_recent_manager_set_filename (recent_manager, g_value_get_string (value));
-      break;      
+      break;
     case PROP_LIMIT:
       gtk_recent_manager_set_limit (recent_manager, g_value_get_int (value));
       break;
@@ -372,7 +372,7 @@ gtk_recent_manager_get_property (GObject               *object,
 				 GParamSpec            *pspec)
 {
   GtkRecentManager *recent_manager = GTK_RECENT_MANAGER (object);
-  
+
   switch (prop_id)
     {
     case PROP_FILENAME:
@@ -388,7 +388,7 @@ gtk_recent_manager_get_property (GObject               *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
-} 
+}
 
 static void
 gtk_recent_manager_finalize (GObject *object)
@@ -446,7 +446,7 @@ gtk_recent_manager_real_changed (GtkRecentManager *manager)
   if (priv->is_dirty)
     {
       GError *write_error;
-      
+
       /* we are marked as dirty, so we dump the content of our
        * recently used items list
        */
@@ -679,7 +679,7 @@ gtk_recent_manager_set_filename (GtkRecentManager *manager,
   GtkRecentManagerPrivate *priv;
   GFile *file;
   GError *error;
-  
+
   g_assert (GTK_IS_RECENT_MANAGER (manager));
 
   priv = manager->priv;
@@ -755,7 +755,7 @@ build_recent_items_list (GtkRecentManager *manager)
   gint size;
 
   g_assert (priv->filename != NULL);
-  
+
   if (!priv->recent_items)
     {
       priv->recent_items = g_bookmark_file_new ();
@@ -808,7 +808,7 @@ build_recent_items_list (GtkRecentManager *manager)
 
 /**
  * gtk_recent_manager_new:
- * 
+ *
  * Creates a new recent manager object.  Recent manager objects are used to
  * handle the list of recently used resources.  A #GtkRecentManager object
  * monitors the recently used resources list, and emits the "changed" signal
@@ -855,7 +855,7 @@ gtk_recent_manager_get_default (void)
  * function has not previously been called for the given screen,
  * a new recent manager object will be created and associated with
  * the screen. Recent manager objects are fairly expensive to create,
- * so using this function is usually a better choice than calling 
+ * so using this function is usually a better choice than calling
  * gtk_recent_manager_new() and setting the screen yourself; by using
  * this function a single recent manager object will be shared between
  * users.
@@ -885,7 +885,7 @@ gtk_recent_manager_get_for_screen (GdkScreen *screen)
  * Sets the screen for a recent manager; the screen is used to
  * track the user's currently configured recently used documents
  * storage.
- * 
+ *
  * Since: 2.10
  *
  * Deprecated: 2.12: This function has been deprecated and should
@@ -919,9 +919,9 @@ gtk_recent_manager_set_limit (GtkRecentManager *manager,
 			      gint              limit)
 {
   GtkRecentManagerPrivate *priv;
-  
+
   g_return_if_fail (GTK_IS_RECENT_MANAGER (manager));
-  
+
   priv = manager->priv;
   priv->limit = limit;
 }
@@ -945,9 +945,9 @@ gint
 gtk_recent_manager_get_limit (GtkRecentManager *manager)
 {
   GtkRecentManagerPrivate *priv;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), DEFAULT_LIMIT);
-  
+
   priv = manager->priv;
   return priv->limit;
 }
@@ -1022,7 +1022,7 @@ gtk_recent_manager_add_item_query_info (GObject      *source_object,
  * This function automatically retrieves some of the needed
  * metadata and setting other metadata to common default values; it
  * then feeds the data to gtk_recent_manager_add_full().
- * 
+ *
  * See gtk_recent_manager_add_full() if you want to explicitly
  * define the metadata for the resource pointed by @uri.
  *
@@ -1036,7 +1036,7 @@ gtk_recent_manager_add_item (GtkRecentManager  *manager,
 			     const gchar       *uri)
 {
   GFile* file;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
 
@@ -1092,7 +1092,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
 			     const GtkRecentData  *data)
 {
   GtkRecentManagerPrivate *priv;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
@@ -1107,7 +1107,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
 		 uri);
       return FALSE;
     }
-  
+
   if ((data->description) &&
       (!g_utf8_validate (data->description, -1, NULL)))
     {
@@ -1118,7 +1118,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
       return FALSE;
     }
 
- 
+
   if (!data->mime_type)
     {
       g_warning ("Attempting to add `%s' to the list of recently used "
@@ -1126,7 +1126,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
 		 uri);
       return FALSE;
     }
-  
+
   if (!data->app_name)
     {
       g_warning ("Attempting to add `%s' to the list of recently used "
@@ -1135,7 +1135,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
       		 uri);
       return FALSE;
     }
-  
+
   if (!data->app_exec)
     {
       g_warning ("Attempting to add `%s' to the list of recently used "
@@ -1144,7 +1144,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
 		 uri);
       return FALSE;
     }
-  
+
   priv = manager->priv;
 
   if (!priv->recent_items)
@@ -1153,14 +1153,14 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
       priv->size = 0;
     }
 
-  if (data->display_name)  
+  if (data->display_name)
     g_bookmark_file_set_title (priv->recent_items, uri, data->display_name);
-  
+
   if (data->description)
     g_bookmark_file_set_description (priv->recent_items, uri, data->description);
 
   g_bookmark_file_set_mime_type (priv->recent_items, uri, data->mime_type);
-  
+
   if (data->groups && data->groups[0])
     {
       gint j;
@@ -1168,7 +1168,7 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
       for (j = 0; (data->groups)[j] != NULL; j++)
         g_bookmark_file_add_group (priv->recent_items, uri, (data->groups)[j]);
     }
-  
+
   /* register the application; this will take care of updating the
    * registration count and time in case the application has
    * already registered the same document inside the list
@@ -1176,16 +1176,16 @@ gtk_recent_manager_add_full (GtkRecentManager     *manager,
   g_bookmark_file_add_application (priv->recent_items, uri,
 		  		   data->app_name,
 				   data->app_exec);
-  
+
   g_bookmark_file_set_is_private (priv->recent_items, uri,
 		  		  data->is_private);
-  
+
   /* mark us as dirty, so that when emitting the "changed" signal we
    * will dump our changes
    */
   priv->is_dirty = TRUE;
   gtk_recent_manager_changed (manager);
-  
+
   return TRUE;
 }
 
@@ -1214,9 +1214,9 @@ gtk_recent_manager_remove_item (GtkRecentManager  *manager,
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  
+
   priv = manager->priv;
-  
+
   if (!priv->recent_items)
     {
       priv->recent_items = g_bookmark_file_new ();
@@ -1239,13 +1239,13 @@ gtk_recent_manager_remove_item (GtkRecentManager  *manager,
 		   GTK_RECENT_MANAGER_ERROR_NOT_FOUND,
 		   _("Unable to find an item with URI '%s'"),
 		   uri);
-      
+
       return FALSE;
     }
 
   priv->is_dirty = TRUE;
   gtk_recent_manager_changed (manager);
-  
+
   return TRUE;
 }
 
@@ -1371,11 +1371,11 @@ gtk_recent_manager_lookup_item (GtkRecentManager  *manager,
 {
   GtkRecentManagerPrivate *priv;
   GtkRecentInfo *info = NULL;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-  
+
   priv = manager->priv;
   if (!priv->recent_items)
     {
@@ -1389,7 +1389,7 @@ gtk_recent_manager_lookup_item (GtkRecentManager  *manager,
 
       return NULL;
     }
-  
+
   if (!g_bookmark_file_has_item (priv->recent_items, uri))
     {
       g_set_error (error, GTK_RECENT_MANAGER_ERROR,
@@ -1398,12 +1398,12 @@ gtk_recent_manager_lookup_item (GtkRecentManager  *manager,
       		   uri);
       return NULL;
     }
-  
+
   info = gtk_recent_info_new (uri);
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   /* fill the RecentInfo structure with the data retrieved by our
-   * parser object from the storage file 
+   * parser object from the storage file
    */
   build_recent_info (priv->recent_items, info);
 
@@ -1419,14 +1419,14 @@ gtk_recent_manager_lookup_item (GtkRecentManager  *manager,
  * @error: (allow-none): a return location for a #GError, or %NULL
  *
  * Changes the location of a recently used resource from @uri to @new_uri.
- * 
+ *
  * Please note that this function will not affect the resource pointed
  * by the URIs, but only the URI used in the recently used resources list.
  *
  * Return value: %TRUE on success.
  *
  * Since: 2.10
- */ 
+ */
 gboolean
 gtk_recent_manager_move_item (GtkRecentManager  *recent_manager,
 			      const gchar       *uri,
@@ -1435,11 +1435,11 @@ gtk_recent_manager_move_item (GtkRecentManager  *recent_manager,
 {
   GtkRecentManagerPrivate *priv;
   GError *move_error;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (recent_manager), FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  
+
   priv = recent_manager->priv;
 
   if (!priv->recent_items)
@@ -1459,7 +1459,7 @@ gtk_recent_manager_move_item (GtkRecentManager  *recent_manager,
       		   uri);
       return FALSE;
     }
-  
+
   move_error = NULL;
   g_bookmark_file_move_item (priv->recent_items,
                                    uri, new_uri,
@@ -1474,10 +1474,10 @@ gtk_recent_manager_move_item (GtkRecentManager  *recent_manager,
       		   uri);
       return FALSE;
     }
-  
+
   priv->is_dirty = TRUE;
   gtk_recent_manager_changed (recent_manager);
-  
+
   return TRUE;
 }
 
@@ -1501,9 +1501,9 @@ gtk_recent_manager_get_items (GtkRecentManager *manager)
   GList *retval = NULL;
   gchar **uris;
   gsize uris_len, i;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), NULL);
-  
+
   priv = manager->priv;
   if (!priv->recent_items)
     return NULL;
@@ -1512,15 +1512,15 @@ gtk_recent_manager_get_items (GtkRecentManager *manager)
   for (i = 0; i < uris_len; i++)
     {
       GtkRecentInfo *info;
-      
+
       info = gtk_recent_info_new (uris[i]);
       build_recent_info (priv->recent_items, info);
-      
+
       retval = g_list_prepend (retval, info);
     }
-  
+
   g_strfreev (uris);
-  
+
   return retval;
 }
 
@@ -1560,19 +1560,19 @@ gtk_recent_manager_purge_items (GtkRecentManager  *manager,
 {
   GtkRecentManagerPrivate *priv;
   gint count, purged;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_MANAGER (manager), -1);
 
   priv = manager->priv;
   if (!priv->recent_items)
     return 0;
-  
+
   count = g_bookmark_file_get_size (priv->recent_items);
   if (!count)
     return 0;
-  
+
   purge_recent_items_list (manager, error);
-  
+
   purged = count - g_bookmark_file_get_size (priv->recent_items);
 
   return purged;
@@ -1684,12 +1684,12 @@ gtk_recent_manager_clamp_to_size (GtkRecentManager *manager,
 /*****************
  * GtkRecentInfo *
  *****************/
- 
+
 GType
 gtk_recent_info_get_type (void)
 {
   static GType info_type = 0;
-  
+
   if (!info_type)
     info_type = g_boxed_type_register_static (I_("GtkRecentInfo"),
     					      (GBoxedCopyFunc) gtk_recent_info_ref,
@@ -1706,12 +1706,12 @@ gtk_recent_info_new (const gchar *uri)
 
   info = g_new0 (GtkRecentInfo, 1);
   info->uri = g_strdup (uri);
-  
+
   info->applications = NULL;
   info->apps_lookup = g_hash_table_new (g_str_hash, g_str_equal);
-  
+
   info->groups = NULL;
-  
+
   info->ref_count = 1;
 
   return info;
@@ -1727,17 +1727,17 @@ gtk_recent_info_free (GtkRecentInfo *recent_info)
   g_free (recent_info->display_name);
   g_free (recent_info->description);
   g_free (recent_info->mime_type);
-  
+
   if (recent_info->applications)
     {
       g_slist_foreach (recent_info->applications,
       		       (GFunc) recent_app_info_free,
       		       NULL);
       g_slist_free (recent_info->applications);
-      
+
       recent_info->applications = NULL;
     }
-  
+
   if (recent_info->apps_lookup)
     g_hash_table_destroy (recent_info->apps_lookup);
 
@@ -1750,7 +1750,7 @@ gtk_recent_info_free (GtkRecentInfo *recent_info)
 
       recent_info->groups = NULL;
     }
-  
+
   if (recent_info->icon)
     g_object_unref (recent_info->icon);
 
@@ -1773,9 +1773,9 @@ gtk_recent_info_ref (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (info->ref_count > 0, NULL);
-  
+
   info->ref_count += 1;
-    
+
   return info;
 }
 
@@ -1795,7 +1795,7 @@ gtk_recent_info_unref (GtkRecentInfo *info)
   g_return_if_fail (info->ref_count > 0);
 
   info->ref_count -= 1;
-  
+
   if (info->ref_count == 0)
     gtk_recent_info_free (info);
 }
@@ -1815,7 +1815,7 @@ const gchar *
 gtk_recent_info_get_uri (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   return info->uri;
 }
 
@@ -1835,10 +1835,10 @@ const gchar *
 gtk_recent_info_get_display_name (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   if (!info->display_name)
     info->display_name = gtk_recent_info_get_short_name (info);
-  
+
   return info->display_name;
 }
 
@@ -1857,7 +1857,7 @@ const gchar *
 gtk_recent_info_get_description (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   return info->description;
 }
 
@@ -1876,10 +1876,10 @@ const gchar *
 gtk_recent_info_get_mime_type (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   if (!info->mime_type)
     info->mime_type = g_strdup (GTK_RECENT_DEFAULT_MIME);
-  
+
   return info->mime_type;
 }
 
@@ -1899,7 +1899,7 @@ time_t
 gtk_recent_info_get_added (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, (time_t) -1);
-  
+
   return recent_time_to_time_t (info->added);
 }
 
@@ -1919,7 +1919,7 @@ time_t
 gtk_recent_info_get_modified (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, (time_t) -1);
-  
+
   return recent_time_to_time_t (info->modified);
 }
 
@@ -1939,7 +1939,7 @@ time_t
 gtk_recent_info_get_visited (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, (time_t) -1);
-  
+
   return recent_time_to_time_t (info->visited);
 }
 
@@ -1959,7 +1959,7 @@ gboolean
 gtk_recent_info_get_private_hint (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, FALSE);
-  
+
   return info->is_private;
 }
 
@@ -1970,13 +1970,13 @@ recent_app_info_new (const gchar *app_name)
   RecentAppInfo *app_info;
 
   g_assert (app_name != NULL);
-  
+
   app_info = g_slice_new0 (RecentAppInfo);
   app_info->name = g_strdup (app_name);
   app_info->exec = NULL;
   app_info->count = 1;
-  app_info->stamp = 0; 
-  
+  app_info->stamp = 0;
+
   return app_info;
 }
 
@@ -1985,10 +1985,10 @@ recent_app_info_free (RecentAppInfo *app_info)
 {
   if (!app_info)
     return;
-  
+
   g_free (app_info->name);
   g_free (app_info->exec);
-  
+
   g_slice_free (RecentAppInfo, app_info);
 }
 
@@ -2022,10 +2022,10 @@ gtk_recent_info_get_application_info (GtkRecentInfo  *info,
 				      time_t         *time_)
 {
   RecentAppInfo *ai;
-  
+
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (app_name != NULL, FALSE);
-  
+
   ai = (RecentAppInfo *) g_hash_table_lookup (info->apps_lookup,
   					      app_name);
   if (!ai)
@@ -2036,13 +2036,13 @@ gtk_recent_info_get_application_info (GtkRecentInfo  *info,
                  info->uri);
       return FALSE;
     }
-  
+
   if (app_exec)
     *app_exec = ai->exec;
-  
+
   if (count)
     *count = ai->count;
-  
+
   if (time_)
     *time_ = recent_time_to_time_t (ai->stamp);
 
@@ -2069,36 +2069,36 @@ gtk_recent_info_get_applications (GtkRecentInfo *info,
   GSList *l;
   gchar **retval;
   gsize n_apps, i;
-  
+
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   if (!info->applications)
     {
       if (length)
         *length = 0;
-      
-      return NULL;    
+
+      return NULL;
     }
-  
+
   n_apps = g_slist_length (info->applications);
-  
+
   retval = g_new0 (gchar *, n_apps + 1);
-  
+
   for (l = info->applications, i = 0;
        l != NULL;
        l = l->next)
     {
       RecentAppInfo *ai = (RecentAppInfo *) l->data;
-      
+
       g_assert (ai != NULL);
-      
+
       retval[i++] = g_strdup (ai->name);
     }
   retval[i] = NULL;
-  
+
   if (length)
     *length = i;
-  
+
   return retval;
 }
 
@@ -2120,7 +2120,7 @@ gtk_recent_info_has_application (GtkRecentInfo *info,
 {
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (app_name != NULL, FALSE);
-  
+
   return (NULL != g_hash_table_lookup (info->apps_lookup, app_name));
 }
 
@@ -2141,20 +2141,20 @@ gtk_recent_info_last_application (GtkRecentInfo  *info)
   GSList *l;
   gint64 last_stamp = (gint64) -1;
   gchar *name = NULL;
-  
+
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   for (l = info->applications; l != NULL; l = l->next)
     {
       RecentAppInfo *ai = (RecentAppInfo *) l->data;
-      
+
       if (ai->stamp > last_stamp)
         {
 	  name = ai->name;
 	  last_stamp = ai->stamp;
 	}
     }
-  
+
   return g_strdup (name);
 }
 
@@ -2176,9 +2176,9 @@ get_icon_for_mime_type (const char *mime_type,
     return NULL;
 
   icon = g_content_type_get_icon (content_type);
-  info = gtk_icon_theme_lookup_by_gicon (icon_theme, 
-                                         icon, 
-                                         pixel_size, 
+  info = gtk_icon_theme_lookup_by_gicon (icon_theme,
+                                         icon,
+                                         pixel_size,
                                          GTK_ICON_LOOKUP_USE_BUILTIN);
   g_free (content_type);
   g_object_unref (icon);
@@ -2200,14 +2200,14 @@ get_icon_fallback (const gchar *icon_name,
   GdkPixbuf *retval;
 
   icon_theme = gtk_icon_theme_get_default ();
-  
+
   retval = gtk_icon_theme_load_icon (icon_theme, icon_name,
   				     size,
   				     GTK_ICON_LOOKUP_USE_BUILTIN,
   				     NULL);
   g_assert (retval != NULL);
-  
-  return retval; 
+
+  return retval;
 }
 
 /**
@@ -2227,13 +2227,13 @@ gtk_recent_info_get_icon (GtkRecentInfo *info,
 			  gint           size)
 {
   GdkPixbuf *retval = NULL;
-  
+
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   if (info->mime_type)
     retval = get_icon_for_mime_type (info->mime_type, size);
 
-  /* this function should never fail */  
+  /* this function should never fail */
   if (!retval)
     {
       if (info->mime_type &&
@@ -2242,7 +2242,7 @@ gtk_recent_info_get_icon (GtkRecentInfo *info,
       else
         retval = get_icon_fallback ("text-x-generic", size);
     }
-  
+
   return retval;
 }
 
@@ -2261,7 +2261,7 @@ gboolean
 gtk_recent_info_is_local (GtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, FALSE);
-  
+
   return has_case_prefix (info->uri, "file:/");
 }
 
@@ -2282,22 +2282,22 @@ gtk_recent_info_exists (GtkRecentInfo *info)
   gchar *filename;
   GStatBuf stat_buf;
   gboolean retval = FALSE;
-  
+
   g_return_val_if_fail (info != NULL, FALSE);
-  
+
   /* we guarantee only local resources */
   if (!gtk_recent_info_is_local (info))
     return FALSE;
-  
+
   filename = g_filename_from_uri (info->uri, NULL, NULL);
   if (filename)
     {
       if (g_stat (filename, &stat_buf) == 0)
         retval = TRUE;
-     
+
       g_free (filename);
     }
-  
+
   return retval;
 }
 
@@ -2320,18 +2320,18 @@ gtk_recent_info_match (GtkRecentInfo *info_a,
 {
   g_return_val_if_fail (info_a != NULL, FALSE);
   g_return_val_if_fail (info_b != NULL, FALSE);
-  
+
   return (0 == strcmp (info_a->uri, info_b->uri));
 }
 
 /* taken from gnome-vfs-uri.c */
 static const gchar *
-get_method_string (const gchar  *substring, 
+get_method_string (const gchar  *substring,
 		   gchar       **method_string)
 {
   const gchar *p;
   char *method;
-	
+
   for (p = substring;
        g_ascii_isalnum (*p) || *p == '+' || *p == '-' || *p == '.';
        p++)
@@ -2355,7 +2355,7 @@ get_method_string (const gchar  *substring,
       *method_string = g_strdup ("file");
       p = substring;
     }
-  
+
   return p;
 }
 
@@ -2375,19 +2375,19 @@ make_valid_utf8 (const char *name)
     {
       if (g_utf8_validate (remainder, remaining_bytes, &invalid))
         break;
-      
+
       valid_bytes = invalid - remainder;
-      
+
       if (string == NULL)
         string = g_string_sized_new (remaining_bytes);
-      
+
       g_string_append_len (string, remainder, valid_bytes);
       g_string_append_c (string, '?');
-      
+
       remaining_bytes -= valid_bytes + 1;
       remainder = invalid + 1;
     }
-  
+
   if (string == NULL)
     return g_strdup (name);
 
@@ -2406,42 +2406,42 @@ get_uri_shortname_for_display (const gchar *uri)
   if (has_case_prefix (uri, "file:/"))
     {
       gchar *local_file;
-      
+
       local_file = g_filename_from_uri (uri, NULL, NULL);
-      
+
       if (local_file)
         {
           name = g_filename_display_basename (local_file);
           validated = TRUE;
         }
-		
+
       g_free (local_file);
-    } 
-  
+    }
+
   if (!name)
     {
       gchar *method;
       gchar *local_file;
       const gchar *rest;
-      
+
       rest = get_method_string (uri, &method);
       local_file = g_filename_display_basename (rest);
-      
+
       name = g_strconcat (method, ": ", local_file, NULL);
-      
+
       g_free (local_file);
       g_free (method);
     }
-  
+
   g_assert (name != NULL);
-  
+
   if (!validated && !g_utf8_validate (name, -1, NULL))
     {
       gchar *utf8_name;
-      
+
       utf8_name = make_valid_utf8 (name);
       g_free (name);
-      
+
       name = utf8_name;
     }
 
@@ -2493,7 +2493,7 @@ gchar *
 gtk_recent_info_get_uri_display (GtkRecentInfo *info)
 {
   gchar *retval;
-  
+
   g_return_val_if_fail (info != NULL, NULL);
 
   retval = NULL;
@@ -2504,7 +2504,7 @@ gtk_recent_info_get_uri_display (GtkRecentInfo *info)
       filename = g_filename_from_uri (info->uri, NULL, NULL);
       if (!filename)
         return NULL;
-      
+
       retval = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
       g_free (filename);
     }
@@ -2524,7 +2524,7 @@ gtk_recent_info_get_uri_display (GtkRecentInfo *info)
  * pointed by @info.
  *
  * Return value: a positive integer containing the number of days elapsed
- *   since the time this resource was last modified.  
+ *   since the time this resource was last modified.
  *
  * Since: 2.10
  */
@@ -2566,36 +2566,36 @@ gtk_recent_info_get_groups (GtkRecentInfo *info,
   GSList *l;
   gchar **retval;
   gsize n_groups, i;
-  
+
   g_return_val_if_fail (info != NULL, NULL);
-  
+
   if (!info->groups)
     {
       if (length)
         *length = 0;
-      
+
       return NULL;
     }
-  
+
   n_groups = g_slist_length (info->groups);
-  
+
   retval = g_new0 (gchar *, n_groups + 1);
-  
+
   for (l = info->groups, i = 0;
        l != NULL;
        l = l->next)
     {
       gchar *group_name = (gchar *) l->data;
-      
+
       g_assert (group_name != NULL);
-      
+
       retval[i++] = g_strdup (group_name);
     }
   retval[i] = NULL;
-  
+
   if (length)
     *length = i;
-  
+
   return retval;
 }
 
@@ -2616,7 +2616,7 @@ gtk_recent_info_has_group (GtkRecentInfo *info,
 			   const gchar   *group_name)
 {
   GSList *l;
-  
+
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (group_name != NULL, FALSE);
 
@@ -2636,7 +2636,7 @@ gtk_recent_info_has_group (GtkRecentInfo *info,
 
 /*
  * _gtk_recent_manager_sync:
- * 
+ *
  * Private function for synchronising the recent manager singleton.
  */
 void

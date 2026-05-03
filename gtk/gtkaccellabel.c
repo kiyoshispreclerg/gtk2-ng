@@ -24,7 +24,7 @@
  * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -124,13 +124,13 @@ gtk_accel_label_class_init (GtkAccelLabelClass *class)
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   GtkObjectClass *object_class = GTK_OBJECT_CLASS (class);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
-  
+
   gobject_class->finalize = gtk_accel_label_finalize;
   gobject_class->set_property = gtk_accel_label_set_property;
   gobject_class->get_property = gtk_accel_label_get_property;
-  
+
   object_class->destroy = gtk_accel_label_destroy;
-   
+
   widget_class->size_request = gtk_accel_label_size_request;
   widget_class->expose_event = gtk_accel_label_expose_event;
 
@@ -171,7 +171,7 @@ gtk_accel_label_class_init (GtkAccelLabelClass *class)
 
   class->accel_seperator = g_strdup (" / ");
   class->latin1_to_char = TRUE;
-  
+
   g_object_class_install_property (gobject_class,
                                    PROP_ACCEL_CLOSURE,
                                    g_param_spec_boxed ("accel-closure",
@@ -258,13 +258,13 @@ GtkWidget*
 gtk_accel_label_new (const gchar *string)
 {
   GtkAccelLabel *accel_label;
-  
+
   g_return_val_if_fail (string != NULL, NULL);
-  
+
   accel_label = g_object_new (GTK_TYPE_ACCEL_LABEL, NULL);
-  
+
   gtk_label_set_text (GTK_LABEL (accel_label), string);
-  
+
   return GTK_WIDGET (accel_label);
 }
 
@@ -275,7 +275,7 @@ gtk_accel_label_destroy (GtkObject *object)
 
   gtk_accel_label_set_accel_widget (accel_label, NULL);
   gtk_accel_label_set_accel_closure (accel_label, NULL);
-  
+
   GTK_OBJECT_CLASS (gtk_accel_label_parent_class)->destroy (object);
 }
 
@@ -285,7 +285,7 @@ gtk_accel_label_finalize (GObject *object)
   GtkAccelLabel *accel_label = GTK_ACCEL_LABEL (object);
 
   g_free (accel_label->accel_string);
-  
+
   G_OBJECT_CLASS (gtk_accel_label_parent_class)->finalize (object);
 }
 
@@ -320,7 +320,7 @@ guint
 gtk_accel_label_get_accel_width (GtkAccelLabel *accel_label)
 {
   g_return_val_if_fail (GTK_IS_ACCEL_LABEL (accel_label), 0);
-  
+
   return (accel_label->accel_string_width +
 	  (accel_label->accel_string_width ? accel_label->accel_padding : 0));
 }
@@ -338,7 +338,7 @@ gtk_accel_label_size_request (GtkWidget	     *widget,
   layout = gtk_widget_create_pango_layout (widget, gtk_accel_label_get_string (accel_label));
   pango_layout_get_pixel_size (layout, &width, NULL);
   accel_label->accel_string_width = width;
-  
+
   g_object_unref (layout);
 }
 
@@ -355,7 +355,7 @@ get_first_baseline (PangoLayout *layout)
   return PANGO_PIXELS (result);
 }
 
-static gboolean 
+static gboolean
 gtk_accel_label_expose_event (GtkWidget      *widget,
 			      GdkEventExpose *event)
 {
@@ -368,9 +368,9 @@ gtk_accel_label_expose_event (GtkWidget      *widget,
   if (gtk_widget_is_drawable (widget))
     {
       guint ac_width;
-      
+
       ac_width = gtk_accel_label_get_accel_width (accel_label);
-      
+
       if (widget->allocation.width >= widget->requisition.width + ac_width)
 	{
 	  PangoLayout *label_layout;
@@ -379,7 +379,7 @@ gtk_accel_label_expose_event (GtkWidget      *widget,
 
 	  gint x;
 	  gint y;
-	  
+
 	  label_layout = gtk_label_get_layout (GTK_LABEL (accel_label));
 
 	  if (direction == GTK_TEXT_DIR_RTL)
@@ -387,9 +387,9 @@ gtk_accel_label_expose_event (GtkWidget      *widget,
 	  widget->allocation.width -= ac_width;
 	  if (gtk_label_get_ellipsize (label))
 	    pango_layout_set_width (label_layout,
-				    pango_layout_get_width (label_layout) 
+				    pango_layout_get_width (label_layout)
 				    - ac_width * PANGO_SCALE);
-	  
+
 	  if (GTK_WIDGET_CLASS (gtk_accel_label_parent_class)->expose_event)
 	    GTK_WIDGET_CLASS (gtk_accel_label_parent_class)->expose_event (widget, event);
 	  if (direction == GTK_TEXT_DIR_RTL)
@@ -397,9 +397,9 @@ gtk_accel_label_expose_event (GtkWidget      *widget,
 	  widget->allocation.width += ac_width;
 	  if (gtk_label_get_ellipsize (label))
 	    pango_layout_set_width (label_layout,
-				    pango_layout_get_width (label_layout) 
+				    pango_layout_get_width (label_layout)
 				    + ac_width * PANGO_SCALE);
-	  
+
 	  if (direction == GTK_TEXT_DIR_RTL)
 	    x = widget->allocation.x + misc->xpad;
 	  else
@@ -419,7 +419,7 @@ gtk_accel_label_expose_event (GtkWidget      *widget,
                             widget,
                             "accellabel",
                             x, y,
-                            accel_layout);                            
+                            accel_layout);
 
           g_object_unref (accel_layout);
 	}
@@ -429,7 +429,7 @@ gtk_accel_label_expose_event (GtkWidget      *widget,
 	    GTK_WIDGET_CLASS (gtk_accel_label_parent_class)->expose_event (widget, event);
 	}
     }
-  
+
   return FALSE;
 }
 
@@ -438,10 +438,10 @@ refetch_widget_accel_closure (GtkAccelLabel *accel_label)
 {
   GClosure *closure = NULL;
   GList *clist, *list;
-  
+
   g_return_if_fail (GTK_IS_ACCEL_LABEL (accel_label));
   g_return_if_fail (GTK_IS_WIDGET (accel_label->accel_widget));
-  
+
   clist = gtk_widget_list_accel_closures (accel_label->accel_widget);
   for (list = clist; list; list = list->next)
     {
@@ -458,7 +458,7 @@ refetch_widget_accel_closure (GtkAccelLabel *accel_label)
  * @accel_label: a #GtkAccelLabel
  * @accel_widget: the widget to be monitored.
  *
- * Sets the widget to be monitored by this accelerator label. 
+ * Sets the widget to be monitored by this accelerator label.
  **/
 void
 gtk_accel_label_set_accel_widget (GtkAccelLabel *accel_label,
@@ -467,7 +467,7 @@ gtk_accel_label_set_accel_widget (GtkAccelLabel *accel_label,
   g_return_if_fail (GTK_IS_ACCEL_LABEL (accel_label));
   if (accel_widget)
     g_return_if_fail (GTK_IS_WIDGET (accel_widget));
-    
+
   if (accel_widget != accel_label->accel_widget)
     {
       if (accel_label->accel_widget)
@@ -499,7 +499,7 @@ gtk_accel_label_reset (GtkAccelLabel *accel_label)
       g_free (accel_label->accel_string);
       accel_label->accel_string = NULL;
     }
-  
+
   gtk_widget_queue_resize (GTK_WIDGET (accel_label));
 }
 
@@ -567,7 +567,7 @@ gtk_accel_label_get_string (GtkAccelLabel *accel_label)
 {
   if (!accel_label->accel_string)
     gtk_accel_label_refetch (accel_label);
-  
+
   return accel_label->accel_string;
 }
 
@@ -586,7 +586,7 @@ substitute_underscores (char *str)
 
 /* On Mac, if the key has symbolic representation (e.g. arrow keys),
  * append it to gstring and return TRUE; otherwise return FALSE.
- * See http://docs.info.apple.com/article.html?path=Mac/10.5/en/cdb_symbs.html 
+ * See http://docs.info.apple.com/article.html?path=Mac/10.5/en/cdb_symbs.html
  * for the list of special keys. */
 static gboolean
 append_keyval_symbol (guint    accelerator_key,
@@ -676,9 +676,9 @@ _gtk_accel_label_class_get_accelerator_label (GtkAccelLabelClass *klass,
   GString *gstring;
   gboolean seen_mod = FALSE;
   gunichar ch;
-  
+
   gstring = g_string_new ("");
-  
+
   if (accelerator_mods & GDK_SHIFT_MASK)
     {
       g_string_append (gstring, klass->mod_name_shift);
@@ -776,7 +776,7 @@ _gtk_accel_label_class_get_accelerator_label (GtkAccelLabelClass *klass,
     }
   if (seen_mod)
     g_string_append (gstring, klass->mod_separator);
-  
+
   ch = gdk_keyval_to_unicode (accelerator_key);
   if (ch && (g_unichar_isgraph (ch) || ch == ' ') &&
       (ch < 0x80 || klass->latin1_to_char))
@@ -867,7 +867,7 @@ gtk_accel_label_refetch (GtkAccelLabel *accel_label)
       if (!accel_label->accel_string)
 	accel_label->accel_string = g_strdup ("-/-");
     }
-  
+
   if (!accel_label->accel_string)
     accel_label->accel_string = g_strdup ("");
 

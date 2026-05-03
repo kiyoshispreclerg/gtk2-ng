@@ -27,8 +27,8 @@ if ($do_def) {
 #define IN_HEADER(x) 1
 
 EOF
-} 
-else { 
+}
+else {
     print <<EOF
 #define IN_FILE(x) 1
 #define IN_HEADER defined
@@ -49,14 +49,14 @@ while (<>) {
   {
       $in_comment = 1;
   }
-  
+
   if ($in_comment)
   {
       if ($_ =~  /\*\/\s$/)
       {
 	  $in_comment = 0;
       }
-      
+
       next;
   }
 
@@ -86,14 +86,14 @@ while (<>) {
   if ($_ =~ /^\#ifn?def\s+G/)
   {
       print $_;
-      
+
       next;
   }
 
   if ($_ =~ /^\#if.*(IN_FILE|IN_HEADER)/)
   {
       print $_;
-      
+
       next;
   }
 
@@ -106,12 +106,12 @@ while (<>) {
   $str = shift(@words);
   chomp($str);
   my $alias = "IA__".$str;
-  
+
   # Drop any Win32 specific .def file syntax,  but keep attributes
   foreach $word (@words) {
       $attributes = "$attributes $word" unless $word eq "PRIVATE";
   }
-      
+
   if (!$do_def) {
     print <<EOF
 extern __typeof ($str) $alias __attribute((visibility("hidden")))$attributes;

@@ -1,5 +1,5 @@
 /* GTK - The GIMP Toolkit
- * Copyright (C) 2000 Red Hat, Inc. 
+ * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -114,7 +114,7 @@ real_add (const GtkStockItem *items,
 	  if (((GtkStockItem *)old_value)->modifier & NON_STATIC_MASK)
 	    gtk_stock_item_free (old_value);
         }
-      
+
       g_hash_table_insert (stock_hash,
                            (gchar*)item->stock_id, (GtkStockItem*)item);
 
@@ -133,7 +133,7 @@ real_add (const GtkStockItem *items,
  * any pointer into @items and @items can be freed. Use
  * gtk_stock_add_static() if @items is persistent and GTK+ need not
  * copy the array.
- * 
+ *
  **/
 void
 gtk_stock_add (const GtkStockItem *items,
@@ -151,7 +151,7 @@ gtk_stock_add (const GtkStockItem *items,
  *
  * Same as gtk_stock_add(), but doesn't copy @items, so
  * @items must persist until application exit.
- * 
+ *
  **/
 void
 gtk_stock_add_static (const GtkStockItem *items,
@@ -166,11 +166,11 @@ gtk_stock_add_static (const GtkStockItem *items,
  * gtk_stock_lookup:
  * @stock_id: a stock item name
  * @item: (out): stock item to initialize with values
- * 
+ *
  * Fills @item with the registered values for @stock_id, returning %TRUE
  * if @stock_id was known.
- * 
- * 
+ *
+ *
  * Return value: %TRUE if @item was initialized
  **/
 gboolean
@@ -193,13 +193,13 @@ gtk_stock_lookup (const gchar  *stock_id,
       if (item->label)
 	{
 	  GtkStockTranslateFunc *translate;
-	  
+
 	  if (item->translation_domain)
-	    translate = (GtkStockTranslateFunc *) 
+	    translate = (GtkStockTranslateFunc *)
 	      g_hash_table_lookup (translate_hash, item->translation_domain);
 	  else
 	    translate = NULL;
-	  
+
 	  if (translate != NULL && translate->func != NULL)
 	    item->label = (* translate->func) (item->label, translate->data);
 	  else
@@ -212,7 +212,7 @@ gtk_stock_lookup (const gchar  *stock_id,
 
 /**
  * gtk_stock_list_ids:
- * 
+ *
  * Retrieves a list of all known stock IDs added to a #GtkIconFactory
  * or registered with gtk_stock_add(). The list must be freed with g_slist_free(),
  * and each string in the list must be freed with g_free().
@@ -226,7 +226,7 @@ gtk_stock_list_ids (void)
   GList *icon_ids;
   GSList *retval;
   const gchar *last_id;
-  
+
   init_stock_hash ();
 
   ids = g_hash_table_get_keys (stock_hash);
@@ -254,7 +254,7 @@ gtk_stock_list_ids (void)
         }
 
       g_list_free_1 (ids);
-      
+
       ids = next;
     }
 
@@ -264,9 +264,9 @@ gtk_stock_list_ids (void)
 /**
  * gtk_stock_item_copy:
  * @item: a #GtkStockItem
- * 
+ *
  * Copies a stock item, mostly useful for language bindings and not in applications.
- * 
+ *
  * Return value: a new #GtkStockItem
  **/
 GtkStockItem *
@@ -294,7 +294,7 @@ gtk_stock_item_copy (const GtkStockItem *item)
  * Frees a stock item allocated on the heap, such as one returned by
  * gtk_stock_item_copy(). Also frees the fields inside the stock item,
  * if they are not %NULL.
- * 
+ *
  **/
 void
 gtk_stock_item_free (GtkStockItem *item)
@@ -310,8 +310,8 @@ gtk_stock_item_free (GtkStockItem *item)
 
 static const GtkStockItem builtin_items [] =
 {
-  /* KEEP IN SYNC with gtkiconfactory.c stock icons, when appropriate */ 
- 
+  /* KEEP IN SYNC with gtkiconfactory.c stock icons, when appropriate */
+
   { GTK_STOCK_DIALOG_INFO, NC_("Stock label", "Information"), 0, 0, GETTEXT_PACKAGE },
   { GTK_STOCK_DIALOG_WARNING, NC_("Stock label", "Warning"), 0, 0, GETTEXT_PACKAGE },
   { GTK_STOCK_DIALOG_ERROR, NC_("Stock label", "Error"), 0, 0, GETTEXT_PACKAGE },
@@ -443,19 +443,19 @@ static const GtkStockItem builtin_items [] =
 };
 
 /**
- * gtk_stock_set_translate_func: 
+ * gtk_stock_set_translate_func:
  * @domain: the translation domain for which @func shall be used
- * @func: a #GtkTranslateFunc 
+ * @func: a #GtkTranslateFunc
  * @data: data to pass to @func
  * @notify: a #GDestroyNotify that is called when @data is
  *   no longer needed
  *
- * Sets a function to be used for translating the @label of 
+ * Sets a function to be used for translating the @label of
  * a stock item.
- * 
+ *
  * If no function is registered for a translation domain,
  * g_dgettext() is used.
- * 
+ *
  * The function is used for all stock items whose
  * @translation_domain matches @domain. Note that it is possible
  * to use strings different from the actual gettext translation domain
@@ -464,7 +464,7 @@ static const GtkStockItem builtin_items [] =
  * when dealing with message contexts:
  *
  * |[
- * GtkStockItem items[] = { 
+ * GtkStockItem items[] = {
  *  { MY_ITEM1, NC_("odd items", "Item 1"), 0, 0, "odd-item-domain" },
  *  { MY_ITEM2, NC_("even items", "Item 2"), 0, 0, "even-item-domain" },
  * };
@@ -474,17 +474,17 @@ static const GtkStockItem builtin_items [] =
  *                    gpointer     data)
  * {
  *   gchar *msgctxt = data;
- * 
+ *
  *   return (gchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
  * }
  *
  * /&ast; ... &ast;/
  *
  * gtk_stock_add (items, G_N_ELEMENTS (items));
- * gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items"); 
- * gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items"); 
+ * gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
+ * gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
  * ]|
- * 
+ *
  * Since: 2.8
  */
 void
@@ -495,10 +495,10 @@ gtk_stock_set_translate_func (const gchar      *domain,
 {
   GtkStockTranslateFunc *translate;
   gchar *domainname;
- 
+
   domainname = g_strdup (domain);
 
-  translate = (GtkStockTranslateFunc *) 
+  translate = (GtkStockTranslateFunc *)
     g_hash_table_lookup (translate_hash, domainname);
 
   if (translate)
@@ -508,16 +508,16 @@ gtk_stock_set_translate_func (const gchar      *domain,
     }
   else
     translate = g_new0 (GtkStockTranslateFunc, 1);
-    
+
   translate->func = func;
   translate->data = data;
   translate->notify = notify;
-      
+
   g_hash_table_insert (translate_hash, domainname, translate);
 }
 
 static gchar *
-sgettext_swapped (const gchar *msgid, 
+sgettext_swapped (const gchar *msgid,
 		  gpointer     data)
 {
   gchar *msgctxt = data;
@@ -540,15 +540,15 @@ init_stock_hash (void)
       translate_hash = g_hash_table_new_full (g_str_hash, g_str_equal,
 	                                      g_free, NULL);
 
-      gtk_stock_set_translate_func (GETTEXT_PACKAGE, 
+      gtk_stock_set_translate_func (GETTEXT_PACKAGE,
 				    sgettext_swapped,
 				    "Stock label",
 				    NULL);
-      gtk_stock_set_translate_func (GETTEXT_PACKAGE "-navigation", 
+      gtk_stock_set_translate_func (GETTEXT_PACKAGE "-navigation",
 				    sgettext_swapped,
 				    "Stock label, navigation",
 				    NULL);
-      gtk_stock_set_translate_func (GETTEXT_PACKAGE "-media", 
+      gtk_stock_set_translate_func (GETTEXT_PACKAGE "-media",
 				    sgettext_swapped,
 				    "Stock label, media",
 				    NULL);

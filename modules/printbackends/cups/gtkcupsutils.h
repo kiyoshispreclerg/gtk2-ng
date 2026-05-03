@@ -1,4 +1,4 @@
-/* gtkcupsutils.h 
+/* gtkcupsutils.h
  * Copyright (C) 2006 John (J5) Palmieri <johnp@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #ifndef __GTK_CUPS_UTILS_H__
 #define __GTK_CUPS_UTILS_H__
 
@@ -48,7 +48,7 @@ typedef enum
 } GtkCupsRequestType;
 
 
-/** 
+/**
  * Direction we should be polling the http socket on.
  * We are either reading or writting at each state.
  * This makes it easy for mainloops to connect to poll.
@@ -64,7 +64,7 @@ typedef enum
 {
   GTK_CUPS_CONNECTION_AVAILABLE,
   GTK_CUPS_CONNECTION_NOT_AVAILABLE,
-  GTK_CUPS_CONNECTION_IN_PROGRESS  
+  GTK_CUPS_CONNECTION_IN_PROGRESS
 } GtkCupsConnectionState;
 
 typedef enum
@@ -76,7 +76,7 @@ typedef enum
   GTK_CUPS_PASSWORD_NOT_VALID
 } GtkCupsPasswordState;
 
-struct _GtkCupsRequest 
+struct _GtkCupsRequest
 {
   GtkCupsRequestType type;
 
@@ -121,7 +121,7 @@ struct _GtkCupsConnectionTest
 #define GTK_CUPS_REQUEST_DONE 500
 
 /* POST states */
-enum 
+enum
 {
   GTK_CUPS_POST_CONNECT = GTK_CUPS_REQUEST_START,
   GTK_CUPS_POST_SEND,
@@ -197,4 +197,4 @@ GtkCupsConnectionState  gtk_cups_connection_test_get_state (GtkCupsConnectionTes
 void                    gtk_cups_connection_test_free      (GtkCupsConnectionTest *test);
 
 G_END_DECLS
-#endif 
+#endif

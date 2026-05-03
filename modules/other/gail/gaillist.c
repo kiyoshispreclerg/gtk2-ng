@@ -25,7 +25,7 @@
 #include "gaillist.h"
 #include "gailcombo.h"
 
-static void         gail_list_class_init            (GailListClass  *klass); 
+static void         gail_list_class_init            (GailListClass  *klass);
 
 static void         gail_list_init                  (GailList       *list);
 
@@ -123,7 +123,7 @@ gail_list_add_selection (AtkSelection   *selection,
   return TRUE;
 }
 
-static gboolean 
+static gboolean
 gail_list_clear_selection (AtkSelection *selection)
 {
   GtkList *list;

@@ -20,7 +20,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /*
@@ -56,9 +56,9 @@ get_char (const char **str)
 
 #if defined(G_OS_WIN32) || defined(G_WITH_CYGWIN)
 #define DO_ESCAPE 0
-#else  
+#else
 #define DO_ESCAPE 1
-#endif  
+#endif
 
 static gunichar
 get_unescaped_char (const char **str,
@@ -69,7 +69,7 @@ get_unescaped_char (const char **str,
   *was_escaped = DO_ESCAPE && c == '\\';
   if (*was_escaped)
     c = get_char (str);
-  
+
   return c;
 }
 
@@ -83,14 +83,14 @@ gtk_fnmatch_intern (const char *pattern,
 		    gboolean    no_leading_period)
 {
   const char *p = pattern, *n = string;
-  
+
   while (*p)
     {
       const char *last_n = n;
-      
+
       gunichar c = get_char (&p);
       gunichar nc = get_char (&n);
-      
+
       switch (c)
 	{
    	case '?':
@@ -151,12 +151,12 @@ gtk_fnmatch_intern (const char *pattern,
 		if ((c == '[' || nc == c) &&
 		    gtk_fnmatch_intern (p, last_n, component_start, no_leading_period))
 		  return TRUE;
-		
+
 		component_start = (nc == G_DIR_SEPARATOR);
 		last_n = n;
 		nc = get_char (&n);
 	      }
-		  
+
 	    return FALSE;
 	  }
 
@@ -185,7 +185,7 @@ gtk_fnmatch_intern (const char *pattern,
 		  return FALSE;
 
 		c = get_unescaped_char (&p, &was_escaped);
-		
+
 		if (!was_escaped && c == '-' && *p != ']')
 		  {
 		    cend = get_unescaped_char (&p, &was_escaped);
@@ -266,7 +266,7 @@ _gtk_fnmatch (const char *pattern,
 int main (int argc, char **argv)
 {
   TEST ("[a-]", "-", TRUE, TRUE);
-  
+
   TEST ("a", "a", TRUE, TRUE);
   TEST ("a", "b", TRUE, FALSE);
 
@@ -313,7 +313,7 @@ int main (int argc, char **argv)
   TEST ("a/[.]", "a/.", TRUE, FALSE);
   TEST ("[/]", "/", TRUE, FALSE);
   TEST ("[^/]", "a", TRUE, TRUE);
-  
+
   /* Basic tests of * (and combinations of * and ?) */
   TEST ("a*b", "ab", TRUE, TRUE);
   TEST ("a*b", "axb", TRUE, TRUE);
@@ -357,7 +357,7 @@ int main (int argc, char **argv)
   TEST ("[a\\-c]", "-", TRUE, TRUE);
   TEST ("[a\\]", "a", TRUE, FALSE);
 #endif /* DO_ESCAPE */
-  
+
   return 0;
 }
 

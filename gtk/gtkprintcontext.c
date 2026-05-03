@@ -41,7 +41,7 @@ struct _GtkPrintContext
 
   gdouble surface_dpi_x;
   gdouble surface_dpi_y;
-  
+
   gdouble pixels_per_unit_x;
   gdouble pixels_per_unit_y;
 
@@ -70,7 +70,7 @@ gtk_print_context_finalize (GObject *object)
 
   if (context->cr)
     cairo_destroy (context->cr);
-  
+
   G_OBJECT_CLASS (gtk_print_context_parent_class)->finalize (object);
 }
 
@@ -98,7 +98,7 @@ _gtk_print_context_new (GtkPrintOperation *op)
   context->op = op;
   context->cr = NULL;
   context->has_hard_margins = FALSE;
-  
+
   return context;
 }
 
@@ -115,14 +115,14 @@ _gtk_print_context_get_fontmap (GtkPrintContext *context)
  * @dpi_x: the horizontal resolution to use with @cr
  * @dpi_y: the vertical resolution to use with @cr
  *
- * Sets a new cairo context on a print context. 
- * 
+ * Sets a new cairo context on a print context.
+ *
  * This function is intended to be used when implementing
  * an internal print preview, it is not needed for printing,
  * since GTK+ itself creates a suitable cairo context in that
  * case.
  *
- * Since: 2.10 
+ * Since: 2.10
  */
 void
 gtk_print_context_set_cairo_context (GtkPrintContext *context,
@@ -178,7 +178,7 @@ _gtk_print_context_rotate_according_to_orientation (GtkPrintContext *context)
   width = width * context->surface_dpi_x / context->pixels_per_unit_x;
   height = gtk_paper_size_get_height (paper_size, GTK_UNIT_INCH);
   height = height * context->surface_dpi_y / context->pixels_per_unit_y;
-  
+
   switch (gtk_page_setup_get_orientation (context->page_setup))
     {
     default:
@@ -219,7 +219,7 @@ _gtk_print_context_translate_into_margin (GtkPrintContext *context)
   g_return_if_fail (GTK_IS_PRINT_CONTEXT (context));
 
   /* We do it this way to also handle GTK_UNIT_PIXELS */
-  
+
   left = gtk_page_setup_get_left_margin (context->page_setup, GTK_UNIT_INCH);
   top = gtk_page_setup_get_top_margin (context->page_setup, GTK_UNIT_INCH);
 
@@ -235,7 +235,7 @@ _gtk_print_context_set_page_setup (GtkPrintContext *context,
   g_return_if_fail (GTK_IS_PRINT_CONTEXT (context));
   g_return_if_fail (page_setup == NULL ||
 		    GTK_IS_PAGE_SETUP (page_setup));
-  
+
   g_object_ref (page_setup);
 
   if (context->page_setup != NULL)
@@ -290,7 +290,7 @@ gtk_print_context_get_page_setup (GtkPrintContext *context)
  *
  * Return value: the width of @context
  *
- * Since: 2.10 
+ * Since: 2.10
  */
 gdouble
 gtk_print_context_get_width (GtkPrintContext *context)
@@ -314,7 +314,7 @@ gtk_print_context_get_width (GtkPrintContext *context)
 /**
  * gtk_print_context_get_height:
  * @context: a #GtkPrintContext
- * 
+ *
  * Obtains the height of the #GtkPrintContext, in pixels.
  *
  * Return value: the height of @context
@@ -343,7 +343,7 @@ gtk_print_context_get_height (GtkPrintContext *context)
 /**
  * gtk_print_context_get_dpi_x:
  * @context: a #GtkPrintContext
- * 
+ *
  * Obtains the horizontal resolution of the #GtkPrintContext,
  * in dots per inch.
  *
@@ -362,7 +362,7 @@ gtk_print_context_get_dpi_x (GtkPrintContext *context)
 /**
  * gtk_print_context_get_dpi_y:
  * @context: a #GtkPrintContext
- * 
+ *
  * Obtains the vertical resolution of the #GtkPrintContext,
  * in dots per inch.
  *
@@ -461,7 +461,7 @@ gtk_print_context_get_pango_fontmap (GtkPrintContext *context)
  * #GtkPrintContext.
  *
  * Return value: (transfer full): a new Pango context for @context
- * 
+ *
  * Since: 2.10
  */
 PangoContext *
@@ -471,16 +471,16 @@ gtk_print_context_create_pango_context (GtkPrintContext *context)
   cairo_font_options_t *options;
 
   g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), NULL);
-  
+
   pango_context = pango_font_map_create_context (_gtk_print_context_get_fontmap (context));
 
   options = cairo_font_options_create ();
   cairo_font_options_set_hint_metrics (options, CAIRO_HINT_METRICS_OFF);
   pango_cairo_context_set_font_options (pango_context, options);
   cairo_font_options_destroy (options);
-  
-  /* We use the unit-scaled resolution, as we still want 
-   * fonts given in points to work 
+
+  /* We use the unit-scaled resolution, as we still want
+   * fonts given in points to work
    */
   pango_cairo_context_set_resolution (pango_context,
 				      context->surface_dpi_y / context->pixels_per_unit_y);
@@ -493,7 +493,7 @@ gtk_print_context_create_pango_context (GtkPrintContext *context)
  *
  * Creates a new #PangoLayout that is suitable for use
  * with the #GtkPrintContext.
- * 
+ *
  * Return value: (transfer full): a new Pango layout for @context
  *
  * Since: 2.10

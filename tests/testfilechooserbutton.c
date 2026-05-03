@@ -1,7 +1,7 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 2 -*- */
 
 /* GTK+: gtkfilechooserbutton.c
- * 
+ *
  * Copyright (c) 2004 James M. Cape <jcape@ignore-your.tv>
  *
  * This library is free software; you can redistribute it and/or
@@ -297,9 +297,9 @@ main (int   argc,
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 1.0);
   gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 6, 0, 12, 0);
   gtk_container_add (GTK_CONTAINER (frame), alignment);
-  
+
   label_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
-  
+
   group_box = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (alignment), group_box);
 

@@ -57,7 +57,7 @@ static gint
 parse_boolean (char *v)
 {
   gchar c0, c1;
-  
+
   c0 = *v;
   if (g_ascii_isupper ((int)c0))
     c0 = g_ascii_tolower (c0);
@@ -75,7 +75,7 @@ parse_boolean (char *v)
       if (c1 == 'f')
 	return 0;
     }
-  
+
   return -1;
 }
 
@@ -86,7 +86,7 @@ get_boolean_default (Display *dpy,
 {
   gchar *v;
   gint i;
-  
+
   v = XGetDefault (dpy, "Xft", option);
   if (v)
     {
@@ -97,7 +97,7 @@ get_boolean_default (Display *dpy,
 	  return TRUE;
 	}
     }
-  
+
   return FALSE;
 }
 
@@ -107,7 +107,7 @@ get_double_default (Display *dpy,
 		    gdouble *value)
 {
   gchar    *v, *e;
-  
+
   v = XGetDefault (dpy, "Xft", option);
   if (v)
     {
@@ -120,7 +120,7 @@ get_double_default (Display *dpy,
       if (e != v)
 	return TRUE;
     }
-  
+
   return FALSE;
 }
 
@@ -130,18 +130,18 @@ get_integer_default (Display *dpy,
 		     gint    *value)
 {
   gchar *v, *e;
-  
+
   v = XGetDefault (dpy, "Xft", option);
   if (v)
     {
       if (FcNameConstant ((FcChar8 *) v, value))
 	return TRUE;
-      
+
       *value = strtol (v, &e, 0);
       if (e != v)
 	return TRUE;
     }
-  
+
   return FALSE;
 }
 
@@ -168,15 +168,15 @@ init_xft_settings (GdkScreen *screen)
     screen_x11->xft_hintstyle = FC_HINT_FULL;
 
   if (!get_integer_default (xdisplay, "rgba", &screen_x11->xft_rgba))
-			    
+
     {
       int subpixel = FC_RGBA_UNKNOWN;
-      
+
 #if RENDER_MAJOR > 0 || RENDER_MINOR >= 6
       if (_gdk_x11_have_render (screen_x11->display))
 	{
 	  int render_order = XRenderQuerySubpixelOrder (xdisplay, xscreen);
-	  
+
 	  switch (render_order)
 	    {
 	    default:
@@ -206,7 +206,7 @@ init_xft_settings (GdkScreen *screen)
     }
 
   if (!get_double_default (xdisplay, "dpi", &dpi_double))
-    dpi_double = (((double) DisplayHeight (xdisplay, xscreen) * 25.4) / 
+    dpi_double = (((double) DisplayHeight (xdisplay, xscreen) * 25.4) /
 		  (double) DisplayHeightMM (xdisplay, xscreen));
 
   screen_x11->xft_dpi = (int)(0.5 + PANGO_SCALE * dpi_double);
@@ -218,7 +218,7 @@ _gdk_x11_get_xft_setting (GdkScreen   *screen,
 			  GValue      *value)
 {
   GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
-  
+
   if (strncmp (name, "gtk-xft-", 8) != 0)
     return FALSE;
 
@@ -239,7 +239,7 @@ _gdk_x11_get_xft_setting (GdkScreen   *screen,
   else if (strcmp (name, "hintstyle") == 0)
     {
       const char *str;
-      
+
       switch (screen_x11->xft_hintstyle)
 	{
 	case FC_HINT_NONE:
@@ -264,7 +264,7 @@ _gdk_x11_get_xft_setting (GdkScreen   *screen,
   else if (strcmp (name, "rgba") == 0)
     {
       const char *str;
-      
+
       switch (screen_x11->xft_rgba)
 	{
 	case FC_RGBA_NONE:
@@ -286,9 +286,9 @@ _gdk_x11_get_xft_setting (GdkScreen   *screen,
 	default:
 	  return FALSE;
 	}
-	
+
       g_value_set_string (value, str);
-      return TRUE; 
+      return TRUE;
    }
   else if (strcmp (name, "dpi") == 0)
     {

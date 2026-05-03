@@ -270,10 +270,10 @@ gtk_action_group_add_action_with_accel
 gtk_action_group_remove_action
 GtkActionEntry
 gtk_action_group_add_actions
-gtk_action_group_add_actions_full 
+gtk_action_group_add_actions_full
 GtkToggleActionEntry
 gtk_action_group_add_toggle_actions
-gtk_action_group_add_toggle_actions_full 
+gtk_action_group_add_toggle_actions_full
 GtkRadioActionEntry
 gtk_action_group_add_radio_actions
 gtk_action_group_add_radio_actions_full
@@ -1358,7 +1358,7 @@ gtk_entry_set_icon_from_icon_name
 gtk_entry_set_icon_from_gicon
 gtk_entry_get_icon_storage_type
 gtk_entry_get_icon_pixbuf
-gtk_entry_get_icon_stock 
+gtk_entry_get_icon_stock
 gtk_entry_get_icon_name
 gtk_entry_get_icon_gicon
 gtk_entry_set_icon_activatable
@@ -2045,7 +2045,7 @@ gtk_icon_view_unset_model_drag_source
 gtk_icon_view_unset_model_drag_dest
 gtk_icon_view_set_reorderable
 gtk_icon_view_get_reorderable
-gtk_icon_view_set_drag_dest_item 
+gtk_icon_view_set_drag_dest_item
 gtk_icon_view_get_drag_dest_item
 gtk_icon_view_get_dest_item_at_pos
 gtk_icon_view_create_drag_icon
@@ -2571,8 +2571,8 @@ gtk_menu_item_set_use_underline
 gtk_menu_item_set_submenu
 gtk_menu_item_get_submenu
 gtk_menu_item_remove_submenu
-gtk_menu_item_set_accel_path  
-gtk_menu_item_get_accel_path  
+gtk_menu_item_set_accel_path
+gtk_menu_item_get_accel_path
 gtk_menu_item_select
 gtk_menu_item_deselect
 gtk_menu_item_activate
@@ -6854,7 +6854,7 @@ gtk_print_operation_get_n_pages_to_print
 gtk_print_operation_set_current_page
 gtk_print_operation_set_use_full_page
 gtk_print_operation_set_unit
-gtk_print_operation_set_export_filename 
+gtk_print_operation_set_export_filename
 gtk_print_operation_set_show_progress
 gtk_print_operation_set_track_print_status
 gtk_print_operation_set_custom_tab_label
@@ -6981,7 +6981,7 @@ GTK_PRINTER_GET_CLASS
 
 <SUBSECTION Private>
 GtkPrinterPrivate
-gtk_printer_get_type 
+gtk_printer_get_type
 </SECTION>
 
 

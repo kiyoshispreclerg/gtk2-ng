@@ -76,7 +76,7 @@ struct _GdkColormap
 
   /*< private >*/
   GdkVisual *GSEAL (visual);
-  
+
   gpointer GSEAL (windowing_data);
 };
 
@@ -94,7 +94,7 @@ GdkColormap* gdk_colormap_new	  (GdkVisual   *visual,
 #ifndef GDK_DISABLE_DEPRECATED
 GdkColormap* gdk_colormap_ref	  (GdkColormap *cmap);
 void	     gdk_colormap_unref	  (GdkColormap *cmap);
-#endif 
+#endif
 
 #ifndef GDK_MULTIHEAD_SAFE
 GdkColormap* gdk_colormap_get_system	        (void);
@@ -110,7 +110,7 @@ gint gdk_colormap_get_system_size  (void);
 /* Used by gdk_colors_store () */
 void gdk_colormap_change (GdkColormap	*colormap,
 			  gint		 ncolors);
-#endif 
+#endif
 
 gint  gdk_colormap_alloc_colors   (GdkColormap    *colormap,
 				   GdkColor       *colors,

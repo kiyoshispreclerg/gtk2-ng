@@ -304,7 +304,7 @@ static GtkTargetEntry target_table[] = {
 
 static guint n_targets = sizeof(target_table) / sizeof(target_table[0]);
 
-void  
+void
 target_drag_leave	   (GtkWidget	       *widget,
 			    GdkDragContext     *context,
 			    guint               time)
@@ -341,7 +341,7 @@ target_drag_motion	   (GtkWidget	       *widget,
       char *name = gdk_atom_name (GDK_POINTER_TO_ATOM (tmp_list->data));
       g_print ("%s\n", name);
       g_free (name);
-      
+
       tmp_list = tmp_list->next;
     }
 
@@ -363,16 +363,16 @@ target_drag_drop	   (GtkWidget	       *widget,
 
   if (context->targets)
     {
-      gtk_drag_get_data (widget, context, 
-			 GDK_POINTER_TO_ATOM (context->targets->data), 
+      gtk_drag_get_data (widget, context,
+			 GDK_POINTER_TO_ATOM (context->targets->data),
 			 time);
       return TRUE;
     }
-  
+
   return FALSE;
 }
 
-void  
+void
 target_drag_data_received  (GtkWidget          *widget,
 			    GdkDragContext     *context,
 			    gint                x,
@@ -387,11 +387,11 @@ target_drag_data_received  (GtkWidget          *widget,
       gtk_drag_finish (context, TRUE, FALSE, time);
       return;
     }
-  
+
   gtk_drag_finish (context, FALSE, FALSE, time);
 }
-  
-void  
+
+void
 label_drag_data_received  (GtkWidget          *widget,
 			    GdkDragContext     *context,
 			    gint                x,
@@ -406,11 +406,11 @@ label_drag_data_received  (GtkWidget          *widget,
       gtk_drag_finish (context, TRUE, FALSE, time);
       return;
     }
-  
+
   gtk_drag_finish (context, FALSE, FALSE, time);
 }
 
-void  
+void
 source_drag_data_get  (GtkWidget          *widget,
 		       GdkDragContext     *context,
 		       GtkSelectionData   *selection_data,
@@ -425,7 +425,7 @@ source_drag_data_get  (GtkWidget          *widget,
 			    selection_data->target,
 			    8, (guchar *) "I'm Data!", 9);
 }
-  
+
 /* The following is a rather elaborate example demonstrating/testing
  * changing of the window hierarchy during a drag - in this case,
  * via a "spring-loaded" popup window.
@@ -469,7 +469,7 @@ popup_motion	   (GtkWidget	       *widget,
   return TRUE;
 }
 
-void  
+void
 popup_leave	   (GtkWidget	       *widget,
 		    GdkDragContext     *context,
 		    guint               time)
@@ -495,7 +495,7 @@ popup_cb (gpointer data)
 	  GtkWidget *button;
 	  GtkWidget *table;
 	  int i, j;
-	  
+
 	  popup_window = gtk_window_new (GTK_WINDOW_POPUP);
 	  gtk_window_set_position (GTK_WINDOW (popup_window), GTK_WIN_POS_MOUSE);
 
@@ -550,7 +550,7 @@ popsite_motion	   (GtkWidget	       *widget,
   return TRUE;
 }
 
-void  
+void
 popsite_leave	   (GtkWidget	       *widget,
 		    GdkDragContext     *context,
 		    guint               time)
@@ -562,14 +562,14 @@ popsite_leave	   (GtkWidget	       *widget,
     }
 }
 
-void  
+void
 source_drag_data_delete  (GtkWidget          *widget,
 			  GdkDragContext     *context,
 			  gpointer            data)
 {
   g_print ("Delete the data!\n");
 }
-  
+
 void
 test_init (void)
 {
@@ -581,7 +581,7 @@ test_init (void)
     }
 }
 
-int 
+int
 main (int argc, char **argv)
 {
   GtkWidget *window;
@@ -592,21 +592,21 @@ main (int argc, char **argv)
   GdkPixbuf *drag_icon;
 
   test_init ();
-  
-  gtk_init (&argc, &argv); 
+
+  gtk_init (&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
 		    G_CALLBACK (gtk_main_quit), NULL);
 
-  
+
   table = gtk_table_new (2, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (window), table);
 
   drag_icon = gdk_pixbuf_new_from_xpm_data (drag_icon_xpm);
   trashcan_open = gdk_pixbuf_new_from_xpm_data (trashcan_open_xpm);
   trashcan_closed = gdk_pixbuf_new_from_xpm_data (trashcan_closed_xpm);
-  
+
   label = gtk_label_new ("Drop Here\n");
 
   gtk_drag_dest_set (label,
@@ -636,7 +636,7 @@ main (int argc, char **argv)
 		    G_CALLBACK (popsite_motion), NULL);
   g_signal_connect (label, "drag_leave",
 		    G_CALLBACK (popsite_leave), NULL);
-  
+
   pixmap = gtk_image_new_from_pixbuf (trashcan_closed);
   gtk_drag_dest_set (pixmap, 0, NULL, 0, 0);
   gtk_table_attach (GTK_TABLE (table), pixmap, 1, 2, 0, 1,
@@ -660,7 +660,7 @@ main (int argc, char **argv)
   button = gtk_button_new_with_label ("Drag Here\n");
 
   gtk_drag_source_set (button, GDK_BUTTON1_MASK | GDK_BUTTON3_MASK,
-		       target_table, n_targets, 
+		       target_table, n_targets,
 		       GDK_ACTION_COPY | GDK_ACTION_MOVE);
   gtk_drag_source_set_icon_pixbuf (button, drag_icon);
 

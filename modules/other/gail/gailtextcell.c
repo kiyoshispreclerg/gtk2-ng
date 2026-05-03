@@ -71,12 +71,12 @@ static gint      gail_text_cell_get_offset_at_point	(AtkText	*text,
 							 gint		x,
 							 gint		y,
 							 AtkCoordType	coords);
-static AtkAttributeSet* gail_text_cell_get_run_attributes 
+static AtkAttributeSet* gail_text_cell_get_run_attributes
                                                         (AtkText	*text,
 							 gint		offset,
-							 gint		*start_offset,      
-							 gint		*end_offset); 
-static AtkAttributeSet* gail_text_cell_get_default_attributes 
+							 gint		*start_offset,
+							 gint		*end_offset);
+static AtkAttributeSet* gail_text_cell_get_default_attributes
                                                         (AtkText        *text);
 
 static PangoLayout*     create_pango_layout             (GtkCellRendererText *gtk_renderer,
@@ -130,7 +130,7 @@ gchar *gail_text_cell_property_list[] = {
 G_DEFINE_TYPE_WITH_CODE (GailTextCell, gail_text_cell, GAIL_TYPE_RENDERER_CELL,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT, atk_text_interface_init))
 
-static void 
+static void
 gail_text_cell_class_init (GailTextCellClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -158,7 +158,7 @@ gail_text_cell_init (GailTextCell *text_cell)
                            ATK_STATE_SINGLE_LINE);
 }
 
-AtkObject* 
+AtkObject*
 gail_text_cell_new (void)
 {
   GObject *object;
@@ -257,7 +257,7 @@ gail_text_cell_update_cache (GailRendererCell *cell,
 
   g_free (new_cache);
   gail_text_util_text_setup (text_cell->textutil, text_cell->cell_text);
-  
+
   if (rv)
     {
       if (emit_change_signal)
@@ -289,8 +289,8 @@ atk_text_interface_init (AtkTextIface *iface)
   iface->get_offset_at_point = gail_text_cell_get_offset_at_point;
 }
 
-static gchar* 
-gail_text_cell_get_text (AtkText *text, 
+static gchar*
+gail_text_cell_get_text (AtkText *text,
                          gint    start_pos,
                          gint    end_pos)
 {
@@ -301,7 +301,7 @@ gail_text_cell_get_text (AtkText *text,
     return g_strdup ("");
 }
 
-static gchar* 
+static gchar*
 gail_text_cell_get_text_before_offset (AtkText         *text,
                                        gint            offset,
                                        AtkTextBoundary boundary_type,
@@ -313,7 +313,7 @@ gail_text_cell_get_text_before_offset (AtkText         *text,
         end_offset);
 }
 
-static gchar* 
+static gchar*
 gail_text_cell_get_text_at_offset (AtkText         *text,
                                    gint            offset,
                                    AtkTextBoundary boundary_type,
@@ -324,7 +324,7 @@ gail_text_cell_get_text_at_offset (AtkText         *text,
         NULL, GAIL_AT_OFFSET, boundary_type, offset, start_offset, end_offset);
 }
 
-static gchar* 
+static gchar*
 gail_text_cell_get_text_after_offset (AtkText         *text,
                                       gint            offset,
                                       AtkTextBoundary boundary_type,
@@ -336,7 +336,7 @@ gail_text_cell_get_text_after_offset (AtkText         *text,
         end_offset);
 }
 
-static gint 
+static gint
 gail_text_cell_get_character_count (AtkText *text)
 {
   if (GAIL_TEXT_CELL (text)->cell_text != NULL)
@@ -345,13 +345,13 @@ gail_text_cell_get_character_count (AtkText *text)
     return 0;
 }
 
-static gint 
+static gint
 gail_text_cell_get_caret_offset (AtkText *text)
 {
   return GAIL_TEXT_CELL (text)->caret_pos;
 }
 
-static gboolean 
+static gboolean
 gail_text_cell_set_caret_offset (AtkText *text,
                                  gint    offset)
 {
@@ -363,7 +363,7 @@ gail_text_cell_set_caret_offset (AtkText *text,
     {
 
       /* Only set the caret within the bounds and if it is to a new position. */
-      if (offset >= 0 && 
+      if (offset >= 0 &&
           offset <= text_cell->cell_length &&
           offset != text_cell->caret_pos)
         {
@@ -382,9 +382,9 @@ static AtkAttributeSet*
 gail_text_cell_get_run_attributes (AtkText *text,
                                   gint     offset,
                                   gint     *start_offset,
-                                  gint     *end_offset) 
+                                  gint     *end_offset)
 {
-  GailRendererCell *gail_renderer; 
+  GailRendererCell *gail_renderer;
   GtkCellRendererText *gtk_renderer;
   AtkAttributeSet *attrib_set = NULL;
   PangoLayout *layout;
@@ -400,21 +400,21 @@ gail_text_cell_get_run_attributes (AtkText *text,
   g_return_val_if_fail (GAIL_IS_CELL_PARENT (parent), NULL);
   widget = GTK_ACCESSIBLE (parent)->widget;
   layout = create_pango_layout (gtk_renderer, widget),
-  attrib_set = gail_misc_layout_get_run_attributes (attrib_set, 
+  attrib_set = gail_misc_layout_get_run_attributes (attrib_set,
                                                     layout,
                                                     gtk_renderer->text,
                                                     offset,
                                                     start_offset,
                                                     end_offset);
   g_object_unref (G_OBJECT (layout));
-  
+
   return attrib_set;
 }
 
 static AtkAttributeSet*
 gail_text_cell_get_default_attributes (AtkText	*text)
 {
-  GailRendererCell *gail_renderer; 
+  GailRendererCell *gail_renderer;
   GtkCellRendererText *gtk_renderer;
   AtkAttributeSet *attrib_set = NULL;
   PangoLayout *layout;
@@ -431,19 +431,19 @@ gail_text_cell_get_default_attributes (AtkText	*text)
   widget = GTK_ACCESSIBLE (parent)->widget;
   layout = create_pango_layout (gtk_renderer, widget),
 
-  attrib_set = gail_misc_get_default_attributes (attrib_set, 
+  attrib_set = gail_misc_get_default_attributes (attrib_set,
                                                  layout,
                                                  widget);
   g_object_unref (G_OBJECT (layout));
   return attrib_set;
 }
 
-/* 
+/*
  * This function is used by gail_text_cell_get_offset_at_point()
- * and gail_text_cell_get_character_extents(). There is no 
+ * and gail_text_cell_get_character_extents(). There is no
  * cached PangoLayout for gailtextcell so we must create a temporary
  * one using this function.
- */ 
+ */
 static PangoLayout*
 create_pango_layout(GtkCellRendererText *gtk_renderer,
                     GtkWidget           *widget)
@@ -516,7 +516,7 @@ create_pango_layout(GtkCellRendererText *gtk_renderer,
   return layout;
 }
 
-static void 
+static void
 add_attr (PangoAttrList  *attr_list,
          PangoAttribute *attr)
 {
@@ -525,7 +525,7 @@ add_attr (PangoAttrList  *attr_list,
   pango_attr_list_insert (attr_list, attr);
 }
 
-static void      
+static void
 gail_text_cell_get_character_extents (AtkText          *text,
                                       gint             offset,
                                       gint             *x,
@@ -534,7 +534,7 @@ gail_text_cell_get_character_extents (AtkText          *text,
                                       gint             *height,
                                       AtkCoordType     coords)
 {
-  GailRendererCell *gail_renderer; 
+  GailRendererCell *gail_renderer;
   GtkCellRendererText *gtk_renderer;
   GdkRectangle rendered_rect;
   GtkWidget *widget;
@@ -574,7 +574,7 @@ gail_text_cell_get_character_extents (AtkText          *text,
 
   index = g_utf8_offset_to_pointer (gtk_renderer->text,
     offset) - gtk_renderer->text;
-  pango_layout_index_to_pos (layout, index, &char_rect); 
+  pango_layout_index_to_pos (layout, index, &char_rect);
 
   gail_misc_get_extents_from_pango_rectangle (widget,
       &char_rect,
@@ -583,22 +583,22 @@ gail_text_cell_get_character_extents (AtkText          *text,
       x, y, width, height, coords);
   g_object_unref (layout);
   return;
-} 
+}
 
-static gint      
+static gint
 gail_text_cell_get_offset_at_point (AtkText          *text,
                                     gint             x,
                                     gint             y,
                                     AtkCoordType     coords)
 {
   AtkObject *parent;
-  GailRendererCell *gail_renderer; 
+  GailRendererCell *gail_renderer;
   GtkCellRendererText *gtk_renderer;
   GtkWidget *widget;
   GdkRectangle rendered_rect;
   PangoLayout *layout;
   gint x_offset, y_offset, index;
- 
+
   if (!GAIL_TEXT_CELL (text)->cell_text)
     return -1;
 
@@ -619,7 +619,7 @@ gail_text_cell_get_offset_at_point (AtkText          *text,
      &rendered_rect, &x_offset, &y_offset, NULL, NULL);
 
   layout = create_pango_layout (gtk_renderer, widget);
-   
+
   index = gail_misc_get_index_at_point_in_layout (widget, layout,
         x_offset + rendered_rect.x + gail_renderer->renderer->xpad,
         y_offset + rendered_rect.y + gail_renderer->renderer->ypad,
@@ -629,15 +629,15 @@ gail_text_cell_get_offset_at_point (AtkText          *text,
     {
       if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
         return g_utf8_strlen (gtk_renderer->text, -1);
-    
-      return index;  
+
+      return index;
     }
   else
     return g_utf8_pointer_to_offset (gtk_renderer->text,
-       gtk_renderer->text + index);  
+       gtk_renderer->text + index);
 }
 
-static gunichar 
+static gunichar
 gail_text_cell_get_character_at_offset (AtkText       *text,
                                         gint          offset)
 {

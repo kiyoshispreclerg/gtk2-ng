@@ -35,16 +35,16 @@
  * is used by GTK+ text input widgets like #GtkEntry to map from key events to
  * Unicode character strings.
  *
- * The user may change the current input method via a context menu, unless the   
- * #GtkSettings:gtk-show-input-method-menu GtkSettings property is set to FALSE. 
- * The default input method can be set programmatically via the 
- * #GtkSettings:gtk-im-module GtkSettings property. Alternatively, you may set 
+ * The user may change the current input method via a context menu, unless the
+ * #GtkSettings:gtk-show-input-method-menu GtkSettings property is set to FALSE.
+ * The default input method can be set programmatically via the
+ * #GtkSettings:gtk-im-module GtkSettings property. Alternatively, you may set
  * the GTK_IM_MODULE environment variable as documented in #gtk-running.
  *
- * The #GtkEntry #GtkEntry:im-module and #GtkTextView #GtkTextView:im-module 
- * properties may also be used to set input methods for specific widget 
- * instances. For instance, a certain entry widget might be expected to contain 
- * certain characters which would be easier to input with a certain input 
+ * The #GtkEntry #GtkEntry:im-module and #GtkTextView #GtkTextView:im-module
+ * properties may also be used to set input methods for specific widget
+ * instances. For instance, a certain entry widget might be expected to contain
+ * certain characters which would be easier to input with a certain input
  * method.
  *
  * An input method may consume multiple key events in sequence and finally
@@ -360,7 +360,7 @@ gtk_im_context_real_get_surrounding (GtkIMContext *context,
   gboolean info_is_local = FALSE;
   SurroundingInfo local_info = { NULL, 0 };
   SurroundingInfo *info;
-  
+
   info = g_object_get_data (G_OBJECT (context), "gtk-im-surrounding-info");
   if (!info)
     {
@@ -368,7 +368,7 @@ gtk_im_context_real_get_surrounding (GtkIMContext *context,
       g_object_set_data (G_OBJECT (context), I_("gtk-im-surrounding-info"), info);
       info_is_local = TRUE;
     }
-  
+
   g_signal_emit (context,
 		 im_context_signals[RETRIEVE_SURROUNDING], 0,
 		 &result);
@@ -389,7 +389,7 @@ gtk_im_context_real_get_surrounding (GtkIMContext *context,
       g_free (info->text);
       g_object_set_data (G_OBJECT (context), I_("gtk-im-surrounding-info"), NULL);
     }
-  
+
   return result;
 }
 
@@ -398,7 +398,7 @@ gtk_im_context_real_get_surrounding (GtkIMContext *context,
  * @context: a #GtkIMContext
  * @window: (allow-none):  the client window. This may be %NULL to indicate
  *           that the previous client window no longer exists.
- * 
+ *
  * Set the client window for the input context; this is the
  * #GdkWindow in which the input appears. This window is
  * used in order to correctly position status windows, and may
@@ -409,7 +409,7 @@ gtk_im_context_set_client_window (GtkIMContext *context,
 				  GdkWindow    *window)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
 
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
@@ -426,8 +426,8 @@ gtk_im_context_set_client_window (GtkIMContext *context,
  *              attribute list.  When you are done with this list, you
  *              must unreference it with pango_attr_list_unref().
  * @cursor_pos: (out): location to store position of cursor (in characters)
- *              within the preedit string.  
- * 
+ *              within the preedit string.
+ *
  * Retrieve the current preedit string for the input context,
  * and a list of attributes to apply to the string.
  * This string should be displayed inserted at the insertion
@@ -440,9 +440,9 @@ gtk_im_context_get_preedit_string (GtkIMContext   *context,
 				   gint           *cursor_pos)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
-  
+
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
   klass->get_preedit_string (context, str, attrs, cursor_pos);
   g_return_if_fail (str == NULL || g_utf8_validate (*str, -1, NULL));
@@ -452,11 +452,11 @@ gtk_im_context_get_preedit_string (GtkIMContext   *context,
  * gtk_im_context_filter_keypress:
  * @context: a #GtkIMContext
  * @event: the key event
- * 
- * Allow an input method to internally handle key press and release 
+ *
+ * Allow an input method to internally handle key press and release
  * events. If this function returns %TRUE, then no further processing
  * should be done for this key event.
- * 
+ *
  * Return value: %TRUE if the input method handled the key event.
  *
  **/
@@ -465,7 +465,7 @@ gtk_im_context_filter_keypress (GtkIMContext *context,
 				GdkEventKey  *key)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_val_if_fail (GTK_IS_IM_CONTEXT (context), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
@@ -486,9 +486,9 @@ void
 gtk_im_context_focus_in (GtkIMContext   *context)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
-  
+
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
   if (klass->focus_in)
     klass->focus_in (context);
@@ -507,7 +507,7 @@ void
 gtk_im_context_focus_out (GtkIMContext   *context)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
 
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
@@ -527,7 +527,7 @@ void
 gtk_im_context_reset (GtkIMContext   *context)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
 
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
@@ -541,7 +541,7 @@ gtk_im_context_reset (GtkIMContext   *context)
  * @context: a #GtkIMContext
  * @area: new location
  *
- * Notify the input method that a change in cursor 
+ * Notify the input method that a change in cursor
  * position has been made. The location is relative to the client
  * window.
  **/
@@ -550,7 +550,7 @@ gtk_im_context_set_cursor_location (GtkIMContext       *context,
 				    const GdkRectangle *area)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
 
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
@@ -562,7 +562,7 @@ gtk_im_context_set_cursor_location (GtkIMContext       *context,
  * gtk_im_context_set_use_preedit:
  * @context: a #GtkIMContext
  * @use_preedit: whether the IM context should use the preedit string.
- * 
+ *
  * Sets whether the IM context should use the preedit string
  * to display feedback. If @use_preedit is FALSE (default
  * is TRUE), then the IM context may use some other method to display
@@ -573,7 +573,7 @@ gtk_im_context_set_use_preedit (GtkIMContext *context,
 				gboolean      use_preedit)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
 
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
@@ -583,13 +583,13 @@ gtk_im_context_set_use_preedit (GtkIMContext *context,
 
 /**
  * gtk_im_context_set_surrounding:
- * @context: a #GtkIMContext 
+ * @context: a #GtkIMContext
  * @text: text surrounding the insertion point, as UTF-8.
  *        the preedit string should not be included within
  *        @text.
  * @len: the length of @text, or -1 if @text is nul-terminated
  * @cursor_index: the byte index of the insertion cursor within @text.
- * 
+ *
  * Sets surrounding context around the insertion point and preedit
  * string. This function is expected to be called in response to the
  * GtkIMContext::retrieve_surrounding signal, and will likely have no
@@ -602,7 +602,7 @@ gtk_im_context_set_surrounding (GtkIMContext  *context,
 				gint           cursor_index)
 {
   GtkIMContextClass *klass;
-  
+
   g_return_if_fail (GTK_IS_IM_CONTEXT (context));
   g_return_if_fail (text != NULL || len == 0);
 
@@ -627,7 +627,7 @@ gtk_im_context_set_surrounding (GtkIMContext  *context,
  *        stored in this location with g_free().
  * @cursor_index: (out) location to store byte index of the insertion
  *        cursor within @text.
- * 
+ *
  * Retrieves context around the insertion point. Input methods
  * typically want context in order to constrain input text based on
  * existing text; this is important for languages such as Thai where
@@ -653,7 +653,7 @@ gtk_im_context_get_surrounding (GtkIMContext *context,
   gchar *local_text = NULL;
   gint local_index;
   gboolean result = FALSE;
-  
+
   g_return_val_if_fail (GTK_IS_IM_CONTEXT (context), FALSE);
 
   klass = GTK_IM_CONTEXT_GET_CLASS (context);
@@ -674,7 +674,7 @@ gtk_im_context_get_surrounding (GtkIMContext *context,
  * @offset: offset from cursor position in chars;
  *    a negative value means start before the cursor.
  * @n_chars: number of characters to delete.
- * 
+ *
  * Asks the widget that the input context is attached to to delete
  * characters around the cursor position by emitting the
  * GtkIMContext::delete_surrounding signal. Note that @offset and @n_chars
@@ -691,7 +691,7 @@ gtk_im_context_get_surrounding (GtkIMContext *context,
  * This function is used by an input method that wants to make
  * subsitutions in the existing text in response to new input. It is
  * not useful for applications.
- * 
+ *
  * Return value: %TRUE if the signal was handled.
  **/
 gboolean
@@ -700,7 +700,7 @@ gtk_im_context_delete_surrounding (GtkIMContext *context,
 				   gint          n_chars)
 {
   gboolean result;
-  
+
   g_return_val_if_fail (GTK_IS_IM_CONTEXT (context), FALSE);
 
   g_signal_emit (context,

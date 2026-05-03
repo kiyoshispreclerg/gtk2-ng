@@ -13,7 +13,7 @@ static GtkWidget *create_arrow_button( GtkArrowType  arrow_type,
   arrow = gtk_arrow_new (arrow_type, shadow_type);
 
   gtk_container_add (GTK_CONTAINER (button), arrow);
-  
+
   gtk_widget_show (button);
   gtk_widget_show (arrow);
 
@@ -56,17 +56,17 @@ int main( int   argc,
 
   button = create_arrow_button (GTK_ARROW_DOWN, GTK_SHADOW_OUT);
   gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 3);
-  
+
   button = create_arrow_button (GTK_ARROW_LEFT, GTK_SHADOW_ETCHED_IN);
   gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 3);
-  
+
   button = create_arrow_button (GTK_ARROW_RIGHT, GTK_SHADOW_ETCHED_OUT);
   gtk_box_pack_start (GTK_BOX (box), button, FALSE, FALSE, 3);
-  
+
   gtk_widget_show (window);
-  
+
   /* Rest in gtk_main and wait for the fun to begin! */
   gtk_main ();
-  
+
   return 0;
 }

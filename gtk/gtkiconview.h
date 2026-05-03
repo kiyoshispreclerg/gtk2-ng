@@ -71,7 +71,7 @@ struct _GtkIconViewClass
   void    (* set_scroll_adjustments) (GtkIconView      *icon_view,
 				      GtkAdjustment    *hadjustment,
 				      GtkAdjustment    *vadjustment);
-  
+
   void    (* item_activated)         (GtkIconView      *icon_view,
 				      GtkTreePath      *path);
   void    (* selection_changed)      (GtkIconView      *icon_view);
@@ -116,19 +116,19 @@ gint           gtk_icon_view_get_columns       (GtkIconView    *icon_view);
 void           gtk_icon_view_set_item_width    (GtkIconView    *icon_view,
 					        gint            item_width);
 gint           gtk_icon_view_get_item_width    (GtkIconView    *icon_view);
-void           gtk_icon_view_set_spacing       (GtkIconView    *icon_view, 
+void           gtk_icon_view_set_spacing       (GtkIconView    *icon_view,
 		 			        gint            spacing);
 gint           gtk_icon_view_get_spacing       (GtkIconView    *icon_view);
-void           gtk_icon_view_set_row_spacing   (GtkIconView    *icon_view, 
+void           gtk_icon_view_set_row_spacing   (GtkIconView    *icon_view,
 					        gint            row_spacing);
 gint           gtk_icon_view_get_row_spacing   (GtkIconView    *icon_view);
-void           gtk_icon_view_set_column_spacing (GtkIconView    *icon_view, 
+void           gtk_icon_view_set_column_spacing (GtkIconView    *icon_view,
 					        gint            column_spacing);
 gint           gtk_icon_view_get_column_spacing (GtkIconView    *icon_view);
-void           gtk_icon_view_set_margin        (GtkIconView    *icon_view, 
+void           gtk_icon_view_set_margin        (GtkIconView    *icon_view,
 					        gint            margin);
 gint           gtk_icon_view_get_margin        (GtkIconView    *icon_view);
-void           gtk_icon_view_set_item_padding  (GtkIconView    *icon_view, 
+void           gtk_icon_view_set_item_padding  (GtkIconView    *icon_view,
 					        gint            item_padding);
 gint           gtk_icon_view_get_item_padding  (GtkIconView    *icon_view);
 

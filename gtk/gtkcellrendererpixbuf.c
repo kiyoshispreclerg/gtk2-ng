@@ -155,15 +155,15 @@ gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
 							NULL,
 							GTK_PARAM_READWRITE));
 
-  
+
   /**
    * GtkCellRendererPixbuf:icon-name:
    *
    * The name of the themed icon to display.
-   * This property only has an effect if not overridden by "stock_id" 
+   * This property only has an effect if not overridden by "stock_id"
    * or "pixbuf" properties.
    *
-   * Since: 2.8 
+   * Since: 2.8
    */
   g_object_class_install_property (object_class,
 				   PROP_ICON_NAME,
@@ -215,7 +215,7 @@ gtk_cell_renderer_pixbuf_finalize (GObject *object)
   GtkCellRendererPixbufPrivate *priv;
 
   priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
-  
+
   if (cellpixbuf->pixbuf)
     g_object_unref (cellpixbuf->pixbuf);
   if (cellpixbuf->pixbuf_expander_open)
@@ -243,7 +243,7 @@ gtk_cell_renderer_pixbuf_get_property (GObject        *object,
   GtkCellRendererPixbufPrivate *priv;
 
   priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
-  
+
   switch (param_id)
     {
     case PROP_PIXBUF:
@@ -289,7 +289,7 @@ gtk_cell_renderer_pixbuf_set_property (GObject      *object,
   GtkCellRendererPixbufPrivate *priv;
 
   priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
-  
+
   switch (param_id)
     {
     case PROP_PIXBUF:
@@ -448,7 +448,7 @@ gtk_cell_renderer_pixbuf_set_property (GObject      *object,
 
 /**
  * gtk_cell_renderer_pixbuf_new:
- * 
+ *
  * Creates a new #GtkCellRendererPixbuf. Adjust rendering
  * parameters using object properties. Object properties can be set
  * globally (with g_object_set()). Also, with #GtkTreeViewColumn, you
@@ -456,7 +456,7 @@ gtk_cell_renderer_pixbuf_set_property (GObject      *object,
  * can bind the "pixbuf" property on the cell renderer to a pixbuf value
  * in the model, thus rendering a different image in each row of the
  * #GtkTreeView.
- * 
+ *
  * Return value: the new cell renderer
  **/
 GtkCellRenderer *
@@ -484,7 +484,7 @@ gtk_cell_renderer_pixbuf_create_stock_pixbuf (GtkCellRendererPixbuf *cellpixbuf,
   g_object_notify (G_OBJECT (cellpixbuf), "pixbuf");
 }
 
-static void 
+static void
 gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf,
 					       GtkWidget             *widget)
 {
@@ -517,7 +517,7 @@ gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf
   if (priv->icon_name)
     cellpixbuf->pixbuf = gtk_icon_theme_load_icon (icon_theme,
 			                           priv->icon_name,
-			                           MIN (width, height), 
+			                           MIN (width, height),
                                                    GTK_ICON_LOOKUP_USE_BUILTIN,
                                                    NULL);
   else if (priv->gicon)
@@ -526,7 +526,7 @@ gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf
 
       info = gtk_icon_theme_lookup_by_gicon (icon_theme,
                                              priv->gicon,
-			                     MIN (width, height), 
+			                     MIN (width, height),
                                              GTK_ICON_LOOKUP_USE_BUILTIN);
       if (info)
         {
@@ -539,7 +539,7 @@ gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf
 }
 
 static GdkPixbuf *
-create_colorized_pixbuf (GdkPixbuf *src, 
+create_colorized_pixbuf (GdkPixbuf *src,
 			 GdkColor  *new_color)
 {
   gint i, j;
@@ -550,17 +550,17 @@ create_colorized_pixbuf (GdkPixbuf *src,
   guchar *pixsrc;
   guchar *pixdest;
   GdkPixbuf *dest;
-  
+
   red_value = new_color->red / 255.0;
   green_value = new_color->green / 255.0;
   blue_value = new_color->blue / 255.0;
-  
+
   dest = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (src),
 			 gdk_pixbuf_get_has_alpha (src),
 			 gdk_pixbuf_get_bits_per_sample (src),
 			 gdk_pixbuf_get_width (src),
 			 gdk_pixbuf_get_height (src));
-  
+
   has_alpha = gdk_pixbuf_get_has_alpha (src);
   width = gdk_pixbuf_get_width (src);
   height = gdk_pixbuf_get_height (src);
@@ -568,11 +568,11 @@ create_colorized_pixbuf (GdkPixbuf *src,
   dst_row_stride = gdk_pixbuf_get_rowstride (dest);
   target_pixels = gdk_pixbuf_get_pixels (dest);
   original_pixels = gdk_pixbuf_get_pixels (src);
-  
+
   for (i = 0; i < height; i++) {
     pixdest = target_pixels + i*dst_row_stride;
     pixsrc = original_pixels + i*src_row_stride;
-    for (j = 0; j < width; j++) {		
+    for (j = 0; j < width; j++) {
       *pixdest++ = (*pixsrc++ * red_value) >> 8;
       *pixdest++ = (*pixsrc++ * green_value) >> 8;
       *pixdest++ = (*pixsrc++ * blue_value) >> 8;
@@ -610,7 +610,7 @@ gtk_cell_renderer_pixbuf_get_size (GtkCellRenderer *cell,
       else if (priv->icon_name || priv->gicon)
 	gtk_cell_renderer_pixbuf_create_themed_pixbuf (cellpixbuf, widget);
     }
-  
+
   if (cellpixbuf->pixbuf)
     {
       pixbuf_width  = gdk_pixbuf_get_width (cellpixbuf->pixbuf);
@@ -626,16 +626,16 @@ gtk_cell_renderer_pixbuf_get_size (GtkCellRenderer *cell,
       pixbuf_width  = MAX (pixbuf_width, gdk_pixbuf_get_width (cellpixbuf->pixbuf_expander_closed));
       pixbuf_height = MAX (pixbuf_height, gdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_closed));
     }
-  
+
   calc_width  = (gint) cell->xpad * 2 + pixbuf_width;
   calc_height = (gint) cell->ypad * 2 + pixbuf_height;
-  
+
   if (cell_area && pixbuf_width > 0 && pixbuf_height > 0)
     {
       if (x_offset)
 	{
 	  *x_offset = (((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
-                        (1.0 - cell->xalign) : cell->xalign) * 
+                        (1.0 - cell->xalign) : cell->xalign) *
                        (cell_area->width - calc_width));
 	  *x_offset = MAX (*x_offset, 0);
 	}
@@ -654,7 +654,7 @@ gtk_cell_renderer_pixbuf_get_size (GtkCellRenderer *cell,
 
   if (width)
     *width = calc_width;
-  
+
   if (height)
     *height = calc_height;
 }
@@ -713,7 +713,7 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
   if (gtk_widget_get_state (widget) == GTK_STATE_INSENSITIVE || !cell->sensitive)
     {
       GtkIconSource *source;
-      
+
       source = gtk_icon_source_new ();
       gtk_icon_source_set_pixbuf (source, pixbuf);
       /* The size here is arbitrary; since size isn't
@@ -722,7 +722,7 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
        */
       gtk_icon_source_set_size (source, GTK_ICON_SIZE_SMALL_TOOLBAR);
       gtk_icon_source_set_size_wildcarded (source, FALSE);
-      
+
      invisible = gtk_style_render_icon (widget->style,
 					source,
 					gtk_widget_get_direction (widget),
@@ -731,12 +731,12 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
 					(GtkIconSize)-1,
 					widget,
 					"gtkcellrendererpixbuf");
-     
+
      gtk_icon_source_free (source);
-     
+
      pixbuf = invisible;
     }
-  else if (priv->follow_state && 
+  else if (priv->follow_state &&
 	   (flags & (GTK_CELL_RENDERER_SELECTED|GTK_CELL_RENDERER_PRELIT)) != 0)
     {
       GtkStateType state;
@@ -758,13 +758,13 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
     }
 
   cr = gdk_cairo_create (window);
-  
+
   gdk_cairo_set_source_pixbuf (cr, pixbuf, pix_rect.x, pix_rect.y);
   gdk_cairo_rectangle (cr, &draw_rect);
   cairo_fill (cr);
 
   cairo_destroy (cr);
-  
+
   if (invisible)
     g_object_unref (invisible);
 

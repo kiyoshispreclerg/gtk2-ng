@@ -43,10 +43,10 @@ void              _gtk_recent_chooser_update                 (GtkActivatable    
 							      const gchar          *property_name);
 void              _gtk_recent_chooser_sync_action_properties (GtkActivatable       *activatable,
 							      GtkAction            *action);
-void              _gtk_recent_chooser_set_related_action     (GtkRecentChooser     *recent_chooser, 
+void              _gtk_recent_chooser_set_related_action     (GtkRecentChooser     *recent_chooser,
 							      GtkAction            *action);
 GtkAction        *_gtk_recent_chooser_get_related_action     (GtkRecentChooser     *recent_chooser);
-void              _gtk_recent_chooser_set_use_action_appearance (GtkRecentChooser  *recent_chooser, 
+void              _gtk_recent_chooser_set_use_action_appearance (GtkRecentChooser  *recent_chooser,
 								 gboolean           use_appearance);
 gboolean          _gtk_recent_chooser_get_use_action_appearance (GtkRecentChooser  *recent_chooser);
 

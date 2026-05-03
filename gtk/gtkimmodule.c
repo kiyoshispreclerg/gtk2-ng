@@ -20,7 +20,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -73,7 +73,7 @@ typedef struct _GtkIMModuleClass GtkIMModuleClass;
 struct _GtkIMModule
 {
   GTypeModule parent_instance;
-  
+
   gboolean builtin;
 
   GModule *library;
@@ -90,7 +90,7 @@ struct _GtkIMModule
   gchar *path;
 };
 
-struct _GtkIMModuleClass 
+struct _GtkIMModuleClass
 {
   GTypeModuleClass parent_class;
 };
@@ -107,7 +107,7 @@ static gboolean
 gtk_im_module_load (GTypeModule *module)
 {
   GtkIMModule *im_module = GTK_IM_MODULE (module);
-  
+
   if (!im_module->builtin)
     {
       im_module->library = g_module_open (im_module->path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
@@ -116,24 +116,24 @@ gtk_im_module_load (GTypeModule *module)
 	  g_warning ("%s", g_module_error());
 	  return FALSE;
 	}
-  
+
       /* extract symbols from the lib */
       if (!g_module_symbol (im_module->library, "im_module_init",
 			    (gpointer *)&im_module->init) ||
-	  !g_module_symbol (im_module->library, "im_module_exit", 
+	  !g_module_symbol (im_module->library, "im_module_exit",
 			    (gpointer *)&im_module->exit) ||
-	  !g_module_symbol (im_module->library, "im_module_list", 
+	  !g_module_symbol (im_module->library, "im_module_list",
 			    (gpointer *)&im_module->list) ||
-	  !g_module_symbol (im_module->library, "im_module_create", 
+	  !g_module_symbol (im_module->library, "im_module_create",
 			    (gpointer *)&im_module->create))
 	{
 	  g_warning ("%s", g_module_error());
 	  g_module_close (im_module->library);
-	  
+
 	  return FALSE;
 	}
     }
-	    
+
   /* call the module's init function to let it */
   /* setup anything it needs to set up. */
   im_module->init (module);
@@ -145,7 +145,7 @@ static void
 gtk_im_module_unload (GTypeModule *module)
 {
   GtkIMModule *im_module = GTK_IM_MODULE (module);
-  
+
   im_module->exit();
 
   if (!im_module->builtin)
@@ -182,14 +182,14 @@ gtk_im_module_class_init (GtkIMModuleClass *class)
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
 
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (class));
-  
+
   module_class->load = gtk_im_module_load;
   module_class->unload = gtk_im_module_unload;
 
   gobject_class->finalize = gtk_im_module_finalize;
 }
 
-static void 
+static void
 gtk_im_module_init (GtkIMModule* object)
 {
 }
@@ -216,7 +216,7 @@ add_module (GtkIMModule *module, GSList *infos)
   while (tmp_list)
     {
       GtkIMContextInfo *info = tmp_list->data;
-  
+
       if (g_hash_table_lookup (contexts_hash, info->context_id))
 	{
 	  free_info (info);	/* Duplicate */
@@ -227,7 +227,7 @@ add_module (GtkIMModule *module, GSList *infos)
 	  module->contexts[i++] = tmp_list->data;
 	  n_loaded_contexts++;
 	}
-      
+
       tmp_list = tmp_list->next;
     }
   g_slist_free (infos);
@@ -395,7 +395,7 @@ gtk_im_module_initialize (void)
   while (!have_error && pango_read_line (file, line_buf))
     {
       const char *p;
-      
+
       p = line_buf->str;
 
       if (!pango_skip_space (&p))
@@ -408,7 +408,7 @@ gtk_im_module_initialize (void)
 	      module = NULL;
 	      infos = NULL;
 	    }
-	  
+
 	  continue;
 	}
 
@@ -421,7 +421,7 @@ gtk_im_module_initialize (void)
 	  if (!pango_scan_string (&p, tmp_buf) ||
 	      pango_skip_space (&p))
 	    {
-	      g_warning ("Error parsing context info in '%s'\n  %s", 
+	      g_warning ("Error parsing context info in '%s'\n  %s",
 			 filename, line_buf->str);
 	      have_error = TRUE;
 	    }
@@ -435,7 +435,7 @@ gtk_im_module_initialize (void)
       else
 	{
 	  GtkIMContextInfo *info = g_new0 (GtkIMContextInfo, 1);
-	  
+
 	  /* Read information about a context type
 	   */
 	  if (!pango_scan_string (&p, tmp_buf))
@@ -468,7 +468,7 @@ gtk_im_module_initialize (void)
 	  continue;
 
 	context_error:
-	  g_warning ("Error parsing context info in '%s'\n  %s", 
+	  g_warning ("Error parsing context info in '%s'\n  %s",
 		     filename, line_buf->str);
 	  have_error = TRUE;
 	}
@@ -509,7 +509,7 @@ compare_gtkimcontextinfo_name(const GtkIMContextInfo **a,
  *            The structures it points are statically allocated and should
  *            not be modified or freed.
  * @n_contexts: the length of the array stored in @contexts
- * 
+ *
  * List all available types of input method context
  */
 void
@@ -560,7 +560,7 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
     {
       GSList *tmp_list;
       int i;
-      
+
       *contexts = g_new (const GtkIMContextInfo *, n_loaded_contexts + 1);
 
       (*contexts)[n++] = &simple_context_info;
@@ -572,7 +572,7 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
 
 	  for (i=0; i<module->n_contexts; i++)
 	    (*contexts)[n++] = module->contexts[i];
-	  
+
 	  tmp_list = tmp_list->next;
 	}
 
@@ -584,10 +584,10 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
 /**
  * _gtk_im_module_create:
  * @context_id: the context ID for the context type to create
- * 
+ *
  * Create an IM context of a type specified by the string
  * ID @context_id.
- * 
+ *
  * Return value: a newly created input context of or @context_id, or
  *     if that could not be created, a newly created GtkIMContextSimple.
  */
@@ -596,7 +596,7 @@ _gtk_im_module_create (const gchar *context_id)
 {
   GtkIMModule *im_module;
   GtkIMContext *context = NULL;
-  
+
   if (!contexts_hash)
     gtk_im_module_initialize ();
 
@@ -614,12 +614,12 @@ _gtk_im_module_create (const gchar *context_id)
 	      context = im_module->create (context_id);
 	      g_type_module_unuse (G_TYPE_MODULE (im_module));
 	    }
-	  
+
 	  if (!context)
 	    g_warning ("Loading IM context type '%s' failed", context_id);
 	}
     }
-  
+
   if (!context)
      return gtk_im_context_simple_new ();
   else
@@ -627,7 +627,7 @@ _gtk_im_module_create (const gchar *context_id)
 }
 
 /* Match @locale against @against.
- * 
+ *
  * 'en_US' against 'en_US'       => 4
  * 'en_US' against 'en'          => 3
  * 'en', 'en_UK' against 'en_US' => 2
@@ -675,10 +675,10 @@ lookup_immodule (gchar **immodules_list)
 /**
  * _gtk_im_module_get_default_context_id:
  * @client_window: a window
- * 
- * Return the context_id of the best IM context type 
+ *
+ * Return the context_id of the best IM context type
  * for the given window.
- * 
+ *
  * Return value: the context ID (will never be %NULL)
  */
 const gchar *
@@ -692,7 +692,7 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
   const gchar *envvar;
   GdkScreen *screen;
   GtkSettings *settings;
-      
+
   if (!contexts_hash)
     gtk_im_module_initialize ();
 
@@ -735,12 +735,12 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
   tmp = strchr (tmp_locale, '@');
   if (tmp)
     *tmp = '\0';
-  
+
   tmp_list = modules_list;
   while (tmp_list)
     {
       GtkIMModule *module = tmp_list->data;
-     
+
       for (i = 0; i < module->n_contexts; i++)
 	{
 	  const gchar *p = module->contexts[i]->default_locales;
@@ -758,11 +758,11 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
 	      p = q ? q + 1 : NULL;
 	    }
 	}
-      
+
       tmp_list = tmp_list->next;
     }
 
   g_free (tmp_locale);
-  
+
   return context_id ? context_id : SIMPLE_ID;
 }

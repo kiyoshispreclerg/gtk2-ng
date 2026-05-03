@@ -37,10 +37,10 @@ check_property (const char *output,
 
   g_value_init (&default_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
   g_param_value_set_default (pspec, &default_value);
-      
+
   v = g_strdup_value_contents (value);
   dv = g_strdup_value_contents (&default_value);
-  
+
   msg = g_strdup_printf ("%s %s.%s: %s != %s\n",
 			 output,
 			 g_type_name (pspec->owner_type),
@@ -49,7 +49,7 @@ check_property (const char *output,
   g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__,
 		       G_STRFUNC, msg);
   g_free (msg);
-  
+
   g_free (v);
   g_free (dv);
   g_value_unset (&default_value);
@@ -85,11 +85,11 @@ test_type (gconstpointer data)
   if (g_type_is_a (type, GTK_TYPE_CLIST) ||
       g_type_is_a (type, GTK_TYPE_CTREE) ||
       g_type_is_a (type, GTK_TYPE_LIST) ||
-      g_type_is_a (type, GTK_TYPE_TIPS_QUERY)) 
+      g_type_is_a (type, GTK_TYPE_TIPS_QUERY))
     return;
 
   klass = g_type_class_ref (type);
-  
+
   if (g_type_is_a (type, GTK_TYPE_SETTINGS))
     instance = G_OBJECT (g_object_ref (gtk_settings_get_default ()));
   else if (g_type_is_a (type, GDK_TYPE_PANGO_RENDERER))
@@ -118,7 +118,7 @@ test_type (gconstpointer data)
     {
       GParamSpec *pspec = pspecs[i];
       GValue value = { 0, };
-      
+
       if (pspec->owner_type != type)
 	continue;
 
@@ -136,7 +136,7 @@ test_type (gconstpointer data)
       if (g_type_is_a (type, GTK_TYPE_ABOUT_DIALOG) &&
 	  (strcmp (pspec->name, "program-name") == 0))
 	continue;
-      
+
       /* These are set to the current date */
       if (g_type_is_a (type, GTK_TYPE_CALENDAR) &&
 	  (strcmp (pspec->name, "year") == 0 ||
@@ -301,7 +301,7 @@ test_type (gconstpointer data)
 	continue;
 
       if (g_test_verbose ())
-      g_print ("Property %s.%s\n", 
+      g_print ("Property %s.%s\n",
 	     g_type_name (pspec->owner_type),
 	     pspec->name);
       g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
@@ -314,18 +314,18 @@ test_type (gconstpointer data)
   if (g_type_is_a (type, GTK_TYPE_WIDGET))
     {
       pspecs = gtk_widget_class_list_style_properties (GTK_WIDGET_CLASS (klass), &n_pspecs);
-      
+
       for (i = 0; i < n_pspecs; ++i)
 	{
 	  GParamSpec *pspec = pspecs[i];
 	  GValue value = { 0, };
-	  
+
 	  if (pspec->owner_type != type)
 	    continue;
 
 	  if ((pspec->flags & G_PARAM_READABLE) == 0)
 	    continue;
-	  
+
 	  g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 	  gtk_widget_style_get_property (GTK_WIDGET (instance), pspec->name, &value);
 	  check_property ("Style property", pspec, &value);
@@ -334,12 +334,12 @@ test_type (gconstpointer data)
 
       g_free (pspecs);
     }
-  
+
   if (g_type_is_a (type, GDK_TYPE_WINDOW))
     gdk_window_destroy (GDK_WINDOW (instance));
   else
     g_object_unref (instance);
-  
+
   g_type_class_unref (klass);
 }
 
@@ -354,12 +354,12 @@ main (int argc, char **argv)
   gtk_test_init (&argc, &argv);
   pixbuf_init ();
   gtk_test_register_all_types();
-  
+
   otypes = gtk_test_list_all_types (NULL);
   for (i = 0; otypes[i]; i++)
     {
       gchar *testname;
-      
+
       testname = g_strdup_printf ("/Default Values/%s",
 				  g_type_name (otypes[i]));
       g_test_add_data_func (testname,
@@ -367,6 +367,6 @@ main (int argc, char **argv)
 			    test_type);
       g_free (testname);
     }
-  
+
   return g_test_run();
 }

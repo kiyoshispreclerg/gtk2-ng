@@ -80,7 +80,7 @@ interactive_dialog_clicked (GtkButton *button,
   gtk_entry_set_text (GTK_ENTRY (local_entry2), gtk_entry_get_text (GTK_ENTRY (entry2)));
   gtk_table_attach_defaults (GTK_TABLE (table), local_entry2, 1, 2, 1, 2);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), local_entry2);
-  
+
   gtk_widget_show_all (hbox);
   response = gtk_dialog_run (GTK_DIALOG (dialog));
 
@@ -103,7 +103,7 @@ do_dialog (GtkWidget *do_widget)
   GtkWidget *button;
   GtkWidget *table;
   GtkWidget *label;
-  
+
   if (!window)
     {
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -157,7 +157,7 @@ do_dialog (GtkWidget *do_widget)
       gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry1);
 
       label = gtk_label_new_with_mnemonic ("E_ntry 2");
-      
+
       gtk_table_attach_defaults (GTK_TABLE (table),
 				 label,
 				 0, 1, 1, 2);
@@ -172,7 +172,7 @@ do_dialog (GtkWidget *do_widget)
       gtk_widget_show_all (window);
     }
   else
-    {	 
+    {
       gtk_widget_destroy (window);
       window = NULL;
     }

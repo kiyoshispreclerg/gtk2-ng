@@ -99,7 +99,7 @@ gail_combo_real_initialize (AtkObject *obj,
 {
   GtkCombo *combo;
   GtkList *list;
-  GList *slist; 
+  GList *slist;
   GailCombo *gail_combo;
 
   ATK_OBJECT_CLASS (gail_combo_parent_class)->initialize (obj, data);
@@ -157,13 +157,13 @@ gail_combo_selection_changed_gtk (GtkWidget      *widget,
 {
   GtkCombo *combo;
   GtkList *list;
-  GList *slist; 
+  GList *slist;
   AtkObject *obj;
   GailCombo *gail_combo;
 
   combo = GTK_COMBO (data);
   list = GTK_LIST (combo->list);
-  
+
   slist = list->selection;
 
   obj = gtk_widget_get_accessible (GTK_WIDGET (data));
@@ -179,7 +179,7 @@ gail_combo_selection_changed_gtk (GtkWidget      *widget,
       if (gail_combo->deselect_idle_handler)
         {
           g_source_remove (gail_combo->deselect_idle_handler);
-          gail_combo->deselect_idle_handler = 0;       
+          gail_combo->deselect_idle_handler = 0;
         }
     }
   else
@@ -189,7 +189,7 @@ gail_combo_selection_changed_gtk (GtkWidget      *widget,
       if (gail_combo->select_idle_handler)
         {
           g_source_remove (gail_combo->select_idle_handler);
-          gail_combo->select_idle_handler = 0;       
+          gail_combo->select_idle_handler = 0;
         }
     }
 }
@@ -236,7 +236,7 @@ gail_combo_ref_child (AtkObject *obj,
 
   if (i == 0)
     accessible = gtk_widget_get_accessible (GTK_COMBO (widget)->popup);
-  else 
+  else
     accessible = gtk_widget_get_accessible (GTK_COMBO (widget)->entry);
 
   g_object_ref (accessible);
@@ -288,7 +288,7 @@ gail_combo_do_action (AtkAction *action,
  * The behavior is different depending on whether the list is being
  * displayed or removed.
  *
- * A button press event is simulated on the appropriate widget and 
+ * A button press event is simulated on the appropriate widget and
  * a button release event is simulated in an idle function.
  */
 static gboolean
@@ -312,9 +312,9 @@ idle_do_action (gpointer data)
 
   do_popup = !gtk_widget_get_mapped (combo->popwin);
 
-  tmp_event.button.type = GDK_BUTTON_PRESS; 
+  tmp_event.button.type = GDK_BUTTON_PRESS;
   tmp_event.button.window = widget->window;
-  tmp_event.button.button = 1; 
+  tmp_event.button.button = 1;
   tmp_event.button.send_event = TRUE;
   tmp_event.button.time = GDK_CURRENT_TIME;
   tmp_event.button.axes = NULL;
@@ -335,7 +335,7 @@ idle_do_action (gpointer data)
       tmp_event.button.window = combo->list->window;
       gdk_window_set_user_data (combo->list->window, combo->button);
       action_widget = combo->popwin;
-    
+
       gtk_widget_event (action_widget, &tmp_event);
       /* FIXME !*/
       g_idle_add (_gail_combo_popup_release, combo);
@@ -413,7 +413,7 @@ gail_combo_add_selection (AtkSelection   *selection,
   return TRUE;
 }
 
-static gboolean 
+static gboolean
 gail_combo_clear_selection (AtkSelection   *selection)
 {
   GtkCombo *combo;
@@ -538,7 +538,7 @@ gail_combo_remove_selection (AtkSelection   *selection,
   return TRUE;
 }
 
-static gint 
+static gint
 _gail_combo_popup_release (gpointer data)
 {
   GtkCombo *combo;
@@ -554,8 +554,8 @@ _gail_combo_popup_release (gpointer data)
       return FALSE;
     }
 
-  tmp_event.button.type = GDK_BUTTON_RELEASE; 
-  tmp_event.button.button = 1; 
+  tmp_event.button.type = GDK_BUTTON_RELEASE;
+  tmp_event.button.button = 1;
   tmp_event.button.time = GDK_CURRENT_TIME;
   action_widget = combo->button;
 
@@ -566,7 +566,7 @@ _gail_combo_popup_release (gpointer data)
   return FALSE;
 }
 
-static gint 
+static gint
 _gail_combo_button_release (gpointer data)
 {
   GtkCombo *combo;
@@ -582,8 +582,8 @@ _gail_combo_button_release (gpointer data)
       return FALSE;
     }
 
-  tmp_event.button.type = GDK_BUTTON_RELEASE; 
-  tmp_event.button.button = 1; 
+  tmp_event.button.type = GDK_BUTTON_RELEASE;
+  tmp_event.button.button = 1;
   tmp_event.button.window = combo->list->window;
   tmp_event.button.time = GDK_CURRENT_TIME;
   gdk_window_set_user_data (combo->list->window, combo->button);
@@ -628,12 +628,12 @@ gail_combo_finalize (GObject            *object)
   if (combo->deselect_idle_handler)
     {
       g_source_remove (combo->deselect_idle_handler);
-      combo->deselect_idle_handler = 0;       
+      combo->deselect_idle_handler = 0;
     }
   if (combo->select_idle_handler)
     {
       g_source_remove (combo->select_idle_handler);
-      combo->select_idle_handler = 0;       
+      combo->select_idle_handler = 0;
     }
   G_OBJECT_CLASS (gail_combo_parent_class)->finalize (object);
 }

@@ -29,7 +29,7 @@ struct _GtkIconData
 {
   gboolean has_embedded_rect;
   gint x0, y0, x1, y1;
-  
+
   GdkPoint *attach_points;
   gint n_attach_points;
 

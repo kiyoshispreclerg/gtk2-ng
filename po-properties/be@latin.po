@@ -1,4 +1,4 @@
-# Biełaruski pierakład gtk+-properties 
+# Biełaruski pierakład gtk+-properties
 # Alaksandar Navicki <zolak@lacinka.org>, 2007. Łacinka.org
 # Copyright (C) 2007 Free Software Foundation, Inc.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

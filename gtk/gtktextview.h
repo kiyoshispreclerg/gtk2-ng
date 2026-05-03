@@ -90,7 +90,7 @@ struct _GtkTextView
   guint GSEAL (overwrite_mode) : 1;
   guint GSEAL (cursor_visible) : 1;
 
-  /* if we have reset the IM since the last character entered */  
+  /* if we have reset the IM since the last character entered */
   guint GSEAL (need_im_reset) : 1;
 
   guint GSEAL (accepts_tab) : 1;

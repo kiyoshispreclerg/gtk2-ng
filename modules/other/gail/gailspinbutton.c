@@ -48,7 +48,7 @@ static gboolean  gail_spin_button_set_current_value (AtkValue       *obj,
                                                      const GValue   *value);
 static void      gail_spin_button_value_changed     (GtkAdjustment  *adjustment,
                                                      gpointer       data);
-        
+
 G_DEFINE_TYPE_WITH_CODE (GailSpinButton, gail_spin_button, GAIL_TYPE_ENTRY,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
 
@@ -82,9 +82,9 @@ gail_spin_button_real_initialize (AtkObject *obj,
 
   ATK_OBJECT_CLASS (gail_spin_button_parent_class)->initialize (obj, data);
 
-  gtk_spin_button = GTK_SPIN_BUTTON (data); 
+  gtk_spin_button = GTK_SPIN_BUTTON (data);
   /*
-   * If a GtkAdjustment already exists for the spin_button, 
+   * If a GtkAdjustment already exists for the spin_button,
    * create the GailAdjustment
    */
   if (gtk_spin_button->adjustment)
@@ -130,7 +130,7 @@ gail_spin_button_get_current_value (AtkValue       *obj,
   atk_value_get_current_value (ATK_VALUE (spin_button->adjustment), value);
 }
 
-static void      
+static void
 gail_spin_button_get_maximum_value (AtkValue       *obj,
                                     GValue         *value)
 {
@@ -148,7 +148,7 @@ gail_spin_button_get_maximum_value (AtkValue       *obj,
   atk_value_get_maximum_value (ATK_VALUE (spin_button->adjustment), value);
 }
 
-static void 
+static void
 gail_spin_button_get_minimum_value (AtkValue       *obj,
                                     GValue         *value)
 {
@@ -183,7 +183,7 @@ gail_spin_button_get_minimum_increment (AtkValue *obj, GValue *value)
   atk_value_get_minimum_increment (ATK_VALUE (spin_button->adjustment), value);
 }
 
-static gboolean  
+static gboolean
 gail_spin_button_set_current_value (AtkValue       *obj,
                                     const GValue   *value)
 {

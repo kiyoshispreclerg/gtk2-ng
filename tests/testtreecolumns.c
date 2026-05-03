@@ -288,7 +288,7 @@ view_column_model_drag_data_delete (GtkTreeDragSource *drag_source,
 				    GtkTreePath       *path)
 {
   /* Nothing -- we handle moves on the dest side */
-  
+
   return TRUE;
 }
 
@@ -298,7 +298,7 @@ view_column_model_row_drop_possible (GtkTreeDragDest   *drag_dest,
 				     GtkSelectionData  *selection_data)
 {
   GtkTreeModel *src_model;
-  
+
   if (gtk_tree_get_row_drag_data (selection_data,
 				  &src_model,
 				  NULL))
@@ -320,7 +320,7 @@ view_column_model_drag_data_received (GtkTreeDragDest   *drag_dest,
   GtkTreeModel *src_model;
   GtkTreePath *src_path = NULL;
   gboolean retval = FALSE;
-  
+
   if (gtk_tree_get_row_drag_data (selection_data,
 				  &src_model,
 				  &src_path))
@@ -349,7 +349,7 @@ view_column_model_drag_data_received (GtkTreeDragDest   *drag_dest,
 
       gtk_tree_path_free (src_path);
     }
-  
+
   return retval;
 }
 
@@ -635,7 +635,7 @@ move_to_left (GtkTreeModel *src,
 				  &iter, dest_iter);
   else
     gtk_list_store_append (GTK_LIST_STORE (left_tree_model), &iter);
-  
+
   gtk_list_store_set (GTK_LIST_STORE (left_tree_model), &iter, 0, label, 1, column, -1);
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (left_tree_view));
   gtk_tree_selection_select_iter (selection, &iter);
@@ -662,7 +662,7 @@ move_to_right (GtkTreeIter  *src_iter,
       before = (gtk_tree_path_get_indices (path))[0];
       gtk_tree_path_free (path);
     }
-  
+
   if (dest == top_right_tree_model)
     gtk_tree_view_insert_column (GTK_TREE_VIEW (sample_tree_view_top), column, before);
   else
@@ -680,7 +680,7 @@ move_up_or_down (GtkTreeModel *src,
   GtkTreeViewColumn *column;
   gchar *label;
   gint before = -1;
-  
+
   gtk_tree_model_get (src, src_iter, 0, &label, 1, &column, -1);
 
   if (dest_iter)
@@ -689,7 +689,7 @@ move_up_or_down (GtkTreeModel *src,
       before = (gtk_tree_path_get_indices (path))[0];
       gtk_tree_path_free (path);
     }
-  
+
   if (src == top_right_tree_model)
     gtk_tree_view_remove_column (GTK_TREE_VIEW (sample_tree_view_top), column);
   else
@@ -713,7 +713,7 @@ move_row  (GtkTreeModel *src,
     move_to_right (src_iter, dest, dest_iter);
   else if (dest == left_tree_model)
     move_to_left (src, src_iter, dest_iter);
-  else 
+  else
     move_up_or_down (src, src_iter, dest, dest_iter);
 }
 
@@ -791,7 +791,7 @@ main (int argc, char *argv[])
 
   /* Set up the test windows. */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL); 
+  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 300);
   gtk_window_set_title (GTK_WINDOW (window), "Top Window");
   swindow = gtk_scrolled_window_new (NULL, NULL);
@@ -800,7 +800,7 @@ main (int argc, char *argv[])
   gtk_widget_show_all (window);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL); 
+  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
   gtk_window_set_default_size (GTK_WINDOW (window), 300, 300);
   gtk_window_set_title (GTK_WINDOW (window), "Bottom Window");
   swindow = gtk_scrolled_window_new (NULL, NULL);
@@ -810,7 +810,7 @@ main (int argc, char *argv[])
 
   /* Set up the main window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL); 
+  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
   gtk_window_set_default_size (GTK_WINDOW (window), 500, 300);
   vbox = gtk_vbox_new (FALSE, 8);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
@@ -839,7 +839,7 @@ main (int argc, char *argv[])
   /* Middle Pane */
   vbox2 = gtk_vbox_new (FALSE, 8);
   gtk_box_pack_start (GTK_BOX (hbox), vbox2, FALSE, FALSE, 0);
-  
+
   bbox = gtk_vbutton_box_new ();
   gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_SPREAD);
   gtk_box_pack_start (GTK_BOX (vbox2), bbox, TRUE, TRUE, 0);
@@ -876,7 +876,7 @@ main (int argc, char *argv[])
                     "changed", G_CALLBACK (selection_changed), button);
   gtk_box_pack_start (GTK_BOX (bbox), button, FALSE, FALSE, 0);
 
-  
+
   /* Right Pane */
   vbox2 = gtk_vbox_new (FALSE, 8);
   gtk_box_pack_start (GTK_BOX (hbox), vbox2, TRUE, TRUE, 0);
@@ -910,7 +910,7 @@ main (int argc, char *argv[])
   gtk_container_add (GTK_CONTAINER (swindow), bottom_right_tree_view);
   gtk_box_pack_start (GTK_BOX (vbox2), swindow, TRUE, TRUE, 0);
 
-  
+
   /* Drag and Drop */
   gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (left_tree_view),
 					  GDK_BUTTON1_MASK,

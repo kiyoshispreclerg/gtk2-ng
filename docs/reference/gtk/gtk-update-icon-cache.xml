@@ -32,11 +32,11 @@
 
 <refsect1><title>Description</title>
 <para><command>gtk-update-icon-cache</command> creates mmap()able cache files for
-icon themes. 
+icon themes.
 </para>
 <para>
 It expects to be given the path to a icon theme directory containing an
-<filename>index.theme</filename>, e.g. <filename>/usr/share/icons/hicolor</filename>, 
+<filename>index.theme</filename>, e.g. <filename>/usr/share/icons/hicolor</filename>,
 and writes a <filename>icon-theme.cache</filename> containing cached information
 about the icons in the directory tree below the given directory.
 </para>
@@ -53,7 +53,7 @@ multiple applications, the overall memory consumption is reduced as well.
   <varlistentry>
     <term>--force</term>
     <term>-f</term>
-    <listitem><para>Overwrite an existing cache file even if it appears to be 
+    <listitem><para>Overwrite an existing cache file even if it appears to be
          uptodate.</para></listitem>
   </varlistentry>
 
@@ -63,7 +63,7 @@ multiple applications, the overall memory consumption is reduced as well.
     <listitem><para>Don't check for the existence of 'index.theme' in the icon theme
      directory. Without this option, <command>gtk-update-icon-cache</command> refuses
      to create an icon cache in a directory which does not appear to be the toplevel
-     directory of an icon theme. 
+     directory of an icon theme.
     </para></listitem>
   </varlistentry>
 
@@ -83,15 +83,15 @@ multiple applications, the overall memory consumption is reduced as well.
   <varlistentry>
     <term>--source</term>
     <term>-c</term>
-    <listitem><para>Output a C header file declaring a constant 
-     <replaceable>name</replaceable> with the contents of the icon 
+    <listitem><para>Output a C header file declaring a constant
+     <replaceable>name</replaceable> with the contents of the icon
      cache.</para></listitem>
   </varlistentry>
 
   <varlistentry>
     <term>--quiet</term>
     <term>-q</term>
-    <listitem><para>Turn off verbose output. 
+    <listitem><para>Turn off verbose output.
     </para></listitem>
   </varlistentry>
 

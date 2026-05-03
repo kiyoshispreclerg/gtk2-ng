@@ -1,5 +1,5 @@
 /* GTK - The GIMP Toolkit
- * gtkprintbackendfile.c: Default implementation of GtkPrintBackend 
+ * gtkprintbackendfile.c: Default implementation of GtkPrintBackend
  * for printing to a file
  * Copyright (C) 2003, Red Hat, Inc.
  *
@@ -128,19 +128,19 @@ gtk_print_backend_file_register_type (GTypeModule *module)
                                                          &print_backend_file_info, 0);
 }
 
-G_MODULE_EXPORT void 
+G_MODULE_EXPORT void
 pb_module_init (GTypeModule *module)
 {
   gtk_print_backend_file_register_type (module);
 }
 
-G_MODULE_EXPORT void 
+G_MODULE_EXPORT void
 pb_module_exit (void)
 {
 
 }
-  
-G_MODULE_EXPORT GtkPrintBackend * 
+
+G_MODULE_EXPORT GtkPrintBackend *
 pb_module_create (void)
 {
   return gtk_print_backend_file_new ();
@@ -215,12 +215,12 @@ output_file_from_settings (GtkPrintSettings *settings,
 			   const gchar      *default_format)
 {
   gchar *uri = NULL;
-  
+
   if (settings)
     uri = g_strdup (gtk_print_settings_get (settings, GTK_PRINT_SETTINGS_OUTPUT_URI));
 
   if (uri == NULL)
-    { 
+    {
       const gchar *extension;
       gchar *name, *locale_name, *path;
 
@@ -245,8 +245,8 @@ output_file_from_settings (GtkPrintSettings *settings,
                 break;
             }
         }
- 
-      /* default filename used for print-to-file */ 
+
+      /* default filename used for print-to-file */
       name = g_strdup_printf (_("output.%s"), extension);
       locale_name = g_filename_from_utf8 (name, -1, NULL, NULL, NULL);
       g_free (name);
@@ -280,7 +280,7 @@ _cairo_write (void                *closure,
   GTK_NOTE (PRINTING,
             g_print ("FILE Backend: Writting %i byte chunk to temp file\n", length));
 
-  while (length > 0) 
+  while (length > 0)
     {
       g_io_channel_write_chars (io, (const gchar *) data, length, &written, &error);
 
@@ -291,11 +291,11 @@ _cairo_write (void                *closure,
 
           g_error_free (error);
 	  return CAIRO_STATUS_WRITE_ERROR;
-	}    
+	}
 
       GTK_NOTE (PRINTING,
                 g_print ("FILE Backend: Wrote %i bytes to temp file\n", written));
-      
+
       data += written;
       length -= written;
     }
@@ -307,7 +307,7 @@ _cairo_write (void                *closure,
 static cairo_surface_t *
 file_printer_create_cairo_surface (GtkPrinter       *printer,
 				   GtkPrintSettings *settings,
-				   gdouble           width, 
+				   gdouble           width,
 				   gdouble           height,
 				   GIOChannel       *cache_io)
 {
@@ -374,7 +374,7 @@ file_print_cb (GtkPrintBackendFile *print_backend,
 
   if (ps->job)
     g_object_unref (ps->job);
- 
+
   g_free (ps);
 
   GDK_THREADS_LEAVE ();
@@ -393,7 +393,7 @@ file_write (GIOChannel   *source,
 
   error = NULL;
 
-  read_status = 
+  read_status =
     g_io_channel_read_chars (source,
                              buf,
                              _STREAM_MAX_CHUNK_SIZE,
@@ -478,7 +478,7 @@ error:
       return;
     }
 
-  g_io_add_watch (data_io, 
+  g_io_add_watch (data_io,
                   G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
                   (GIOFunc) file_write,
                   ps);
@@ -488,13 +488,13 @@ static void
 gtk_print_backend_file_init (GtkPrintBackendFile *backend)
 {
   GtkPrinter *printer;
-  
+
   printer = g_object_new (GTK_TYPE_PRINTER,
 			  "name", _("Print to File"),
 			  "backend", backend,
 			  "is-virtual", TRUE,
 			  "accepts-pdf", TRUE,
-			  NULL); 
+			  NULL);
 
   gtk_printer_set_has_details (printer, TRUE);
   gtk_printer_set_icon_name (printer, "gtk-save");
@@ -675,7 +675,7 @@ file_printer_get_options (GtkPrinter           *printer,
             current_format = FORMAT_PS;
             break;
           case FORMAT_SVG:
-            current_format = FORMAT_SVG;            
+            current_format = FORMAT_SVG;
             break;
         }
 
@@ -688,7 +688,7 @@ file_printer_get_options (GtkPrinter           *printer,
 
   uri = output_file_from_settings (settings, supported_formats[current_format]);
 
-  option = gtk_printer_option_new ("gtk-main-page-custom-input", _("File"), 
+  option = gtk_printer_option_new ("gtk-main-page-custom-input", _("File"),
 				   GTK_PRINTER_OPTION_TYPE_FILESAVE);
   gtk_printer_option_set_activates_default (option, TRUE);
   gtk_printer_option_set (option, uri);
@@ -698,7 +698,7 @@ file_printer_get_options (GtkPrinter           *printer,
 
   if (n_formats > 1)
     {
-      option = gtk_printer_option_new ("output-file-format", _("_Output format"), 
+      option = gtk_printer_option_new ("output-file-format", _("_Output format"),
 				       GTK_PRINTER_OPTION_TYPE_ALTERNATIVE);
       option->group = g_strdup ("GtkPrintDialogExtension");
 
@@ -756,12 +756,12 @@ file_printer_prepare_for_print (GtkPrinter       *printer,
   print_job->print_pages = gtk_print_settings_get_print_pages (settings);
   print_job->page_ranges = NULL;
   print_job->num_page_ranges = 0;
-  
+
   if (print_job->print_pages == GTK_PRINT_PAGES_RANGES)
     print_job->page_ranges =
       gtk_print_settings_get_page_ranges (settings,
 					  &print_job->num_page_ranges);
-  
+
   print_job->collate = gtk_print_settings_get_collate (settings);
   print_job->reverse = gtk_print_settings_get_reverse (settings);
   print_job->num_copies = gtk_print_settings_get_n_copies (settings);

@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -104,7 +104,7 @@ gtk_tearoff_menu_item_paint (GtkWidget   *widget,
   gint right_max;
   GtkArrowType arrow_type;
   GtkTextDirection direction;
-  
+
   if (gtk_widget_is_drawable (widget))
     {
       menu_item = GTK_MENU_ITEM (widget);
@@ -120,7 +120,7 @@ gtk_tearoff_menu_item_paint (GtkWidget   *widget,
       if (widget->state == GTK_STATE_PRELIGHT)
 	{
 	  gint selected_shadow_type;
-	  
+
 	  gtk_widget_style_get (widget,
 				"selected-shadow-type", &selected_shadow_type,
 				NULL);
@@ -150,8 +150,8 @@ gtk_tearoff_menu_item_paint (GtkWidget   *widget,
 		arrow_type = GTK_ARROW_LEFT;
 	      }
 	      else {
-		arrow_x = x + width - menu_item->toggle_size + (menu_item->toggle_size - ARROW_SIZE)/2; 
-		arrow_type = GTK_ARROW_RIGHT;	    
+		arrow_x = x + width - menu_item->toggle_size + (menu_item->toggle_size - ARROW_SIZE)/2;
+		arrow_type = GTK_ARROW_RIGHT;
 	      }
 	      x += menu_item->toggle_size + BORDER_SPACING;
 	    }
@@ -162,8 +162,8 @@ gtk_tearoff_menu_item_paint (GtkWidget   *widget,
 		arrow_type = GTK_ARROW_LEFT;
 	      }
 	      else {
-		arrow_x = x + width - 2 * ARROW_SIZE + ARROW_SIZE / 2; 
-		arrow_type = GTK_ARROW_RIGHT;	    
+		arrow_x = x + width - 2 * ARROW_SIZE + ARROW_SIZE / 2;
+		arrow_type = GTK_ARROW_RIGHT;
 	      }
 	      x += 2 * ARROW_SIZE;
 	    }
@@ -173,7 +173,7 @@ gtk_tearoff_menu_item_paint (GtkWidget   *widget,
 			   widget->state, shadow_type,
 			   NULL, widget, "tearoffmenuitem",
 			   arrow_type, FALSE,
-			   arrow_x, y + height / 2 - 5, 
+			   arrow_x, y + height / 2 - 5,
 			   ARROW_SIZE, ARROW_SIZE);
 	}
 
@@ -189,7 +189,7 @@ gtk_tearoff_menu_item_paint (GtkWidget   *widget,
 	    x1 = right_max - x;
 	    x2 = MAX (right_max - x - TEAR_LENGTH, 0);
 	  }
-	  
+
 	  gtk_paint_hline (widget->style, widget->window, GTK_STATE_NORMAL,
 			   NULL, widget, "tearoffmenuitem",
 			   x1, x2, y + (height - widget->style->ythickness) / 2);
@@ -213,7 +213,7 @@ gtk_tearoff_menu_item_activate (GtkMenuItem *menu_item)
   if (GTK_IS_MENU (GTK_WIDGET (menu_item)->parent))
     {
       GtkMenu *menu = GTK_MENU (GTK_WIDGET (menu_item)->parent);
-      
+
       gtk_widget_queue_resize (GTK_WIDGET (menu_item));
       gtk_menu_set_tearoff_state (GTK_MENU (GTK_WIDGET (menu_item)->parent),
 				  !menu->torn_off);
@@ -238,17 +238,17 @@ gtk_tearoff_menu_item_parent_set (GtkWidget *widget,
   GtkMenu *menu = GTK_IS_MENU (widget->parent) ? GTK_MENU (widget->parent) : NULL;
 
   if (previous)
-    g_signal_handlers_disconnect_by_func (previous, 
-					  tearoff_state_changed, 
+    g_signal_handlers_disconnect_by_func (previous,
+					  tearoff_state_changed,
 					  tearoff_menu_item);
-  
+
   if (menu)
     {
       tearoff_menu_item->torn_off = gtk_menu_get_tearoff_state (menu);
-      g_signal_connect (menu, "notify::tearoff-state", 
-			G_CALLBACK (tearoff_state_changed), 
+      g_signal_connect (menu, "notify::tearoff-state",
+			G_CALLBACK (tearoff_state_changed),
 			tearoff_menu_item);
-    }  
+    }
 }
 
 #define __GTK_TEAROFF_MENU_ITEM_C__

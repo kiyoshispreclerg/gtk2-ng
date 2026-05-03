@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -144,7 +144,7 @@ gtk_drawing_area_send_configure (GtkDrawingArea *darea)
   event->configure.y = widget->allocation.y;
   event->configure.width = widget->allocation.width;
   event->configure.height = widget->allocation.height;
-  
+
   gtk_widget_event (widget, event);
   gdk_event_free (event);
 }

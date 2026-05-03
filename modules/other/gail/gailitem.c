@@ -44,7 +44,7 @@ static void                  gail_item_notify_label_gtk(GObject       *obj,
                                                         GParamSpec    *pspec,
                                                         gpointer      data);
 
-/* atktext.h */ 
+/* atktext.h */
 static void	  atk_text_interface_init	   (AtkTextIface	*iface);
 
 static gchar*	  gail_item_get_text		   (AtkText	      *text,
@@ -79,7 +79,7 @@ static gint      gail_item_get_offset_at_point     (AtkText           *text,
                                                     gint              x,
                                                     gint              y,
 			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_item_get_run_attributes 
+static AtkAttributeSet* gail_item_get_run_attributes
                                                    (AtkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
@@ -168,7 +168,7 @@ gail_item_init_textutil (GailItem  *item,
       g_signal_connect (label,
                         "notify",
                         (GCallback) gail_item_notify_label_gtk,
-                        item);     
+                        item);
     }
   label_text = gtk_label_get_text (GTK_LABEL (label));
   gail_text_util_text_setup (item->textutil, label_text);
@@ -232,7 +232,7 @@ gail_item_get_name (AtkObject *obj)
           parent = gtk_widget_get_parent (widget);
           if (GTK_IS_MENU (parent))
             {
-              attach = gtk_menu_get_attach_widget (GTK_MENU (parent)); 
+              attach = gtk_menu_get_attach_widget (GTK_MENU (parent));
 
               if (GTK_IS_OPTION_MENU (attach))
                 {
@@ -261,7 +261,7 @@ gail_item_get_name (AtkObject *obj)
                       GailItem *item;
                       gint n_columns, i;
 
-                      model = gtk_combo_box_get_model (GTK_COMBO_BOX (parent));                       
+                      model = gtk_combo_box_get_model (GTK_COMBO_BOX (parent));
                       item = GAIL_ITEM (obj);
                       if (gtk_tree_model_iter_nth_child (model, &iter, NULL, index))
                         {
@@ -380,7 +380,7 @@ gail_item_get_text (AtkText *text,
     return NULL;
 
   item = GAIL_ITEM (text);
-  if (!item->textutil) 
+  if (!item->textutil)
     gail_item_init_textutil (item, label);
 
   label_text = gtk_label_get_text (GTK_LABEL (label));
@@ -389,7 +389,7 @@ gail_item_get_text (AtkText *text,
     return NULL;
   else
   {
-    return gail_text_util_get_substring (item->textutil, 
+    return gail_text_util_get_substring (item->textutil,
                                          start_pos, end_pos);
   }
 }
@@ -404,13 +404,13 @@ gail_item_get_text_before_offset (AtkText         *text,
   GtkWidget *widget;
   GtkWidget *label;
   GailItem *item;
-  
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = get_label_from_container (widget);
 
@@ -422,8 +422,8 @@ gail_item_get_text_before_offset (AtkText         *text,
     gail_item_init_textutil (item, label);
 
   return gail_text_util_get_text (item->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET, 
-                           boundary_type, offset, start_offset, end_offset); 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET,
+                           boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
@@ -436,13 +436,13 @@ gail_item_get_text_at_offset (AtkText         *text,
   GtkWidget *widget;
   GtkWidget *label;
   GailItem *item;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
     /* State is defunct */
     return NULL;
-  
+
   /* Get label */
   label = get_label_from_container (widget);
 
@@ -454,7 +454,7 @@ gail_item_get_text_at_offset (AtkText         *text,
     gail_item_init_textutil (item, label);
 
   return gail_text_util_get_text (item->textutil,
-                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET, 
+                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
 }
 
@@ -470,13 +470,13 @@ gail_item_get_text_after_offset (AtkText         *text,
   GailItem *item;
 
   widget = GTK_ACCESSIBLE (text)->widget;
-  
+
   if (widget == NULL)
   {
     /* State is defunct */
     return NULL;
   }
-  
+
   /* Get label */
   label = get_label_from_container (widget);
 
@@ -488,7 +488,7 @@ gail_item_get_text_after_offset (AtkText         *text,
     gail_item_init_textutil (item, label);
 
   return gail_text_util_get_text (item->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET, 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET,
                            boundary_type, offset, start_offset, end_offset);
 }
 
@@ -525,7 +525,7 @@ gail_item_get_character_extents (AtkText      *text,
   PangoRectangle char_rect;
   gint index, x_layout, y_layout;
   const gchar *label_text;
- 
+
   widget = GTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
@@ -536,22 +536,22 @@ gail_item_get_character_extents (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   index = g_utf8_offset_to_pointer (label_text, offset) - label_text;
   pango_layout_index_to_pos (gtk_label_get_layout (GTK_LABEL (label)), index, &char_rect);
-  
-  gail_misc_get_extents_from_pango_rectangle (label, &char_rect, 
-                    x_layout, y_layout, x, y, width, height, coords);
-} 
 
-static gint 
+  gail_misc_get_extents_from_pango_rectangle (label, &char_rect,
+                    x_layout, y_layout, x, y, width, height, coords);
+}
+
+static gint
 gail_item_get_offset_at_point (AtkText      *text,
                                gint         x,
                                gint         y,
 			       AtkCoordType coords)
-{ 
+{
   GtkWidget *widget;
   GtkWidget *label;
   gint index, x_layout, y_layout;
@@ -566,11 +566,11 @@ gail_item_get_offset_at_point (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return -1;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
-  
-  index = gail_misc_get_index_at_point_in_layout (label, 
-                                              gtk_label_get_layout (GTK_LABEL (label)), 
+
+  index = gail_misc_get_index_at_point_in_layout (label,
+                                              gtk_label_get_layout (GTK_LABEL (label)),
                                               x_layout, y_layout, x, y, coords);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   if (index == -1)
@@ -578,10 +578,10 @@ gail_item_get_offset_at_point (AtkText      *text,
       if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
         return g_utf8_strlen (label_text, -1);
 
-      return index;  
+      return index;
     }
   else
-    return g_utf8_pointer_to_offset (label_text, label_text + index);  
+    return g_utf8_pointer_to_offset (label_text, label_text + index);
 }
 
 static AtkAttributeSet*
@@ -605,19 +605,19 @@ gail_item_get_run_attributes (AtkText *text,
 
   if (!GTK_IS_LABEL(label))
     return NULL;
-  
+
   /* Get values set for entire label, if any */
   justify = gtk_label_get_justify (GTK_LABEL (label));
   if (justify != GTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_JUSTIFICATION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
   dir = gtk_widget_get_direction (label);
   if (dir == GTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_DIRECTION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
     }
@@ -654,7 +654,7 @@ gail_item_get_default_attributes (AtkText *text)
   return at_set;
 }
 
-static gunichar 
+static gunichar
 gail_item_get_character_at_offset (AtkText *text,
                                    gint	   offset)
 {
@@ -688,11 +688,11 @@ get_label_from_container (GtkWidget *container)
 
   if (!GTK_IS_CONTAINER (container))
     return NULL;
- 
+
   children = gtk_container_get_children (GTK_CONTAINER (container));
   label = NULL;
 
-  for (tmp_list = children; tmp_list != NULL; tmp_list = tmp_list->next) 
+  for (tmp_list = children; tmp_list != NULL; tmp_list = tmp_list->next)
     {
       if (GTK_IS_LABEL (tmp_list->data))
 	{

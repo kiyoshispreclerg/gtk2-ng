@@ -51,7 +51,7 @@ main (int argc, char *argv[])
   GList *list;
   int size = 48;
   int i;
-  
+
   gtk_init (&argc, &argv);
 
   if (argc < 3)
@@ -61,9 +61,9 @@ main (int argc, char *argv[])
     }
 
   themename = argv[2];
-  
+
   icon_theme = gtk_icon_theme_new ();
-  
+
   gtk_icon_theme_set_custom_theme (icon_theme, themename);
 
   if (strcmp (argv[1], "display") == 0)
@@ -79,10 +79,10 @@ main (int argc, char *argv[])
 	  usage ();
 	  return 1;
 	}
-      
+
       if (argc >= 5)
 	size = atoi (argv[4]);
-      else 
+      else
 	size = GTK_ICON_SIZE_BUTTON;
 
       error = NULL;
@@ -102,7 +102,7 @@ main (int argc, char *argv[])
       g_signal_connect (window, "delete-event",
                         G_CALLBACK (gtk_main_quit), window);
       gtk_widget_show_all (window);
-      
+
       gtk_main ();
     }
   else if (strcmp (argv[1], "list") == 0)
@@ -114,7 +114,7 @@ main (int argc, char *argv[])
 
       list = gtk_icon_theme_list_icons (icon_theme,
 					   context);
-      
+
       while (list)
 	{
 	  g_print ("%s\n", (char *)list->data);
@@ -124,7 +124,7 @@ main (int argc, char *argv[])
   else if (strcmp (argv[1], "contexts") == 0)
     {
       list = gtk_icon_theme_list_contexts (icon_theme);
-      
+
       while (list)
 	{
 	  g_print ("%s\n", (char *)list->data);
@@ -139,15 +139,15 @@ main (int argc, char *argv[])
 	  usage ();
 	  return 1;
 	}
-      
+
       if (argc >= 5)
 	size = atoi (argv[4]);
-      
+
       icon_info = gtk_icon_theme_lookup_icon (icon_theme, argv[3], size, GTK_ICON_LOOKUP_USE_BUILTIN);
       g_print ("icon for %s at %dx%d is %s\n", argv[3], size, size,
 	       icon_info ? (gtk_icon_info_get_builtin_pixbuf (icon_info) ? "<builtin>" : gtk_icon_info_get_filename (icon_info)) : "<none>");
 
-      if (icon_info) 
+      if (icon_info)
 	{
 	  if (gtk_icon_info_get_embedded_rect (icon_info, &embedded_rect))
 	    {
@@ -155,7 +155,7 @@ main (int argc, char *argv[])
 		       embedded_rect.x, embedded_rect.y,
 		       embedded_rect.width, embedded_rect.height);
 	    }
-	  
+
 	  if (gtk_icon_info_get_attach_points (icon_info, &attach_points, &n_attach_points))
 	    {
 	      g_print ("Attach Points: ");
@@ -166,12 +166,12 @@ main (int argc, char *argv[])
 	      g_free (attach_points);
 	      g_print ("\n");
 	    }
-	  
+
 	  display_name = gtk_icon_info_get_display_name (icon_info);
-	  
+
 	  if (display_name)
 	    g_print ("Display name: %s\n", display_name);
-	  
+
 	  gtk_icon_info_free (icon_info);
 	}
     }
@@ -181,9 +181,9 @@ main (int argc, char *argv[])
       usage ();
       return 1;
     }
- 
+
 
   g_object_unref (icon_theme);
-  
+
   return 0;
 }

@@ -31,7 +31,7 @@ static const gchar* gail_clist_cell_get_name (AtkObject *accessible);
 
 G_DEFINE_TYPE (GailCListCell, gail_clist_cell, GAIL_TYPE_CELL)
 
-static void	 
+static void
 gail_clist_cell_class_init (GailCListCellClass *klass)
 {
   AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
@@ -44,7 +44,7 @@ gail_clist_cell_init (GailCListCell *cell)
 {
 }
 
-AtkObject* 
+AtkObject*
 gail_clist_cell_new (void)
 {
   GObject *object;
@@ -58,7 +58,7 @@ gail_clist_cell_new (void)
   atk_object->role = ATK_ROLE_TABLE_CELL;
 
   g_return_val_if_fail (!ATK_IS_TEXT (atk_object), NULL);
-  
+
   return atk_object;
 }
 
@@ -84,7 +84,7 @@ gail_clist_cell_get_name (AtkObject *accessible)
          * State is defunct
          */
         return NULL;
- 
+
       clist = GTK_CLIST (widget);
       g_return_val_if_fail (clist->columns, NULL);
       row = cell->index / clist->columns;

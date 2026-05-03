@@ -72,7 +72,7 @@ static gboolean         configure_event_watcher                 (GSignalInvocati
                                                                  guint                  n_param_values,
                                                                  const GValue           *param_values,
                                                                  gpointer               data);
-                                                                  
+
 
 static AtkObject* root = NULL;
 static GHashTable *listener_list = NULL;
@@ -98,7 +98,7 @@ struct _GailKeyEventInfo
 
 G_DEFINE_TYPE (GailUtil, gail_util, ATK_TYPE_UTIL)
 
-static void	 
+static void
 gail_util_class_init (GailUtilClass *klass)
 {
   AtkUtilClass *atk_class;
@@ -119,7 +119,7 @@ gail_util_class_init (GailUtilClass *klass)
   atk_class->get_toolkit_name = gail_util_get_toolkit_name;
   atk_class->get_toolkit_version = gail_util_get_toolkit_version;
 
-  listener_list = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, 
+  listener_list = g_hash_table_new_full(g_int_hash, g_int_equal, NULL,
      _listener_info_destroy);
 }
 
@@ -192,7 +192,7 @@ gail_util_remove_global_event_listener (guint remove_listener)
       }
     else
       {
-        g_warning("No listener with the specified listener id %d", 
+        g_warning("No listener with the specified listener id %d",
           remove_listener);
       }
   }
@@ -223,7 +223,7 @@ atk_key_event_from_gdk_event_key (GdkEventKey *key)
   event->state = key->state;
   event->keyval = key->keyval;
   event->length = key->length;
-  if (key->string && key->string [0] && 
+  if (key->string && key->string [0] &&
       g_unichar_isgraph (g_utf8_get_char (key->string)))
     {
       event->string = key->string;
@@ -231,11 +231,11 @@ atk_key_event_from_gdk_event_key (GdkEventKey *key)
   else if (key->type == GDK_KEY_PRESS ||
            key->type == GDK_KEY_RELEASE)
     {
-      event->string = gdk_keyval_name (key->keyval);	    
+      event->string = gdk_keyval_name (key->keyval);
     }
   event->keycode = key->hardware_keycode;
   event->timestamp = key->time;
-#ifdef GAIL_DEBUG  
+#ifdef GAIL_DEBUG
   g_print ("GailKey:\tsym %u\n\tmods %x\n\tcode %u\n\ttime %lx\n",
 	   (unsigned int) event->keyval,
 	   (unsigned int) event->state,
@@ -457,7 +457,7 @@ state_event_watcher (GSignalInvocationHint  *hint,
     }
   else
     return TRUE;
-  
+
   atk_obj = gtk_widget_get_accessible (widget);
 
   if (GAIL_IS_WINDOW (atk_obj))
@@ -465,10 +465,10 @@ state_event_watcher (GSignalInvocationHint  *hint,
       parent = atk_object_get_parent (atk_obj);
       if (parent == atk_get_root ())
 	{
-	  signal_id = g_signal_lookup (signal_name, GAIL_TYPE_WINDOW); 
+	  signal_id = g_signal_lookup (signal_name, GAIL_TYPE_WINDOW);
 	  g_signal_emit (atk_obj, signal_id, 0);
 	}
-      
+
       return TRUE;
     }
   else
@@ -489,11 +489,11 @@ window_added (AtkObject *atk_obj,
   widget = GTK_ACCESSIBLE (child)->widget;
   gail_return_if_fail (widget);
 
-  g_signal_connect (widget, "focus-in-event",  
+  g_signal_connect (widget, "focus-in-event",
                     (GCallback) window_focus, NULL);
-  g_signal_connect (widget, "focus-out-event",  
+  g_signal_connect (widget, "focus-out-event",
                     (GCallback) window_focus, NULL);
-  g_signal_emit (child, g_signal_lookup ("create", GAIL_TYPE_WINDOW), 0); 
+  g_signal_emit (child, g_signal_lookup ("create", GAIL_TYPE_WINDOW), 0);
 }
 
 
@@ -523,11 +523,11 @@ window_removed (AtkObject *atk_obj,
 
       atk_obj = gtk_widget_get_accessible (widget);
       signal_name =  "deactivate";
-      g_signal_emit (atk_obj, g_signal_lookup (signal_name, GAIL_TYPE_WINDOW), 0); 
+      g_signal_emit (atk_obj, g_signal_lookup (signal_name, GAIL_TYPE_WINDOW), 0);
     }
 
   g_signal_handlers_disconnect_by_func (widget, (gpointer) window_focus, NULL);
-  g_signal_emit (child, g_signal_lookup ("destroy", GAIL_TYPE_WINDOW), 0); 
+  g_signal_emit (child, g_signal_lookup ("destroy", GAIL_TYPE_WINDOW), 0);
 }
 
 static gboolean
@@ -541,12 +541,12 @@ window_focus (GtkWidget     *widget,
 
   atk_obj = gtk_widget_get_accessible (widget);
   signal_name =  (event->in) ? "activate" : "deactivate";
-  g_signal_emit (atk_obj, g_signal_lookup (signal_name, GAIL_TYPE_WINDOW), 0); 
+  g_signal_emit (atk_obj, g_signal_lookup (signal_name, GAIL_TYPE_WINDOW), 0);
 
   return FALSE;
 }
 
-static gboolean 
+static gboolean
 configure_event_watcher (GSignalInvocationHint  *hint,
                          guint                  n_param_values,
                          const GValue           *param_values,
@@ -598,10 +598,10 @@ configure_event_watcher (GSignalInvocationHint  *hint,
       parent = atk_object_get_parent (atk_obj);
       if (parent == atk_get_root ())
 	{
-	  signal_id = g_signal_lookup (signal_name, GAIL_TYPE_WINDOW); 
+	  signal_id = g_signal_lookup (signal_name, GAIL_TYPE_WINDOW);
 	  g_signal_emit (atk_obj, signal_id, 0);
 	}
-      
+
       return TRUE;
     }
   else
@@ -612,7 +612,7 @@ configure_event_watcher (GSignalInvocationHint  *hint,
 
 G_DEFINE_TYPE (GailMisc, gail_misc, ATK_TYPE_MISC)
 
-static void	 
+static void
 gail_misc_class_init (GailMiscClass *klass)
 {
   AtkMiscClass *miscclass = ATK_MISC_CLASS (klass);

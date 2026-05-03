@@ -89,7 +89,7 @@ draw_brush (GtkWidget *widget, GdkInputSource source,
   gdk_draw_rectangle (pixmap, gc, TRUE,
                       update_rect.x, update_rect.y,
                       update_rect.width, update_rect.height);
-  gtk_widget_queue_draw_area (widget, 
+  gtk_widget_queue_draw_area (widget,
                       update_rect.x, update_rect.y,
                       update_rect.width, update_rect.height);
 }
@@ -104,7 +104,7 @@ static gboolean
 button_press_event (GtkWidget *widget, GdkEventButton *event)
 {
   print_button_press (event->device);
-  
+
   if (event->button == 1 && pixmap != NULL) {
     gdouble pressure;
     gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
@@ -121,7 +121,7 @@ motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
   gdouble pressure;
   GdkModifierType state;
 
-  if (event->is_hint) 
+  if (event->is_hint)
     {
       gdk_device_get_state (event->device, event->window, NULL, &state);
       gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_X, &x);
@@ -135,10 +135,10 @@ motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
       gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
       state = event->state;
     }
-    
+
   if (state & GDK_BUTTON1_MASK && pixmap != NULL)
     draw_brush (widget, event->device->source, x, y, pressure);
-  
+
   return TRUE;
 }
 

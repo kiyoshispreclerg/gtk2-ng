@@ -27,7 +27,7 @@ static void gtk_printer_cups_finalize   (GObject             *object);
 static GtkPrinterClass *gtk_printer_cups_parent_class;
 static GType gtk_printer_cups_type = 0;
 
-void 
+void
 gtk_printer_cups_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
@@ -59,7 +59,7 @@ static void
 gtk_printer_cups_class_init (GtkPrinterCupsClass *class)
 {
   GObjectClass *object_class = (GObjectClass *) class;
-	
+
   gtk_printer_cups_parent_class = g_type_class_peek_parent (class);
 
   object_class->finalize = gtk_printer_cups_finalize;

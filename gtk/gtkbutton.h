@@ -72,14 +72,14 @@ struct _GtkButton
 struct _GtkButtonClass
 {
   GtkBinClass        parent_class;
-  
+
   void (* pressed)  (GtkButton *button);
   void (* released) (GtkButton *button);
   void (* clicked)  (GtkButton *button);
   void (* enter)    (GtkButton *button);
   void (* leave)    (GtkButton *button);
   void (* activate) (GtkButton *button);
-  
+
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
   void (*_gtk_reserved2) (void);

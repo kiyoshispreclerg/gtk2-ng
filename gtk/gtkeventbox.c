@@ -76,7 +76,7 @@ gtk_event_box_class_init (GtkEventBoxClass *class)
 
   gobject_class->set_property = gtk_event_box_set_property;
   gobject_class->get_property = gtk_event_box_get_property;
-  
+
   widget_class->realize = gtk_event_box_realize;
   widget_class->unrealize = gtk_event_box_unrealize;
   widget_class->map = gtk_event_box_map;
@@ -107,7 +107,7 @@ gtk_event_box_init (GtkEventBox *event_box)
   GtkEventBoxPrivate *priv;
 
   gtk_widget_set_has_window (GTK_WIDGET (event_box), TRUE);
- 
+
   priv = GTK_EVENT_BOX_GET_PRIVATE (event_box);
   priv->above_child = FALSE;
 }
@@ -118,40 +118,40 @@ gtk_event_box_new (void)
   return g_object_new (GTK_TYPE_EVENT_BOX, NULL);
 }
 
-static void 
+static void
 gtk_event_box_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
 			    GParamSpec   *pspec)
 {
   GtkEventBox *event_box;
-  
+
   event_box = GTK_EVENT_BOX (object);
-  
+
   switch (prop_id)
     {
     case PROP_VISIBLE_WINDOW:
       gtk_event_box_set_visible_window (event_box, g_value_get_boolean (value));
-      break;	  
+      break;
     case PROP_ABOVE_CHILD:
       gtk_event_box_set_above_child (event_box, g_value_get_boolean (value));
-      break;	  
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static void 
+static void
 gtk_event_box_get_property (GObject     *object,
 			    guint        prop_id,
 			    GValue      *value,
 			    GParamSpec  *pspec)
 {
   GtkEventBox *event_box;
-  
+
   event_box = GTK_EVENT_BOX (object);
-  
+
   switch (prop_id)
     {
     case PROP_VISIBLE_WINDOW:
@@ -194,19 +194,19 @@ gtk_event_box_get_visible_window (GtkEventBox *event_box)
  * window. The default is to use visible windows.
  *
  * In an invisible window event box, the window that the
- * event box creates is a %GDK_INPUT_ONLY window, which 
+ * event box creates is a %GDK_INPUT_ONLY window, which
  * means that it is invisible and only serves to receive
  * events.
- * 
+ *
  * A visible window event box creates a visible (%GDK_INPUT_OUTPUT)
- * window that acts as the parent window for all the widgets  
+ * window that acts as the parent window for all the widgets
  * contained in the event box.
- * 
+ *
  * You should generally make your event box invisible if
  * you just want to trap events. Creating a visible window
  * may cause artifacts that are visible to the user, especially
  * if the user is using a theme with gradients or pixmaps.
- * 
+ *
  * The main reason to create a non input-only event box is if
  * you want to set the background to a different color or
  * draw on it.
@@ -215,17 +215,17 @@ gtk_event_box_get_visible_window (GtkEventBox *event_box)
  * There is one unexpected issue for an invisible event box that has its
  * window below the child. (See gtk_event_box_set_above_child().)
  * Since the input-only window is not an ancestor window of any windows
- * that descendent widgets of the event box create, events on these 
+ * that descendent widgets of the event box create, events on these
  * windows aren't propagated up by the windowing system, but only by GTK+.
  * The practical effect of this is if an event isn't in the event
- * mask for the descendant window (see gtk_widget_add_events()),  
- * it won't be received by the event box. 
+ * mask for the descendant window (see gtk_widget_add_events()),
+ * it won't be received by the event box.
  * </para><para>
  * This problem doesn't occur for visible event boxes, because in
  * that case, the event box window is actually the ancestor of the
  * descendant windows, not just at the same place on the screen.
  * </para></note>
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -265,7 +265,7 @@ gtk_event_box_set_visible_window (GtkEventBox *event_box,
 
       if (gtk_widget_get_visible (widget))
 	gtk_widget_queue_resize (widget);
-      
+
       g_object_notify (G_OBJECT (event_box), "visible-window");
     }
 }
@@ -307,7 +307,7 @@ gtk_event_box_get_above_child (GtkEventBox *event_box)
  * to its parents.
  *
  * The default is to keep the window below the child.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -343,11 +343,11 @@ gtk_event_box_set_above_child (GtkEventBox *event_box,
 
 	      if (visible)
 		gtk_widget_hide (widget);
-	      
+
 	      gtk_widget_unrealize (widget);
-	      
+
 	      gtk_widget_realize (widget);
-	      
+
 	      if (visible)
 		gtk_widget_show (widget);
 	    }
@@ -355,7 +355,7 @@ gtk_event_box_set_above_child (GtkEventBox *event_box,
 
       if (gtk_widget_get_visible (widget))
 	gtk_widget_queue_resize (widget);
-      
+
       g_object_notify (G_OBJECT (event_box), "above-child");
     }
 }
@@ -373,7 +373,7 @@ gtk_event_box_realize (GtkWidget *widget)
   gtk_widget_set_realized (widget, TRUE);
 
   border_width = GTK_CONTAINER (widget)->border_width;
-  
+
   attributes.x = widget->allocation.x + border_width;
   attributes.y = widget->allocation.y + border_width;
   attributes.width = widget->allocation.width - 2*border_width;
@@ -395,9 +395,9 @@ gtk_event_box_realize (GtkWidget *widget)
       attributes.visual = gtk_widget_get_visual (widget);
       attributes.colormap = gtk_widget_get_colormap (widget);
       attributes.wclass = GDK_INPUT_OUTPUT;
-      
+
       attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-      
+
       widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
 				       &attributes, attributes_mask);
       gdk_window_set_user_data (widget->window, widget);
@@ -423,7 +423,7 @@ gtk_event_box_realize (GtkWidget *widget)
 
 
   widget->style = gtk_style_attach (widget->style, widget->window);
-  
+
   if (visible_window)
     gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 }
@@ -432,9 +432,9 @@ static void
 gtk_event_box_unrealize (GtkWidget *widget)
 {
   GtkEventBoxPrivate *priv;
-  
+
   priv = GTK_EVENT_BOX_GET_PRIVATE (widget);
-  
+
   if (priv->event_window != NULL)
     {
       gdk_window_set_user_data (priv->event_window, NULL);
@@ -488,7 +488,7 @@ gtk_event_box_size_request (GtkWidget      *widget,
   if (bin->child && gtk_widget_get_visible (bin->child))
     {
       GtkRequisition child_requisition;
-      
+
       gtk_widget_size_request (bin->child, &child_requisition);
 
       requisition->width += child_requisition.width;
@@ -503,10 +503,10 @@ gtk_event_box_size_allocate (GtkWidget     *widget,
   GtkBin *bin;
   GtkAllocation child_allocation;
   GtkEventBoxPrivate *priv;
-  
+
   widget->allocation = *allocation;
   bin = GTK_BIN (widget);
-  
+
   if (!gtk_widget_get_has_window (widget))
     {
       child_allocation.x = allocation->x + GTK_CONTAINER (widget)->border_width;
@@ -530,7 +530,7 @@ gtk_event_box_size_allocate (GtkWidget     *widget,
 				child_allocation.y,
 				child_allocation.width,
 				child_allocation.height);
-      
+
       if (gtk_widget_get_has_window (widget))
 	gdk_window_move_resize (widget->window,
 				allocation->x + GTK_CONTAINER (widget)->border_width,
@@ -538,7 +538,7 @@ gtk_event_box_size_allocate (GtkWidget     *widget,
 				child_allocation.width,
 				child_allocation.height);
     }
-  
+
   if (bin->child)
     gtk_widget_size_allocate (bin->child, &child_allocation);
 }

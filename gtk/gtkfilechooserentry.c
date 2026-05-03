@@ -427,7 +427,7 @@ gtk_file_chooser_entry_tab_handler (GtkWidget *widget,
   /* This is a bit evil -- it makes Tab never leave the entry. It basically
    * makes it 'safe' for people to hit. */
   gtk_editable_get_selection_bounds (editable, &start, &end);
-      
+
   if (start != end)
     gtk_editable_set_position (editable, MAX (start, end));
   else
@@ -443,7 +443,7 @@ gtk_file_chooser_entry_focus_out_event (GtkWidget     *widget,
   GtkFileChooserEntry *chooser_entry = GTK_FILE_CHOOSER_ENTRY (widget);
 
   set_complete_on_load (chooser_entry, FALSE);
- 
+
   return GTK_WIDGET_CLASS (_gtk_file_chooser_entry_parent_class)->focus_out_event (widget, event);
 }
 
@@ -605,7 +605,7 @@ set_completion_folder (GtkFileChooserEntry *chooser_entry,
 
   g_free (chooser_entry->dir_part);
   chooser_entry->dir_part = g_strdup (dir_part);
-  
+
   chooser_entry->current_folder_loaded = FALSE;
 
   discard_completion_store (chooser_entry);
@@ -773,7 +773,7 @@ _gtk_file_chooser_entry_set_base_folder (GtkFileChooserEntry *chooser_entry,
   g_return_if_fail (file == NULL || G_IS_FILE (file));
 
   if (chooser_entry->base_folder == file ||
-      (file != NULL && chooser_entry->base_folder != NULL 
+      (file != NULL && chooser_entry->base_folder != NULL
        && g_file_equal (chooser_entry->base_folder, file)))
     return;
 
@@ -845,8 +845,8 @@ _gtk_file_chooser_entry_get_file_part (GtkFileChooserEntry *chooser_entry)
  * @chooser_entry: a #GtkFileChooserEntry
  * @action: the action which is performed by the file selector using this entry
  *
- * Sets action which is performed by the file selector using this entry. 
- * The #GtkFileChooserEntry will use different completion strategies for 
+ * Sets action which is performed by the file selector using this entry.
+ * The #GtkFileChooserEntry will use different completion strategies for
  * different actions.
  **/
 void
@@ -854,7 +854,7 @@ _gtk_file_chooser_entry_set_action (GtkFileChooserEntry *chooser_entry,
 				    GtkFileChooserAction action)
 {
   g_return_if_fail (GTK_IS_FILE_CHOOSER_ENTRY (chooser_entry));
-  
+
   if (chooser_entry->action != action)
     {
       GtkEntryCompletion *comp;
@@ -891,7 +891,7 @@ _gtk_file_chooser_entry_set_action (GtkFileChooserEntry *chooser_entry,
  * _gtk_file_chooser_entry_get_action:
  * @chooser_entry: a #GtkFileChooserEntry
  *
- * Gets the action for this entry. 
+ * Gets the action for this entry.
  *
  * Returns: the action
  **/
@@ -900,7 +900,7 @@ _gtk_file_chooser_entry_get_action (GtkFileChooserEntry *chooser_entry)
 {
   g_return_val_if_fail (GTK_IS_FILE_CHOOSER_ENTRY (chooser_entry),
 			GTK_FILE_CHOOSER_ACTION_OPEN);
-  
+
   return chooser_entry->action;
 }
 

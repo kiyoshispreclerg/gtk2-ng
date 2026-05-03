@@ -1,5 +1,5 @@
 Information about the icon theme cache format used by GTK+
-for more information, see the mailing list threads at 
+for more information, see the mailing list threads at
 
 http://mail.gnome.org/archives/gtk-devel-list/2004-April/msg00065.html
 http://lists.freedesktop.org/archives/xdg/2004-October/005140.html
@@ -10,13 +10,13 @@ information, to reduce the amount of stating and disk seeking at
 application startup, and to reduce the memory overhead if each app
 allocates all the icon theme data separately.
 
-The proposal is to keep the information about the icons in the 
-directory tree below each icon theme directory in an mmap()able 
-cache file (There is basically one cache file per index.theme file). 
+The proposal is to keep the information about the icons in the
+directory tree below each icon theme directory in an mmap()able
+cache file (There is basically one cache file per index.theme file).
 
 The cache doesn't try to hold all information from the index.theme files
 that you would need to do lookups; it turns out that with the icon theme
-specification, this isn't even sensible - you can install a 
+specification, this isn't even sensible - you can install a
 
  $HOME/.local/share/icons/Bluecurve/index.theme
 
@@ -32,7 +32,7 @@ is caching of the actual image data; the file format is has an
 IMAGE_DATA_OFFSET member to allow adding that compatibly. An
 implementation of the caching scheme for GTK+ can be found at [2]. The
 cache generator which is included in the patch depends only on glib, and
-it may be a good idea to move it to freedesktop.org as well. 
+it may be a good idea to move it to freedesktop.org as well.
 
 
 Regards, Matthias Clasen
@@ -41,32 +41,32 @@ Regards, Matthias Clasen
 The cache file format:
 
 Header:
-2			CARD16		MAJOR_VERSION	1	
-2			CARD16		MINOR_VERSION	0	
-4			CARD32		HASH_OFFSET		
+2			CARD16		MAJOR_VERSION	1
+2			CARD16		MINOR_VERSION	0
+4			CARD32		HASH_OFFSET
 4			CARD32		DIRECTORY_LIST_OFFSET
 
 DirectoryList:
-4			CARD32		N_DIRECTORIES		
-4*N_DIRECTORIES		CARD32		DIRECTORY_OFFSET	
+4			CARD32		N_DIRECTORIES
+4*N_DIRECTORIES		CARD32		DIRECTORY_OFFSET
 
 Hash:
-4			CARD32		N_BUCKETS		
-4*N_BUCKETS		CARD32		ICON_OFFSET	
+4			CARD32		N_BUCKETS
+4*N_BUCKETS		CARD32		ICON_OFFSET
 
 Icon:
-4			CARD32		CHAIN_OFFSET		
-4			CARD32		NAME_OFFSET		
-4			CARD32		IMAGE_LIST_OFFSET	
+4			CARD32		CHAIN_OFFSET
+4			CARD32		NAME_OFFSET
+4			CARD32		IMAGE_LIST_OFFSET
 
 ImageList:
-4			CARD32		N_IMAGES		
-8*N_IMAGES		Image		IMAGES			
+4			CARD32		N_IMAGES
+8*N_IMAGES		Image		IMAGES
 
 Image:
-2			CARD16		DIRECTORY_INDEX	
-2			ICON_FLAGS	FLAGS			
-4			CARD32		IMAGE_DATA_OFFSET	
+2			CARD16		DIRECTORY_INDEX
+2			ICON_FLAGS	FLAGS
+4			CARD32		IMAGE_DATA_OFFSET
 
 ICON_FLAGS
 HAS_SUFFIX_PNG	1
@@ -111,7 +111,7 @@ DisplayNameList:
 DisplayName:
 4			CARD32		DISPLAY_LANG_OFFSET
 4			CARD32		DISPLAY_NAME_OFFSET
-		
+
 
 Notes:
 
@@ -123,7 +123,7 @@ Notes:
 
 * All numbers are in network (big-endian) order. This is
   necessary because the data will be stored in arch-independent
-  directories like /usr/share/icons or even in user's 
+  directories like /usr/share/icons or even in user's
   home directories.
 
 * The hash function is that used by g_str_hash()

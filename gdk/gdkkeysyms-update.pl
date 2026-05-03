@@ -2,7 +2,7 @@
 
 # Updates http://git.gnome.org/cgit/gtk+/tree/gdk/gdkkeysyms.h from upstream (X.org 7.x),
 # from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
-# 
+#
 # Author  : Simos Xenitellis <simos at gnome dot org>.
 # Authos  : Bastien Nocera <hadess@hadess.net>
 # Version : 1.2
@@ -10,7 +10,7 @@
 # Input   : http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
 # Input   : http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h
 # Output  : http://git.gnome.org/cgit/gtk+/tree/gdk/gdkkeysyms.h
-# 
+#
 # Notes   : It downloads keysymdef.h from the Internet, if not found locally,
 # Notes   : and creates an updated gdkkeysyms.h
 # Notes   : This version updates the source of gdkkeysyms.h from CVS to the GIT server.
@@ -24,7 +24,7 @@ if ( ! -f "keysymdef.h" )
 {
 	print "Trying to download keysymdef.h from\n";
 	print "http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h\n";
-	die "Unable to download keysymdef.h from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h\n" 
+	die "Unable to download keysymdef.h from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h\n"
 		unless system("wget -c -O keysymdef.h \"http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h\"") == 0;
 	print " done.\n\n";
 }
@@ -39,7 +39,7 @@ if ( ! -f "XF86keysym.h" )
 {
 	print "Trying to download XF86keysym.h from\n";
 	print "http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h\n";
-	die "Unable to download keysymdef.h from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h\n" 
+	die "Unable to download keysymdef.h from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h\n"
 		unless system("wget -c -O XF86keysym.h \"http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h\"") == 0;
 	print " done.\n\n";
 }
@@ -113,7 +113,7 @@ print OUT_GDKKEYSYMS<<EOF;
 #define __GDK_KEYSYMS_H__
 
 /* For GTK 2, we include compatibility defines by default. */
-#include <gdk/gdkkeysyms-compat.h> 
+#include <gdk/gdkkeysyms-compat.h>
 
 EOF
 
@@ -140,7 +140,7 @@ while (<IN_KEYSYMDEF>)
 
 	$_ = $keysymelements[1];
 	die "Internal error, was expecting \"XC_*\", found: $_\n" if ( ! /^XK_/ );
-	
+
 	$_ = $keysymelements[2];
 	die "Internal error, was expecting \"0x*\", found: $_\n" if ( ! /^0x/ );
 

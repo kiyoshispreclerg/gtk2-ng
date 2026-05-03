@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -98,7 +98,7 @@ gdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError
 
   if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
-      g_set_error (error, 
+      g_set_error (error,
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
 		   _("Error parsing option --gdk-debug"));
       return FALSE;
@@ -118,7 +118,7 @@ gdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GEr
 
   if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
-      g_set_error (error, 
+      g_set_error (error,
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
 		   _("Error parsing option --gdk-no-debug"));
       return FALSE;
@@ -160,20 +160,20 @@ static const GOptionEntry gdk_args[] = {
     /* Description of --screen=SCREEN in --help output */      N_("X screen to use"),
     /* Placeholder in --screen=SCREEN in --help output */      N_("SCREEN") },
 #ifdef G_ENABLE_DEBUG
-  { "gdk-debug",    0, 0, G_OPTION_ARG_CALLBACK, gdk_arg_debug_cb,  
+  { "gdk-debug",    0, 0, G_OPTION_ARG_CALLBACK, gdk_arg_debug_cb,
     /* Description of --gdk-debug=FLAGS in --help output */    N_("GDK debugging flags to set"),
     /* Placeholder in --gdk-debug=FLAGS in --help output */    N_("FLAGS") },
-  { "gdk-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, gdk_arg_no_debug_cb, 
+  { "gdk-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, gdk_arg_no_debug_cb,
     /* Description of --gdk-no-debug=FLAGS in --help output */ N_("GDK debugging flags to unset"),
     /* Placeholder in --gdk-no-debug=FLAGS in --help output */ N_("FLAGS") },
-#endif 
+#endif
   { NULL }
 };
 
 /**
  * gdk_add_option_entries_libgtk_only:
  * @group: An option group.
- * 
+ *
  * Appends gdk option entries to the passed in option group. This is
  * not public API and must not be used by applications.
  **/
@@ -195,7 +195,7 @@ gdk_pre_parse_libgtk_only (void)
   gdk_progclass = g_strdup (g_get_prgname ());
   if (gdk_progclass && gdk_progclass[0])
     gdk_progclass[0] = g_ascii_toupper (gdk_progclass[0]);
-  
+
 #ifdef G_ENABLE_DEBUG
   {
     gchar *debug_string = getenv("GDK_DEBUG");
@@ -216,15 +216,15 @@ gdk_pre_parse_libgtk_only (void)
 
   /* Do any setup particular to the windowing system
    */
-  _gdk_windowing_init ();  
+  _gdk_windowing_init ();
 }
 
-  
+
 /**
  * gdk_parse_args:
  * @argc: the number of command line arguments.
  * @argv: (inout) (array length=argc): the array of command line arguments.
- * 
+ *
  * Parse command line arguments, and store for future
  * use by calls to gdk_display_open().
  *
@@ -248,13 +248,13 @@ gdk_parse_args (int    *argc,
     return;
 
   gdk_pre_parse_libgtk_only ();
-  
+
   option_context = g_option_context_new (NULL);
   g_option_context_set_ignore_unknown_options (option_context, TRUE);
   g_option_context_set_help_enabled (option_context, FALSE);
   option_group = g_option_group_new (NULL, NULL, NULL, NULL, NULL);
   g_option_context_set_main_group (option_context, option_group);
-  
+
   g_option_group_add_entries (option_group, gdk_args);
   g_option_group_add_entries (option_group, _gdk_windowing_args);
 
@@ -271,7 +271,7 @@ gdk_parse_args (int    *argc,
   GDK_NOTE (MISC, g_message ("progname: \"%s\"", g_get_prgname ()));
 }
 
-/** 
+/**
  * gdk_get_display_arg_name:
  *
  * Gets the display name specified in the command line arguments passed
@@ -298,13 +298,13 @@ gdk_get_display_arg_name (void)
 
 /**
  * gdk_display_open_default_libgtk_only:
- * 
+ *
  * Opens the default display specified by command line arguments or
  * environment variables, sets it as the default display, and returns
  * it.  gdk_parse_args must have been called first. If the default
  * display has previously been set, simply returns that. An internal
  * function that should not be used by applications.
- * 
+ *
  * Return value: the default display, if it could be opened,
  *   otherwise %NULL.
  **/
@@ -314,7 +314,7 @@ gdk_display_open_default_libgtk_only (void)
   GdkDisplay *display;
 
   g_return_val_if_fail (gdk_initialized, NULL);
-  
+
   display = gdk_display_get_default ();
   if (display)
     return display;
@@ -325,14 +325,14 @@ gdk_display_open_default_libgtk_only (void)
     {
       g_free (_gdk_display_arg_name);
       _gdk_display_arg_name = g_strdup (_gdk_display_name);
-      
+
       display = gdk_display_open (_gdk_display_name);
     }
-  
+
   if (display)
     gdk_display_manager_set_default_display (gdk_display_manager_get (),
 					     display);
-  
+
   return display;
 }
 
@@ -459,7 +459,7 @@ gdk_threads_impl_unlock (void)
 
 /**
  * gdk_threads_init:
- * 
+ *
  * Initializes GDK so that it can be used from multiple threads
  * in conjunction with gdk_threads_enter() and gdk_threads_leave().
  * g_thread_init() must be called previous to this function.
@@ -560,7 +560,7 @@ gdk_threads_dispatch_free (gpointer data)
  * removed from the list of event sources and will not be called again.
  *
  * This variant of g_idle_add_full() calls @function with the GDK lock
- * held. It can be thought of a MT-safe version for GTK+ widgets for the 
+ * held. It can be thought of a MT-safe version for GTK+ widgets for the
  * following use case, where you have to worry about idle_callback()
  * running in thread A and accessing @self after it has been finalized
  * in thread B:
@@ -627,13 +627,13 @@ gdk_threads_add_idle_full (gint           priority,
  * @function: function to call
  * @data:     data to pass to @function
  *
- * A wrapper for the common usage of gdk_threads_add_idle_full() 
+ * A wrapper for the common usage of gdk_threads_add_idle_full()
  * assigning the default priority, #G_PRIORITY_DEFAULT_IDLE.
  *
  * See gdk_threads_add_idle_full().
  *
  * Return value: the ID (greater than 0) of the event source.
- * 
+ *
  * Since: 2.12
  */
 guint
@@ -656,8 +656,8 @@ gdk_threads_add_idle (GSourceFunc    function,
  * @notify: (allow-none):   function to call when the timeout is removed, or %NULL
  *
  * Sets a function to be called at regular intervals holding the GDK lock,
- * with the given priority.  The function is called repeatedly until it 
- * returns %FALSE, at which point the timeout is automatically destroyed 
+ * with the given priority.  The function is called repeatedly until it
+ * returns %FALSE, at which point the timeout is automatically destroyed
  * and the function will not be called again.  The @notify function is
  * called when the timeout is destroyed.  The first call to the
  * function will be at the end of the first @interval.
@@ -668,39 +668,39 @@ gdk_threads_add_idle (GSourceFunc    function,
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  *
- * This variant of g_timeout_add_full() can be thought of a MT-safe version 
+ * This variant of g_timeout_add_full() can be thought of a MT-safe version
  * for GTK+ widgets for the following use case:
  *
  * |[
  * static gboolean timeout_callback (gpointer data)
  * {
  *    SomeWidget *self = data;
- *    
+ *
  *    /&ast; do stuff with self &ast;/
- *    
+ *
  *    self->timeout_id = 0;
- *    
+ *
  *    return FALSE;
  * }
- *  
+ *
  * static void some_widget_do_stuff_later (SomeWidget *self)
  * {
  *    self->timeout_id = g_timeout_add (timeout_callback, self)
  * }
- *  
+ *
  * static void some_widget_finalize (GObject *object)
  * {
  *    SomeWidget *self = SOME_WIDGET (object);
- *    
+ *
  *    if (self->timeout_id)
  *      g_source_remove (self->timeout_id);
- *    
+ *
  *    G_OBJECT_CLASS (parent_class)->finalize (object);
  * }
  * ]|
  *
  * Return value: the ID (greater than 0) of the event source.
- * 
+ *
  * Since: 2.12
  */
 guint
@@ -719,10 +719,10 @@ gdk_threads_add_timeout_full (gint           priority,
   dispatch->data = data;
   dispatch->destroy = notify;
 
-  return g_timeout_add_full (priority, 
+  return g_timeout_add_full (priority,
                              interval,
-                             gdk_threads_dispatch, 
-                             dispatch, 
+                             gdk_threads_dispatch,
+                             dispatch,
                              gdk_threads_dispatch_free);
 }
 
@@ -733,11 +733,11 @@ gdk_threads_add_timeout_full (gint           priority,
  * @function: function to call
  * @data:     data to pass to @function
  *
- * A wrapper for the common usage of gdk_threads_add_timeout_full() 
+ * A wrapper for the common usage of gdk_threads_add_timeout_full()
  * assigning the default priority, #G_PRIORITY_DEFAULT.
  *
  * See gdk_threads_add_timeout_full().
- * 
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.12
@@ -766,7 +766,7 @@ gdk_threads_add_timeout (guint       interval,
  * a good idea to use this function if you don't need finer granularity.
  *
  *  Return value: the ID (greater than 0) of the event source.
- * 
+ *
  * Since: 2.14
  */
 guint
@@ -785,10 +785,10 @@ gdk_threads_add_timeout_seconds_full (gint           priority,
   dispatch->data = data;
   dispatch->destroy = notify;
 
-  return g_timeout_add_seconds_full (priority, 
+  return g_timeout_add_seconds_full (priority,
                                      interval,
-                                     gdk_threads_dispatch, 
-                                     dispatch, 
+                                     gdk_threads_dispatch,
+                                     dispatch,
                                      gdk_threads_dispatch_free);
 }
 
@@ -798,11 +798,11 @@ gdk_threads_add_timeout_seconds_full (gint           priority,
  * @function: function to call
  * @data:     data to pass to @function
  *
- * A wrapper for the common usage of gdk_threads_add_timeout_seconds_full() 
+ * A wrapper for the common usage of gdk_threads_add_timeout_seconds_full()
  * assigning the default priority, #G_PRIORITY_DEFAULT.
  *
  * For details, see gdk_threads_add_timeout_full().
- * 
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14

@@ -266,11 +266,11 @@ check_event (CrossingTest *test,
   g_assert (evt->mode == mode);
 
   if (evt->detail != detail)
-    g_print ("%s %s event, detail %d, expected detail %d\n", 
+    g_print ("%s %s event, detail %d, expected detail %d\n",
              synthesized ? "synthesized" : "native",
              entered ? "enter" : "leave",
              evt->detail, detail);
- 
+
   g_assert (evt->detail == detail);
 }
 

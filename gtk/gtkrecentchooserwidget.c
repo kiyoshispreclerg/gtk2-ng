@@ -1,7 +1,7 @@
 /* GTK - The GIMP Toolkit
  * gtkrecentchooserwidget.c: embeddable recently used resources chooser widget
  * Copyright (C) 2006 Emmanuele Bassi
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,7 +29,7 @@
 struct _GtkRecentChooserWidgetPrivate
 {
   GtkRecentManager *manager;
-  
+
   GtkWidget *chooser;
 };
 
@@ -90,8 +90,8 @@ gtk_recent_chooser_widget_constructor (GType                  type,
 
   priv = GTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE (object);
   priv->chooser = _gtk_recent_chooser_default_new (priv->manager);
-  
-  
+
+
   gtk_container_add (GTK_CONTAINER (object), priv->chooser);
   gtk_widget_show (priv->chooser);
   _gtk_recent_chooser_set_delegate (GTK_RECENT_CHOOSER (object),
@@ -109,7 +109,7 @@ gtk_recent_chooser_widget_set_property (GObject      *object,
   GtkRecentChooserWidgetPrivate *priv;
 
   priv = GTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE (object);
-  
+
   switch (prop_id)
     {
     case GTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
@@ -138,10 +138,10 @@ static void
 gtk_recent_chooser_widget_finalize (GObject *object)
 {
   GtkRecentChooserWidgetPrivate *priv;
-  
+
   priv = GTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE (object);
   priv->manager = NULL;
-  
+
   G_OBJECT_CLASS (gtk_recent_chooser_widget_parent_class)->finalize (object);
 }
 
@@ -151,7 +151,7 @@ gtk_recent_chooser_widget_finalize (GObject *object)
 
 /**
  * gtk_recent_chooser_widget_new:
- * 
+ *
  * Creates a new #GtkRecentChooserWidget object.  This is an embeddable widget
  * used to access the recently used resources list.
  *
@@ -182,7 +182,7 @@ GtkWidget *
 gtk_recent_chooser_widget_new_for_manager (GtkRecentManager *manager)
 {
   g_return_val_if_fail (manager == NULL || GTK_IS_RECENT_MANAGER (manager), NULL);
-  
+
   return g_object_new (GTK_TYPE_RECENT_CHOOSER_WIDGET,
   		       "recent-manager", manager,
   		       NULL);

@@ -121,10 +121,10 @@ typedef enum
 {
   COMPONENT_NORTH_WEST = 1 << 0,
   COMPONENT_NORTH      = 1 << 1,
-  COMPONENT_NORTH_EAST = 1 << 2, 
+  COMPONENT_NORTH_EAST = 1 << 2,
   COMPONENT_WEST       = 1 << 3,
   COMPONENT_CENTER     = 1 << 4,
-  COMPONENT_EAST       = 1 << 5, 
+  COMPONENT_EAST       = 1 << 5,
   COMPONENT_SOUTH_EAST = 1 << 6,
   COMPONENT_SOUTH      = 1 << 7,
   COMPONENT_SOUTH_WEST = 1 << 8,
@@ -186,7 +186,7 @@ struct _ThemeImage
   ThemePixbuf    *gap_start;
   ThemePixbuf    *gap;
   ThemePixbuf    *gap_end;
-  
+
   gchar           recolorable;
 
   ThemeMatchData  match_data;

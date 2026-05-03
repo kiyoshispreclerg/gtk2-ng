@@ -184,7 +184,7 @@ gail_combo_box_get_name (AtkObject *obj)
           if (G_VALUE_HOLDS_STRING (&value))
             {
 	      if (gail_combo_box->name) g_free (gail_combo_box->name);
-              gail_combo_box->name =  g_strdup ((gchar *) 
+              gail_combo_box->name =  g_strdup ((gchar *)
 						g_value_get_string (&value));
 	      g_value_unset (&value);
               break;
@@ -473,7 +473,7 @@ gail_combo_box_add_selection (AtkSelection *selection,
   return TRUE;
 }
 
-static gboolean 
+static gboolean
 gail_combo_box_clear_selection (AtkSelection *selection)
 {
   GtkComboBox *combo_box;

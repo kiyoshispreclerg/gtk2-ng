@@ -160,7 +160,7 @@ struct _GtkText
 
   /* Timer used for auto-scrolling off ends */
   gint timer;
-  
+
   guint button;			/* currently pressed mouse button */
   GdkGC *bg_gc;			/* gc for drawing background pixmap */
 };

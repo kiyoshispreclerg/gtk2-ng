@@ -28,7 +28,7 @@
 #include <glib.h>
 #include <gdk/gdk.h>
 #include "gdkalias.h"
-  
+
 typedef struct {
   char *display;
   GSpawnChildSetupFunc child_setup;
@@ -37,16 +37,16 @@ typedef struct {
 
 /*
  * Set the DISPLAY variable, and then call the user-specified child setup
- * function.  This is required so that applications can use gdk_spawn_* and 
+ * function.  This is required so that applications can use gdk_spawn_* and
  * call putenv() in their child_setup functions.
  */
 static void
 set_environment (gpointer user_data)
 {
   UserChildSetup *setup = user_data;
-  
+
   g_setenv ("DISPLAY", setup->display, TRUE);
-  
+
   if (setup->child_setup)
     setup->child_setup (setup->user_data);
 }
@@ -54,7 +54,7 @@ set_environment (gpointer user_data)
 /**
  * gdk_spawn_on_screen:
  * @screen: a #GdkScreen
- * @working_directory: child's current working directory, or %NULL to 
+ * @working_directory: child's current working directory, or %NULL to
  *   inherit parent's
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
@@ -110,7 +110,7 @@ gdk_spawn_on_screen (GdkScreen             *screen,
 /**
  * gdk_spawn_on_screen_with_pipes:
  * @screen: a #GdkScreen
- * @working_directory: child's current working directory, or %NULL to 
+ * @working_directory: child's current working directory, or %NULL to
  *   inherit parent's
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
@@ -118,11 +118,11 @@ gdk_spawn_on_screen (GdkScreen             *screen,
  * @child_setup: function to run in the child just before exec()
  * @user_data: user data for @child_setup
  * @child_pid: return location for child process ID, or %NULL
- * @standard_input: return location for file descriptor to write to 
+ * @standard_input: return location for file descriptor to write to
  *   child's stdin, or %NULL
- * @standard_output: return location for file descriptor to read child's 
+ * @standard_output: return location for file descriptor to read child's
  *   stdout, or %NULL
- * @standard_error: return location for file descriptor to read child's 
+ * @standard_error: return location for file descriptor to read child's
  *   stderr, or %NULL
  * @error: return location for error
  *
@@ -196,7 +196,7 @@ gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
  * Since: 2.4
  *
  * Deprecated: 2.24: This function is being removed in 3.0. Use
- *     either g_spawn_command_line_sync(), g_spawn_command_line_async() or 
+ *     either g_spawn_command_line_sync(), g_spawn_command_line_async() or
  *     #GdkAppLaunchContext instead.
  **/
 gboolean

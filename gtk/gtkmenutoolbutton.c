@@ -142,7 +142,7 @@ gtk_menu_tool_button_construct_contents (GtkMenuToolButton *button)
 
   gtk_button_set_relief (GTK_BUTTON (priv->arrow_button),
 			 gtk_tool_item_get_relief_style (GTK_TOOL_ITEM (button)));
-  
+
   gtk_widget_queue_resize (GTK_WIDGET (button));
 }
 
@@ -233,10 +233,10 @@ gtk_menu_tool_button_class_init (GtkMenuToolButtonClass *klass)
    *
    * The ::show-menu signal is emitted before the menu is shown.
    *
-   * It can be used to populate the menu on demand, using 
-   * gtk_menu_tool_button_get_menu(). 
+   * It can be used to populate the menu on demand, using
+   * gtk_menu_tool_button_get_menu().
 
-   * Note that even if you populate the menu dynamically in this way, 
+   * Note that even if you populate the menu dynamically in this way,
    * you must set an empty menu on the #GtkMenuToolButton beforehand,
    * since the arrow is made insensitive if the menu is not set.
    */
@@ -306,14 +306,14 @@ menu_position_func (GtkMenu           *menu,
       else
 	*y -= menu_req.height;
     }
-  else 
+  else
     {
       gdk_window_get_origin (GTK_BUTTON (priv->arrow_button)->event_window, x, y);
       gtk_widget_size_request (priv->arrow_button, &req);
 
       if (direction == GTK_TEXT_DIR_LTR)
         *x += priv->arrow_button->allocation.width;
-      else 
+      else
         *x -= menu_req.width;
 
       if (*y + menu_req.height > monitor.y + monitor.height &&
@@ -432,16 +432,16 @@ gtk_menu_tool_button_destroy (GtkObject *object)
 
   if (button->priv->menu)
     {
-      g_signal_handlers_disconnect_by_func (button->priv->menu, 
-					    menu_deactivate_cb, 
+      g_signal_handlers_disconnect_by_func (button->priv->menu,
+					    menu_deactivate_cb,
 					    button);
       gtk_menu_detach (button->priv->menu);
 
       g_signal_handlers_disconnect_by_func (button->priv->arrow_button,
-					    arrow_button_toggled_cb, 
+					    arrow_button_toggled_cb,
 					    button);
-      g_signal_handlers_disconnect_by_func (button->priv->arrow_button, 
-					    arrow_button_button_press_event_cb, 
+      g_signal_handlers_disconnect_by_func (button->priv->arrow_button,
+					    arrow_button_button_press_event_cb,
 					    button);
     }
 
@@ -525,7 +525,7 @@ gtk_menu_tool_button_new_from_stock (const gchar *stock_id)
 
 /* Callback for the "deactivate" signal on the pop-up menu.
  * This is used so that we unset the state of the toggle button
- * when the pop-up menu disappears. 
+ * when the pop-up menu disappears.
  */
 static int
 menu_deactivate_cb (GtkMenuShell      *menu_shell,
@@ -577,8 +577,8 @@ gtk_menu_tool_button_set_menu (GtkMenuToolButton *button,
 
       if (priv->menu)
 	{
-          g_signal_handlers_disconnect_by_func (priv->menu, 
-						menu_deactivate_cb, 
+          g_signal_handlers_disconnect_by_func (priv->menu,
+						menu_deactivate_cb,
 						button);
 	  gtk_menu_detach (priv->menu);
 	}

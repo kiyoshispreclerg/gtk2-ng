@@ -378,7 +378,7 @@ gtk_tree_model_filter_finalize (GObject *object)
     gtk_tree_model_filter_free_level (filter, filter->priv->root);
 
   g_free (filter->priv->modify_types);
-  
+
   if (filter->priv->modify_destroy)
     filter->priv->modify_destroy (filter->priv->modify_data);
 
@@ -2972,7 +2972,7 @@ gtk_tree_model_filter_new (GtkTreeModel *child_model,
 
   g_return_val_if_fail (GTK_IS_TREE_MODEL (child_model), NULL);
 
-  retval = g_object_new (GTK_TYPE_TREE_MODEL_FILTER, 
+  retval = g_object_new (GTK_TYPE_TREE_MODEL_FILTER,
 			 "child-model", child_model,
 			 "virtual-root", root,
 			 NULL);
@@ -3017,8 +3017,8 @@ gtk_tree_model_filter_get_model (GtkTreeModelFilter *filter)
  * %FALSE otherwise.
  *
  * If the condition calculated by the function changes over time (e.g. because
- * it depends on some global parameters), you must call 
- * gtk_tree_model_filter_refilter() to keep the visibility information of 
+ * it depends on some global parameters), you must call
+ * gtk_tree_model_filter_refilter() to keep the visibility information of
  * the model uptodate.
  *
  * Note that @func is called whenever a row is inserted, when it may still be
@@ -3076,8 +3076,8 @@ gtk_tree_model_filter_set_visible_func (GtkTreeModelFilter            *filter,
  * types for this model (which will be exposed to the parent model/view).
  * The @func, @data and @destroy parameters are for specifying the modify
  * function. The modify function will get called for <emphasis>each</emphasis>
- * data access, the goal of the modify function is to return the data which 
- * should be displayed at the location specified using the parameters of the 
+ * data access, the goal of the modify function is to return the data which
+ * should be displayed at the location specified using the parameters of the
  * modify function.
  *
  * Since: 2.4

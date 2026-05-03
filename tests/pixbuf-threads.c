@@ -27,7 +27,7 @@
 static gboolean verbose = FALSE;
 
 static void
-load_image (gpointer  data, 
+load_image (gpointer  data,
 	    gpointer user_data)
 {
   gchar *filename = data;
@@ -46,10 +46,10 @@ load_image (gpointer  data,
   g_assert (file);
 
   if (verbose) g_print ("%p start image %s\n", self, filename);
-  while (!feof (file)) 
+  while (!feof (file))
     {
       nbytes = fread (buf, 1, bufsize, file);
-      if (!gdk_pixbuf_loader_write (loader, buf, nbytes, &error)) 
+      if (!gdk_pixbuf_loader_write (loader, buf, nbytes, &error))
 	{
 	  g_warning ("Error writing %s to loader: %s", filename, error->message);
 	  g_error_free (error);
@@ -58,14 +58,14 @@ load_image (gpointer  data,
 	}
       if (verbose) g_print ("%p read %d bytes\n", self, nbytes);
 
-      g_thread_yield ();      
+      g_thread_yield ();
     }
 
   fclose (file);
 
   if (verbose) g_print ("%p finish image %s\n", self, filename);
 
-  if (!gdk_pixbuf_loader_close (loader, &error)) 
+  if (!gdk_pixbuf_loader_close (loader, &error))
     {
       g_warning ("Error closing loader for %s: %s", filename, error->message);
       g_error_free (error);
@@ -86,7 +86,7 @@ main (int argc, char **argv)
 {
   int i, start;
   GThreadPool *pool;
-  
+
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
@@ -101,7 +101,7 @@ main (int argc, char **argv)
       verbose = TRUE;
       start = 2;
     }
-  
+
   pool = g_thread_pool_new (load_image, NULL, 20, FALSE, NULL);
 
   i = start;
@@ -111,6 +111,6 @@ main (int argc, char **argv)
       i = start;
     g_thread_pool_push (pool, argv[i], NULL);
   }
-  
+
   return 0;
 }

@@ -35,7 +35,7 @@ static const gchar*          gail_notebook_page_get_name       (AtkObject *acces
 static AtkObject*            gail_notebook_page_get_parent     (AtkObject *accessible);
 static gint                  gail_notebook_page_get_n_children (AtkObject *accessible);
 static AtkObject*            gail_notebook_page_ref_child      (AtkObject *accessible,
-                                                                gint      i); 
+                                                                gint      i);
 static gint                  gail_notebook_page_get_index_in_parent
                                                                (AtkObject *accessible);
 static AtkStateSet*          gail_notebook_page_ref_state_set  (AtkObject *accessible);
@@ -48,7 +48,7 @@ static void                  gail_notebook_page_init_textutil   (GailNotebookPag
 
 static void                  atk_component_interface_init      (AtkComponentIface *iface);
 
-static AtkObject*            gail_notebook_page_ref_accessible_at_point 
+static AtkObject*            gail_notebook_page_ref_accessible_at_point
                                                                (AtkComponent *component,
                                                                 gint         x,
                                                                 gint         y,
@@ -63,7 +63,7 @@ static void                  gail_notebook_page_get_extents    (AtkComponent *co
 
 static AtkObject*            _gail_notebook_page_get_tab_label (GailNotebookPage *page);
 
-/* atktext.h */ 
+/* atktext.h */
 static void	  atk_text_interface_init	   (AtkTextIface	*iface);
 
 static gchar*	  gail_notebook_page_get_text	   (AtkText	      *text,
@@ -104,7 +104,7 @@ static gint      gail_notebook_page_get_offset_at_point
                                                     gint              x,
                                                     gint              y,
 			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_notebook_page_get_run_attributes 
+static AtkAttributeSet* gail_notebook_page_get_run_attributes
                                                    (AtkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
@@ -124,7 +124,7 @@ gail_notebook_page_class_init (GailNotebookPageClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
-  
+
   class->get_name = gail_notebook_page_get_name;
   class->get_parent = gail_notebook_page_get_parent;
   class->get_n_children = gail_notebook_page_get_n_children;
@@ -159,12 +159,12 @@ notify_child_added (gpointer data)
       atk_object_set_parent (atk_object, atk_parent);
       g_signal_emit_by_name (atk_parent, "children_changed::add", page->index, atk_object, NULL);
     }
-  
+
   return FALSE;
 }
 
 AtkObject*
-gail_notebook_page_new (GtkNotebook *notebook, 
+gail_notebook_page_new (GtkNotebook *notebook,
                         gint        pagenum)
 {
   GObject *object;
@@ -173,7 +173,7 @@ gail_notebook_page_new (GtkNotebook *notebook,
   GtkWidget *child;
   GtkWidget *label;
   GList *list;
-  
+
   g_return_val_if_fail (GTK_IS_NOTEBOOK (notebook), NULL);
 
   child = gtk_notebook_get_nth_page (notebook, pagenum);
@@ -191,7 +191,7 @@ gail_notebook_page_new (GtkNotebook *notebook,
   list = g_list_nth (notebook->children, pagenum);
   page->page = list->data;
   page->textutil = NULL;
-  
+
   atk_object = ATK_OBJECT (page);
   atk_object->role = ATK_ROLE_PAGE_TAB;
   atk_object->layer = ATK_LAYER_WIDGET;
@@ -237,14 +237,14 @@ gail_notebook_page_init_textutil (GailNotebookPage *page,
       g_signal_connect (label,
                         "notify",
                         (GCallback) gail_notebook_page_notify,
-                        page);     
+                        page);
     }
   label_text = gtk_label_get_text (GTK_LABEL (label));
   gail_text_util_text_setup (page->textutil, label_text);
 }
 
 static gint
-gail_notebook_page_notify (GObject    *obj, 
+gail_notebook_page_notify (GObject    *obj,
                            GParamSpec *pspec,
                            gpointer   user_data)
 {
@@ -299,7 +299,7 @@ static const gchar*
 gail_notebook_page_get_name (AtkObject *accessible)
 {
   g_return_val_if_fail (GAIL_IS_NOTEBOOK_PAGE (accessible), NULL);
-  
+
   if (accessible->name != NULL)
     return accessible->name;
   else
@@ -318,9 +318,9 @@ static AtkObject*
 gail_notebook_page_get_parent (AtkObject *accessible)
 {
   GailNotebookPage *page;
-  
+
   g_return_val_if_fail (GAIL_IS_NOTEBOOK_PAGE (accessible), NULL);
-  
+
   page = GAIL_NOTEBOOK_PAGE (accessible);
 
   if (!page->notebook)
@@ -345,18 +345,18 @@ gail_notebook_page_ref_child (AtkObject *accessible,
   GtkWidget *child;
   AtkObject *child_obj;
   GailNotebookPage *page = NULL;
-   
+
   g_return_val_if_fail (GAIL_IS_NOTEBOOK_PAGE (accessible), NULL);
   if (i != 0)
     return NULL;
-   
+
   page = GAIL_NOTEBOOK_PAGE (accessible);
   if (!page->notebook)
     return NULL;
 
   child = gtk_notebook_get_nth_page (page->notebook, page->index);
   gail_return_val_if_fail (GTK_IS_WIDGET (child), NULL);
-   
+
   child_obj = gtk_widget_get_accessible (child);
   g_object_ref (child_obj);
   return child_obj;
@@ -408,7 +408,7 @@ gail_notebook_page_ref_state_set (AtkObject *accessible)
           if (atk_state_set_contains_state (state_set, ATK_STATE_SHOWING))
               atk_state_set_add_state (merged_state_set, ATK_STATE_SHOWING);
 
-        } 
+        }
       g_object_unref (state_set);
       g_object_unref (child);
     }
@@ -472,10 +472,10 @@ gail_notebook_page_get_extents (AtkComponent *component,
     }
   else
     {
-      atk_component_get_extents (ATK_COMPONENT (atk_label), 
+      atk_component_get_extents (ATK_COMPONENT (atk_label),
                                  x, y, width, height, coord_type);
     }
-  return; 
+  return;
 }
 
 static AtkObject*
@@ -522,7 +522,7 @@ gail_notebook_page_get_text (AtkText *text,
   if (!GTK_IS_LABEL (label))
     return NULL;
 
-  if (!notebook_page->textutil) 
+  if (!notebook_page->textutil)
     gail_notebook_page_init_textutil (notebook_page, label);
 
   label_text = gtk_label_get_text (GTK_LABEL (label));
@@ -531,7 +531,7 @@ gail_notebook_page_get_text (AtkText *text,
     return NULL;
   else
   {
-    return gail_text_util_get_substring (notebook_page->textutil, 
+    return gail_text_util_get_substring (notebook_page->textutil,
                                          start_pos, end_pos);
   }
 }
@@ -545,7 +545,7 @@ gail_notebook_page_get_text_before_offset (AtkText         *text,
 {
   GtkWidget *label;
   GailNotebookPage *notebook_page;
-  
+
   notebook_page = GAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);
 
@@ -556,8 +556,8 @@ gail_notebook_page_get_text_before_offset (AtkText         *text,
     gail_notebook_page_init_textutil (notebook_page, label);
 
   return gail_text_util_get_text (notebook_page->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET, 
-                           boundary_type, offset, start_offset, end_offset); 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET,
+                           boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
@@ -569,7 +569,7 @@ gail_notebook_page_get_text_at_offset (AtkText         *text,
 {
   GtkWidget *label;
   GailNotebookPage *notebook_page;
- 
+
   notebook_page = GAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);
 
@@ -580,7 +580,7 @@ gail_notebook_page_get_text_at_offset (AtkText         *text,
     gail_notebook_page_init_textutil (notebook_page, label);
 
   return gail_text_util_get_text (notebook_page->textutil,
-                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET, 
+                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET,
                               boundary_type, offset, start_offset, end_offset);
 }
 
@@ -604,7 +604,7 @@ gail_notebook_page_get_text_after_offset (AtkText         *text,
     gail_notebook_page_init_textutil (notebook_page, label);
 
   return gail_text_util_get_text (notebook_page->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET, 
+                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET,
                            boundary_type, offset, start_offset, end_offset);
 }
 
@@ -637,28 +637,28 @@ gail_notebook_page_get_character_extents (AtkText      *text,
   PangoRectangle char_rect;
   gint index, x_layout, y_layout;
   const gchar *label_text;
- 
+
   notebook_page = GAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);
 
   if (!GTK_IS_LABEL(label))
     return;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   index = g_utf8_offset_to_pointer (label_text, offset) - label_text;
   pango_layout_index_to_pos (gtk_label_get_layout (GTK_LABEL (label)), index, &char_rect);
-  
-  gail_misc_get_extents_from_pango_rectangle (label, &char_rect, 
-                    x_layout, y_layout, x, y, width, height, coords);
-} 
 
-static gint 
+  gail_misc_get_extents_from_pango_rectangle (label, &char_rect,
+                    x_layout, y_layout, x, y, width, height, coords);
+}
+
+static gint
 gail_notebook_page_get_offset_at_point (AtkText      *text,
                                         gint         x,
                                         gint         y,
 	          		        AtkCoordType coords)
-{ 
+{
   GtkWidget *label;
   GailNotebookPage *notebook_page;
   gint index, x_layout, y_layout;
@@ -669,11 +669,11 @@ gail_notebook_page_get_offset_at_point (AtkText      *text,
 
   if (!GTK_IS_LABEL(label))
     return -1;
-  
+
   gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
-  
-  index = gail_misc_get_index_at_point_in_layout (label, 
-                                              gtk_label_get_layout (GTK_LABEL (label)), 
+
+  index = gail_misc_get_index_at_point_in_layout (label,
+                                              gtk_label_get_layout (GTK_LABEL (label)),
                                               x_layout, y_layout, x, y, coords);
   label_text = gtk_label_get_text (GTK_LABEL (label));
   if (index == -1)
@@ -681,10 +681,10 @@ gail_notebook_page_get_offset_at_point (AtkText      *text,
       if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
         return g_utf8_strlen (label_text, -1);
 
-      return index;  
+      return index;
     }
   else
-    return g_utf8_pointer_to_offset (label_text, label_text + index);  
+    return g_utf8_pointer_to_offset (label_text, label_text + index);
 }
 
 static AtkAttributeSet*
@@ -704,19 +704,19 @@ gail_notebook_page_get_run_attributes (AtkText *text,
 
   if (!GTK_IS_LABEL(label))
     return NULL;
-  
+
   /* Get values set for entire label, if any */
   justify = gtk_label_get_justify (GTK_LABEL (label));
   if (justify != GTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_JUSTIFICATION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
   dir = gtk_widget_get_direction (label);
   if (dir == GTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
+      at_set = gail_misc_add_attribute (at_set,
                                         ATK_TEXT_ATTR_DIRECTION,
      g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
     }
@@ -749,7 +749,7 @@ gail_notebook_page_get_default_attributes (AtkText *text)
   return at_set;
 }
 
-static gunichar 
+static gunichar
 gail_notebook_page_get_character_at_offset (AtkText *text,
                                             gint    offset)
 {

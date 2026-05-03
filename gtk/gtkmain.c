@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -119,7 +119,7 @@ _gtk_get_localedir (void)
     {
       const gchar *p;
       gchar *root, *temp;
-      
+
       /* GTK_LOCALEDIR ends in either /lib/locale or
        * /share/locale. Scan for that slash.
        */
@@ -246,7 +246,7 @@ static const GDebugKey gtk_debug_keys[] = {
  * @required_major: the required major version.
  * @required_minor: the required minor version.
  * @required_micro: the required micro version.
- * 
+ *
  * Checks that the GTK+ library in use is compatible with the
  * given version. Generally you would pass in the constants
  * #GTK_MAJOR_VERSION, #GTK_MINOR_VERSION, #GTK_MICRO_VERSION
@@ -308,7 +308,7 @@ check_setugid (void)
 #ifndef G_OS_WIN32
   uid_t ruid, euid, suid; /* Real, effective and saved user ID's */
   gid_t rgid, egid, sgid; /* Real, effective and saved group ID's */
-  
+
 #ifdef HAVE_GETRESUID
   /* These aren't in the header files, so we prototype them here.
    */
@@ -385,7 +385,7 @@ static gboolean do_setlocale = TRUE;
 
 /**
  * gtk_disable_setlocale:
- * 
+ *
  * Prevents gtk_init(), gtk_init_check(), gtk_init_with_args() and
  * gtk_parse_args() from automatically
  * calling <literal>setlocale (LC_ALL, "")</literal>. You would
@@ -400,7 +400,7 @@ gtk_disable_setlocale (void)
 {
   if (pre_initialized)
     g_warning ("gtk_disable_setlocale() must be called before gtk_init()");
-    
+
   do_setlocale = FALSE;
 }
 
@@ -442,7 +442,7 @@ gtk_arg_module_cb (const char *key, const char *value, gpointer user_data)
 	g_string_append_c (gtk_modules_string, G_SEARCHPATH_SEPARATOR);
       else
 	gtk_modules_string = g_string_new (NULL);
-      
+
       g_string_append (gtk_modules_string, value);
     }
 
@@ -450,19 +450,19 @@ gtk_arg_module_cb (const char *key, const char *value, gpointer user_data)
 }
 
 static const GOptionEntry gtk_args[] = {
-  { "gtk-module",       0, 0, G_OPTION_ARG_CALLBACK, gtk_arg_module_cb,   
-    /* Description of --gtk-module=MODULES in --help output */ N_("Load additional GTK+ modules"), 
+  { "gtk-module",       0, 0, G_OPTION_ARG_CALLBACK, gtk_arg_module_cb,
+    /* Description of --gtk-module=MODULES in --help output */ N_("Load additional GTK+ modules"),
     /* Placeholder in --gtk-module=MODULES in --help output */ N_("MODULES") },
-  { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &g_fatal_warnings, 
+  { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &g_fatal_warnings,
     /* Description of --g-fatal-warnings in --help output */   N_("Make all warnings fatal"), NULL },
 #ifdef G_ENABLE_DEBUG
-  { "gtk-debug",        0, 0, G_OPTION_ARG_CALLBACK, gtk_arg_debug_cb,    
-    /* Description of --gtk-debug=FLAGS in --help output */    N_("GTK+ debugging flags to set"), 
+  { "gtk-debug",        0, 0, G_OPTION_ARG_CALLBACK, gtk_arg_debug_cb,
+    /* Description of --gtk-debug=FLAGS in --help output */    N_("GTK+ debugging flags to set"),
     /* Placeholder in --gtk-debug=FLAGS in --help output */    N_("FLAGS") },
-  { "gtk-no-debug",     0, 0, G_OPTION_ARG_CALLBACK, gtk_arg_no_debug_cb, 
-    /* Description of --gtk-no-debug=FLAGS in --help output */ N_("GTK+ debugging flags to unset"), 
+  { "gtk-no-debug",     0, 0, G_OPTION_ARG_CALLBACK, gtk_arg_no_debug_cb,
+    /* Description of --gtk-no-debug=FLAGS in --help output */ N_("GTK+ debugging flags to unset"),
     /* Placeholder in --gtk-no-debug=FLAGS in --help output */ N_("FLAGS") },
-#endif 
+#endif
   { NULL }
 };
 
@@ -552,7 +552,7 @@ enum_locale_proc (LPTSTR locale)
 
   return TRUE;
 }
-  
+
 #endif
 
 static void
@@ -569,7 +569,7 @@ setlocale_initialization (void)
 #ifdef G_OS_WIN32
       /* If some of the POSIXish environment variables are set, set
        * the Win32 thread locale correspondingly.
-       */ 
+       */
       char *p = getenv ("LC_ALL");
       if (p == NULL)
 	p = getenv ("LANG");
@@ -595,7 +595,7 @@ setlocale_initialization (void)
 		    *script_to_check++ = '\0';
 
 		  /* Handle special cases. */
-		  
+
 		  /* The standard code for Serbia and Montenegro was
 		   * "CS", but MSFT uses for some reason "SP". By now
 		   * (October 2006), SP has split into two, "RS" and
@@ -660,7 +660,7 @@ do_pre_parse_initialization (int    *argc,
 			     char ***argv)
 {
   const gchar *env_string;
-  
+
 #if	0
   g_set_error_handler (gtk_error);
   g_set_warning_handler (gtk_warning);
@@ -678,7 +678,7 @@ do_pre_parse_initialization (int    *argc,
 
   gdk_pre_parse_libgtk_only ();
   gdk_event_handler_set ((GdkEventFunc)gtk_main_do_event, NULL, NULL);
-  
+
 #ifdef G_ENABLE_DEBUG
   env_string = g_getenv ("GTK_DEBUG");
   if (env_string != NULL)
@@ -718,7 +718,7 @@ gettext_initialization (void)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   bind_textdomain_codeset (GETTEXT_PACKAGE "-properties", "UTF-8");
 #    endif
-#endif  
+#endif
 }
 
 static void
@@ -750,10 +750,10 @@ do_post_parse_initialization (int    *argc,
   /* Translate to default:RTL if you want your widgets
    * to be RTL, otherwise translate to default:LTR.
    * Do *not* translate it to "predefinito:LTR", if it
-   * it isn't default:LTR or default:RTL it will not work 
+   * it isn't default:LTR or default:RTL it will not work
    */
     char *e = _("default:LTR");
-    if (strcmp (e, "default:RTL")==0) 
+    if (strcmp (e, "default:RTL")==0)
       gtk_widget_set_default_direction (GTK_TEXT_DIR_RTL);
     else if (strcmp (e, "default:LTR"))
       g_warning ("Whoever translated default:LTR did so wrongly.\n");
@@ -791,7 +791,7 @@ pre_parse_hook (GOptionContext *context,
 		GError        **error)
 {
   do_pre_parse_initialization (NULL, NULL);
-  
+
   return TRUE;
 }
 
@@ -803,20 +803,20 @@ post_parse_hook (GOptionContext *context,
 {
   OptionGroupInfo *info = data;
 
-  
+
   do_post_parse_initialization (NULL, NULL);
-  
+
   if (info->open_default_display)
     {
       if (gdk_display_open_default_libgtk_only () == NULL)
 	{
 	  const char *display_name = gdk_get_display_arg_name ();
-	  g_set_error (error, 
-		       G_OPTION_ERROR, 
+	  g_set_error (error,
+		       G_OPTION_ERROR,
 		       G_OPTION_ERROR_FAILED,
 		       _("Cannot open display: %s"),
 		       display_name ? display_name : "" );
-	  
+
 	  return FALSE;
 	}
     }
@@ -827,12 +827,12 @@ post_parse_hook (GOptionContext *context,
 
 /**
  * gtk_get_option_group:
- * @open_default_display: whether to open the default display 
+ * @open_default_display: whether to open the default display
  *    when parsing the commandline arguments
- * 
+ *
  * Returns a #GOptionGroup for the commandline arguments recognized
- * by GTK+ and GDK. You should add this group to your #GOptionContext 
- * with g_option_context_add_group(), if you are using 
+ * by GTK+ and GDK. You should add this group to your #GOptionContext
+ * with g_option_context_add_group(), if you are using
  * g_option_context_parse() to parse your commandline arguments.
  *
  * Returns: a #GOptionGroup for the commandline arguments recognized
@@ -850,14 +850,14 @@ gtk_get_option_group (gboolean open_default_display)
 
   info = g_new0 (OptionGroupInfo, 1);
   info->open_default_display = open_default_display;
-  
+
   group = g_option_group_new ("gtk", _("GTK+ Options"), _("Show GTK+ Options"), info, g_free);
   g_option_group_set_parse_hooks (group, pre_parse_hook, post_parse_hook);
 
   gdk_add_option_entries_libgtk_only (group);
   g_option_group_add_entries (group, gtk_args);
   g_option_group_set_translation_domain (group, GETTEXT_PACKAGE);
-  
+
   return group;
 }
 
@@ -867,24 +867,24 @@ gtk_get_option_group (gboolean open_default_display)
  * @argv: (inout) (array length=argc): a pointer to the array of
  *    command line arguments.
  * @parameter_string: a string which is displayed in
- *    the first line of <option>--help</option> output, after 
+ *    the first line of <option>--help</option> output, after
  *    <literal><replaceable>programname</replaceable> [OPTION...]</literal>
  * @entries: (array zero-terminated=1):  a %NULL-terminated array
  *    of #GOptionEntry<!-- -->s describing the options of your program
  * @translation_domain: a translation domain to use for translating
  *    the <option>--help</option> output for the options in @entries
  *    and the @parameter_string with gettext(), or %NULL
- * @error: a return location for errors 
+ * @error: a return location for errors
  *
- * This function does the same work as gtk_init_check(). 
- * Additionally, it allows you to add your own commandline options, 
- * and it automatically generates nicely formatted 
+ * This function does the same work as gtk_init_check().
+ * Additionally, it allows you to add your own commandline options,
+ * and it automatically generates nicely formatted
  * <option>--help</option> output. Note that your program will
  * be terminated after writing out the help output.
  *
- * Returns: %TRUE if the GUI has been successfully initialized, 
+ * Returns: %TRUE if the GUI has been successfully initialized,
  *               %FALSE otherwise.
- * 
+ *
  * Since: 2.6
  */
 gboolean
@@ -908,16 +908,16 @@ gtk_init_with_args (int            *argc,
     return FALSE;
 
   gtk_group = gtk_get_option_group (TRUE);
-  
+
   context = g_option_context_new (parameter_string);
   g_option_context_add_group (context, gtk_group);
-  
+
   g_option_context_set_translation_domain (context, translation_domain);
 
   if (entries)
     g_option_context_add_main_entries (context, entries, translation_domain);
   retval = g_option_context_parse (context, argc, argv, error);
-  
+
   g_option_context_free (context);
 
   return retval;
@@ -949,7 +949,7 @@ gtk_parse_args (int    *argc,
   GOptionContext *option_context;
   GOptionGroup *gtk_group;
   GError *error = NULL;
-  
+
   if (gtk_initialized)
     return TRUE;
 
@@ -989,10 +989,10 @@ gtk_parse_args (int    *argc,
  * a single change: It does not terminate the program if the GUI can't be
  * initialized. Instead it returns %FALSE on failure.
  *
- * This way the application can fall back to some other means of communication 
+ * This way the application can fall back to some other means of communication
  * with the user - for example a curses or command line interface.
- * 
- * Return value: %TRUE if the GUI has been successfully initialized, 
+ *
+ * Return value: %TRUE if the GUI has been successfully initialized,
  *               %FALSE otherwise.
  **/
 gboolean
@@ -1133,17 +1133,17 @@ gtk_exit (gint errorcode)
  * may help a bit. (Note, however, that changing the locale
  * after GTK+ is initialized may produce inconsistent results and
  * is not really supported.)
- * 
+ *
  * In detail - sets the current locale according to the
  * program environment. This is the same as calling the C library function
- * <literal>setlocale (LC_ALL, "")</literal> but also takes care of the 
+ * <literal>setlocale (LC_ALL, "")</literal> but also takes care of the
  * locale specific setup of the windowing system used by GDK.
- * 
+ *
  * Returns: a string corresponding to the locale set, typically in the
  * form lang_COUNTRY, where lang is an ISO-639 language code, and
  * COUNTRY is an ISO-3166 country code. On Unix, this form matches the
- * result of the setlocale(); it is also used on other machines, such as 
- * Windows, where the C library returns a different result. The string is 
+ * result of the setlocale(); it is also used on other machines, such as
+ * Windows, where the C library returns a different result. The string is
  * owned by GTK+ and should not be modified or freed.
  *
  * Deprecated: 2.24: Use setlocale() directly
@@ -1166,13 +1166,13 @@ gtk_set_locale (void)
  * COUNTRY is an ISO-3166 country code. For instance, sv_FI for
  * Swedish as written in Finland or pt_BR for Portuguese as written in
  * Brazil.
- * 
+ *
  * On Windows, the C library doesn't use any such environment
  * variables, and setting them won't affect the behaviour of functions
- * like ctime(). The user sets the locale through the Regional Options 
- * in the Control Panel. The C library (in the setlocale() function) 
- * does not use country and language codes, but country and language 
- * names spelled out in English. 
+ * like ctime(). The user sets the locale through the Regional Options
+ * in the Control Panel. The C library (in the setlocale() function)
+ * does not use country and language codes, but country and language
+ * names spelled out in English.
  * However, this function does check the above environment
  * variables, and does return a Unix-style locale string based on
  * either said environment variables or the thread's current locale.
@@ -1225,7 +1225,7 @@ _gtk_get_lc_ctype (void)
  *
  * This function is equivalent to pango_language_get_default().  See
  * that function for details.
- * 
+ *
  * Return value: the default language as a #PangoLanguage, must not be
  * freed
  **/
@@ -1244,18 +1244,18 @@ gtk_main (void)
   GMainLoop *loop;
 
   gtk_main_loop_level++;
-  
+
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
 
   tmp_list = functions = init_functions;
   init_functions = NULL;
-  
+
   while (tmp_list)
     {
       init = tmp_list->data;
       tmp_list = tmp_list->next;
-      
+
       (* init->function) (init->data);
       g_free (init);
     }
@@ -1295,7 +1295,7 @@ gtk_main (void)
       if (reinvoke_list)
 	{
 	  GList *work;
-	  
+
 	  work = g_list_last (reinvoke_list);
 	  if (quit_functions)
 	    quit_functions->prev = work;
@@ -1305,7 +1305,7 @@ gtk_main (void)
 
       gdk_flush ();
     }
-    
+
   main_loops = g_slist_remove (main_loops, loop);
 
   g_main_loop_unref (loop);
@@ -1340,8 +1340,8 @@ gboolean
 gtk_events_pending (void)
 {
   gboolean result;
-  
-  GDK_THREADS_LEAVE ();  
+
+  GDK_THREADS_LEAVE ();
   result = g_main_context_pending (NULL);
   GDK_THREADS_ENTER ();
 
@@ -1496,7 +1496,7 @@ rewrite_event_for_grabs (GdkEvent *event)
     return NULL;
 }
 
-void 
+void
 gtk_main_do_event (GdkEvent *event)
 {
   GtkWidget *event_widget;
@@ -1522,7 +1522,7 @@ gtk_main_do_event (GdkEvent *event)
    *  Ignore the event if we don't have a widget for it, except
    *  for GDK_PROPERTY_NOTIFY events which are handled specialy.
    *  Though this happens rarely, bogus events can occour
-   *  for e.g. destroyed GdkWindows. 
+   *  for e.g. destroyed GdkWindows.
    */
   event_widget = gtk_get_event_widget (event);
   if (!event_widget)
@@ -1549,7 +1549,7 @@ gtk_main_do_event (GdkEvent *event)
       event = rewritten_event;
       event_widget = gtk_get_event_widget (event);
     }
-  
+
   window_group = gtk_main_get_window_group (event_widget);
 
   /* Push the event onto a stack of current events for
@@ -1562,7 +1562,7 @@ gtk_main_do_event (GdkEvent *event)
   if (window_group->grabs)
     {
       grab_widget = window_group->grabs->data;
-      
+
       /* If the grab widget is an ancestor of the event widget
        *  then we send the event to the original event widget.
        *  This is the key to implementing modality.
@@ -1582,7 +1582,7 @@ gtk_main_do_event (GdkEvent *event)
    *  1) these events have no meaning for the grabbing widget
    *  and 2) redirecting these events to the grabbing widget
    *  could cause the display to be messed up.
-   * 
+   *
    * Drag events are also not redirected, since it isn't
    *  clear what the semantics of that would be.
    */
@@ -1590,7 +1590,7 @@ gtk_main_do_event (GdkEvent *event)
     {
     case GDK_NOTHING:
       break;
-      
+
     case GDK_DELETE:
       g_object_ref (event_widget);
       if ((!window_group->grabs || gtk_widget_get_toplevel (window_group->grabs->data) == event_widget) &&
@@ -1598,7 +1598,7 @@ gtk_main_do_event (GdkEvent *event)
 	gtk_widget_destroy (event_widget);
       g_object_unref (event_widget);
       break;
-      
+
     case GDK_DESTROY:
       /* Unexpected GDK_DESTROY from the outside, ignore for
        * child windows, handle like a GDK_DELETE for toplevels
@@ -1612,7 +1612,7 @@ gtk_main_do_event (GdkEvent *event)
 	  g_object_unref (event_widget);
 	}
       break;
-      
+
     case GDK_EXPOSE:
       if (event->any.window && gtk_widget_get_double_buffered (event_widget))
 	{
@@ -1694,20 +1694,20 @@ gtk_main_do_event (GdkEvent *event)
     case GDK_PROXIMITY_OUT:
       gtk_propagate_event (grab_widget, event);
       break;
-      
+
     case GDK_ENTER_NOTIFY:
       GTK_PRIVATE_SET_FLAG (event_widget, GTK_HAS_POINTER);
       _gtk_widget_set_pointer_window (event_widget, event->any.window);
       if (gtk_widget_is_sensitive (grab_widget))
 	gtk_widget_event (grab_widget, event);
       break;
-      
+
     case GDK_LEAVE_NOTIFY:
       GTK_PRIVATE_UNSET_FLAG (event_widget, GTK_HAS_POINTER);
       if (gtk_widget_is_sensitive (grab_widget))
 	gtk_widget_event (grab_widget, event);
       break;
-      
+
     case GDK_DRAG_STATUS:
     case GDK_DROP_FINISHED:
       _gtk_drag_source_handle_event (event_widget, event);
@@ -1736,7 +1736,7 @@ gtk_main_do_event (GdkEvent *event)
     {
       _gtk_tooltip_handle_event (event);
     }
-  
+
   tmp_list = current_events;
   current_events = g_list_remove_link (current_events, tmp_list);
   g_list_free_1 (tmp_list);
@@ -1783,10 +1783,10 @@ typedef struct
 static void
 gtk_grab_notify_foreach (GtkWidget *child,
 			 gpointer   data)
-                        
+
 {
   GrabNotifyInfo *info = data;
- 
+
   gboolean was_grabbed, is_grabbed, was_shadowed, is_shadowed;
 
   was_grabbed = info->was_grabbed;
@@ -1802,7 +1802,7 @@ gtk_grab_notify_foreach (GtkWidget *child,
 
   if ((was_shadowed || is_shadowed) && GTK_IS_CONTAINER (child))
     gtk_container_forall (GTK_CONTAINER (child), gtk_grab_notify_foreach, info);
-  
+
   if (is_shadowed)
     {
       GTK_PRIVATE_SET_FLAG (child, GTK_SHADOWED);
@@ -1823,9 +1823,9 @@ gtk_grab_notify_foreach (GtkWidget *child,
 
   if (was_shadowed != is_shadowed)
     _gtk_widget_grab_notify (child, was_shadowed);
-  
+
   g_object_unref (child);
-  
+
   info->was_grabbed = was_grabbed;
   info->is_grabbed = is_grabbed;
 }
@@ -1850,7 +1850,7 @@ gtk_grab_notify (GtkWindowGroup *group,
 
   toplevels = gtk_window_list_toplevels ();
   g_list_foreach (toplevels, (GFunc)g_object_ref, NULL);
-			    
+
   while (toplevels)
     {
       GtkWindow *toplevel = toplevels->data;
@@ -1872,13 +1872,13 @@ gtk_grab_add (GtkWidget *widget)
 {
   GtkWindowGroup *group;
   GtkWidget *old_grab_widget;
-  
+
   g_return_if_fail (widget != NULL);
-  
+
   if (!gtk_widget_has_grab (widget) && gtk_widget_is_sensitive (widget))
     {
       _gtk_widget_set_has_grab (widget, TRUE);
-      
+
       group = gtk_main_get_window_group (widget);
 
       if (group->grabs)
@@ -1918,23 +1918,23 @@ gtk_grab_remove (GtkWidget *widget)
 {
   GtkWindowGroup *group;
   GtkWidget *new_grab_widget;
-  
+
   g_return_if_fail (widget != NULL);
-  
+
   if (gtk_widget_has_grab (widget))
     {
       _gtk_widget_set_has_grab (widget, FALSE);
 
       group = gtk_main_get_window_group (widget);
       group->grabs = g_slist_remove (group->grabs, widget);
-      
+
       if (group->grabs)
 	new_grab_widget = (GtkWidget *)group->grabs->data;
       else
 	new_grab_widget = NULL;
 
       gtk_grab_notify (group, widget, new_grab_widget, FALSE);
-      
+
       g_object_unref (widget);
     }
 }
@@ -1944,11 +1944,11 @@ gtk_init_add (GtkFunction function,
 	      gpointer	  data)
 {
   GtkInitFunction *init;
-  
+
   init = g_new (GtkInitFunction, 1);
   init->function = function;
   init->data = data;
-  
+
   init_functions = g_list_prepend (init_functions, init);
 }
 
@@ -2022,11 +2022,11 @@ gtk_quit_add_full (guint		main_level,
 {
   static guint quit_id = 1;
   GtkQuitFunction *quitf;
-  
+
   g_return_val_if_fail ((function != NULL) || (marshal != NULL), 0);
 
   quitf = g_slice_new (GtkQuitFunction);
-  
+
   quitf->id = quit_id++;
   quitf->main_level = main_level;
   quitf->function = function;
@@ -2035,7 +2035,7 @@ gtk_quit_add_full (guint		main_level,
   quitf->destroy = destroy;
 
   quit_functions = g_list_prepend (quit_functions, quitf);
-  
+
   return quitf->id;
 }
 
@@ -2088,21 +2088,21 @@ gtk_quit_remove (guint id)
 {
   GtkQuitFunction *quitf;
   GList *tmp_list;
-  
+
   tmp_list = quit_functions;
   while (tmp_list)
     {
       quitf = tmp_list->data;
-      
+
       if (quitf->id == id)
 	{
 	  quit_functions = g_list_remove_link (quit_functions, tmp_list);
 	  g_list_free (tmp_list);
 	  gtk_quit_destroy (quitf);
-	  
+
 	  return;
 	}
-      
+
       tmp_list = tmp_list->next;
     }
 }
@@ -2112,12 +2112,12 @@ gtk_quit_remove_by_data (gpointer data)
 {
   GtkQuitFunction *quitf;
   GList *tmp_list;
-  
+
   tmp_list = quit_functions;
   while (tmp_list)
     {
       quitf = tmp_list->data;
-      
+
       if (quitf->data == data)
 	{
 	  quit_functions = g_list_remove_link (quit_functions, tmp_list);
@@ -2126,7 +2126,7 @@ gtk_quit_remove_by_data (gpointer data)
 
 	  return;
 	}
-      
+
       tmp_list = tmp_list->next;
     }
 }
@@ -2147,7 +2147,7 @@ gtk_timeout_add_full (guint32		 interval,
       closure->data = data;
       closure->destroy = destroy;
 
-      return g_timeout_add_full (0, interval, 
+      return g_timeout_add_full (0, interval,
 				 gtk_invoke_idle_timeout,
 				 closure,
 				 gtk_destroy_closure);
@@ -2202,7 +2202,7 @@ gtk_idle_add (GtkFunction function,
   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
 }
 
-guint	    
+guint
 gtk_idle_add_priority (gint        priority,
 		       GtkFunction function,
 		       gpointer	   data)
@@ -2302,13 +2302,13 @@ gtk_invoke_input (gpointer	    data,
 
 /**
  * gtk_get_current_event:
- * 
+ *
  * Obtains a copy of the event currently being processed by GTK+.  For
  * example, if you get a "clicked" signal from #GtkButton, the current
  * event will be the #GdkEventButton that triggered the "clicked"
  * signal. The returned event must be freed with gdk_event_free().
  * If there is no current event, the function returns %NULL.
- * 
+ *
  * Return value: (transfer full): a copy of the current event, or %NULL if no
  *     current event.
  **/
@@ -2323,10 +2323,10 @@ gtk_get_current_event (void)
 
 /**
  * gtk_get_current_event_time:
- * 
+ *
  * If there is a current event and it has a timestamp, return that
  * timestamp, otherwise return %GDK_CURRENT_TIME.
- * 
+ *
  * Return value: the timestamp from the current event, or %GDK_CURRENT_TIME.
  **/
 guint32
@@ -2341,18 +2341,18 @@ gtk_get_current_event_time (void)
 /**
  * gtk_get_current_event_state:
  * @state: (out): a location to store the state of the current event
- * 
+ *
  * If there is a current event and it has a state field, place
  * that state field in @state and return %TRUE, otherwise return
  * %FALSE.
- * 
+ *
  * Return value: %TRUE if there was a current event and it had a state field
  **/
 gboolean
 gtk_get_current_event_state (GdkModifierType *state)
 {
   g_return_val_if_fail (state != NULL, FALSE);
-  
+
   if (current_events)
     return gdk_event_get_state (current_events->data, state);
   else
@@ -2369,7 +2369,7 @@ gtk_get_current_event_state (GdkModifierType *state)
  * If @event is %NULL or the event was not associated with any widget,
  * returns %NULL, otherwise returns the widget that received the event
  * originally.
- * 
+ *
  * Return value: (transfer none): the widget that originally
  *     received @event, or %NULL
  **/
@@ -2380,13 +2380,13 @@ gtk_get_event_widget (GdkEvent *event)
   gpointer widget_ptr;
 
   widget = NULL;
-  if (event && event->any.window && 
+  if (event && event->any.window &&
       (event->type == GDK_DESTROY || !GDK_WINDOW_DESTROYED (event->any.window)))
     {
       gdk_window_get_user_data (event->any.window, &widget_ptr);
       widget = widget_ptr;
     }
-  
+
   return widget;
 }
 
@@ -2431,21 +2431,21 @@ gtk_quit_invoke_function (GtkQuitFunction *quitf)
  * the mailing list for better ways to achieve your goals. For
  * example, use gdk_window_invalidate_rect() or
  * gtk_widget_queue_draw() instead of making up expose events.
- * 
+ *
  **/
 void
 gtk_propagate_event (GtkWidget *widget,
 		     GdkEvent  *event)
 {
   gint handled_event;
-  
+
   g_return_if_fail (GTK_IS_WIDGET (widget));
   g_return_if_fail (event != NULL);
-  
+
   handled_event = FALSE;
 
   g_object_ref (widget);
-      
+
   if ((event->type == GDK_KEY_PRESS) ||
       (event->type == GDK_KEY_RELEASE))
     {
@@ -2464,7 +2464,7 @@ gtk_propagate_event (GtkWidget *widget,
 	   */
 	  if (widget != window && gtk_widget_has_grab (widget))
 	    handled_event = gtk_widget_event (widget, event);
-	  
+
 	  if (!handled_event)
 	    {
 	      window = gtk_widget_get_toplevel (widget);
@@ -2474,11 +2474,11 @@ gtk_propagate_event (GtkWidget *widget,
 		    gtk_widget_event (window, event);
 		}
 	    }
-		  
+
 	  handled_event = TRUE; /* don't send to widget */
 	}
     }
-  
+
   /* Other events get propagated up the widget tree
    *  so that parents can see the button and motion
    *  events of the children.
@@ -2498,12 +2498,12 @@ gtk_propagate_event (GtkWidget *widget,
 	    handled_event = event->type != GDK_SCROLL;
 	  else
 	    handled_event = gtk_widget_event (widget, event);
-	      
+
 	  tmp = widget->parent;
 	  g_object_unref (widget);
 
 	  widget = tmp;
-	  
+
 	  if (!handled_event && widget)
 	    g_object_ref (widget);
 	  else
@@ -2546,68 +2546,68 @@ gtk_print (gchar *str)
   GtkWidget *vscrollbar;
   GtkWidget *separator;
   GtkWidget *button;
-  
+
   if (level > 0)
     {
       fputs (str, stdout);
       fflush (stdout);
       return;
     }
-  
+
   if (!window)
     {
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      
+
       gtk_signal_connect (GTK_OBJECT (window), "destroy",
 			  G_CALLBACK (gtk_widget_destroyed),
 			  &window);
-      
+
       gtk_window_set_title (GTK_WINDOW (window), "Messages");
-      
+
       box1 = gtk_vbox_new (FALSE, 0);
       gtk_container_add (GTK_CONTAINER (window), box1);
       gtk_widget_show (box1);
-      
-      
+
+
       box2 = gtk_vbox_new (FALSE, 10);
       gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
       gtk_box_pack_start (GTK_BOX (box1), box2, TRUE, TRUE, 0);
       gtk_widget_show (box2);
-      
-      
+
+
       table = gtk_table_new (2, 2, FALSE);
       gtk_table_set_row_spacing (GTK_TABLE (table), 0, 2);
       gtk_table_set_col_spacing (GTK_TABLE (table), 0, 2);
       gtk_box_pack_start (GTK_BOX (box2), table, TRUE, TRUE, 0);
       gtk_widget_show (table);
-      
+
       text = gtk_text_new (NULL, NULL);
       gtk_text_set_editable (GTK_TEXT (text), FALSE);
       gtk_table_attach_defaults (GTK_TABLE (table), text, 0, 1, 0, 1);
       gtk_widget_show (text);
       gtk_widget_realize (text);
-      
+
       hscrollbar = gtk_hscrollbar_new (GTK_TEXT (text)->hadj);
       gtk_table_attach (GTK_TABLE (table), hscrollbar, 0, 1, 1, 2,
 			GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
       gtk_widget_show (hscrollbar);
-      
+
       vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
       gtk_table_attach (GTK_TABLE (table), vscrollbar, 1, 2, 0, 1,
 			GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
       gtk_widget_show (vscrollbar);
-      
+
       separator = gtk_hseparator_new ();
       gtk_box_pack_start (GTK_BOX (box1), separator, FALSE, TRUE, 0);
       gtk_widget_show (separator);
-      
-      
+
+
       box2 = gtk_vbox_new (FALSE, 10);
       gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
       gtk_box_pack_start (GTK_BOX (box1), box2, FALSE, TRUE, 0);
       gtk_widget_show (box2);
-      
-      
+
+
       button = gtk_button_new_with_label ("close");
       gtk_signal_connect_object (GTK_OBJECT (button), "clicked",
 				 G_CALLBACK (gtk_widget_hide),
@@ -2617,11 +2617,11 @@ gtk_print (gchar *str)
       gtk_widget_grab_default (button);
       gtk_widget_show (button);
     }
-  
+
   level += 1;
   gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL, str, -1);
   level -= 1;
-  
+
   if (!gtk_widget_get_visible (window))
     gtk_widget_show (window);
 }
@@ -2635,11 +2635,11 @@ _gtk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 {
   gboolean continue_emission;
   gboolean signal_handled;
-  
+
   signal_handled = g_value_get_boolean (handler_return);
   g_value_set_boolean (return_accu, signal_handled);
   continue_emission = !signal_handled;
-  
+
   return continue_emission;
 }
 

@@ -23,7 +23,7 @@
 #include "gdk.h"
 #include "gdkscreen-quartz.h"
 #include "gdkprivate-quartz.h"
- 
+
 
 /* A couple of notes about this file are in order.  In GDK, a
  * GdkScreen can contain multiple monitors.  A GdkScreen has an
@@ -303,7 +303,7 @@ gdk_screen_get_number (GdkScreen *screen)
   return 0;
 }
 
-gchar * 
+gchar *
 _gdk_windowing_substitute_screen_number (const gchar *display_name,
 					 int          screen_number)
 {
@@ -326,14 +326,14 @@ gdk_screen_set_default_colormap (GdkScreen   *screen,
 				 GdkColormap *colormap)
 {
   GdkColormap *old_colormap;
-  
+
   g_return_if_fail (GDK_IS_SCREEN (screen));
   g_return_if_fail (GDK_IS_COLORMAP (colormap));
 
   old_colormap = GDK_SCREEN_QUARTZ (screen)->default_colormap;
 
   GDK_SCREEN_QUARTZ (screen)->default_colormap = g_object_ref (colormap);
-  
+
   if (old_colormap)
     g_object_unref (old_colormap);
 }
@@ -357,8 +357,8 @@ gdk_screen_get_height (GdkScreen *screen)
 static gint
 get_mm_from_pixels (NSScreen *screen, int pixels)
 {
-  /* userSpaceScaleFactor is in "pixels per point", 
-   * 72 is the number of points per inch, 
+  /* userSpaceScaleFactor is in "pixels per point",
+   * 72 is the number of points per inch,
    * and 25.4 is the number of millimeters per inch.
    */
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_3
@@ -453,7 +453,7 @@ gdk_screen_get_monitor_plug_name (GdkScreen *screen,
 }
 
 void
-gdk_screen_get_monitor_geometry (GdkScreen    *screen, 
+gdk_screen_get_monitor_geometry (GdkScreen    *screen,
 				 gint          monitor_num,
 				 GdkRectangle *dest)
 {

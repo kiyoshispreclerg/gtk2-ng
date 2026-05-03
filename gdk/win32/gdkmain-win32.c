@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -50,16 +50,16 @@ static gboolean gdk_synchronize = FALSE;
 static gboolean dummy;
 
 const GOptionEntry _gdk_windowing_args[] = {
-  { "sync", 0, 0, G_OPTION_ARG_NONE, &gdk_synchronize, 
+  { "sync", 0, 0, G_OPTION_ARG_NONE, &gdk_synchronize,
     /* Description of --sync in --help output */              N_("Don't batch GDI requests"), NULL },
-  { "no-wintab", 0, 0, G_OPTION_ARG_NONE, &_gdk_input_ignore_wintab, 
+  { "no-wintab", 0, 0, G_OPTION_ARG_NONE, &_gdk_input_ignore_wintab,
     /* Description of --no-wintab in --help output */         N_("Don't use the Wintab API for tablet support"), NULL },
-  { "ignore-wintab", 0, 0, G_OPTION_ARG_NONE, &_gdk_input_ignore_wintab, 
+  { "ignore-wintab", 0, 0, G_OPTION_ARG_NONE, &_gdk_input_ignore_wintab,
     /* Description of --ignore-wintab in --help output */     N_("Same as --no-wintab"), NULL },
   { "use-wintab", 0, 0, G_OPTION_ARG_NONE, &dummy,
     /* Description of --use-wintab in --help output */     N_("Do use the Wintab API [default]"), NULL },
-  { "max-colors", 0, 0, G_OPTION_ARG_INT, &_gdk_max_colors, 
-    /* Description of --max-colors=COLORS in --help output */ N_("Size of the palette in 8 bit mode"), 
+  { "max-colors", 0, 0, G_OPTION_ARG_INT, &_gdk_max_colors,
+    /* Description of --max-colors=COLORS in --help output */ N_("Size of the palette in 8 bit mode"),
     /* Placeholder in --max-colors=COLORS in --help output */ N_("COLORS") },
   { NULL }
 };
@@ -238,7 +238,7 @@ gdk_notify_startup_complete_with_id (const gchar* startup_id)
 {
 }
 
-void          
+void
 gdk_window_set_startup_id (GdkWindow   *window,
 			   const gchar *startup_id)
 {
@@ -461,7 +461,7 @@ _gdk_win32_function_to_string (GdkFunction function)
     default: return static_printf ("illegal_%d", function);
     }
   /* NOTREACHED */
-  return NULL; 
+  return NULL;
 }
 
 gchar *
@@ -477,7 +477,7 @@ _gdk_win32_join_style_to_string (GdkJoinStyle join_style)
     default: return static_printf ("illegal_%d", join_style);
     }
   /* NOTREACHED */
-  return NULL; 
+  return NULL;
 }
 
 gchar *
@@ -487,13 +487,13 @@ _gdk_win32_line_style_to_string (GdkLineStyle line_style)
     {
 #define CASE(x) case GDK_LINE_##x: return #x
     CASE(SOLID);
-    CASE(ON_OFF_DASH);  
-    CASE(DOUBLE_DASH);  
+    CASE(ON_OFF_DASH);
+    CASE(DOUBLE_DASH);
 #undef CASE
     default: return static_printf ("illegal_%d", line_style);
     }
   /* NOTREACHED */
-  return NULL; 
+  return NULL;
 }
 
 gchar *
@@ -513,7 +513,7 @@ _gdk_win32_drag_protocol_to_string (GdkDragProtocol protocol)
     default: return static_printf ("illegal_%d", protocol);
     }
   /* NOTREACHED */
-  return NULL; 
+  return NULL;
 }
 
 gchar *
@@ -549,7 +549,7 @@ _gdk_win32_gcvalues_mask_to_string (GdkGCValuesMask mask)
   BIT (JOIN_STYLE);
 #undef BIT
 
-  return static_printf ("%s", buf);  
+  return static_printf ("%s", buf);
 }
 
 gchar *
@@ -575,7 +575,7 @@ _gdk_win32_window_state_to_string (GdkWindowState state)
   BIT (STICKY);
 #undef BIT
 
-  return static_printf ("%s", buf);  
+  return static_printf ("%s", buf);
 }
 
 gchar *
@@ -617,7 +617,7 @@ _gdk_win32_window_style_to_string (LONG style)
   BIT (VSCROLL);
 #undef BIT
 
-  return static_printf ("%s", buf);  
+  return static_printf ("%s", buf);
 }
 
 gchar *
@@ -663,7 +663,7 @@ _gdk_win32_window_exstyle_to_string (LONG style)
   BIT (WINDOWEDGE);
 #undef BIT
 
-  return static_printf ("%s", buf);  
+  return static_printf ("%s", buf);
 }
 
 gchar *
@@ -695,7 +695,7 @@ _gdk_win32_window_pos_bits_to_string (UINT flags)
   BIT (ASYNCWINDOWPOS);
 #undef BIT
 
-  return static_printf ("%s", buf);  
+  return static_printf ("%s", buf);
 }
 
 gchar *
@@ -719,7 +719,7 @@ _gdk_win32_drag_action_to_string (GdkDragAction actions)
   BIT (ASK);
 #undef BIT
 
-  return static_printf ("%s", buf);  
+  return static_printf ("%s", buf);
 }
 
 gchar *
@@ -1091,7 +1091,7 @@ _gdk_win32_key_to_string (LONG lParam)
 
   return static_printf ("unk-%#lx", lParam);
 }
-      
+
 gchar *
 _gdk_win32_cf_to_string (UINT format)
 {
@@ -1135,7 +1135,7 @@ _gdk_win32_cf_to_string (UINT format)
 	return static_printf ("unk-%#lx", format);
     }
 }
-      
+
 gchar *
 _gdk_win32_data_to_string (const guchar *data,
 			   int           nbytes)

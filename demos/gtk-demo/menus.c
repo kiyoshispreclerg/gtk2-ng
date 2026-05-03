@@ -87,7 +87,7 @@ change_orientation (GtkWidget *button,
       gtk_container_add (GTK_CONTAINER (box), menubar);
       gtk_box_reorder_child (GTK_BOX (box), menubar, 0);
       g_object_unref (menubar);
-      g_object_set (menubar, 
+      g_object_set (menubar,
 		    "pack-direction", GTK_PACK_DIRECTION_TTB,
 		    NULL);
     }
@@ -111,7 +111,7 @@ change_orientation (GtkWidget *button,
       gtk_container_add (GTK_CONTAINER (box), menubar);
       gtk_box_reorder_child (GTK_BOX (box), menubar, 0);
       g_object_unref (menubar);
-      g_object_set (menubar, 
+      g_object_set (menubar,
 		    "pack-direction", GTK_PACK_DIRECTION_LTR,
 		    NULL);
     }

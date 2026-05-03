@@ -27,7 +27,7 @@
 #include "gtksettings.h"
 #include "gtkdebug.h"
 #include "gtkprivate.h" /* GTK_LIBDIR */
-#include "gtkintl.h" 
+#include "gtkintl.h"
 #include "gtkalias.h"
 
 #include <gmodule.h>
@@ -173,9 +173,9 @@ get_module_path (void)
 /**
  * _gtk_get_module_path:
  * @type: the type of the module, for instance 'modules', 'engines', immodules'
- * 
+ *
  * Determines the search path for a particular type of module.
- * 
+ *
  * Return value: the search path for the module type. Free with g_strfreev().
  **/
 gchar **
@@ -282,7 +282,7 @@ module_build_la_path (const gchar *directory,
 {
   gchar *filename;
   gchar *result;
-	
+
   if (strncmp (module_name, "lib", 3) == 0)
     filename = (gchar *)module_name;
   else
@@ -303,10 +303,10 @@ module_build_la_path (const gchar *directory,
  * _gtk_find_module:
  * @name: the name of the module
  * @type: the type of the module, for instance 'modules', 'engines', immodules'
- * 
+ *
  * Looks for a dynamically module named @name of type @type in the standard GTK+
  *  module search path.
- * 
+ *
  * Return value: the pathname to the found module, or %NULL if it wasn't found.
  *  Free with g_free().
  **/
@@ -389,23 +389,23 @@ load_module (GSList      *module_list,
   GModule *module = NULL;
   GSList *l;
   gboolean success = FALSE;
-  
+
   if (g_module_supported ())
     {
       for (l = gtk_modules; l; l = l->next)
 	{
 	  info = l->data;
-	  if (g_slist_find_custom (info->names, name, 
+	  if (g_slist_find_custom (info->names, name,
 				   (GCompareFunc)strcmp))
 	    {
 	      info->ref_count++;
-	      
+
 	      success = TRUE;
               break;
 	    }
 	}
 
-      if (!success) 
+      if (!success)
 	{
 	  module = find_module (name);
 
@@ -433,28 +433,28 @@ load_module (GSList      *module_list,
 		  if (!info)
 		    {
 		      info = g_new0 (GtkModuleInfo, 1);
-		      
+
 		      info->names = g_slist_prepend (info->names, g_strdup (name));
 		      info->module = module;
 		      info->ref_count = 1;
 		      info->init_func = modinit_func;
 		      g_module_symbol (module, "gtk_module_display_init",
 				       (gpointer *) &info->display_init_func);
-		      
+
 		      gtk_modules = g_slist_append (gtk_modules, info);
-		      
+
 		      /* display_init == NULL indicates a non-multihead aware module.
-		       * For these, we delay the call to init_func until first display is 
+		       * For these, we delay the call to init_func until first display is
 		       * opened, see default_display_notify_cb().
 		       * For multihead aware modules, we call init_func immediately,
 		       * and also call display_init_func on all opened displays.
 		       */
 		      if (default_display_opened || info->display_init_func)
 			(* info->init_func) (&gtk_argc, &gtk_argv);
-		      
-		      if (info->display_init_func) 
+
+		      if (info->display_init_func)
 			{
-			  GSList *displays, *iter; 		  
+			  GSList *displays, *iter;
 			  displays = gdk_display_manager_list_displays (gdk_display_manager_get ());
 			  for (iter = displays; iter; iter = iter->next)
 			    {
@@ -505,9 +505,9 @@ gtk_module_info_unref (GtkModuleInfo *info)
 
   info->ref_count--;
 
-  if (info->ref_count == 0) 
+  if (info->ref_count == 0)
     {
-      GTK_NOTE (MODULES, 
+      GTK_NOTE (MODULES,
 		g_print ("Unloading module: %s\n", g_module_name (info->module)));
 
       gtk_modules = g_slist_remove (gtk_modules, info);
@@ -529,7 +529,7 @@ load_modules (const char *module_str)
   GTK_NOTE (MODULES, g_print ("Loading module list: %s\n", module_str));
 
   module_names = split_file_list (module_str);
-  for (i = 0; module_names[i]; i++) 
+  for (i = 0; module_names[i]; i++)
     module_list = load_module (module_list, module_names[i]);
 
   module_list = g_slist_reverse (module_list);
@@ -581,9 +581,9 @@ display_closed_cb (GdkDisplay *display,
       g_object_set_data_full (G_OBJECT (settings),
 			      I_("gtk-modules"),
 			      NULL, NULL);
-    }  
+    }
 }
-		   
+
 
 static void
 display_opened_cb (GdkDisplayManager *display_manager,
@@ -604,7 +604,7 @@ display_opened_cb (GdkDisplayManager *display_manager,
 	    (* info->display_init_func) (display);
 	}
     }
-  
+
   for (i = 0; i < gdk_display_get_n_screens (display); i++)
     {
       GValue value = { 0, };
@@ -628,8 +628,8 @@ display_opened_cb (GdkDisplayManager *display_manager,
 }
 
 void
-_gtk_modules_init (gint        *argc, 
-		   gchar     ***argv, 
+_gtk_modules_init (gint        *argc,
+		   gchar     ***argv,
 		   const gchar *gtk_modules_args)
 {
   GdkDisplayManager *display_manager;
@@ -637,7 +637,7 @@ _gtk_modules_init (gint        *argc,
 
   g_assert (gtk_argv == NULL);
 
-  if (argc && argv) 
+  if (argc && argv)
     {
       /* store argc and argv for later use in mod initialization */
       gtk_argc = *argc;
@@ -650,15 +650,15 @@ _gtk_modules_init (gint        *argc,
   display_manager = gdk_display_manager_get ();
   default_display_opened = gdk_display_get_default () != NULL;
   g_signal_connect (display_manager, "notify::default-display",
-		    G_CALLBACK (default_display_notify_cb), 
+		    G_CALLBACK (default_display_notify_cb),
 		    NULL);
   g_signal_connect (display_manager, "display-opened",
-		    G_CALLBACK (display_opened_cb), 
+		    G_CALLBACK (display_opened_cb),
 		    NULL);
 
   if (gtk_modules_args) {
     /* Modules specified in the GTK_MODULES environment variable
-     * or on the command line are always loaded, so we'll just leak 
+     * or on the command line are always loaded, so we'll just leak
      * the refcounts.
      */
     g_slist_free (load_modules (gtk_modules_args));
@@ -670,7 +670,7 @@ settings_destroy_notify (gpointer data)
 {
   GSList *iter, *modules = data;
 
-  for (iter = modules; iter; iter = iter->next) 
+  for (iter = modules; iter; iter = iter->next)
     {
       GtkModuleInfo *info = iter->data;
       gtk_module_info_unref (info);
@@ -679,7 +679,7 @@ settings_destroy_notify (gpointer data)
 }
 
 void
-_gtk_modules_settings_changed (GtkSettings *settings, 
+_gtk_modules_settings_changed (GtkSettings *settings,
 			       const gchar *modules)
 {
   GSList *new_modules = NULL;

@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -32,8 +32,8 @@
 #undef GTK_DISABLE_DEPRECATED
 #define __GTK_PROGRESS_C__
 
-#include "gtkprogress.h" 
-#include "gtkprivate.h" 
+#include "gtkprogress.h"
+#include "gtkprivate.h"
 #include "gtkintl.h"
 #include "gtkalias.h"
 
@@ -96,7 +96,7 @@ gtk_progress_class_init (GtkProgressClass *class)
   class->paint = NULL;
   class->update = NULL;
   class->act_mode_enter = NULL;
-  
+
   g_object_class_install_property (gobject_class,
                                    PROP_ACTIVITY_MODE,
                                    g_param_spec_boolean ("activity-mode",
@@ -119,7 +119,7 @@ gtk_progress_class_init (GtkProgressClass *class)
 						       P_("Text x alignment"),
                                                        P_("The horizontal text alignment, from 0 (left) to 1 (right). Reversed for RTL layouts."),
 						       0.0, 1.0, 0.5,
-						       GTK_PARAM_READWRITE));  
+						       GTK_PARAM_READWRITE));
   g_object_class_install_property (gobject_class,
 				   PROP_TEXT_YALIGN,
 				   g_param_spec_float ("text-yalign",
@@ -136,7 +136,7 @@ gtk_progress_set_property (GObject      *object,
 			   GParamSpec   *pspec)
 {
   GtkProgress *progress;
-  
+
   progress = GTK_PROGRESS (object);
 
   switch (prop_id)
@@ -170,7 +170,7 @@ gtk_progress_get_property (GObject      *object,
 			   GParamSpec   *pspec)
 {
   GtkProgress *progress;
-  
+
   progress = GTK_PROGRESS (object);
 
   switch (prop_id)
@@ -327,7 +327,7 @@ gtk_progress_create_pixmap (GtkProgress *progress)
                           progress->offscreen_pixmap,
                           GTK_STATE_NORMAL, GTK_SHADOW_NONE,
                           NULL, widget, "trough", 0, 0, -1, -1);
-      
+
       GTK_PROGRESS_GET_CLASS (progress)->paint (progress);
     }
 }
@@ -370,9 +370,9 @@ gtk_progress_build_string (GtkProgress *progress,
     return g_strdup (src);
 
   /* And here's all the deprecated goo. */
-  
+
   dest = buf;
- 
+
   while (src && *src)
     {
       if (*src != '%')
@@ -542,7 +542,7 @@ gtk_progress_set_percentage (GtkProgress *progress,
 
   if (!progress->adjustment)
     gtk_progress_set_adjustment (progress, NULL);
-  gtk_progress_set_value (progress, progress->adjustment->lower + percentage * 
+  gtk_progress_set_value (progress, progress->adjustment->lower + percentage *
 		 (progress->adjustment->upper - progress->adjustment->lower));
 }
 
@@ -647,7 +647,7 @@ gtk_progress_set_format_string (GtkProgress *progress,
 				const gchar *format)
 {
   gchar *old_format;
-  
+
   g_return_if_fail (GTK_IS_PROGRESS (progress));
 
   /* Turn on format, in case someone called
@@ -662,7 +662,7 @@ gtk_progress_set_format_string (GtkProgress *progress,
 
   progress->format = g_strdup (format);
   g_free (old_format);
-  
+
   gtk_widget_queue_resize (GTK_WIDGET (progress));
 }
 

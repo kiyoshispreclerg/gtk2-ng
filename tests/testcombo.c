@@ -179,7 +179,7 @@ create_tree_blaat (void)
 
         pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_STOP,
                                          GTK_ICON_SIZE_BUTTON, NULL);
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, pixbuf,
                             1, "gtk-stock-stop",
@@ -188,7 +188,7 @@ create_tree_blaat (void)
 
         pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_NEW,
                                          GTK_ICON_SIZE_BUTTON, NULL);
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, pixbuf,
                             1, "gtk-stock-new",
@@ -260,7 +260,7 @@ populate_list_blaat (gpointer data)
   GdkPixbuf *pixbuf;
   GtkWidget *cellview;
   GtkTreeIter iter;
-  
+
   store = GTK_LIST_STORE (gtk_combo_box_get_model (combo_box));
 
   gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
@@ -269,23 +269,23 @@ populate_list_blaat (gpointer data)
     return;
 
   cellview = gtk_cell_view_new ();
-  
+
   pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_STOP,
 				   GTK_ICON_SIZE_BUTTON, NULL);
-  gtk_list_store_append (store, &iter);			       
+  gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter,
 		      0, pixbuf,
 		      1, "gtk-stock-stop",
 		      -1);
-  
+
   pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_NEW,
 				   GTK_ICON_SIZE_BUTTON, NULL);
-  gtk_list_store_append (store, &iter);			       
+  gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter,
 		      0, pixbuf,
 		      1, "gtk-stock-new",
 		      -1);
-  
+
   pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_CLEAR,
 				   GTK_ICON_SIZE_BUTTON, NULL);
   gtk_list_store_append (store, &iter);
@@ -293,13 +293,13 @@ populate_list_blaat (gpointer data)
 		      0, pixbuf,
 		      1, "gtk-stock-clear",
 		      -1);
-  
+
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter,
 		      0, NULL,
 		      1, "separator",
 		      -1);
-  
+
   pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_OPEN,
 				   GTK_ICON_SIZE_BUTTON, NULL);
   gtk_list_store_append (store, &iter);
@@ -307,8 +307,8 @@ populate_list_blaat (gpointer data)
 		      0, pixbuf,
 		      1, "gtk-stock-open",
 		      -1);
-  
-  gtk_widget_destroy (cellview);  
+
+  gtk_widget_destroy (cellview);
 }
 
 static GtkTreeModel *
@@ -333,7 +333,7 @@ create_list_blaat (void)
 
         pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_STOP,
                                          GTK_ICON_SIZE_BUTTON, NULL);
-        gtk_list_store_append (store, &iter);			       
+        gtk_list_store_append (store, &iter);
         gtk_list_store_set (store, &iter,
                             0, pixbuf,
                             1, "gtk-stock-stop",
@@ -341,7 +341,7 @@ create_list_blaat (void)
 
         pixbuf = gtk_widget_render_icon (cellview, GTK_STOCK_NEW,
                                          GTK_ICON_SIZE_BUTTON, NULL);
-        gtk_list_store_append (store, &iter);			       
+        gtk_list_store_append (store, &iter);
         gtk_list_store_set (store, &iter,
                             0, pixbuf,
                             1, "gtk-stock-new",
@@ -388,237 +388,237 @@ create_phylogenetic_tree (void)
                             0, "Eubacteria",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Aquifecales",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Thermotogales",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Thermodesulfobacterium",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Thermus-Deinococcus group",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Chloroflecales",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Cyanobacteria",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Firmicutes",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Leptospirillium Group",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Synergistes",
                             -1);
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Chlorobium-Flavobacteria group",
                             -1);
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Chlamydia-Verrucomicrobia group",
                             -1);
 
-        gtk_tree_store_append (store, &iter3, &iter2);			       
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "Verrucomicrobia",
                             -1);
-        gtk_tree_store_append (store, &iter3, &iter2);			       
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "Chlamydia",
                             -1);
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Flexistipes",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Fibrobacter group",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "spirocheteus",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Proteobacteria",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter3, &iter2);			       
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "alpha",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter3, &iter2);			       
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "beta",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter3, &iter2);			       
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "delta ",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter3, &iter2);			       
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "epsilon",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter3, &iter2);  
+        gtk_tree_store_append (store, &iter3, &iter2);
         gtk_tree_store_set (store, &iter3,
                             0, "gamma ",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter, NULL);			       
+        gtk_tree_store_append (store, &iter, NULL);
         gtk_tree_store_set (store, &iter,
                             0, "Eukaryotes",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Metazoa",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Bilateria",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Myxozoa",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Cnidaria",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Ctenophora",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Placozoa",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Porifera",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "choanoflagellates",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Fungi",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Microsporidia",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Aleveolates",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Stramenopiles",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Rhodophyta",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Viridaeplantae",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "crytomonads et al",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter, NULL);			       
+        gtk_tree_store_append (store, &iter, NULL);
         gtk_tree_store_set (store, &iter,
                             0, "Archaea ",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Korarchaeota",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Crenarchaeota",
                             -1);
 
 
-        gtk_tree_store_append (store, &iter2, &iter);			       
+        gtk_tree_store_append (store, &iter2, &iter);
         gtk_tree_store_set (store, &iter2,
                             0, "Buryarchaeota",
                             -1);
@@ -837,7 +837,7 @@ capital_animation (gpointer data)
     {
     case 0:
       gtk_tree_store_insert (GTK_TREE_STORE (model), &iter, NULL, 0);
-      gtk_tree_store_set (GTK_TREE_STORE (model), 
+      gtk_tree_store_set (GTK_TREE_STORE (model),
 			  &iter,
 			  0, "Europe", -1);
       break;
@@ -847,7 +847,7 @@ capital_animation (gpointer data)
       gtk_tree_model_get_iter (model, &parent, path);
       gtk_tree_path_free (path);
       gtk_tree_store_insert (GTK_TREE_STORE (model), &iter, &parent, 0);
-      gtk_tree_store_set (GTK_TREE_STORE (model), 
+      gtk_tree_store_set (GTK_TREE_STORE (model),
 			  &iter,
 			  0, "Berlin", -1);
       break;
@@ -857,7 +857,7 @@ capital_animation (gpointer data)
       gtk_tree_model_get_iter (model, &parent, path);
       gtk_tree_path_free (path);
       gtk_tree_store_insert (GTK_TREE_STORE (model), &iter, &parent, 1);
-      gtk_tree_store_set (GTK_TREE_STORE (model), 
+      gtk_tree_store_set (GTK_TREE_STORE (model),
 			  &iter,
 			  0, "London", -1);
       break;
@@ -867,7 +867,7 @@ capital_animation (gpointer data)
       gtk_tree_model_get_iter (model, &parent, path);
       gtk_tree_path_free (path);
       gtk_tree_store_insert (GTK_TREE_STORE (model), &iter, &parent, 2);
-      gtk_tree_store_set (GTK_TREE_STORE (model), 
+      gtk_tree_store_set (GTK_TREE_STORE (model),
 			  &iter,
 			  0, "Paris", -1);
       break;
@@ -995,7 +995,7 @@ is_separator (GtkTreeModel *model,
   gtk_tree_path_free (path);
 
   return result;
-  
+
 }
 
 static void
@@ -1099,9 +1099,9 @@ main (int argc, char **argv)
 					    renderer,
 					    set_sensitive,
 					    NULL, NULL);
-	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox), 
+	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox),
 					      is_separator, NULL, NULL);
-						
+
         gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), 0);
 
         /* GtkComboBox dynamic list */
@@ -1114,7 +1114,7 @@ main (int argc, char **argv)
 
         model = create_empty_list_blaat ();
         combobox = gtk_combo_box_new_with_model (model);
-	g_signal_connect (combobox, "notify::popup-shown", 
+	g_signal_connect (combobox, "notify::popup-shown",
 			  G_CALLBACK (populate_list_blaat), combobox);
 
 	gtk_combo_box_set_add_tearoffs (GTK_COMBO_BOX (combobox), TRUE);
@@ -1144,9 +1144,9 @@ main (int argc, char **argv)
 					    renderer,
 					    set_sensitive,
 					    NULL, NULL);
-	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox), 
+	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox),
 					      is_separator, NULL, NULL);
-						
+
         gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), 0);
 	gtk_combo_box_set_title (GTK_COMBO_BOX (combobox), "Dynamic list");
 
@@ -1187,9 +1187,9 @@ main (int argc, char **argv)
 					    renderer,
 					    set_sensitive,
 					    NULL, NULL);
-	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox), 
+	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox),
 					      is_separator, NULL, NULL);
-						
+
         gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), 0);
 
         tmp = gtk_cell_view_new ();
@@ -1206,8 +1206,8 @@ main (int argc, char **argv)
         color.green = 0;
         gtk_cell_view_set_background_color (GTK_CELL_VIEW (tmp), &color);
         displayed_row_changed (GTK_COMBO_BOX (combobox), GTK_CELL_VIEW (tmp));
-        g_signal_connect (combobox, "changed", G_CALLBACK (displayed_row_changed), tmp); 
-           
+        g_signal_connect (combobox, "changed", G_CALLBACK (displayed_row_changed), tmp);
+
         gtk_container_add (GTK_CONTAINER (combobox), tmp);
 
         /* GtkComboBox tree */
@@ -1247,9 +1247,9 @@ main (int argc, char **argv)
 					    renderer,
 					    set_sensitive,
 					    NULL, NULL);
-	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox), 
+	gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combobox),
 					      is_separator, NULL, NULL);
-						
+
         gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), 0);
 #if 0
 	g_timeout_add (1000, (GSourceFunc) animation_timer, model);
@@ -1301,7 +1301,7 @@ main (int argc, char **argv)
         gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combobox), renderer,
                                         "text", 0,
                                         NULL);
-	
+
         gtk_combo_box_set_active (GTK_COMBO_BOX (combobox), 0);
 
 

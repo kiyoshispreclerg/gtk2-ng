@@ -74,7 +74,7 @@ G_DEFINE_TYPE_WITH_CODE (GailRange, gail_range, GAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init)
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
 
-static void	 
+static void
 gail_range_class_init		(GailRangeClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -155,7 +155,7 @@ gail_range_ref_state_set (AtkObject *obj)
   return state_set;
 }
 
-static void	 
+static void
 atk_value_interface_init (AtkValueIface *iface)
 {
   iface->get_current_value = gail_range_get_current_value;
@@ -165,7 +165,7 @@ atk_value_interface_init (AtkValueIface *iface)
   iface->set_current_value = gail_range_set_current_value;
 }
 
-static void	 
+static void
 gail_range_get_current_value (AtkValue		*obj,
                               GValue		*value)
 {
@@ -183,7 +183,7 @@ gail_range_get_current_value (AtkValue		*obj,
   atk_value_get_current_value (ATK_VALUE (range->adjustment), value);
 }
 
-static void	 
+static void
 gail_range_get_maximum_value (AtkValue		*obj,
                               GValue		*value)
 {
@@ -200,7 +200,7 @@ gail_range_get_maximum_value (AtkValue		*obj,
      * Adjustment has not been specified
      */
     return;
- 
+
   atk_value_get_maximum_value (ATK_VALUE (range->adjustment), value);
 
   gtk_range = GTK_RANGE (gtk_accessible_get_widget (GTK_ACCESSIBLE (range)));
@@ -216,7 +216,7 @@ gail_range_get_maximum_value (AtkValue		*obj,
   g_value_set_double (value, max);
 }
 
-static void	 
+static void
 gail_range_get_minimum_value (AtkValue		*obj,
                               GValue		*value)
 {
@@ -460,7 +460,7 @@ gail_range_get_keybinding (AtkAction *action,
     if (!set)
       return NULL;
     label = NULL;
-    relation = atk_relation_set_get_relation_by_type (set, ATK_RELATION_LABELLED_BY);    
+    relation = atk_relation_set_get_relation_by_type (set, ATK_RELATION_LABELLED_BY);
     if (relation)
      {
       target = atk_relation_get_target (relation);
@@ -486,7 +486,7 @@ gail_range_action_get_name (AtkAction *action,
                            gint      i)
 {
   const gchar *return_value;
-  
+
   if (i==0)
    return_value = "activate";
   else
@@ -504,7 +504,7 @@ gail_range_set_description (AtkAction      *action,
   gchar **value;
 
   range = GAIL_RANGE (action);
-  
+
   if (i==0)
    value = &range->activate_description;
   else

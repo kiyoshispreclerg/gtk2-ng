@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -170,7 +170,7 @@ gdk_display_manager_get (void)
 
 /**
  * gdk_display_manager_get_default_display:
- * @display_manager: a #GdkDisplayManager 
+ * @display_manager: a #GdkDisplayManager
  *
  * Gets the default #GdkDisplay.
  *
@@ -226,7 +226,7 @@ gdk_screen_get_default (void)
  * gdk_display_manager_set_default_display:
  * @display_manager: a #GdkDisplayManager
  * @display: a #GdkDisplay
- * 
+ *
  * Sets @display as the default display.
  *
  * Since: 2.2
@@ -244,10 +244,10 @@ gdk_display_manager_set_default_display (GdkDisplayManager *display_manager,
 
 /**
  * gdk_display_manager_list_displays:
- * @display_manager: a #GdkDisplayManager 
+ * @display_manager: a #GdkDisplayManager
  *
  * List all currently open displays.
- * 
+ *
  * Return value: (transfer container) (element-type GdkDisplay): a newly allocated
  * #GSList of #GdkDisplay objects. Free this list with g_slist_free() when you
  * are done with it.

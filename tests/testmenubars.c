@@ -62,11 +62,11 @@ create_menubar (GtkPackDirection pack_dir,
   GtkWidget *menu;
 
   menubar = gtk_menu_bar_new ();
-  gtk_menu_bar_set_pack_direction (GTK_MENU_BAR (menubar), 
+  gtk_menu_bar_set_pack_direction (GTK_MENU_BAR (menubar),
 				   pack_dir);
   gtk_menu_bar_set_child_pack_direction (GTK_MENU_BAR (menubar),
 					 child_pack_dir);
-  
+
   menuitem = gtk_image_menu_item_new_from_stock (GTK_STOCK_HOME, NULL);
   gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
   gtk_label_set_angle (GTK_LABEL (GTK_BIN (menuitem)->child), angle);
@@ -88,7 +88,7 @@ create_menubar (GtkPackDirection pack_dir,
   return menubar;
 }
 
-int 
+int
 main (int argc, char **argv)
 {
   static GtkWidget *window = NULL;
@@ -99,7 +99,7 @@ main (int argc, char **argv)
   GtkWidget *separator;
 
   gtk_init (&argc, &argv);
-  
+
   if (!window)
     {
       GtkWidget *menubar1;
@@ -109,24 +109,24 @@ main (int argc, char **argv)
       GtkWidget *menubar5;
       GtkWidget *menubar6;
       GtkAccelGroup *accel_group;
-      
+
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      
+
       g_signal_connect (window, "destroy",
 			G_CALLBACK(gtk_main_quit), NULL);
       g_signal_connect (window, "delete-event",
 			G_CALLBACK (gtk_true), NULL);
-      
+
       accel_group = gtk_accel_group_new ();
       gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
 
       gtk_window_set_title (GTK_WINDOW (window), "menus");
       gtk_container_set_border_width (GTK_CONTAINER (window), 0);
-      
+
       box1 = gtk_vbox_new (FALSE, 0);
       box2 = gtk_hbox_new (FALSE, 0);
       box3 = gtk_vbox_new (FALSE, 0);
-      
+
       /* Rotation by 0 and 180 degrees is broken in Pango, #166832 */
       menubar1 = create_menubar (GTK_PACK_DIRECTION_LTR, GTK_PACK_DIRECTION_LTR, 0.01);
       menubar2 = create_menubar (GTK_PACK_DIRECTION_BTT, GTK_PACK_DIRECTION_BTT, 90);
@@ -146,7 +146,7 @@ main (int argc, char **argv)
       gtk_box_pack_start (GTK_BOX (box3), menubar6, TRUE, TRUE, 0);
 
       gtk_widget_show_all (box1);
-            
+
       separator = gtk_hseparator_new ();
       gtk_box_pack_start (GTK_BOX (box1), separator, FALSE, TRUE, 0);
       gtk_widget_show (separator);

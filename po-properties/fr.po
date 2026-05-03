@@ -388,7 +388,7 @@ msgstr "Indique si le groupe d'actions est visible."
 msgid "Related Action"
 msgstr "Action liée"
 
-# For the author: this is unclear 
+# For the author: this is unclear
 #: ../gtk/gtkactivatable.c:309
 msgid "The action this activatable will activate and receive updates from"
 msgstr ""

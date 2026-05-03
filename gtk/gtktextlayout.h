@@ -153,7 +153,7 @@ struct _GtkTextLayout
 
   /* Whether we are allowed to wrap right now */
   gint wrap_loop_count;
-  
+
   /* Whether to show the insertion cursor */
   guint cursor_visible : 1;
 
@@ -238,7 +238,7 @@ struct _GtkTextLineDisplay
   PangoLayout *layout;
   GSList *cursors;
   GSList *shaped_objects;	/* Only for backwards compatibility */
-  
+
   GtkTextDirection direction;
 
   gint width;                   /* Width of layout */
@@ -256,7 +256,7 @@ struct _GtkTextLineDisplay
 
   gboolean size_only;
   GtkTextLine *line;
-  
+
   GdkColor *pg_bg_color;
 
   GdkRectangle block_cursor;

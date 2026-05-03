@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -82,9 +82,9 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
 
   /**
    * GtkAdjustment:value:
-   * 
+   *
    * The value of the adjustment.
-   * 
+   *
    * Since: 2.4
    */
   g_object_class_install_property (gobject_class,
@@ -92,16 +92,16 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
                                    g_param_spec_double ("value",
 							P_("Value"),
 							P_("The value of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
-							0.0, 
+							-G_MAXDOUBLE,
+							G_MAXDOUBLE,
+							0.0,
 							GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkAdjustment:lower:
-   * 
+   *
    * The minimum value of the adjustment.
-   * 
+   *
    * Since: 2.4
    */
   g_object_class_install_property (gobject_class,
@@ -109,17 +109,17 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
                                    g_param_spec_double ("lower",
 							P_("Minimum Value"),
 							P_("The minimum value of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-G_MAXDOUBLE,
+							G_MAXDOUBLE,
 							0.0,
 							GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkAdjustment:upper:
-   * 
-   * The maximum value of the adjustment. 
-   * Note that values will be restricted by 
-   * <literal>upper - page-size</literal> if the page-size 
+   *
+   * The maximum value of the adjustment.
+   * Note that values will be restricted by
+   * <literal>upper - page-size</literal> if the page-size
    * property is nonzero.
    *
    * Since: 2.4
@@ -129,16 +129,16 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
                                    g_param_spec_double ("upper",
 							P_("Maximum Value"),
 							P_("The maximum value of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
-							0.0, 
+							-G_MAXDOUBLE,
+							G_MAXDOUBLE,
+							0.0,
 							GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkAdjustment:step-increment:
-   * 
+   *
    * The step increment of the adjustment.
-   * 
+   *
    * Since: 2.4
    */
   g_object_class_install_property (gobject_class,
@@ -146,16 +146,16 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
                                    g_param_spec_double ("step-increment",
 							P_("Step Increment"),
 							P_("The step increment of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
-							0.0, 
+							-G_MAXDOUBLE,
+							G_MAXDOUBLE,
+							0.0,
 							GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkAdjustment:page-increment:
-   * 
+   *
    * The page increment of the adjustment.
-   * 
+   *
    * Since: 2.4
    */
   g_object_class_install_property (gobject_class,
@@ -163,19 +163,19 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
                                    g_param_spec_double ("page-increment",
 							P_("Page Increment"),
 							P_("The page increment of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
-							0.0, 
+							-G_MAXDOUBLE,
+							G_MAXDOUBLE,
+							0.0,
 							GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkAdjustment:page-size:
-   * 
-   * The page size of the adjustment. 
+   *
+   * The page size of the adjustment.
    * Note that the page-size is irrelevant and should be set to zero
-   * if the adjustment is used for a simple scalar value, e.g. in a 
+   * if the adjustment is used for a simple scalar value, e.g. in a
    * #GtkSpinButton.
-   * 
+   *
    * Since: 2.4
    */
   g_object_class_install_property (gobject_class,
@@ -183,9 +183,9 @@ gtk_adjustment_class_init (GtkAdjustmentClass *class)
                                    g_param_spec_double ("page-size",
 							P_("Page Size"),
 							P_("The page size of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
-							0.0, 
+							-G_MAXDOUBLE,
+							G_MAXDOUBLE,
+							0.0,
 							GTK_PARAM_READWRITE));
 
   adjustment_signals[CHANGED] =

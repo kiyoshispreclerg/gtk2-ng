@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_DRAWABLE_WIN32_H__
@@ -57,8 +57,8 @@ struct _GdkDrawableImplWin32
   HBITMAP saved_dc_bitmap;	/* Original bitmap for dc */
   cairo_surface_t *cairo_surface;
 };
- 
-struct _GdkDrawableImplWin32Class 
+
+struct _GdkDrawableImplWin32Class
 {
   GdkDrawableClass parent_class;
 };

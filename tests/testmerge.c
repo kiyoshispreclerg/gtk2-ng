@@ -27,7 +27,7 @@
 #include <gtk/gtk.h>
 
 #ifndef STDOUT_FILENO
-#define STDOUT_FILENO 1 
+#define STDOUT_FILENO 1
 #endif
 
 struct { const gchar *filename; guint merge_id; } merge_ids[] = {
@@ -37,7 +37,7 @@ struct { const gchar *filename; guint merge_id; } merge_ids[] = {
 };
 
 static void
-dump_tree (GtkWidget    *button, 
+dump_tree (GtkWidget    *button,
 	   GtkUIManager *merge)
 {
   gchar *dump;
@@ -60,12 +60,12 @@ print_toplevel (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-dump_toplevels (GtkWidget    *button, 
+dump_toplevels (GtkWidget    *button,
 		GtkUIManager *merge)
 {
   GSList *toplevels;
 
-  toplevels = gtk_ui_manager_get_toplevels (merge, 
+  toplevels = gtk_ui_manager_get_toplevels (merge,
 					    GTK_UI_MANAGER_MENUBAR |
 					    GTK_UI_MANAGER_TOOLBAR |
 					    GTK_UI_MANAGER_POPUP);
@@ -75,13 +75,13 @@ dump_toplevels (GtkWidget    *button,
 }
 
 static void
-toggle_tearoffs (GtkWidget    *button, 
+toggle_tearoffs (GtkWidget    *button,
 		 GtkUIManager *merge)
 {
   gboolean add_tearoffs;
 
   add_tearoffs = gtk_ui_manager_get_add_tearoffs (merge);
-  
+
   gtk_ui_manager_set_add_tearoffs (merge, !add_tearoffs);
 }
 
@@ -109,25 +109,25 @@ delayed_toggle_dynamic (GtkUIManager *merge)
 			  NULL);
       gtk_action_group_add_action (dynamic, dyn);
     }
-  
+
   if (merge_id == 0)
     {
       merge_id = gtk_ui_manager_new_merge_id (merge);
-      gtk_ui_manager_add_ui (merge, merge_id, "/toolbar1/ToolbarPlaceholder", 
+      gtk_ui_manager_add_ui (merge, merge_id, "/toolbar1/ToolbarPlaceholder",
 			     "dyn1", "dyn1", 0, 0);
-      gtk_ui_manager_add_ui (merge, merge_id, "/toolbar1/ToolbarPlaceholder", 
+      gtk_ui_manager_add_ui (merge, merge_id, "/toolbar1/ToolbarPlaceholder",
 			     "dynsep", NULL, GTK_UI_MANAGER_SEPARATOR, 0);
-      gtk_ui_manager_add_ui (merge, merge_id, "/toolbar1/ToolbarPlaceholder", 
+      gtk_ui_manager_add_ui (merge, merge_id, "/toolbar1/ToolbarPlaceholder",
 			     "dyn2", "dyn2", 0, 0);
 
-      gtk_ui_manager_add_ui (merge, merge_id, "/menubar/EditMenu", 
+      gtk_ui_manager_add_ui (merge, merge_id, "/menubar/EditMenu",
 			     "dyn1menu", "dyn1", GTK_UI_MANAGER_MENU, 0);
-      gtk_ui_manager_add_ui (merge, merge_id, "/menubar/EditMenu/dyn1menu", 
+      gtk_ui_manager_add_ui (merge, merge_id, "/menubar/EditMenu/dyn1menu",
 			     "dyn1", "dyn1", GTK_UI_MANAGER_MENUITEM, 0);
-      gtk_ui_manager_add_ui (merge, merge_id, "/menubar/EditMenu/dyn1menu/dyn1", 
+      gtk_ui_manager_add_ui (merge, merge_id, "/menubar/EditMenu/dyn1menu/dyn1",
 			     "dyn2", "dyn2", GTK_UI_MANAGER_AUTO, FALSE);
     }
-  else 
+  else
     {
       gtk_ui_manager_remove_ui (merge, merge_id);
       merge_id = 0;
@@ -137,7 +137,7 @@ delayed_toggle_dynamic (GtkUIManager *merge)
 }
 
 static void
-toggle_dynamic (GtkWidget    *button, 
+toggle_dynamic (GtkWidget    *button,
 		GtkUIManager *merge)
 {
   gdk_threads_add_timeout (2000, (GSourceFunc)delayed_toggle_dynamic, merge);
@@ -166,8 +166,8 @@ toggle_action (GtkAction *action)
 static void
 radio_action_changed (GtkAction *action, GtkRadioAction *current)
 {
-  g_message ("RadioAction %s (type=%s) activated (active=%d) (value %d)", 
-	     gtk_action_get_name (GTK_ACTION (current)), 
+  g_message ("RadioAction %s (type=%s) activated (active=%d) (value %d)",
+	     gtk_action_get_name (GTK_ACTION (current)),
 	     G_OBJECT_TYPE_NAME (GTK_ACTION (current)),
 	     gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (current)),
 	     gtk_radio_action_get_current_value (current));
@@ -194,7 +194,7 @@ static GtkActionEntry entries[] = {
 static guint n_entries = G_N_ELEMENTS (entries);
 
 static GtkToggleActionEntry toggle_entries[] = {
-  { "BoldAction",  GTK_STOCK_BOLD,  "_Bold",  "<control>b", "Make it bold", G_CALLBACK (toggle_action), 
+  { "BoldAction",  GTK_STOCK_BOLD,  "_Bold",  "<control>b", "Make it bold", G_CALLBACK (toggle_action),
     TRUE },
 };
 static guint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
@@ -207,7 +207,7 @@ enum {
 };
 
 static GtkRadioActionEntry radio_entries[] = {
-  { "justify-left", GTK_STOCK_JUSTIFY_LEFT, NULL, "<control>L", 
+  { "justify-left", GTK_STOCK_JUSTIFY_LEFT, NULL, "<control>L",
     "Left justify the text", JUSTIFY_LEFT },
   { "justify-center", GTK_STOCK_JUSTIFY_CENTER, NULL, "<super>E",
     "Center justify the text", JUSTIFY_CENTER },
@@ -219,8 +219,8 @@ static GtkRadioActionEntry radio_entries[] = {
 static guint n_radio_entries = G_N_ELEMENTS (radio_entries);
 
 static void
-add_widget (GtkUIManager *merge, 
-	    GtkWidget    *widget, 
+add_widget (GtkUIManager *merge,
+	    GtkWidget    *widget,
 	    GtkBox       *box)
 {
   GtkWidget *handle_box;
@@ -231,17 +231,17 @@ add_widget (GtkUIManager *merge,
       gtk_widget_show (handle_box);
       gtk_container_add (GTK_CONTAINER (handle_box), widget);
       gtk_box_pack_start (box, handle_box, FALSE, FALSE, 0);
-      g_signal_connect_swapped (widget, "destroy", 
+      g_signal_connect_swapped (widget, "destroy",
 				G_CALLBACK (gtk_widget_destroy), handle_box);
     }
   else
     gtk_box_pack_start (box, widget, FALSE, FALSE, 0);
-    
+
   gtk_widget_show (widget);
 }
 
 static void
-toggle_merge (GtkWidget    *button, 
+toggle_merge (GtkWidget    *button,
 	      GtkUIManager *merge)
 {
   gint mergenum;
@@ -278,7 +278,7 @@ toggle_merge (GtkWidget    *button,
     }
 }
 
-static void  
+static void
 set_name_func (GtkTreeViewColumn *tree_column,
 	       GtkCellRenderer   *cell,
 	       GtkTreeModel      *tree_model,
@@ -287,7 +287,7 @@ set_name_func (GtkTreeViewColumn *tree_column,
 {
   GtkAction *action;
   char *name;
-  
+
   gtk_tree_model_get (tree_model, iter, 0, &action, -1);
   g_object_get (action, "name", &name, NULL);
   g_object_set (cell, "text", name, NULL);
@@ -304,7 +304,7 @@ set_sensitive_func (GtkTreeViewColumn *tree_column,
 {
   GtkAction *action;
   gboolean sensitive;
-  
+
   gtk_tree_model_get (tree_model, iter, 0, &action, -1);
   g_object_get (action, "sensitive", &sensitive, NULL);
   g_object_set (cell, "active", sensitive, NULL);
@@ -321,7 +321,7 @@ set_visible_func (GtkTreeViewColumn *tree_column,
 {
   GtkAction *action;
   gboolean visible;
-  
+
   gtk_tree_model_get (tree_model, iter, 0, &action, -1);
   g_object_get (action, "visible", &visible, NULL);
   g_object_set (cell, "active", visible, NULL);
@@ -329,7 +329,7 @@ set_visible_func (GtkTreeViewColumn *tree_column,
 }
 
 static void
-sensitivity_toggled (GtkCellRendererToggle *cell, 
+sensitivity_toggled (GtkCellRendererToggle *cell,
 		     const gchar           *path_str,
 		     GtkTreeModel          *model)
 {
@@ -349,8 +349,8 @@ sensitivity_toggled (GtkCellRendererToggle *cell,
 }
 
 static void
-visibility_toggled (GtkCellRendererToggle *cell, 
-		    const gchar           *path_str, 
+visibility_toggled (GtkCellRendererToggle *cell,
+		    const gchar           *path_str,
 		    GtkTreeModel          *model)
 {
   GtkTreePath *path;
@@ -369,8 +369,8 @@ visibility_toggled (GtkCellRendererToggle *cell,
 }
 
 static gint
-iter_compare_func (GtkTreeModel *model, 
-		   GtkTreeIter  *a, 
+iter_compare_func (GtkTreeModel *model,
+		   GtkTreeIter  *a,
 		   GtkTreeIter  *b,
 		   gpointer      user_data)
 {
@@ -386,13 +386,13 @@ iter_compare_func (GtkTreeModel *model,
 
   a_name = gtk_action_get_name (a_action);
   b_name = gtk_action_get_name (b_action);
-  if (a_name == NULL && b_name == NULL) 
+  if (a_name == NULL && b_name == NULL)
     retval = 0;
   else if (a_name == NULL)
     retval = -1;
-  else if (b_name == NULL) 
+  else if (b_name == NULL)
     retval = 1;
-  else 
+  else
     retval = strcmp (a_name, b_name);
 
   g_value_unset (&b_value);
@@ -408,13 +408,13 @@ create_tree_view (GtkUIManager *merge)
   GtkListStore *store;
   GList *p;
   GtkCellRenderer *cell;
-  
+
   store = gtk_list_store_new (1, GTK_TYPE_ACTION);
   gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (store), 0,
 				   iter_compare_func, NULL, NULL);
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), 0,
 					GTK_SORT_ASCENDING);
-  
+
   for (p = gtk_ui_manager_get_action_groups (merge); p; p = p->next)
     {
       GList *actions, *l;
@@ -431,7 +431,7 @@ create_tree_view (GtkUIManager *merge)
 
       g_list_free (actions);
     }
-  
+
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
 
@@ -460,7 +460,7 @@ create_tree_view (GtkUIManager *merge)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_container_add (GTK_CONTAINER (sw), tree_view);
-  
+
   return sw;
 }
 
@@ -475,8 +475,8 @@ area_press (GtkWidget      *drawing_area,
       event->type == GDK_BUTTON_PRESS)
     {
       GtkWidget *menu = gtk_ui_manager_get_widget (merge, "/FileMenu");
-      
-      if (GTK_IS_MENU (menu)) 
+
+      if (GTK_IS_MENU (menu))
 	{
 	  gtk_menu_popup (GTK_MENU (menu), NULL, NULL,
 			  NULL, drawing_area,
@@ -486,18 +486,18 @@ area_press (GtkWidget      *drawing_area,
     }
 
   return FALSE;
-  
+
 }
 
 static void
 activate_path (GtkWidget      *button,
 	       GtkUIManager   *merge)
 {
-  GtkAction *action = gtk_ui_manager_get_action (merge, 
+  GtkAction *action = gtk_ui_manager_get_action (merge,
 						 "/menubar/HelpMenu/About");
   if (action)
     gtk_action_activate (action);
-  else 
+  else
     g_message ("no action found");
 }
 
@@ -524,16 +524,16 @@ set_tip (GtkWidget *widget)
 {
   ActionStatus *data;
   gchar *tooltip;
-  
+
   data = g_object_get_data (G_OBJECT (widget), "action-status");
-  
-  if (data) 
+
+  if (data)
     {
       g_object_get (data->action, "tooltip", &tooltip, NULL);
-      
-      gtk_statusbar_push (GTK_STATUSBAR (data->statusbar), 0, 
+
+      gtk_statusbar_push (GTK_STATUSBAR (data->statusbar), 0,
 			  tooltip ? tooltip : "");
-      
+
       g_free (tooltip);
     }
 }
@@ -548,14 +548,14 @@ unset_tip (GtkWidget *widget)
   if (data)
     gtk_statusbar_pop (GTK_STATUSBAR (data->statusbar), 0);
 }
-		    
+
 static void
 connect_proxy (GtkUIManager *merge,
 	       GtkAction    *action,
 	       GtkWidget    *proxy,
 	       GtkWidget    *statusbar)
 {
-  if (GTK_IS_MENU_ITEM (proxy)) 
+  if (GTK_IS_MENU_ITEM (proxy))
     {
       ActionStatus *data;
 
@@ -575,9 +575,9 @@ connect_proxy (GtkUIManager *merge,
 	  data->action = g_object_ref (action);
 	  data->statusbar = g_object_ref (statusbar);
 
-	  g_object_set_data_full (G_OBJECT (proxy), "action-status", 
+	  g_object_set_data_full (G_OBJECT (proxy), "action-status",
 				  data, action_status_destroy);
-	  
+
 	  g_signal_connect (proxy, "select",  G_CALLBACK (set_tip), NULL);
 	  g_signal_connect (proxy, "deselect", G_CALLBACK (unset_tip), NULL);
 	}
@@ -593,22 +593,22 @@ main (int argc, char **argv)
   GtkWidget *window, *table, *frame, *menu_box, *vbox, *view;
   GtkWidget *button, *area, *statusbar;
   gint i;
-  
+
   gtk_init (&argc, &argv);
 
   action_group = gtk_action_group_new ("TestActions");
-  gtk_action_group_add_actions (action_group, 
-				entries, n_entries, 
+  gtk_action_group_add_actions (action_group,
+				entries, n_entries,
 				NULL);
   action = gtk_action_group_get_action (action_group, "EmptyMenu1Action");
   g_object_set (action, "hide_if_empty", FALSE, NULL);
   action = gtk_action_group_get_action (action_group, "EmptyMenu2Action");
   g_object_set (action, "hide_if_empty", TRUE, NULL);
-  gtk_action_group_add_toggle_actions (action_group, 
-				       toggle_entries, n_toggle_entries, 
+  gtk_action_group_add_toggle_actions (action_group,
+				       toggle_entries, n_toggle_entries,
 				       NULL);
-  gtk_action_group_add_radio_actions (action_group, 
-				      radio_entries, n_radio_entries, 
+  gtk_action_group_add_radio_actions (action_group,
+				      radio_entries, n_radio_entries,
 				      JUSTIFY_RIGHT,
 				      G_CALLBACK (radio_action_changed), NULL);
 
@@ -625,14 +625,14 @@ main (int argc, char **argv)
   frame = gtk_frame_new ("Menus and Toolbars");
   gtk_table_attach (GTK_TABLE (table), frame, 0,2, 1,2,
 		    GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
-  
+
   menu_box = gtk_vbox_new (FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (menu_box), 2);
   gtk_container_add (GTK_CONTAINER (frame), menu_box);
 
   statusbar = gtk_statusbar_new ();
   gtk_box_pack_end (GTK_BOX (menu_box), statusbar, FALSE, FALSE, 0);
-    
+
   area = gtk_drawing_area_new ();
   gtk_widget_set_events (area, GDK_BUTTON_PRESS_MASK);
   gtk_widget_set_size_request (area, -1, 40);
@@ -660,9 +660,9 @@ main (int argc, char **argv)
   gtk_ui_manager_insert_action_group (merge, action_group, 0);
   g_signal_connect (merge, "add_widget", G_CALLBACK (add_widget), menu_box);
 
-  gtk_window_add_accel_group (GTK_WINDOW (window), 
+  gtk_window_add_accel_group (GTK_WINDOW (window),
 			      gtk_ui_manager_get_accel_group (merge));
-  
+
   frame = gtk_frame_new ("UI Files");
   gtk_table_attach (GTK_TABLE (table), frame, 0,1, 0,1,
 		    GTK_FILL, GTK_FILL|GTK_EXPAND, 0, 0);
@@ -714,14 +714,14 @@ main (int argc, char **argv)
 #ifdef DEBUG_UI_MANAGER
   {
     GList *action;
-    
+
     g_print ("\n> before unreffing the ui manager <\n");
     for (action = gtk_action_group_list_actions (action_group);
-	 action; 
+	 action;
 	 action = action->next)
       {
 	GtkAction *a = action->data;
-	g_print ("  action %s ref count %d\n", 
+	g_print ("  action %s ref count %d\n",
 		 gtk_action_get_name (a), G_OBJECT (a)->ref_count);
       }
   }
@@ -735,11 +735,11 @@ main (int argc, char **argv)
 
     g_print ("\n> after unreffing the ui manager <\n");
     for (action = gtk_action_group_list_actions (action_group);
-	 action; 
+	 action;
 	 action = action->next)
       {
 	GtkAction *a = action->data;
-	g_print ("  action %s ref count %d\n", 
+	g_print ("  action %s ref count %d\n",
 		 gtk_action_get_name (a), G_OBJECT (a)->ref_count);
       }
   }

@@ -187,7 +187,7 @@ gtk_search_engine_quartz_is_indexed (GtkSearchEngine *engine)
 }
 
 static void
-gtk_search_engine_quartz_set_query (GtkSearchEngine *engine, 
+gtk_search_engine_quartz_set_query (GtkSearchEngine *engine,
 				    GtkQuery        *query)
 {
   GtkSearchEngineQuartz *quartz;
@@ -221,10 +221,10 @@ _gtk_search_engine_quartz_class_init (GtkSearchEngineQuartzClass *class)
 {
   GObjectClass *gobject_class;
   GtkSearchEngineClass *engine_class;
-  
+
   gobject_class = G_OBJECT_CLASS (class);
   gobject_class->finalize = gtk_search_engine_quartz_finalize;
-  
+
   engine_class = GTK_SEARCH_ENGINE_CLASS (class);
   engine_class->set_query = gtk_search_engine_quartz_set_query;
   engine_class->start = gtk_search_engine_quartz_start;

@@ -68,7 +68,7 @@ load_pixbufs (void)
         /* We pass NULL for the error return location, we don't care
          * about the error message.
          */
-        
+
 	background = gdk_pixbuf_new_from_file (BACKGROUND_NAME, NULL);
 	if (!background)
 		return FALSE;
@@ -90,7 +90,7 @@ static gint
 expose_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
         cairo_t *cr;
-         
+
         cr = gdk_cairo_create (event->window);
         gdk_cairo_set_source_pixbuf (cr, frame, 0, 0);
         gdk_cairo_rectangle (cr, &event->area);

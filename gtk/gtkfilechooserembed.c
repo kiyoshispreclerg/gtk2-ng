@@ -44,7 +44,7 @@ get_delegate (GtkFileChooserEmbed *receiver)
 /**
  * _gtk_file_chooser_embed_delegate_iface_init:
  * @iface: a #GtkFileChoserEmbedIface structure
- * 
+ *
  * An interface-initialization function for use in cases where an object is
  * simply delegating the methods, signals of the #GtkFileChooserEmbed interface
  * to another object.  _gtk_file_chooser_embed_set_delegate() must be called on
@@ -74,7 +74,7 @@ _gtk_file_chooser_embed_set_delegate (GtkFileChooserEmbed *receiver,
 {
   g_return_if_fail (GTK_IS_FILE_CHOOSER_EMBED (receiver));
   g_return_if_fail (GTK_IS_FILE_CHOOSER_EMBED (delegate));
-  
+
   g_object_set_data (G_OBJECT (receiver), I_("gtk-file-chooser-embed-delegate"), delegate);
 
   g_signal_connect (delegate, "default-size-changed",

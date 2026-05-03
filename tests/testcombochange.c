@@ -52,7 +52,7 @@ combochange_log (const char *fmt,
   int i;
 
   va_start (vap, fmt);
-  
+
   msg = g_strdup_vprintf (fmt, vap);
 
   gtk_text_buffer_get_end_iter (buffer, &iter);
@@ -95,7 +95,7 @@ create_combo (const char *name,
   GtkCellRenderer *cell_renderer;
   GtkWidget *combo;
   char *rc_string;
-  
+
   rc_string = g_strdup_printf ("style \"%s-style\" {\n"
 			       "  GtkComboBox::appears-as-list = %d\n"
 			       "}\n"
@@ -112,7 +112,7 @@ create_combo (const char *name,
 				  "text", 0, NULL);
 
   gtk_widget_set_name (combo, name);
-  
+
   return combo;
 }
 
@@ -120,7 +120,7 @@ static void
 on_insert (void)
 {
   GtkTreeIter iter;
-  
+
   int insert_pos;
   char new_value[2];
 
@@ -129,12 +129,12 @@ on_insert (void)
 
   if (next_value > 'Z')
     next_value = 'A';
-  
+
   if (contents->len)
     insert_pos = g_random_int_range (0, contents->len + 1);
   else
     insert_pos = 0;
-  
+
   gtk_list_store_insert (model, &iter, insert_pos);
   gtk_list_store_set (model, &iter, 0, new_value, -1);
 
@@ -147,16 +147,16 @@ static void
 on_delete (void)
 {
   GtkTreeIter iter;
-  
+
   int delete_pos;
   char old_val;
 
   if (!contents->len)
     return;
-  
+
   delete_pos = g_random_int_range (0, contents->len);
   gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (model), &iter, NULL, delete_pos);
-  
+
   gtk_list_store_remove (model, &iter);
 
   old_val = g_array_index (contents, char, delete_pos);
@@ -172,7 +172,7 @@ on_reorder (void)
   gint i;
 
   shuffle_array = g_new (int, contents->len);
-  
+
   for (i = 0; i < contents->len; i++)
     shuffle_array[i] = i;
 
@@ -196,7 +196,7 @@ on_reorder (void)
   contents = new_contents;
 
   combochange_log ("Reordered array");
-    
+
   g_free (shuffle_array);
 }
 
@@ -206,9 +206,9 @@ static int timer = 0;
 static gint
 animation_timer (gpointer data)
 {
-  switch (g_random_int_range (0, 3)) 
+  switch (g_random_int_range (0, 3))
     {
-    case 0: 
+    case 0:
       on_insert ();
       break;
     case 1:
@@ -227,7 +227,7 @@ static void
 on_animate (void)
 {
   n_animations += 20;
- 
+
   timer = gdk_threads_add_timeout (1000, (GSourceFunc) animation_timer, NULL);
 }
 
@@ -244,19 +244,19 @@ main (int argc, char **argv)
   GtkWidget *alignment;
   GtkWidget *label;
   GtkWidget *list_combo;
-  
+
   test_init ();
 
   gtk_init (&argc, &argv);
 
   model = gtk_list_store_new (1, G_TYPE_STRING);
   contents = g_array_new (FALSE, FALSE, sizeof (char));
-  
+
   dialog = gtk_dialog_new_with_buttons ("GtkComboBox model changes",
 					NULL, GTK_DIALOG_NO_SEPARATOR,
 					GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 					NULL);
-  
+
   hbox = gtk_hbox_new (FALSE, 12);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox, TRUE, TRUE, 0);
@@ -299,13 +299,13 @@ main (int argc, char **argv)
 
   button_vbox = gtk_vbox_new (FALSE, 8);
   gtk_box_pack_start (GTK_BOX (hbox), button_vbox, FALSE, FALSE, 0);
-  
+
   gtk_window_set_default_size (GTK_WINDOW (dialog), 500, 300);
 
   button = align_button_new ("Insert");
   gtk_box_pack_start (GTK_BOX (button_vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", G_CALLBACK (on_insert), NULL);
-  
+
   button = align_button_new ("Delete");
   gtk_box_pack_start (GTK_BOX (button_vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", G_CALLBACK (on_delete), NULL);

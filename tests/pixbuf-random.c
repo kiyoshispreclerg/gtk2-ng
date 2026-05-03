@@ -38,23 +38,23 @@ assault (const guchar *header, gsize header_size, int n_images)
       GError *err = NULL;
       int i;
       GdkPixbufLoader *loader;
-      
+
       f = fopen ("pixbuf-random-image", "w");
       if (!f)
 	{
 	  perror ("fopen");
 	  exit (EXIT_FAILURE);
 	}
-  
+
       loader = gdk_pixbuf_loader_new ();
-      
+
       gdk_pixbuf_loader_write (loader, header, header_size, &err);
       if (err)
 	{
 	  g_error_free (err);
 	  continue;
 	}
-      
+
       for (i = 0; i < N_CHARACTERS; ++i)
 	{
 	  int r = g_random_int ();
@@ -65,7 +65,7 @@ assault (const guchar *header, gsize header_size, int n_images)
 	      perror ("fwrite");
 	      exit (EXIT_FAILURE);
 	    }
-	  
+
 	  gdk_pixbuf_loader_write (loader, (guchar *)&r, sizeof (r), &err);
 	  if (err)
 	    {
@@ -74,16 +74,16 @@ assault (const guchar *header, gsize header_size, int n_images)
 	      break;
 	    }
 	}
-      
+
       fclose (f);
-      
+
       gdk_pixbuf_loader_close (loader, &err);
       if (err)
 	{
 	  g_error_free (err);
 	  err = NULL;
 	}
-      
+
       g_object_unref (loader);
     }
 }
@@ -127,7 +127,7 @@ main (int argc, char **argv)
   g_print ("the last tested image is saved to the file \"pixbuf-random-image\"\n\n");
 
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL);
-  
+
   g_random_set_seed (seed);
 
 #define GIF_HEADER 'G', 'I', 'F', '8', '9', 'a'
@@ -136,8 +136,8 @@ main (int argc, char **argv)
 #define TIFF2_HEADER 'I', 'I', 0x2a, 0x00
 #define JPEG_HEADER 0xFF, 0xd8
 #define PNM_HEADER 'P', '6'
-#define XBM_HEADER '#', 'd', 'e', 'f', 'i', 'n', 'e', ' '  
-#define BMP_HEADER 'B', 'M'  
+#define XBM_HEADER '#', 'd', 'e', 'f', 'i', 'n', 'e', ' '
+#define BMP_HEADER 'B', 'M'
 #define XPM_HEADER '/', '*', ' ', 'X', 'P', 'M', ' ', '*', '/'
 #define RAS_HEADER 0x59, 0xA6, 0x6A, 0x95
 
@@ -164,6 +164,6 @@ do {								\
       TEST_RANDOM (RAS_HEADER,   300);
       g_print ("===========================\n");
     }
-  
+
   return 0;
 }

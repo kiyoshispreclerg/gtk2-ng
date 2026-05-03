@@ -43,9 +43,9 @@ create_window (GdkWindow *parent,
 			| GDK_ENTER_NOTIFY_MASK
 			| GDK_LEAVE_NOTIFY_MASK;
   attributes.wclass = GDK_INPUT_OUTPUT;
-      
+
   attributes_mask = GDK_WA_X | GDK_WA_Y;
-      
+
   window = gdk_window_new (parent, &attributes, attributes_mask);
   gdk_window_set_user_data (window, darea);
 
@@ -58,13 +58,13 @@ create_window (GdkWindow *parent,
       bg->blue = g_random_int_range (0, 0xffff);
       bg->green = g_random_int_range (0, 0xffff);;
     }
-  
+
   gdk_rgb_find_color (gtk_widget_get_colormap (darea), bg);
   gdk_window_set_background (window, bg);
   g_object_set_data_full (G_OBJECT (window), "color", bg, g_free);
-  
+
   gdk_window_show (window);
-  
+
   return window;
 }
 
@@ -95,7 +95,7 @@ get_selected_windows (void)
 
   selected = NULL;
   gtk_tree_selection_selected_foreach (sel, add_window_cb, &selected);
-  
+
   return selected;
 }
 
@@ -118,7 +118,7 @@ find_window_helper (GtkTreeModel *model,
 	  *selected_iter = *iter;
 	  return TRUE;
 	}
-      
+
       if (gtk_tree_model_iter_children (model,
 					&child_iter,
 					iter))
@@ -170,7 +170,7 @@ unselect_windows (void)
   GtkTreeSelection *selection;
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
-  
+
   gtk_tree_selection_unselect_all (selection);
 }
 
@@ -197,7 +197,7 @@ select_windows (GList *windows)
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
   gtk_tree_selection_unselect_all (selection);
-  
+
   for (l = windows; l != NULL; l = l->next)
     {
       if (find_window (l->data, &iter))
@@ -206,7 +206,7 @@ select_windows (GList *windows)
 }
 
 static void
-add_window_clicked (GtkWidget *button, 
+add_window_clicked (GtkWidget *button,
 		    gpointer data)
 {
   GdkWindow *parent;
@@ -219,13 +219,13 @@ add_window_clicked (GtkWidget *button,
     parent = darea->window;
 
   g_list_free (l);
-  
+
   create_window (parent, 10, 10, 100, 100, NULL);
   update_store ();
 }
 
 static void
-draw_drawable_clicked (GtkWidget *button, 
+draw_drawable_clicked (GtkWidget *button,
 		       gpointer data)
 {
   GdkGC *gc;
@@ -241,7 +241,7 @@ draw_drawable_clicked (GtkWidget *button,
 
 
 static void
-remove_window_clicked (GtkWidget *button, 
+remove_window_clicked (GtkWidget *button,
 		       gpointer data)
 {
   GList *l, *selected;
@@ -268,7 +268,7 @@ save_window (GString *s,
   gdk_window_get_position (window, &x, &y);
   gdk_drawable_get_size (GDK_DRAWABLE (window), &w, &h);
   color = g_object_get_data (G_OBJECT (window), "color");
-  
+
   g_string_append_printf (s, "%d,%d %dx%d (%d,%d,%d) %d %d\n",
 			  x, y, w, h,
 			  color->red, color->green, color->blue,
@@ -298,7 +298,7 @@ save_children (GString *s,
 
 
 static void
-save_clicked (GtkWidget *button, 
+save_clicked (GtkWidget *button,
 	      gpointer data)
 {
   GString *s;
@@ -315,9 +315,9 @@ save_clicked (GtkWidget *button,
 					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 					GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 					NULL);
-  
+
   gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
-  
+
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
     {
       file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
@@ -345,7 +345,7 @@ destroy_children (GdkWindow *window)
        l = l->next)
     {
       child = l->data;
-      
+
       destroy_children (child);
       gdk_window_destroy (child);
     }
@@ -361,7 +361,7 @@ parse_window (GdkWindow *parent, char **lines)
 
   if (*lines == NULL)
     return lines;
-  
+
   if (sscanf(*lines, "%d,%d %dx%d (%d,%d,%d) %d %d",
 	     &x, &y, &w, &h, &r, &g, &b, &native, &n_children) == 9)
     {
@@ -372,22 +372,22 @@ parse_window (GdkWindow *parent, char **lines)
       window = create_window (parent, x, y, w, h, &color);
       if (native)
 	gdk_window_ensure_native (window);
-      
+
       for (i = 0; i < n_children; i++)
 	lines = parse_window (window, lines);
     }
   else
     lines++;
-  
+
   return lines;
 }
-  
+
 static void
 load_file (GFile *file)
 {
   char *data;
   char **lines, **l;
-  
+
   if (g_file_load_contents (file, NULL, &data, NULL, NULL, NULL))
     {
       destroy_children (darea->window);
@@ -403,7 +403,7 @@ load_file (GFile *file)
 }
 
 static void
-move_window_clicked (GtkWidget *button, 
+move_window_clicked (GtkWidget *button,
 		     gpointer data)
 {
   GdkWindow *window;
@@ -412,15 +412,15 @@ move_window_clicked (GtkWidget *button,
   gint x, y;
 
   direction = GPOINTER_TO_INT (data);
-    
+
   selected = get_selected_windows ();
 
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_window_get_position (window, &x, &y);
-      
+
       switch (direction) {
       case GTK_DIR_UP:
 	y -= 10;
@@ -445,14 +445,14 @@ move_window_clicked (GtkWidget *button,
 }
 
 static void
-manual_clicked (GtkWidget *button, 
+manual_clicked (GtkWidget *button,
 		gpointer data)
 {
   GdkWindow *window;
   GList *selected, *l;
   int x, y, w, h;
   GtkWidget *dialog, *table, *label, *xspin, *yspin, *wspin, *hspin;
-  
+
 
   selected = get_selected_windows ();
 
@@ -467,7 +467,7 @@ manual_clicked (GtkWidget *button,
 					GTK_DIALOG_MODAL,
 					GTK_STOCK_OK, GTK_RESPONSE_OK,
 					NULL);
-  
+
 
   table = gtk_table_new (2, 4, TRUE);
   gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))),
@@ -475,7 +475,7 @@ manual_clicked (GtkWidget *button,
 		      FALSE, FALSE,
 		      2);
 
-  
+
   label = gtk_label_new ("x:");
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     label,
@@ -521,9 +521,9 @@ manual_clicked (GtkWidget *button,
 			     hspin,
 			     1, 2,
 			     3, 4);
-  
+
   gtk_widget_show_all (dialog);
-  
+
   gtk_dialog_run (GTK_DIALOG (dialog));
 
   x = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (xspin));
@@ -532,11 +532,11 @@ manual_clicked (GtkWidget *button,
   h = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (hspin));
 
   gtk_widget_destroy (dialog);
-  
+
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_window_move_resize (window, x, y, w, h);
     }
 
@@ -566,7 +566,7 @@ restack_clicked (GtkWidget *button,
 }
 
 static void
-scroll_window_clicked (GtkWidget *button, 
+scroll_window_clicked (GtkWidget *button,
 		       gpointer data)
 {
   GdkWindow *window;
@@ -575,7 +575,7 @@ scroll_window_clicked (GtkWidget *button,
   gint dx, dy;
 
   direction = GPOINTER_TO_INT (data);
-    
+
   selected = get_selected_windows ();
 
   dx = 0; dy = 0;
@@ -595,7 +595,7 @@ scroll_window_clicked (GtkWidget *button,
   default:
     break;
   }
-  
+
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
@@ -608,50 +608,50 @@ scroll_window_clicked (GtkWidget *button,
 
 
 static void
-raise_window_clicked (GtkWidget *button, 
+raise_window_clicked (GtkWidget *button,
 		      gpointer data)
 {
   GList *selected, *l;
   GdkWindow *window;
-    
+
   selected = get_selected_windows ();
 
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_window_raise (window);
     }
 
   g_list_free (selected);
-  
+
   update_store ();
 }
 
 static void
-lower_window_clicked (GtkWidget *button, 
+lower_window_clicked (GtkWidget *button,
 		      gpointer data)
 {
   GList *selected, *l;
   GdkWindow *window;
-    
+
   selected = get_selected_windows ();
 
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_window_lower (window);
     }
 
   g_list_free (selected);
-  
+
   update_store ();
 }
 
 
 static void
-smaller_window_clicked (GtkWidget *button, 
+smaller_window_clicked (GtkWidget *button,
 			gpointer data)
 {
   GList *selected, *l;
@@ -663,16 +663,16 @@ smaller_window_clicked (GtkWidget *button,
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_drawable_get_size (GDK_DRAWABLE (window), &w, &h);
-      
+
       w -= 10;
       h -= 10;
       if (w < 1)
 	w = 1;
       if (h < 1)
 	h = 1;
-      
+
       gdk_window_resize (window, w, h);
     }
 
@@ -680,7 +680,7 @@ smaller_window_clicked (GtkWidget *button,
 }
 
 static void
-larger_window_clicked (GtkWidget *button, 
+larger_window_clicked (GtkWidget *button,
 			gpointer data)
 {
   GList *selected, *l;
@@ -692,12 +692,12 @@ larger_window_clicked (GtkWidget *button,
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_drawable_get_size (GDK_DRAWABLE (window), &w, &h);
-      
+
       w += 10;
       h += 10;
-      
+
       gdk_window_resize (window, w, h);
     }
 
@@ -705,7 +705,7 @@ larger_window_clicked (GtkWidget *button,
 }
 
 static void
-native_window_clicked (GtkWidget *button, 
+native_window_clicked (GtkWidget *button,
 			gpointer data)
 {
   GList *selected, *l;
@@ -716,12 +716,12 @@ native_window_clicked (GtkWidget *button,
   for (l = selected; l != NULL; l = l->next)
     {
       window = l->data;
-      
+
       gdk_window_ensure_native (window);
     }
-  
+
   g_list_free (selected);
-  
+
   update_store ();
 }
 
@@ -738,7 +738,7 @@ darea_button_release_event (GtkWidget *widget,
       unselect_windows ();
       select_window (event->window);
     }
-    
+
   return TRUE;
 }
 
@@ -764,7 +764,7 @@ render_window_cell (GtkTreeViewColumn *tree_column,
   g_object_set (cell,
 		"text", name,
 		"background-gdk", &((GdkWindowObject *)window)->bg_color,
-		NULL);  
+		NULL);
 }
 
 static void
@@ -814,7 +814,7 @@ main (int argc, char **argv)
   GtkCellRenderer *renderer;
   GdkColor black = {0};
   GFile *file;
-  
+
   gtk_init (&argc, &argv);
 
   main_window = window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -837,18 +837,18 @@ main (int argc, char **argv)
   /*gtk_widget_set_double_buffered (darea, FALSE);*/
   gtk_widget_add_events (darea, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
   gtk_widget_set_size_request (darea, 500, 500);
-  g_signal_connect (darea, "button_release_event", 
-		    G_CALLBACK (darea_button_release_event), 
+  g_signal_connect (darea, "button_release_event",
+		    G_CALLBACK (darea_button_release_event),
 		    NULL);
 
-  
+
   gtk_container_add (GTK_CONTAINER (frame), darea);
   gtk_widget_realize (darea);
   gtk_widget_show (darea);
   gtk_widget_modify_bg (darea, GTK_STATE_NORMAL,
 			&black);
-			
-  
+
+
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (hbox),
 		      vbox,
@@ -857,7 +857,7 @@ main (int argc, char **argv)
   gtk_widget_show (vbox);
 
   window_store = gtk_tree_store_new (1, GDK_TYPE_WINDOW);
-  
+
   treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (window_store));
   gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview)),
 			       GTK_SELECTION_MULTIPLE);
@@ -882,7 +882,7 @@ main (int argc, char **argv)
 		      5);
   gtk_widget_show (scrolled);
   gtk_widget_show (treeview);
-  
+
   table = gtk_table_new (5, 4, TRUE);
   gtk_box_pack_start (GTK_BOX (vbox),
 		      table,
@@ -894,8 +894,8 @@ main (int argc, char **argv)
   gtk_button_set_image (GTK_BUTTON (button),
 			gtk_image_new_from_stock (GTK_STOCK_GO_BACK,
 						  GTK_ICON_SIZE_BUTTON));
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (move_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (move_window_clicked),
 		    GINT_TO_POINTER (GTK_DIR_LEFT));
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -907,8 +907,8 @@ main (int argc, char **argv)
   gtk_button_set_image (GTK_BUTTON (button),
 			gtk_image_new_from_stock (GTK_STOCK_GO_UP,
 						  GTK_ICON_SIZE_BUTTON));
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (move_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (move_window_clicked),
 		    GINT_TO_POINTER (GTK_DIR_UP));
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -920,8 +920,8 @@ main (int argc, char **argv)
   gtk_button_set_image (GTK_BUTTON (button),
 			gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD,
 						  GTK_ICON_SIZE_BUTTON));
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (move_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (move_window_clicked),
 		    GINT_TO_POINTER (GTK_DIR_RIGHT));
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -933,8 +933,8 @@ main (int argc, char **argv)
   gtk_button_set_image (GTK_BUTTON (button),
 			gtk_image_new_from_stock (GTK_STOCK_GO_DOWN,
 						  GTK_ICON_SIZE_BUTTON));
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (move_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (move_window_clicked),
 		    GINT_TO_POINTER (GTK_DIR_DOWN));
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -944,8 +944,8 @@ main (int argc, char **argv)
 
 
   button = gtk_button_new_with_label ("Raise");
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (raise_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (raise_window_clicked),
 		    NULL);
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -954,8 +954,8 @@ main (int argc, char **argv)
   gtk_widget_show (button);
 
   button = gtk_button_new_with_label ("Lower");
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (lower_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (lower_window_clicked),
 		    NULL);
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -965,8 +965,8 @@ main (int argc, char **argv)
 
 
   button = gtk_button_new_with_label ("Smaller");
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (smaller_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (smaller_window_clicked),
 		    NULL);
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -975,8 +975,8 @@ main (int argc, char **argv)
   gtk_widget_show (button);
 
   button = gtk_button_new_with_label ("Larger");
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (larger_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (larger_window_clicked),
 		    NULL);
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -985,8 +985,8 @@ main (int argc, char **argv)
   gtk_widget_show (button);
 
   button = gtk_button_new_with_label ("Native");
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (native_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (native_window_clicked),
 		    NULL);
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -999,8 +999,8 @@ main (int argc, char **argv)
   gtk_button_set_image (GTK_BUTTON (button),
 			gtk_image_new_from_stock (GTK_STOCK_GO_UP,
 						  GTK_ICON_SIZE_BUTTON));
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (scroll_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (scroll_window_clicked),
 		    GINT_TO_POINTER (GTK_DIR_UP));
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -1012,8 +1012,8 @@ main (int argc, char **argv)
   gtk_button_set_image (GTK_BUTTON (button),
 			gtk_image_new_from_stock (GTK_STOCK_GO_DOWN,
 						  GTK_ICON_SIZE_BUTTON));
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (scroll_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (scroll_window_clicked),
 		    GINT_TO_POINTER (GTK_DIR_DOWN));
   gtk_table_attach_defaults (GTK_TABLE (table),
 			     button,
@@ -1022,7 +1022,7 @@ main (int argc, char **argv)
   gtk_widget_show (button);
 
   button = gtk_button_new_with_label ("Manual");
-  g_signal_connect (button, "clicked", 
+  g_signal_connect (button, "clicked",
 		    G_CALLBACK (manual_clicked),
 		    NULL);
   gtk_table_attach_defaults (GTK_TABLE (table),
@@ -1057,8 +1057,8 @@ main (int argc, char **argv)
 		      FALSE, FALSE,
 		      2);
   gtk_widget_show (button);
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (draw_drawable_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (draw_drawable_clicked),
 		    NULL);
 
   button = gtk_button_new_with_label ("Add window");
@@ -1067,18 +1067,18 @@ main (int argc, char **argv)
 		      FALSE, FALSE,
 		      2);
   gtk_widget_show (button);
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (add_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (add_window_clicked),
 		    NULL);
-  
+
   button = gtk_button_new_with_label ("Remove window");
   gtk_box_pack_start (GTK_BOX (vbox),
 		      button,
 		      FALSE, FALSE,
 		      2);
   gtk_widget_show (button);
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (remove_window_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (remove_window_clicked),
 		    NULL);
 
   button = gtk_button_new_with_label ("Save");
@@ -1087,8 +1087,8 @@ main (int argc, char **argv)
 		      FALSE, FALSE,
 		      2);
   gtk_widget_show (button);
-  g_signal_connect (button, "clicked", 
-		    G_CALLBACK (save_clicked), 
+  g_signal_connect (button, "clicked",
+		    G_CALLBACK (save_clicked),
 		    NULL);
 
   gtk_widget_show (window);
@@ -1099,7 +1099,7 @@ main (int argc, char **argv)
       load_file (file);
       g_object_unref (file);
     }
-  
+
   gtk_main ();
 
   return 0;

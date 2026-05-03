@@ -32,31 +32,31 @@
 #include "xcursors.h"
 
 #if (defined(__MINGW32__) && (__W32API_MAJOR_VERSION < 3 || (__W32API_MAJOR_VERSION == 3 && __W32API_MINOR_VERSION < 8))) || (defined(_MSC_VER) && (WINVER < 0x0500))
-typedef struct { 
-  DWORD        bV5Size; 
-  LONG         bV5Width; 
-  LONG         bV5Height; 
-  WORD         bV5Planes; 
-  WORD         bV5BitCount; 
-  DWORD        bV5Compression; 
-  DWORD        bV5SizeImage; 
-  LONG         bV5XPelsPerMeter; 
-  LONG         bV5YPelsPerMeter; 
-  DWORD        bV5ClrUsed; 
-  DWORD        bV5ClrImportant; 
-  DWORD        bV5RedMask; 
-  DWORD        bV5GreenMask; 
-  DWORD        bV5BlueMask; 
-  DWORD        bV5AlphaMask; 
-  DWORD        bV5CSType; 
-  CIEXYZTRIPLE bV5Endpoints; 
-  DWORD        bV5GammaRed; 
-  DWORD        bV5GammaGreen; 
-  DWORD        bV5GammaBlue; 
-  DWORD        bV5Intent; 
-  DWORD        bV5ProfileData; 
-  DWORD        bV5ProfileSize; 
-  DWORD        bV5Reserved; 
+typedef struct {
+  DWORD        bV5Size;
+  LONG         bV5Width;
+  LONG         bV5Height;
+  WORD         bV5Planes;
+  WORD         bV5BitCount;
+  DWORD        bV5Compression;
+  DWORD        bV5SizeImage;
+  LONG         bV5XPelsPerMeter;
+  LONG         bV5YPelsPerMeter;
+  DWORD        bV5ClrUsed;
+  DWORD        bV5ClrImportant;
+  DWORD        bV5RedMask;
+  DWORD        bV5GreenMask;
+  DWORD        bV5BlueMask;
+  DWORD        bV5AlphaMask;
+  DWORD        bV5CSType;
+  CIEXYZTRIPLE bV5Endpoints;
+  DWORD        bV5GammaRed;
+  DWORD        bV5GammaGreen;
+  DWORD        bV5GammaBlue;
+  DWORD        bV5Intent;
+  DWORD        bV5ProfileData;
+  DWORD        bV5ProfileSize;
+  DWORD        bV5Reserved;
 } BITMAPV5HEADER;
 #endif
 
@@ -81,7 +81,7 @@ hcursor_from_type (GdkCursorType cursor_type)
       if (cursors[i].builtin)
 	return LoadCursor (NULL, cursors[i].builtin);
     }
-  
+
   w = GetSystemMetrics (SM_CXCURSOR);
   h = GetSystemMetrics (SM_CYCURSOR);
 
@@ -100,13 +100,13 @@ hcursor_from_type (GdkCursorType cursor_type)
 	{
 	  ofs = (y * w) / 8;
 	  j = y * cursors[i].width;
-	  
+
 	  for (x = 0; x < cursors[i].width && x < w ; x++, j++)
 	    {
 	      gint pofs = ofs + x / 8;
 	      guchar data = (cursors[i].data[j/4] & (0xc0 >> (2 * (j%4)))) >> (2 * (3 - (j%4)));
 	      gint bit = 7 - (j % cursors[i].width) % 8;
-	      
+
 	      if (data)
 		{
 		  RESET_BIT (and_plane[pofs], bit);
@@ -131,7 +131,7 @@ hcursor_from_type (GdkCursorType cursor_type)
     WIN32_API_FAILED ("CreateCursor");
   g_free (and_plane);
   g_free (xor_plane);
-  
+
   return rv;
 }
 
@@ -195,7 +195,7 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   guchar residue;
   gint ix, iy;
   const gboolean bg_is_white = color_is_white (bg);
-  
+
   g_return_val_if_fail (GDK_IS_PIXMAP (source), NULL);
   g_return_val_if_fail (GDK_IS_PIXMAP (mask), NULL);
   g_return_val_if_fail (fg != NULL, NULL);
@@ -287,7 +287,7 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
     {
       p = source_bits + iy*source_bpl;
       q = mask_bits + iy*mask_bpl;
-      
+
       for (ix = 0; ix < ((width-1)/8+1); ix++)
 	if (bg_is_white)
 	  *p++ |= ~(*q++);
@@ -311,7 +311,7 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
 
       q[-1] &= ~residue;	/* Clear left-over bits */
     }
-      
+
   /* AND mask is initialized to ones */
   and_mask = g_malloc (cursor_width/8 * cursor_height);
   memset (and_mask, 0xFF, cursor_width/8 * cursor_height);
@@ -326,7 +326,7 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
 
       q[-1] |= residue;	/* Set left-over bits */
     }
-      
+
   hcursor = CreateCursor (_gdk_app_hmodule, x, y, cursor_width, cursor_height,
 			  and_mask, xor_mask);
 
@@ -379,7 +379,7 @@ static struct {
   { "wait", IDC_WAIT }
 };
 
-GdkCursor*  
+GdkCursor*
 gdk_cursor_new_from_name (GdkDisplay  *display,
 			  const gchar *name)
 {
@@ -461,7 +461,7 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
       /* Colour cursor */
 
       gboolean no_alpha;
-      
+
       if (!GDI_CALL (GetDIBits, (hdc, ii.hbmColor, 0, 1, NULL, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	goto out1;
 
@@ -473,7 +473,7 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
       bmi.bi.biHeight = -h;
 
       bits = g_malloc0 (4 * w * h);
-      
+
       /* color data */
       if (!GDI_CALL (GetDIBits, (hdc, ii.hbmColor, 0, h, bits, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	goto out2;
@@ -524,9 +524,9 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
 
       w = bmi.bi.biWidth;
       h = ABS (bmi.bi.biHeight) / 2;
-      
+
       bits = g_malloc0 (4 * w * h);
-      
+
       /* masks */
       if (!GDI_CALL (GetDIBits, (hdc, ii.hbmMask, 0, h*2, bits, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	goto out2;
@@ -605,7 +605,7 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
   return pixbuf;
 }
 
-GdkPixbuf*  
+GdkPixbuf*
 gdk_cursor_get_image (GdkCursor *cursor)
 {
   g_return_val_if_fail (cursor != NULL, NULL);
@@ -614,7 +614,7 @@ gdk_cursor_get_image (GdkCursor *cursor)
 }
 
 GdkCursor *
-gdk_cursor_new_from_pixbuf (GdkDisplay *display, 
+gdk_cursor_new_from_pixbuf (GdkDisplay *display,
 			    GdkPixbuf  *pixbuf,
 			    gint        x,
 			    gint        y)
@@ -632,7 +632,7 @@ gdk_cursor_new_from_pixbuf (GdkDisplay *display,
   return cursor_new_from_hcursor (hcursor, GDK_CURSOR_IS_PIXMAP);
 }
 
-gboolean 
+gboolean
 gdk_display_supports_cursor_alpha (GdkDisplay    *display)
 {
   g_return_val_if_fail (display == _gdk_display, FALSE);
@@ -640,7 +640,7 @@ gdk_display_supports_cursor_alpha (GdkDisplay    *display)
   return _gdk_win32_pixbuf_to_hicon_supports_alpha ();
 }
 
-gboolean 
+gboolean
 gdk_display_supports_cursor_color (GdkDisplay    *display)
 {
   g_return_val_if_fail (display == _gdk_display, FALSE);
@@ -648,21 +648,21 @@ gdk_display_supports_cursor_color (GdkDisplay    *display)
   return TRUE;
 }
 
-guint     
+guint
 gdk_display_get_default_cursor_size (GdkDisplay    *display)
 {
   g_return_val_if_fail (display == _gdk_display, 0);
-  
+
   return MIN (GetSystemMetrics (SM_CXCURSOR), GetSystemMetrics (SM_CYCURSOR));
 }
 
-void     
+void
 gdk_display_get_maximal_cursor_size (GdkDisplay *display,
 				     guint       *width,
 				     guint       *height)
 {
   g_return_if_fail (display == _gdk_display);
-  
+
   if (width)
     *width = GetSystemMetrics (SM_CXCURSOR);
   if (height)

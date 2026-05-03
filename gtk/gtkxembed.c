@@ -42,14 +42,14 @@ static GSList *current_messages;
 /**
  * _gtk_xembed_push_message:
  * @xevent: a XEvent
- * 
+ *
  * Adds a client message to the stack of current XEMBED events.
  **/
 void
 _gtk_xembed_push_message (XEvent *xevent)
 {
   GtkXEmbedMessage *message = g_slice_new (GtkXEmbedMessage);
-  
+
   message->time = xevent->xclient.data.l[0];
   message->message = xevent->xclient.data.l[1];
   message->detail = xevent->xclient.data.l[2];
@@ -61,7 +61,7 @@ _gtk_xembed_push_message (XEvent *xevent)
 
 /**
  * _gtk_xembed_pop_message:
- * 
+ *
  * Removes an event added with _gtk_xembed_push_message()
  **/
 void
@@ -74,7 +74,7 @@ _gtk_xembed_pop_message (void)
 
 /**
  * _gtk_xembed_set_focus_wrapped:
- * 
+ *
  * Sets a flag indicating that the current focus sequence wrapped
  * around to the beginning of the ultimate toplevel.
  **/
@@ -82,27 +82,27 @@ void
 _gtk_xembed_set_focus_wrapped (void)
 {
   GtkXEmbedMessage *message;
-  
+
   g_return_if_fail (current_messages != NULL);
   message = current_messages->data;
   g_return_if_fail (message->message == XEMBED_FOCUS_PREV || message->message == XEMBED_FOCUS_NEXT);
-  
+
   message->data1 |= XEMBED_FOCUS_WRAPAROUND;
 }
 
 /**
  * _gtk_xembed_get_focus_wrapped:
- * 
+ *
  * Gets whether the current focus sequence has wrapped around
  * to the beginning of the ultimate toplevel.
- * 
+ *
  * Return value: %TRUE if the focus sequence has wrapped around.
  **/
 gboolean
 _gtk_xembed_get_focus_wrapped (void)
 {
   GtkXEmbedMessage *message;
-  
+
   g_return_val_if_fail (current_messages != NULL, FALSE);
   message = current_messages->data;
 
@@ -129,7 +129,7 @@ gtk_xembed_get_time (void)
  * @detail:    detail field of message
  * @data1:     data1 field of message
  * @data2:     data2 field of message
- * 
+ *
  * Sends a generic XEMBED message to a particular window.
  **/
 void
@@ -144,7 +144,7 @@ _gtk_xembed_send_message (GdkWindow        *recipient,
 
   if (!recipient)
     return;
-	  
+
   g_return_if_fail (GDK_IS_WINDOW (recipient));
 
   display = gdk_window_get_display (recipient);
@@ -176,7 +176,7 @@ _gtk_xembed_send_message (GdkWindow        *recipient,
  *             in which case nothing will be sent
  * @message:   type of message
  * @detail:    detail field of message
- * 
+ *
  * Sends a XEMBED message for moving the focus along the focus
  * chain to a window. The flags field that these messages share
  * will be correctly filled in.
@@ -190,12 +190,12 @@ _gtk_xembed_send_focus_message (GdkWindow        *recipient,
 
   if (!recipient)
     return;
-  
+
   g_return_if_fail (GDK_IS_WINDOW (recipient));
   g_return_if_fail (message == XEMBED_FOCUS_IN ||
 		    message == XEMBED_FOCUS_NEXT ||
 		    message == XEMBED_FOCUS_PREV);
-		    
+
   if (current_messages)
     {
       GtkXEmbedMessage *message = current_messages->data;
@@ -218,7 +218,7 @@ const char *
 _gtk_xembed_message_name (XEmbedMessageType message)
 {
   static char unk[24];
-  
+
   switch (message)
     {
 #define CASE(x) case XEMBED_##x: return "XEMBED_"#x

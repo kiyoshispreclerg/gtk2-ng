@@ -26,7 +26,7 @@ gtk-config takes the following flags:
 
   --libs
      Prints out the linker flags necessary to link a program against GTK
-   
+
   --prefix[=PREFIX]
      If PREFIX is specified, overrides the configured value of $prefix.
      (And of exec-prefix, unless --exec-prefix is also specified)
@@ -35,7 +35,7 @@ gtk-config takes the following flags:
   --exec-prefix[=PREFIX]
      If PREFIX is specified, overrides the configured value of $exec_prefix.
      Otherwise, prints out the configured value of $exec_prefix
- 
+
 You may also add to the command line a list of additional
 libraries that gtk-config should supply the CFLAGS and LIBS
 for. The only currently supported library is 'gthread'.
@@ -108,17 +108,17 @@ Notes:
 
 * The directory where the GTK libraries are installed needs
   to be found by your system's dynamic linker.
-  
+
   This is generally done by
 
     editing /etc/ld.so.conf and running ldconfig
 
   Or by:
-   
-    setting the environment variable LD_LIBRARY_PATH, 
 
-  or, as a last resort, 
- 
+    setting the environment variable LD_LIBRARY_PATH,
+
+  or, as a last resort,
+
     Giving a -R or -rpath flag (depending on your linker) when
     running configure, for instance:
 
@@ -135,9 +135,9 @@ Notes:
 Advanced note:
 
 * configure flags
-  
+
   --with-gtk-prefix=PREFIX
-  --with-gtk-exec-prefix=PREFIX 
+  --with-gtk-exec-prefix=PREFIX
 
   are provided to override the prefix and exec-prefix that were stored
   in the gtk-config shell script by GTK's configure. You are generally
@@ -178,7 +178,7 @@ is the AM_PATH_GTK() macro.
 
 That command does the following:
 
- If a GTK version greater than 0.99.5 is found, adds $GTK_LIBS to 
+ If a GTK version greater than 0.99.5 is found, adds $GTK_LIBS to
  $LIBS and $GTK_CFLAGS to $CFLAGS. Otherwise, dies with the error
  message "Cannot find GTK: Is gtk-config in path?"
 
@@ -202,7 +202,7 @@ adding the lines:
 to the Makefile.am.
 
 To try this example out, create a new directory, add the two
-files above two it, and copy the testinput.c file from 
+files above two it, and copy the testinput.c file from
 the gtk/ subdirectory to the new directory. Edit the line:
 
   #include "gtk.h"
@@ -217,7 +217,7 @@ Now execute the following commands:
   automake --add-missing
   aclocal
   autoconf
-  
+
 You now have a package that can be built in the normal fashion
 
   ./configure

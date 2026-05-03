@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /**
@@ -118,10 +118,10 @@ gtk_bin_remove (GtkContainer *container,
   g_return_if_fail (bin->child == child);
 
   widget_was_visible = gtk_widget_get_visible (child);
-  
+
   gtk_widget_unparent (child);
   bin->child = NULL;
-  
+
   /* queue resize regardless of gtk_widget_get_visible (container),
    * since that's what is needed by toplevels, which derive from GtkBin.
    */
@@ -144,7 +144,7 @@ gtk_bin_forall (GtkContainer *container,
 /**
  * gtk_bin_get_child:
  * @bin: a #GtkBin
- * 
+ *
  * Gets the child of the #GtkBin, or %NULL if the bin contains
  * no child widget. The returned widget does not have a reference
  * added, so you do not need to unref it.

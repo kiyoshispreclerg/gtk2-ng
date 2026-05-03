@@ -51,7 +51,7 @@ its output the file specified as the second argument.
   <varlistentry>
     <term>--root</term>
     <term>-r</term>
-    <listitem><para>Convert only the widget named <replaceable>name</replaceable> 
+    <listitem><para>Convert only the widget named <replaceable>name</replaceable>
        and its children.</para></listitem>
   </varlistentry>
 </variablelist>

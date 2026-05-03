@@ -38,7 +38,7 @@ static AtkObject*   gail_notebook_ref_child           (AtkObject      *obj,
                                                        gint           i);
 static gint         gail_notebook_real_remove_gtk     (GtkContainer   *container,
                                                        GtkWidget      *widget,
-                                                       gpointer       data);    
+                                                       gpointer       data);
 static void         atk_selection_interface_init      (AtkSelectionIface *iface);
 static gboolean     gail_notebook_add_selection       (AtkSelection   *selection,
                                                        gint           i);
@@ -113,7 +113,7 @@ gail_notebook_ref_child (AtkObject      *obj,
   GailNotebook *gail_notebook;
   GtkNotebook *gtk_notebook;
   GtkWidget *widget;
- 
+
   widget = GTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
@@ -122,9 +122,9 @@ gail_notebook_ref_child (AtkObject      *obj,
     return NULL;
 
   gail_notebook = GAIL_NOTEBOOK (obj);
-  
+
   gtk_notebook = GTK_NOTEBOOK (widget);
-  
+
   if (gail_notebook->page_count < g_list_length (gtk_notebook->children))
     check_cache (gail_notebook, gtk_notebook);
 
@@ -183,7 +183,7 @@ gail_notebook_real_initialize (AtkObject *obj,
                     NULL);
   g_object_weak_ref (G_OBJECT(gtk_notebook),
                      (GWeakNotify) gail_notebook_destroyed,
-                     obj);                     
+                     obj);
 
   obj->role = ATK_ROLE_PAGE_TAB_LIST;
 }
@@ -205,10 +205,10 @@ gail_notebook_real_notify_gtk (GObject           *obj,
       gint old_focus_page_num;
       GailNotebook *gail_notebook;
       GtkNotebook *gtk_notebook;
-     
+
       gail_notebook = GAIL_NOTEBOOK (atk_obj);
       gtk_notebook = GTK_NOTEBOOK (widget);
-     
+
       if (gail_notebook->page_count < g_list_length (gtk_notebook->children))
        check_cache (gail_notebook, gtk_notebook);
       /*
@@ -223,7 +223,7 @@ gail_notebook_real_notify_gtk (GObject           *obj,
           focus_page_num = g_list_index (gtk_notebook->children, gtk_notebook->focus_tab->data);
           gail_notebook->focus_tab_page = focus_page_num;
         }
-    
+
       if (page_num != old_page_num)
         {
           AtkObject *obj;
@@ -248,7 +248,7 @@ gail_notebook_real_notify_gtk (GObject           *obj,
               g_object_unref (obj);
               /*
                * The page which is being displayed has changed but there is
-               * no need to tell the focus tracker as the focus page will also 
+               * no need to tell the focus tracker as the focus page will also
                * change or a widget in the page will receive focus if the
                * Notebook does not have tabs.
                */
@@ -312,8 +312,8 @@ atk_selection_interface_init (AtkSelectionIface *iface)
 }
 
 /*
- * GtkNotebook only supports the selection of one page at a time. 
- * Selecting a page unselects any previous selection, so this 
+ * GtkNotebook only supports the selection of one page at a time.
+ * Selecting a page unselects any previous selection, so this
  * changes the current selection instead of adding to it.
  */
 static gboolean
@@ -322,14 +322,14 @@ gail_notebook_add_selection (AtkSelection *selection,
 {
   GtkNotebook *notebook;
   GtkWidget *widget;
-  
+
   widget =  GTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
-  
+
   notebook = GTK_NOTEBOOK (widget);
   gtk_notebook_set_current_page (notebook, i);
   return TRUE;
@@ -343,18 +343,18 @@ gail_notebook_ref_selection (AtkSelection *selection,
   GtkWidget *widget;
   GtkNotebook *notebook;
   gint pagenum;
-  
+
   /*
    * A note book can have only one selection.
    */
   gail_return_val_if_fail (i == 0, NULL);
   g_return_val_if_fail (GAIL_IS_NOTEBOOK (selection), NULL);
-  
+
   widget = GTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
 	return NULL;
-  
+
   notebook = GTK_NOTEBOOK (widget);
   pagenum = gtk_notebook_get_current_page (notebook);
   gail_return_val_if_fail (pagenum != -1, NULL);
@@ -372,7 +372,7 @@ gail_notebook_get_selection_count (AtkSelection *selection)
 {
   GtkWidget *widget;
   GtkNotebook *notebook;
-  
+
   widget = GTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
@@ -397,19 +397,19 @@ gail_notebook_is_child_selected (AtkSelection *selection,
 
   widget = GTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
-    /* 
+    /*
      * State is defunct
      */
     return FALSE;
 
-  
+
   notebook = GTK_NOTEBOOK (widget);
   pagenumber = gtk_notebook_get_current_page(notebook);
 
   if (pagenumber == i)
     return TRUE;
   else
-    return FALSE; 
+    return FALSE;
 }
 
 static AtkObject*
@@ -490,7 +490,7 @@ create_notebook_page_accessible (GailNotebook *gail_notebook,
     gail_notebook->page_cache = g_list_insert_before (gail_notebook->page_cache, list, obj);
   else
     gail_notebook->page_cache = g_list_append (gail_notebook->page_cache, obj);
-  g_signal_connect (gtk_notebook_get_nth_page (notebook, index), 
+  g_signal_connect (gtk_notebook_get_nth_page (notebook, index),
                     "parent_set",
                     G_CALLBACK (gail_notebook_child_parent_set),
                     obj);
@@ -511,7 +511,7 @@ gail_notebook_child_parent_set (GtkWidget *widget,
 static gint
 gail_notebook_real_remove_gtk (GtkContainer *container,
                                GtkWidget    *widget,
-                               gpointer      data)    
+                               gpointer      data)
 {
   GailNotebook *gail_notebook;
   AtkObject *obj;
@@ -529,7 +529,7 @@ gail_notebook_real_remove_gtk (GtkContainer *container,
   reset_cache (gail_notebook, index);
   g_signal_emit_by_name (gail_notebook,
                          "children_changed::remove",
-                          GAIL_NOTEBOOK_PAGE (obj)->index, 
+                          GAIL_NOTEBOOK_PAGE (obj)->index,
                           obj, NULL);
   g_object_unref (obj);
   return 1;

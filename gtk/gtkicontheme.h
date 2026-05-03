@@ -74,7 +74,7 @@ struct _GtkIconThemeClass
  *   fallback, see gtk_icon_theme_choose_icon(). Since 2.12.
  * @GTK_ICON_LOOKUP_FORCE_SIZE: Always return the icon scaled to the
  *   requested size. Since 2.14.
- * 
+ *
  * Used to specify options for gtk_icon_theme_lookup_icon()
  **/
 typedef enum
@@ -92,7 +92,7 @@ typedef enum
  * GtkIconThemeError:
  * @GTK_ICON_THEME_NOT_FOUND: The icon specified does not exist in the theme
  * @GTK_ICON_THEME_FAILED: An unspecified error occurred.
- * 
+ *
  * Error codes for GtkIconTheme operations.
  **/
 typedef enum {

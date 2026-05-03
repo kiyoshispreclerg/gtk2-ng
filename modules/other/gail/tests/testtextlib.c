@@ -21,7 +21,7 @@ gint setup_gui(AtkObject *obj, TLruntest test)
   gchar *defaults[MAX_PARAMS];
   static OutputWindow *tow = NULL;
   gint  window;
-  
+
   if (tow)
     window = create_windows(obj, test, &tow);
   else
@@ -32,28 +32,28 @@ gint setup_gui(AtkObject *obj, TLruntest test)
 
   /* Get Text [at|after|before] Offset Tests */
   paramnames[0] = "offset";
-  defaults[0] = "1"; 
+  defaults[0] = "1";
   add_test(window, "atk_text_get_text_after_offset", 1,  paramnames, defaults);
   add_test(window, "atk_text_get_text_before_offset", 1, paramnames, defaults);
   add_test(window, "atk_text_get_text_at_offset",1 , paramnames, defaults);
-  
+
   /* Get Character Count Test */
-  add_test(window, "atk_text_get_character_count", 0, NULL, NULL); 
+  add_test(window, "atk_text_get_character_count", 0, NULL, NULL);
 
   /* Get Character At Offset Test */
   paramnames[0] = "offset";
   defaults[0] = "1";
   add_test(window, "atk_text_get_character_at_offset", 1, paramnames, defaults);
-   
+
   /* Get Text Test */
   paramnames[0] = "position 1";
   paramnames[1] = "position 2";
   defaults[0] = "0";
   defaults[1] = "5";
-  add_test(window, "atk_text_get_text", 2, paramnames, defaults); 
+  add_test(window, "atk_text_get_text", 2, paramnames, defaults);
 
   /* Caret Tests */
-  add_test(window, "atk_text_get_caret_offset", 0, NULL, NULL); 
+  add_test(window, "atk_text_get_caret_offset", 0, NULL, NULL);
 
   paramnames[0] = "offset";
   defaults[0] = "1";
@@ -61,23 +61,23 @@ gint setup_gui(AtkObject *obj, TLruntest test)
 
   /* Selection Tests */
   add_test(window, "atk_text_get_n_selections", 0, NULL, NULL);
-    
+
   paramnames[0] = "selection no";
   defaults[0] = "0";
-  add_test(window, "atk_text_get_selection", 1, paramnames, defaults);  
+  add_test(window, "atk_text_get_selection", 1, paramnames, defaults);
 
   paramnames[0] = "start";
   paramnames[1] = "end";
   defaults[0] = "3";
   defaults[1] = "8";
-  add_test(window, "atk_text_add_selection", 2, paramnames, defaults); 
+  add_test(window, "atk_text_add_selection", 2, paramnames, defaults);
 
   paramnames[0] = "selection no";
   paramnames[1] = "start";
   paramnames[2] = "end";
   defaults[0] = "0";
   defaults[1] = "5";
-  defaults[2] = "7"; 
+  defaults[2] = "7";
   add_test(window, "atk_text_set_selection", 3, paramnames, defaults);
 
   paramnames[0] = "selection no";
@@ -105,7 +105,7 @@ gint setup_gui(AtkObject *obj, TLruntest test)
   add_test(window, "atk_text_get_offset_at_point", 3, paramnames, defaults);
 
   /* Editable Text Tests */
-  if (ATK_IS_EDITABLE_TEXT(obj)) 
+  if (ATK_IS_EDITABLE_TEXT(obj))
   {
 
     paramnames[0] = "start";
@@ -113,7 +113,7 @@ gint setup_gui(AtkObject *obj, TLruntest test)
     defaults[0] = "20";
     defaults[1] = "27";
     add_test(window, "atk_editable_text_set_run_attributes", 2, paramnames, defaults);
-      
+
     paramnames[0] = "start";
     paramnames[1] = "end";
     defaults[0] = "3";
@@ -133,7 +133,7 @@ gint setup_gui(AtkObject *obj, TLruntest test)
     paramnames[1] = "end";
     defaults[0] = "5";
     defaults[1] = "20";
-    add_test(window, "atk_editable_text_copy_text", 2, paramnames, defaults); 
+    add_test(window, "atk_editable_text_copy_text", 2, paramnames, defaults);
 
     paramnames[0] = "insert text";
     paramnames[1] = "position";
@@ -182,7 +182,7 @@ void add_handlers(AtkObject *obj)
  * @obj: A #Gobject
  * @start_offset: Start offset of insert
  * @end_offset: End offset of insert.
- * 
+ *
  * Text inserted singal handler
  **/
 void
@@ -197,7 +197,7 @@ _notify_text_insert_handler (GObject *obj, int start_offset, int end_offset)
  * @obj: A #Gobject
  * @start_offset: Start offset of delete
  * @end_offset: End offset of delete.
- * 
+ *
  * Text deleted singal handler
  **/
 void
@@ -211,7 +211,7 @@ _notify_text_delete_handler (GObject *obj, int start_offset, int end_offset)
  * notify_caret_handler:
  * @obj: A #Gobject
  * @position: Caret position
- * 
+ *
  * Caret (cursor) moved signal handler.
  **/
 void
@@ -235,7 +235,7 @@ runtest(AtkObject *obj, gint win_val)
   gunichar    uni_char;
   gchar       output[MAX_LINE_SIZE];
   gchar       **testsOn;
- 
+
   testsOn = tests_set(win_val, &size);
 
   for(i = 0; i < size; i++)
@@ -247,9 +247,9 @@ runtest(AtkObject *obj, gint win_val)
 
     if (strcmp(testsOn[i], "atk_text_get_text_at_offset") == 0)
     {
-      param_string1 = get_arg_of_func(win_val, "atk_text_get_text_at_offset", "offset");  
+      param_string1 = get_arg_of_func(win_val, "atk_text_get_text_at_offset", "offset");
       param_int1 = string_to_int(param_string1);
-      
+
       _run_offset_test(obj, "at", param_int1, ATK_TEXT_BOUNDARY_WORD_END);
       _run_offset_test(obj, "at", param_int1, ATK_TEXT_BOUNDARY_WORD_START);
       _run_offset_test(obj, "at", param_int1, ATK_TEXT_BOUNDARY_LINE_END);
@@ -258,10 +258,10 @@ runtest(AtkObject *obj, gint win_val)
       _run_offset_test(obj, "at", param_int1, ATK_TEXT_BOUNDARY_SENTENCE_START);
       _run_offset_test(obj, "at", param_int1, ATK_TEXT_BOUNDARY_CHAR);
     }
-    
+
     if (strcmp(testsOn[i], "atk_text_get_text_after_offset") == 0)
     {
-      param_string1 = get_arg_of_func(win_val, "atk_text_get_text_after_offset", "offset");  
+      param_string1 = get_arg_of_func(win_val, "atk_text_get_text_after_offset", "offset");
       param_int1 = string_to_int(param_string1);
 
       _run_offset_test(obj, "after", param_int1, ATK_TEXT_BOUNDARY_WORD_END);
@@ -275,9 +275,9 @@ runtest(AtkObject *obj, gint win_val)
 
     if (strcmp(testsOn[i], "atk_text_get_text_before_offset") == 0)
     {
-      param_string1 = get_arg_of_func(win_val, "atk_text_get_text_before_offset", "offset");  
+      param_string1 = get_arg_of_func(win_val, "atk_text_get_text_before_offset", "offset");
       param_int1 = string_to_int(param_string1);
-      
+
       _run_offset_test(obj, "before", param_int1, ATK_TEXT_BOUNDARY_WORD_END);
       _run_offset_test(obj, "before", param_int1, ATK_TEXT_BOUNDARY_WORD_START);
       _run_offset_test(obj, "before", param_int1, ATK_TEXT_BOUNDARY_LINE_END);
@@ -286,25 +286,25 @@ runtest(AtkObject *obj, gint win_val)
       _run_offset_test(obj, "before", param_int1, ATK_TEXT_BOUNDARY_SENTENCE_START);
       _run_offset_test(obj, "before", param_int1, ATK_TEXT_BOUNDARY_CHAR);
     }
-    
+
     if (strcmp(testsOn[i], "atk_text_get_character_count") == 0)
     {
       param_int1 = atk_text_get_character_count (ATK_TEXT (obj));
-      sprintf(output, "\nText character count: %d\n", param_int1);  
+      sprintf(output, "\nText character count: %d\n", param_int1);
       set_output_buffer(output);
     }
-    
+
     if (strcmp(testsOn[i], "atk_text_get_character_at_offset") == 0)
     {
       param_string1 = get_arg_of_func(win_val, "atk_text_get_character_at_offset",
-        "offset"); 
+        "offset");
       uni_char = atk_text_get_character_at_offset (ATK_TEXT(obj),
         string_to_int(param_string1));
       sprintf(output, "\nCharacter at offset %d: |%x|\n",
         string_to_int(param_string1), uni_char);
       set_output_buffer(output);
     }
- 
+
     if (strcmp(testsOn[i], "atk_text_get_text") == 0)
     {
       param_string1 =  get_arg_of_func(win_val, "atk_text_get_text", "position 1");
@@ -313,7 +313,7 @@ runtest(AtkObject *obj, gint win_val)
         string_to_int(param_string2));
       sprintf(output, "\nText %d, %d: %s\n", string_to_int(param_string1),
         string_to_int(param_string2), text);
-      g_free (text);  
+      g_free (text);
       set_output_buffer(output);
     }
 
@@ -321,9 +321,9 @@ runtest(AtkObject *obj, gint win_val)
     {
       param_int1 = atk_text_get_caret_offset (ATK_TEXT (obj));
       if (param_int1 == -1)
-        sprintf(output, "\nCaret offset: |Not Supported|\n");  
+        sprintf(output, "\nCaret offset: |Not Supported|\n");
       else
-        sprintf(output, "\nCaret offset: %d\n", param_int1);  
+        sprintf(output, "\nCaret offset: %d\n", param_int1);
       set_output_buffer(output);
     }
 
@@ -342,7 +342,7 @@ runtest(AtkObject *obj, gint win_val)
 
       set_output_buffer(output);
     }
-    
+
     if (strcmp(testsOn[i], "atk_text_get_n_selections") == 0)
     {
       param_int1 = atk_text_get_n_selections(ATK_TEXT(obj));
@@ -354,7 +354,7 @@ runtest(AtkObject *obj, gint win_val)
 
       for (j = 0; j < param_int1; j++)
       {
-        sprintf(output, "\nNumber of selected text regions is: |%d|\n", j);  
+        sprintf(output, "\nNumber of selected text regions is: |%d|\n", j);
         set_output_buffer(output);
 
         text = atk_text_get_selection(ATK_TEXT(obj), j, &start, &end);
@@ -380,12 +380,12 @@ runtest(AtkObject *obj, gint win_val)
       param_string1 = get_arg_of_func(win_val, "atk_text_add_selection", "start");
       param_string2 = get_arg_of_func(win_val, "atk_text_add_selection", "end");
       result = atk_text_add_selection(ATK_TEXT(obj),
-        string_to_int(param_string1), string_to_int(param_string2));   
+        string_to_int(param_string1), string_to_int(param_string2));
       sprintf(output, "\nSet selection bounds between %d, and %d: %s",
         string_to_int(param_string1), string_to_int(param_string2),
         result_string[result]);
       set_output_buffer(output);
-      
+
       param_int1 = atk_text_get_n_selections(ATK_TEXT(obj));
       for (j = 0; j < param_int1; j++)
       {
@@ -409,7 +409,7 @@ runtest(AtkObject *obj, gint win_val)
         set_output_buffer(output);
       }
     }
-      
+
     if (strcmp(testsOn[i], "atk_text_get_selection") == 0)
     {
       param_string1 = get_arg_of_func(win_val, "atk_text_get_selection", "selection no");
@@ -463,7 +463,7 @@ runtest(AtkObject *obj, gint win_val)
 
       set_output_buffer(output);
     }
-    
+
     if (strcmp(testsOn[i], "atk_text_remove_selection") == 0)
     {
       param_string1 = get_arg_of_func(win_val, "atk_text_remove_selection", "selection no");
@@ -531,7 +531,7 @@ runtest(AtkObject *obj, gint win_val)
         atk_attribute_set_free (attrib);
       }
     }
- 
+
     if (strcmp(testsOn[i], "atk_text_get_character_extents") == 0)
     {
       gint test_int;
@@ -543,7 +543,7 @@ runtest(AtkObject *obj, gint win_val)
       if (strcmp(param_string2, "ATK_XY_SCREEN") == 0)
       {
         atk_text_get_character_extents(ATK_TEXT(obj), test_int, &x, &y, &width,
-          &height, ATK_XY_SCREEN);   
+          &height, ATK_XY_SCREEN);
         sprintf(output,
           "get_character_extents at offset %i, mode: SCREEN\nX: %i, Y: %i, width: %i, height: %i\n",
           test_int, x, y, width, height);
@@ -558,9 +558,9 @@ runtest(AtkObject *obj, gint win_val)
       }
       else
         sprintf(output, "get_character_extents_at_offset: Invalid coord mode argument!");
-           
+
       set_output_buffer(output);
-    } 
+    }
 
     if (strcmp(testsOn[i], "atk_text_get_offset_at_point") == 0)
     {
@@ -573,16 +573,16 @@ runtest(AtkObject *obj, gint win_val)
       if (strcmp(param_string3, "ATK_XY_SCREEN") == 0)
       {
         test_int = atk_text_get_offset_at_point(ATK_TEXT(obj), param_int1, param_int2,
-          ATK_XY_SCREEN);   
+          ATK_XY_SCREEN);
         if (test_int != -1)
           sprintf(output, "get_offset_at_point %i,%i mode: SCREEN is %i\n", param_int1, param_int2, test_int);
-        else 
+        else
 	  sprintf(output, "Cannot get_offset_at_point\n");
       }
       else if (strcmp(param_string3, "ATK_XY_WINDOW") == 0)
       {
         test_int = atk_text_get_offset_at_point(ATK_TEXT(obj), param_int1, param_int2,
-          ATK_XY_WINDOW);   
+          ATK_XY_WINDOW);
         if (test_int != -1)
           sprintf(output, "get_offset_at_point %i,%i mode: WIDGET_WINDOW is %i\n", param_int1, param_int2, test_int);
         else
@@ -590,9 +590,9 @@ runtest(AtkObject *obj, gint win_val)
       }
       else
         sprintf(output, "get_offset_at_point: Invalid coord mode argument!");
-           
+
       set_output_buffer(output);
-    } 
+    }
     if (ATK_IS_EDITABLE_TEXT(obj))
     {
       if (strcmp(testsOn[i], "atk_editable_text_set_run_attributes") == 0)
@@ -609,9 +609,9 @@ runtest(AtkObject *obj, gint win_val)
         else
           sprintf(output, "\nSetting attributes in range %d to %d...Failed\n",
             string_to_int(param_string1), string_to_int(param_string2));
-        set_output_buffer(output); 
+        set_output_buffer(output);
       }
-      
+
       if (strcmp(testsOn[i], "atk_editable_text_cut_text") == 0)
       {
         param_string1 = get_arg_of_func(win_val, "atk_editable_text_cut_text", "start");
@@ -620,9 +620,9 @@ runtest(AtkObject *obj, gint win_val)
           string_to_int(param_string1), string_to_int(param_string2));
         sprintf(output, "\nCutting text %d to %d...\n",
           string_to_int(param_string1), string_to_int(param_string2));
-        set_output_buffer(output); 
+        set_output_buffer(output);
       }
-      
+
       if (strcmp(testsOn[i], "atk_editable_text_paste_text") == 0)
       {
         param_string1 = get_arg_of_func(win_val, "atk_editable_text_paste_text",
@@ -630,9 +630,9 @@ runtest(AtkObject *obj, gint win_val)
         atk_editable_text_paste_text(ATK_EDITABLE_TEXT(obj),
           string_to_int(param_string1));
         sprintf(output, "\nPasting text to %d\n", string_to_int(param_string1));
-        set_output_buffer(output); 
+        set_output_buffer(output);
       }
-      
+
       if (strcmp(testsOn[i], "atk_editable_text_delete_text") == 0)
       {
         param_string1 = get_arg_of_func(win_val, "atk_editable_text_delete_text", "start");
@@ -641,9 +641,9 @@ runtest(AtkObject *obj, gint win_val)
           string_to_int(param_string1), string_to_int(param_string2));
         sprintf(output, "\nDeleting text %d to %d...\n",
           string_to_int(param_string1), string_to_int(param_string2));
-        set_output_buffer(output); 
+        set_output_buffer(output);
       }
-      
+
       if (strcmp(testsOn[i], "atk_editable_text_copy_text") == 0)
       {
         param_string1 = get_arg_of_func(win_val, "atk_editable_text_copy_text", "start");
@@ -652,9 +652,9 @@ runtest(AtkObject *obj, gint win_val)
           string_to_int(param_string1), string_to_int(param_string2));
         sprintf(output, "\nCopying text %d to %d...\n",
           string_to_int(param_string1), string_to_int(param_string2));
-        set_output_buffer(output); 
+        set_output_buffer(output);
       }
-      
+
       if (strcmp(testsOn[i], "atk_editable_text_insert_text") == 0)
       {
         param_string1 = get_arg_of_func(win_val, "atk_editable_text_insert_text",
@@ -665,10 +665,10 @@ runtest(AtkObject *obj, gint win_val)
         atk_editable_text_insert_text(ATK_EDITABLE_TEXT(obj),
           param_string1, strlen(param_string1), &param_int2);
         sprintf(output, "\nInserting text at %d...\n", param_int2);
-        set_output_buffer(output); 
+        set_output_buffer(output);
       }
     }
-  }  
+  }
 }
 
 /**
@@ -705,7 +705,7 @@ void _run_offset_test(AtkObject * obj, char * type, gint offset,
 
   if (text == NULL)
     text = g_strdup (default_val);
-    
+
   if (boundary == ATK_TEXT_BOUNDARY_CHAR)
     sprintf(output, "\n|%s| Text |%s|  Boundary |BOUNDARY_CHAR|\n",
       type, text);
@@ -731,7 +731,7 @@ void _run_offset_test(AtkObject * obj, char * type, gint offset,
     sprintf(output, "\n|%s| Text |%s| Boundary |UNKNOWN|\n",
       type, text);
 
-  g_free (text);  
+  g_free (text);
   set_output_buffer(output);
 
   sprintf(output, "Offset %d, startOffset %d, endOffset %d\n",

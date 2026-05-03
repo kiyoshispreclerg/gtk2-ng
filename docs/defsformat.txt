@@ -20,7 +20,7 @@ Ex: (module Gtk)
 Ex: (module Rgb
       (submodule-of Gdk))
 
-modules are later referred to with a list of module names, like 
+modules are later referred to with a list of module names, like
 (Gdk Rgb) or (Gtk)
 
 Object and boxed type definitions automatically create a submodule.
@@ -58,7 +58,7 @@ Ex: (type
  ;; This one would be implied by the (object) def for GtkWidget I
  ;; think - (type) is only required for types that are not implied
  ;; by other definitions, such as int/boolean/etc.
- 
+
     (type
      (alias GtkWidget)
      (in-module (Gtk))
@@ -94,7 +94,7 @@ stuff.
    (c-name name-of-the-object-in-C)
    (field (type-and-name type-alias-of-struct-field name-of-struct-field)
           (access read-or-write-or-readwrite)))
-   
+
 
 Ex: (object Widget
       (in-module (Gtk))
@@ -111,10 +111,10 @@ An "object" declaration automatically implies the type definition:
   (out-c-name pointer-to-pointer-to-c-name)
   (inout-c-name pointer-to-c-name))
 
-Ex: 
- (type (alias GtkWidget) 
-       (in-c-name GtkWidget*) 
-       (out-c-name GtkWidget**) 
+Ex:
+ (type (alias GtkWidget)
+       (in-c-name GtkWidget*)
+       (out-c-name GtkWidget**)
        (inout-c-name GtkWidget*))
 
 It also implies a module that is the name broken into parts:
@@ -131,7 +131,7 @@ It also implies a module that is the name broken into parts:
   (return-type return-value-type) ;; defaults to void
   (caller-owns-return boolean-value) ;; defaults to #f
   (can-return-null boolean-value) ;; defaults to #t
-  (parameter in-or-out-or-inout 
+  (parameter in-or-out-or-inout
       (type-and-name parameter-type-alias parameter-name)
       (type-parameter name-of-contained-type) ;; optional, requires parametric type
       (c-declaration "c-type-and-name")) ;; c-declaration only required
@@ -144,7 +144,7 @@ Ex:
     (in-module (Gdk Rgb)
     (c-name gdk_rgb_init)))
 
-Ex: 
+Ex:
   (function new
     (in-module (Gdk Rgb Cmap))
     (is-constructor-of GdkRgbCmap)
@@ -160,7 +160,7 @@ Ex:
    (c-name gnome_config_set_set_handler)
    (parameter in (type-and-name native func)
                  (c-declaration "void (*func)(void*)"))
-   (parameter in (type-and-name gpointer data)))  
+   (parameter in (type-and-name gpointer data)))
 
 ===
 (method method-name
@@ -168,7 +168,7 @@ Ex:
   ;; retval/arg attributes as for (function), but with first parameter
   ;; omitted for non-constructors
    )
- 
+
 Ex:
   (method set_text
      (of-object Label (Gtk))
@@ -190,7 +190,7 @@ Ex:
      (readable #t)
      (writeable #t))
 
-=== 
+===
 (signal signal-name
   (run-action bool-value)
   (run-first bool-value)
@@ -211,7 +211,7 @@ Ex:
      (parameter in (type-and-name gint column))
      (parameter in (type-and-name GdkEvent* event)))
 
-=== 
+===
 (enum enum-name
   (in-module modname)
   (c-name name-in-c)
@@ -238,7 +238,7 @@ Ex:
 
 ===
 (flags) is just like enum, but some bindings may wrap enums and flags differently.
-    
+
 ===
 
 (boxed boxed-name
@@ -268,10 +268,10 @@ An "object" declaration automatically implies the type definition:
   (out-c-name pointer-to-pointer-to-c-name)
   (inout-c-name pointer-to-c-name))
 
-Ex: 
- (type (alias GdkPixmap) 
-       (in-c-name GdkPixmap*) 
-       (out-c-name GdkPixmap**) 
+Ex:
+ (type (alias GdkPixmap)
+       (in-c-name GdkPixmap*)
+       (out-c-name GdkPixmap**)
        (inout-c-name GdkPixmap*))
 
 
@@ -296,9 +296,9 @@ Ex:
 
 Implies GdkRectangle type alias:
 
- (type (alias GdkRectangle) 
-       (in-c-name GdkRectangle*) 
-       (out-c-name GdkRectangle*)    ;; note - not the same as boxed types 
+ (type (alias GdkRectangle)
+       (in-c-name GdkRectangle*)
+       (out-c-name GdkRectangle*)    ;; note - not the same as boxed types
        (inout-c-name GdkRectangle*))
 
 ===
@@ -333,6 +333,6 @@ Ex:
 
 
 
-  
-   
+
+
 

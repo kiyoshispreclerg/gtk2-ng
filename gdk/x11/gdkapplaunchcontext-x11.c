@@ -130,10 +130,10 @@ end_startup_notification (GdkDisplay *display,
  * timeouts. The reason our timeout is dumb is that we don't monitor
  * the sequence (don't use an SnMonitorContext)
  */
-#define STARTUP_TIMEOUT_LENGTH_SECONDS 30 
+#define STARTUP_TIMEOUT_LENGTH_SECONDS 30
 #define STARTUP_TIMEOUT_LENGTH (STARTUP_TIMEOUT_LENGTH_SECONDS * 1000)
 
-typedef struct 
+typedef struct
 {
   GdkDisplay *display;
   char *startup_id;
@@ -150,7 +150,7 @@ free_startup_notification_data (gpointer data)
   g_free (sn_data);
 }
 
-typedef struct 
+typedef struct
 {
   GSList *contexts;
   guint timeout_id;

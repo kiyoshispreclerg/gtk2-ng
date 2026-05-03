@@ -41,7 +41,7 @@ static void cb_select_child (GtkWidget *root_tree, GtkWidget *child,
 static void cb_selection_changed( GtkWidget *tree )
 {
   GList *i;
-  
+
   g_print ("selection_change called for tree %p\n", tree);
   g_print ("selected objects are:\n");
 
@@ -85,7 +85,7 @@ int main( int   argc,
   gtk_widget_set_size_request (scrolled_win, 150, 200);
   gtk_container_add (GTK_CONTAINER (window), scrolled_win);
   gtk_widget_show (scrolled_win);
-  
+
   /* Create the root tree */
   tree = gtk_tree_new ();
   g_print ("root tree is %p\n", tree);
@@ -132,13 +132,13 @@ int main( int   argc,
 	     subtree);
 
     /* This is still necessary if you want these signals to be called
-       for the subtree's children.  Note that selection_change will be 
+       for the subtree's children.  Note that selection_change will be
        signalled for the root tree regardless. */
     g_signal_connect (G_OBJECT (subtree), "select_child",
 			G_CALLBACK (cb_select_child), subtree);
     g_signal_connect (G_OBJECT (subtree), "unselect_child",
 			G_CALLBACK (cb_unselect_child), subtree);
-    /* This has absolutely no effect, because it is completely ignored 
+    /* This has absolutely no effect, because it is completely ignored
        in subtrees */
     gtk_tree_set_selection_mode (GTK_TREE (subtree),
 				 GTK_SELECTION_SINGLE);

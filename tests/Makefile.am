@@ -178,15 +178,15 @@ testentryicons_SOURCES =	\
 
 testfilechooser_SOURCES = 	\
 	prop-editor.c		\
-	testfilechooser.c 	
+	testfilechooser.c
 
 testfilechooserbutton_SOURCES =	\
 	prop-editor.c		\
-	testfilechooserbutton.c 	
+	testfilechooserbutton.c
 
 testgtk_SOURCES =	\
 	prop-editor.c   \
-	testgtk.c 	
+	testgtk.c
 
 testtreeedit_SOURCES = 	\
 	testtreeedit.c
@@ -196,11 +196,11 @@ testtreemodel_SOURCES = \
 
 testtreeview_SOURCES =	\
 	prop-editor.c	\
-	testtreeview.c 
+	testtreeview.c
 
 testtext_SOURCES =	\
 	prop-editor.c	\
-	testtext.c 
+	testtext.c
 
 testtoolbar_SOURCES =	\
 	testtoolbar.c	\

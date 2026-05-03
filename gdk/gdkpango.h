@@ -1,5 +1,5 @@
 /* GDK - The GIMP Drawing Kit
- * Copyright (C) 2000 Red Hat, Inc. 
+ * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -111,7 +111,7 @@ PangoContext *gdk_pango_context_get            (void);
 #ifndef GDK_DISABLE_DEPRECATED
 void          gdk_pango_context_set_colormap   (PangoContext *context,
                                                 GdkColormap  *colormap);
-#endif 
+#endif
 
 
 /* Get a clip region to draw only part of a layout or

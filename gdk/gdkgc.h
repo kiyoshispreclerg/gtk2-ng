@@ -198,10 +198,10 @@ struct _GdkGC
   GdkColormap *GSEAL (colormap);
 };
 
-struct _GdkGCClass 
+struct _GdkGCClass
 {
   GObjectClass parent_class;
-  
+
   void (*get_values)     (GdkGC          *gc,
 			  GdkGCValues    *values);
   void (*set_values)     (GdkGC          *gc,
@@ -211,7 +211,7 @@ struct _GdkGCClass
 			  gint	          dash_offset,
 			  gint8           dash_list[],
 			  gint            n);
-  
+
   /* Padding for future expansion */
   void         (*_gdk_reserved1)  (void);
   void         (*_gdk_reserved2)  (void);

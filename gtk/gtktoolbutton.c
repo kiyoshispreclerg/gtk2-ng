@@ -119,7 +119,7 @@ GType
 gtk_tool_button_get_type (void)
 {
   static GType type = 0;
-  
+
   if (!type)
     {
       const GInterfaceInfo activatable_info =
@@ -152,15 +152,15 @@ gtk_tool_button_class_init (GtkToolButtonClass *klass)
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkToolItemClass *tool_item_class;
-  
+
   parent_class = g_type_class_peek_parent (klass);
 
   g_type_class_adjust_private_offset (klass, &GtkToolButton_private_offset);
-  
+
   object_class = (GObjectClass *)klass;
   widget_class = (GtkWidgetClass *)klass;
   tool_item_class = (GtkToolItemClass *)klass;
-  
+
   object_class->set_property = gtk_tool_button_set_property;
   object_class->get_property = gtk_tool_button_get_property;
   object_class->notify = gtk_tool_button_property_notify;
@@ -170,7 +170,7 @@ gtk_tool_button_class_init (GtkToolButtonClass *klass)
 
   tool_item_class->create_menu_proxy = gtk_tool_button_create_menu_proxy;
   tool_item_class->toolbar_reconfigured = gtk_tool_button_toolbar_reconfigured;
-  
+
   klass->button_type = GTK_TYPE_BUTTON;
 
   /* Properties are interpreted like this:
@@ -240,12 +240,12 @@ gtk_tool_button_class_init (GtkToolButtonClass *klass)
 
   /**
    * GtkToolButton:icon-name:
-   * 
+   *
    * The name of the themed icon displayed on the item.
-   * This property only has an effect if not overridden by "label", 
+   * This property only has an effect if not overridden by "label",
    * "icon_widget" or "stock_id" properties.
    *
-   * Since: 2.8 
+   * Since: 2.8
    */
   g_object_class_install_property (object_class,
 				   PROP_ICON_NAME,
@@ -264,9 +264,9 @@ gtk_tool_button_class_init (GtkToolButtonClass *klass)
 
   /**
    * GtkButton:icon-spacing:
-   * 
+   *
    * Spacing in pixels between the icon and label.
-   * 
+   *
    * Since: 2.10
    */
   gtk_widget_class_install_style_property (widget_class,
@@ -300,7 +300,7 @@ gtk_tool_button_init (GtkToolButton      *button,
 		      GtkToolButtonClass *klass)
 {
   GtkToolItem *toolitem = GTK_TOOL_ITEM (button);
-  
+
   button->priv = gtk_tool_button_get_instance_private (button);
 
   button->priv->contents_invalid = TRUE;
@@ -334,7 +334,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
 
   button->priv->contents_invalid = FALSE;
 
-  gtk_widget_style_get (GTK_WIDGET (tool_item), 
+  gtk_widget_style_get (GTK_WIDGET (tool_item),
 			"icon-spacing", &icon_spacing,
 			NULL);
 
@@ -359,7 +359,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
     }
 
   style = gtk_tool_item_get_toolbar_style (GTK_TOOL_ITEM (button));
-  
+
   if (style != GTK_TOOLBAR_TEXT)
     need_icon = TRUE;
 
@@ -373,7 +373,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
     {
       need_label = TRUE;
     }
-  
+
   if (style == GTK_TOOLBAR_ICONS && button->priv->icon_widget == NULL &&
       button->priv->stock_id == NULL && button->priv->icon_name == NULL)
     {
@@ -426,7 +426,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
 	  label = gtk_label_new (label_text);
 
 	  g_free (label_text);
-	  
+
 	  gtk_widget_show (label);
 	}
 
@@ -462,7 +462,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
       if (button->priv->icon_widget)
 	{
 	  icon = button->priv->icon_widget;
-	  
+
 	  if (GTK_IS_IMAGE (icon))
 	    {
 	      g_object_set (button->priv->icon_widget,
@@ -470,7 +470,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
 			    NULL);
 	    }
 	}
-      else if (button->priv->stock_id && 
+      else if (button->priv->stock_id &&
 	       gtk_icon_factory_lookup_default (button->priv->stock_id))
 	{
 	  icon = gtk_image_new_from_stock (button->priv->stock_id, icon_size);
@@ -549,7 +549,7 @@ gtk_tool_button_construct_contents (GtkToolItem *tool_item)
 			 gtk_tool_item_get_relief_style (GTK_TOOL_ITEM (button)));
 
   gtk_tool_item_rebuild_menu (tool_item);
-  
+
   gtk_widget_queue_resize (GTK_WIDGET (button));
 }
 
@@ -560,7 +560,7 @@ gtk_tool_button_set_property (GObject         *object,
 			      GParamSpec      *pspec)
 {
   GtkToolButton *button = GTK_TOOL_BUTTON (object);
-  
+
   switch (prop_id)
     {
     case PROP_LABEL:
@@ -649,7 +649,7 @@ gtk_tool_button_finalize (GObject *object)
 
   if (button->priv->icon_widget)
     g_object_unref (button->priv->icon_widget);
-  
+
   parent_class->finalize (object);
 }
 
@@ -685,7 +685,7 @@ clone_image_menu_size (GtkImage *image, GtkSettings *settings)
   else if (storage_type == GTK_IMAGE_PIXBUF)
     {
       gint width, height;
-      
+
       if (settings &&
 	  gtk_icon_size_lookup_for_settings (settings, GTK_ICON_SIZE_MENU,
 					     &width, &height))
@@ -706,7 +706,7 @@ clone_image_menu_size (GtkImage *image, GtkSettings *settings)
 
   return NULL;
 }
-      
+
 static gboolean
 gtk_tool_button_create_menu_proxy (GtkToolItem *item)
 {
@@ -719,7 +719,7 @@ gtk_tool_button_create_menu_proxy (GtkToolItem *item)
 
   if (_gtk_tool_item_create_menu_proxy (item))
     return TRUE;
- 
+
   if (GTK_IS_LABEL (button->priv->label_widget))
     {
       label = gtk_label_get_label (GTK_LABEL (button->priv->label_widget));
@@ -738,7 +738,7 @@ gtk_tool_button_create_menu_proxy (GtkToolItem *item)
     {
       label = "";
     }
-  
+
   if (use_mnemonic)
     menu_item = gtk_image_menu_item_new_with_mnemonic (label);
   else
@@ -764,7 +764,7 @@ gtk_tool_button_create_menu_proxy (GtkToolItem *item)
 				  FALSE);
 
   gtk_tool_item_set_proxy_menu_item (GTK_TOOL_ITEM (button), MENU_ID, menu_item);
-  
+
   return TRUE;
 }
 
@@ -775,7 +775,7 @@ button_clicked (GtkWidget     *widget,
   GtkAction *action;
 
   action = gtk_activatable_get_related_action (GTK_ACTIVATABLE (button));
-  
+
   if (action)
     gtk_action_activate (action);
 
@@ -788,7 +788,7 @@ gtk_tool_button_toolbar_reconfigured (GtkToolItem *tool_item)
   gtk_tool_button_construct_contents (tool_item);
 }
 
-static void 
+static void
 gtk_tool_button_update_icon_spacing (GtkToolButton *button)
 {
   GtkWidget *box;
@@ -797,10 +797,10 @@ gtk_tool_button_update_icon_spacing (GtkToolButton *button)
   box = GTK_BIN (button->priv->button)->child;
   if (GTK_IS_BOX (box))
     {
-      gtk_widget_style_get (GTK_WIDGET (button), 
+      gtk_widget_style_get (GTK_WIDGET (button),
 			    "icon-spacing", &spacing,
 			    NULL);
-      gtk_box_set_spacing (GTK_BOX (box), spacing);      
+      gtk_box_set_spacing (GTK_BOX (box), spacing);
     }
 }
 
@@ -811,7 +811,7 @@ gtk_tool_button_style_set (GtkWidget *widget,
   gtk_tool_button_update_icon_spacing (GTK_TOOL_BUTTON (widget));
 }
 
-static void 
+static void
 gtk_tool_button_activatable_interface_init (GtkActivatableIface  *iface)
 {
   parent_activatable_iface = g_type_interface_peek_parent (iface);
@@ -833,7 +833,7 @@ gtk_tool_button_update (GtkActivatable *activatable,
     return;
 
   button = GTK_TOOL_BUTTON (activatable);
-  
+
   if (strcmp (property_name, "short-label") == 0)
     gtk_tool_button_set_label (button, gtk_action_get_short_label (action));
   else if (strcmp (property_name, "stock-id") == 0)
@@ -846,8 +846,8 @@ gtk_tool_button_update (GtkActivatable *activatable,
 
       if ((stock_id && gtk_icon_factory_lookup_default (stock_id)) || !icon)
 	image = NULL;
-      else 
-	{   
+      else
+	{
 	  image = gtk_tool_button_get_icon_widget (button);
 	  icon_size = gtk_tool_item_get_icon_size (GTK_TOOL_ITEM (button));
 
@@ -893,7 +893,7 @@ gtk_tool_button_sync_action_properties (GtkActivatable *activatable,
     {
       GtkIconSize icon_size = gtk_tool_item_get_icon_size (GTK_TOOL_ITEM (button));
       GtkWidget  *image = gtk_tool_button_get_icon_widget (button);
-      
+
       if (!image)
 	{
 	  image = gtk_image_new ();
@@ -911,16 +911,16 @@ gtk_tool_button_sync_action_properties (GtkActivatable *activatable,
 
 /**
  * gtk_tool_button_new_from_stock:
- * @stock_id: the name of the stock item 
+ * @stock_id: the name of the stock item
  *
  * Creates a new #GtkToolButton containing the image and text from a
  * stock item. Some stock ids have preprocessor macros like #GTK_STOCK_OK
  * and #GTK_STOCK_APPLY.
  *
  * It is an error if @stock_id is not a name of a stock item.
- * 
+ *
  * Return value: A new #GtkToolButton
- * 
+ *
  * Since: 2.4
  **/
 GtkToolItem *
@@ -929,7 +929,7 @@ gtk_tool_button_new_from_stock (const gchar *stock_id)
   GtkToolButton *button;
 
   g_return_val_if_fail (stock_id != NULL, NULL);
-    
+
   button = g_object_new (GTK_TYPE_TOOL_BUTTON,
 			 "stock-id", stock_id,
 			 NULL);
@@ -946,7 +946,7 @@ gtk_tool_button_new_from_stock (const gchar *stock_id)
  * label.
  *
  * Return value: A new #GtkToolButton
- * 
+ *
  * Since: 2.4
  **/
 GtkToolItem *
@@ -962,7 +962,7 @@ gtk_tool_button_new (GtkWidget	 *icon_widget,
                          "icon-widget", icon_widget,
 			 NULL);
 
-  return GTK_TOOL_ITEM (button);  
+  return GTK_TOOL_ITEM (button);
 }
 
 /**
@@ -975,7 +975,7 @@ gtk_tool_button_new (GtkWidget	 *icon_widget,
  * If both the "label_widget" and "label" properties are %NULL, the label
  * is determined by the "stock_id" property. If the "stock_id" property is also
  * %NULL, @button will not have a label.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -985,13 +985,13 @@ gtk_tool_button_set_label (GtkToolButton *button,
   gchar *old_label;
   gchar *elided_label;
   AtkObject *accessible;
-  
+
   g_return_if_fail (GTK_IS_TOOL_BUTTON (button));
 
   old_label = button->priv->label_text;
 
   button->priv->label_text = g_strdup (label);
-  button->priv->contents_invalid = TRUE;     
+  button->priv->contents_invalid = TRUE;
 
   if (label)
     {
@@ -1002,20 +1002,20 @@ gtk_tool_button_set_label (GtkToolButton *button,
     }
 
   g_free (old_label);
- 
+
   g_object_notify (G_OBJECT (button), "label");
 }
 
 /**
  * gtk_tool_button_get_label:
  * @button: a #GtkToolButton
- * 
+ *
  * Returns the label used by the tool button, or %NULL if the tool button
  * doesn't have a label. or uses a the label from a stock item. The returned
  * string is owned by GTK+, and must not be modified or freed.
- * 
+ *
  * Return value: The label, or %NULL
- * 
+ *
  * Since: 2.4
  **/
 const gchar *
@@ -1036,10 +1036,10 @@ gtk_tool_button_get_label (GtkToolButton *button)
  * example, if the label property is "_Open" and @use_underline is %TRUE,
  * the label on the tool button will be "Open" and the item on the overflow
  * menu will have an underlined 'O'.
- * 
+ *
  * Labels shown on tool buttons never have mnemonics on them; this property
  * only affects the menu item on the overflow menu.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -1062,13 +1062,13 @@ gtk_tool_button_set_use_underline (GtkToolButton *button,
 /**
  * gtk_tool_button_get_use_underline:
  * @button: a #GtkToolButton
- * 
+ *
  * Returns whether underscores in the label property are used as mnemonics
  * on menu items on the overflow menu. See gtk_tool_button_set_use_underline().
- * 
+ *
  * Return value: %TRUE if underscores in the label property are used as
  * mnemonics on menu items on the overflow menu.
- * 
+ *
  * Since: 2.4
  **/
 gboolean
@@ -1087,7 +1087,7 @@ gtk_tool_button_get_use_underline (GtkToolButton *button)
  * Sets the name of the stock item. See gtk_tool_button_new_from_stock().
  * The stock_id property only has an effect if not
  * overridden by non-%NULL "label" and "icon_widget" properties.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -1095,7 +1095,7 @@ gtk_tool_button_set_stock_id (GtkToolButton *button,
 			      const gchar   *stock_id)
 {
   gchar *old_stock_id;
-  
+
   g_return_if_fail (GTK_IS_TOOL_BUTTON (button));
 
   old_stock_id = button->priv->stock_id;
@@ -1104,19 +1104,19 @@ gtk_tool_button_set_stock_id (GtkToolButton *button,
   button->priv->contents_invalid = TRUE;
 
   g_free (old_stock_id);
-  
+
   g_object_notify (G_OBJECT (button), "stock-id");
 }
 
 /**
  * gtk_tool_button_get_stock_id:
  * @button: a #GtkToolButton
- * 
+ *
  * Returns the name of the stock item. See gtk_tool_button_set_stock_id().
  * The returned string is owned by GTK+ and must not be freed or modifed.
- * 
+ *
  * Return value: the name of the stock item for @button.
- * 
+ *
  * Since: 2.4
  **/
 const gchar *
@@ -1137,7 +1137,7 @@ gtk_tool_button_get_stock_id (GtkToolButton *button)
  * The "icon_name" property only has an effect if not
  * overridden by non-%NULL "label", "icon_widget" and "stock_id"
  * properties.
- * 
+ *
  * Since: 2.8
  **/
 void
@@ -1151,7 +1151,7 @@ gtk_tool_button_set_icon_name (GtkToolButton *button,
   old_icon_name = button->priv->icon_name;
 
   button->priv->icon_name = g_strdup (icon_name);
-  button->priv->contents_invalid = TRUE; 
+  button->priv->contents_invalid = TRUE;
 
   g_free (old_icon_name);
 
@@ -1161,13 +1161,13 @@ gtk_tool_button_set_icon_name (GtkToolButton *button,
 /**
  * gtk_tool_button_get_icon_name
  * @button: a #GtkToolButton
- * 
+ *
  * Returns the name of the themed icon for the tool button,
  * see gtk_tool_button_set_icon_name().
  *
  * Returns: the icon name or %NULL if the tool button has
  * no themed icon
- * 
+ *
  * Since: 2.8
  **/
 const gchar*
@@ -1186,7 +1186,7 @@ gtk_tool_button_get_icon_name (GtkToolButton *button)
  * Sets @icon as the widget used as icon on @button. If @icon_widget is
  * %NULL the icon is determined by the "stock_id" property. If the
  * "stock_id" property is also %NULL, @button will not have an icon.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -1206,13 +1206,13 @@ gtk_tool_button_set_icon_widget (GtkToolButton *button,
 
 	  g_object_unref (button->priv->icon_widget);
 	}
-      
+
       if (icon_widget)
 	g_object_ref_sink (icon_widget);
 
       button->priv->icon_widget = icon_widget;
       button->priv->contents_invalid = TRUE;
-      
+
       g_object_notify (G_OBJECT (button), "icon-widget");
     }
 }
@@ -1227,7 +1227,7 @@ gtk_tool_button_set_icon_widget (GtkToolButton *button,
  * as label. If "label" is also %NULL, the label in the stock item
  * determined by the "stock_id" property is used as label. If
  * "stock_id" is also %NULL, @button does not have a label.
- * 
+ *
  * Since: 2.4
  **/
 void
@@ -1244,16 +1244,16 @@ gtk_tool_button_set_label_widget (GtkToolButton *button,
 	  if (button->priv->label_widget->parent)
 	    gtk_container_remove (GTK_CONTAINER (button->priv->label_widget->parent),
 		    	          button->priv->label_widget);
-	  
+
 	  g_object_unref (button->priv->label_widget);
 	}
-      
+
       if (label_widget)
 	g_object_ref_sink (label_widget);
 
       button->priv->label_widget = label_widget;
       button->priv->contents_invalid = TRUE;
-      
+
       g_object_notify (G_OBJECT (button), "label-widget");
     }
 }

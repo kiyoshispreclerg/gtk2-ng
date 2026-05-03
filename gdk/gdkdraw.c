@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -70,7 +70,7 @@ static void         gdk_drawable_real_draw_drawable          (GdkDrawable  *draw
 							      gint	    ydest,
 							      gint	    width,
 							      gint	    height);
-     
+
 
 G_DEFINE_ABSTRACT_TYPE (GdkDrawable, gdk_drawable, G_TYPE_OBJECT)
 
@@ -103,16 +103,16 @@ gdk_drawable_init (GdkDrawable *drawable)
  *
  * This function is equivalent to g_object_set_data(),
  * the #GObject variant should be used instead.
- * 
+ *
  **/
-void          
+void
 gdk_drawable_set_data (GdkDrawable   *drawable,
 		       const gchar   *key,
 		       gpointer	      data,
 		       GDestroyNotify destroy_func)
 {
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
-  
+
   g_object_set_qdata_full (G_OBJECT (drawable),
                            g_quark_from_string (key),
                            data,
@@ -123,10 +123,10 @@ gdk_drawable_set_data (GdkDrawable   *drawable,
  * gdk_drawable_get_data:
  * @drawable: a #GdkDrawable
  * @key: name the data was stored under
- * 
+ *
  * Equivalent to g_object_get_data(); the #GObject variant should be
  * used instead.
- * 
+ *
  * Return value: the data stored at @key
  **/
 gpointer
@@ -134,7 +134,7 @@ gdk_drawable_get_data (GdkDrawable   *drawable,
 		       const gchar   *key)
 {
   g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
-  
+
   return g_object_get_qdata (G_OBJECT (drawable),
                              g_quark_try_string (key));
 }
@@ -162,15 +162,15 @@ gdk_drawable_get_size (GdkDrawable *drawable,
 {
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
 
-  GDK_DRAWABLE_GET_CLASS (drawable)->get_size (drawable, width, height);  
+  GDK_DRAWABLE_GET_CLASS (drawable)->get_size (drawable, width, height);
 }
 
 /**
  * gdk_drawable_get_visual:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Gets the #GdkVisual describing the pixel format of @drawable.
- * 
+ *
  * Return value: a #GdkVisual
  *
  * Deprecated: 2.24: Use gdk_window_get_visual()
@@ -179,18 +179,18 @@ GdkVisual*
 gdk_drawable_get_visual (GdkDrawable *drawable)
 {
   g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
-  
+
   return GDK_DRAWABLE_GET_CLASS (drawable)->get_visual (drawable);
 }
 
 /**
  * gdk_drawable_get_depth:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Obtains the bit depth of the drawable, that is, the number of bits
  * that make up a pixel in the drawable's visual. Examples are 8 bits
  * per pixel, 24 bits per pixel, etc.
- * 
+ *
  * Return value: number of bits per pixel
  **/
 gint
@@ -203,9 +203,9 @@ gdk_drawable_get_depth (GdkDrawable *drawable)
 /**
  * gdk_drawable_get_screen:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Gets the #GdkScreen associated with a #GdkDrawable.
- * 
+ *
  * Return value: the #GdkScreen associated with @drawable
  *
  * Since: 2.2
@@ -223,9 +223,9 @@ gdk_drawable_get_screen (GdkDrawable *drawable)
 /**
  * gdk_drawable_get_display:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Gets the #GdkDisplay associated with a #GdkDrawable.
- * 
+ *
  * Return value: the #GdkDisplay associated with @drawable
  *
  * Since: 2.2
@@ -253,7 +253,7 @@ gdk_drawable_get_display (GdkDrawable *drawable)
  * graphics contexts you intend to use together should match. i.e.
  * when using a #GdkGC to draw to a drawable, or copying one drawable
  * to another, the colormaps should match.
- * 
+ *
  **/
 void
 gdk_drawable_set_colormap (GdkDrawable *drawable,
@@ -269,10 +269,10 @@ gdk_drawable_set_colormap (GdkDrawable *drawable,
 /**
  * gdk_drawable_get_colormap:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Gets the colormap for @drawable, if one is set; returns
  * %NULL otherwise.
- * 
+ *
  * Return value: the colormap, or %NULL
  **/
 GdkColormap*
@@ -286,10 +286,10 @@ gdk_drawable_get_colormap (GdkDrawable *drawable)
 /**
  * gdk_drawable_ref:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Deprecated equivalent of calling g_object_ref() on @drawable.
  * (Drawables were not objects in previous versions of GDK.)
- * 
+ *
  * Return value: the same @drawable passed in
  *
  * Deprecated: 2.0: Use g_object_ref() instead.
@@ -305,7 +305,7 @@ gdk_drawable_ref (GdkDrawable *drawable)
  * @drawable: a #GdkDrawable
  *
  * Deprecated equivalent of calling g_object_unref() on @drawable.
- * 
+ *
  * Deprecated: 2.0: Use g_object_unref() instead.
  **/
 void
@@ -325,11 +325,11 @@ gdk_drawable_unref (GdkDrawable *drawable)
  * @gc: a #GdkGC.
  * @x: the x coordinate of the point.
  * @y: the y coordinate of the point.
- * 
- * Draws a point, using the foreground color and other attributes of 
+ *
+ * Draws a point, using the foreground color and other attributes of
  * the #GdkGC.
  *
- * Deprecated: 2.22: Use cairo_rectangle() and cairo_fill() or 
+ * Deprecated: 2.22: Use cairo_rectangle() and cairo_fill() or
  * cairo_move_to() and cairo_stroke() instead.
  **/
 void
@@ -345,20 +345,20 @@ gdk_draw_point (GdkDrawable *drawable,
 
   point.x = x;
   point.y = y;
-  
+
   GDK_DRAWABLE_GET_CLASS (drawable)->draw_points (drawable, gc, &point, 1);
 }
 
 /**
  * gdk_draw_line:
- * @drawable: a #GdkDrawable (a #GdkWindow or a #GdkPixmap). 
+ * @drawable: a #GdkDrawable (a #GdkWindow or a #GdkPixmap).
  * @gc: a #GdkGC.
  * @x1_: the x coordinate of the start point.
  * @y1_: the y coordinate of the start point.
  * @x2_: the x coordinate of the end point.
  * @y2_: the y coordinate of the end point.
- * 
- * Draws a line, using the foreground color and other attributes of 
+ *
+ * Draws a line, using the foreground color and other attributes of
  * the #GdkGC.
  *
  * Deprecated: 2.22: Use cairo_line_to() and cairo_stroke() instead.
@@ -402,15 +402,15 @@ gdk_draw_line (GdkDrawable *drawable,
  * @y: the y coordinate of the top edge of the rectangle.
  * @width: the width of the rectangle.
  * @height: the height of the rectangle.
- * 
+ *
  * Draws a rectangular outline or filled rectangle, using the foreground color
  * and other attributes of the #GdkGC.
  *
- * A rectangle drawn filled is 1 pixel smaller in both dimensions than a 
- * rectangle outlined. Calling 
- * <literal>gdk_draw_rectangle (window, gc, TRUE, 0, 0, 20, 20)</literal> 
+ * A rectangle drawn filled is 1 pixel smaller in both dimensions than a
+ * rectangle outlined. Calling
+ * <literal>gdk_draw_rectangle (window, gc, TRUE, 0, 0, 20, 20)</literal>
  * results in a filled rectangle 20 pixels wide and 20 pixels high. Calling
- * <literal>gdk_draw_rectangle (window, gc, FALSE, 0, 0, 20, 20)</literal> 
+ * <literal>gdk_draw_rectangle (window, gc, FALSE, 0, 0, 20, 20)</literal>
  * results in an outlined rectangle with corners at (0, 0), (0, 20), (20, 20),
  * and (20, 0), which makes it 21 pixels wide and 21 pixels high.
  *
@@ -426,7 +426,7 @@ gdk_draw_rectangle (GdkDrawable *drawable,
 		    gint         y,
 		    gint         width,
 		    gint         height)
-{  
+{
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
   g_return_if_fail (GDK_IS_GC (gc));
 
@@ -434,7 +434,7 @@ gdk_draw_rectangle (GdkDrawable *drawable,
     {
       gint real_width;
       gint real_height;
-      
+
       gdk_drawable_get_size (drawable, &real_width, &real_height);
 
       if (width < 0)
@@ -458,11 +458,11 @@ gdk_draw_rectangle (GdkDrawable *drawable,
  * @height: the height of the bounding rectangle.
  * @angle1: the start angle of the arc, relative to the 3 o'clock position,
  *     counter-clockwise, in 1/64ths of a degree.
- * @angle2: the end angle of the arc, relative to @angle1, in 1/64ths 
+ * @angle2: the end angle of the arc, relative to @angle1, in 1/64ths
  *     of a degree.
- * 
+ *
  * Draws an arc or a filled 'pie slice'. The arc is defined by the bounding
- * rectangle of the entire ellipse, and the start and end angles of the part 
+ * rectangle of the entire ellipse, and the start and end angles of the part
  * of the ellipse to be drawn.
  *
  * Deprecated: 2.22: Use cairo_arc() and cairo_fill() or cairo_stroke()
@@ -479,7 +479,7 @@ gdk_draw_arc (GdkDrawable *drawable,
 	      gint         height,
 	      gint         angle1,
 	      gint         angle2)
-{  
+{
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
   g_return_if_fail (GDK_IS_GC (gc));
 
@@ -487,7 +487,7 @@ gdk_draw_arc (GdkDrawable *drawable,
     {
       gint real_width;
       gint real_height;
-      
+
       gdk_drawable_get_size (drawable, &real_width, &real_height);
 
       if (width < 0)
@@ -505,12 +505,12 @@ gdk_draw_arc (GdkDrawable *drawable,
  * @drawable: a #GdkDrawable (a #GdkWindow or a #GdkPixmap).
  * @gc: a #GdkGC.
  * @filled: %TRUE if the polygon should be filled. The polygon is closed
- *     automatically, connecting the last point to the first point if 
+ *     automatically, connecting the last point to the first point if
  *     necessary.
- * @points: an array of #GdkPoint structures specifying the points making 
+ * @points: an array of #GdkPoint structures specifying the points making
  *     up the polygon.
  * @n_points: the number of points.
- * 
+ *
  * Draws an outlined or filled polygon.
  *
  * Deprecated: 2.22: Use cairo_line_to() or cairo_append_path() and
@@ -545,9 +545,9 @@ gdk_draw_polygon (GdkDrawable    *drawable,
  * @x: the x coordinate of the left edge of the text.
  * @y: the y coordinate of the baseline of the text.
  * @string:  the string of characters to draw.
- * 
+ *
  * Draws a string of characters in the given font or fontset.
- * 
+ *
  * Deprecated: 2.4: Use gdk_draw_layout() instead.
  **/
 void
@@ -576,7 +576,7 @@ gdk_draw_string (GdkDrawable *drawable,
  * @y: the y coordinate of the baseline of the text.
  * @text:  the characters to draw.
  * @text_length: the number of characters of @text to draw.
- * 
+ *
  * Draws a number of characters in the given font or fontset.
  *
  * Deprecated: 2.4: Use gdk_draw_layout() instead.
@@ -607,11 +607,11 @@ gdk_draw_text (GdkDrawable *drawable,
  * @y: the y coordinate of the baseline of the text.
  * @text: the wide characters to draw.
  * @text_length: the number of characters to draw.
- * 
+ *
  * Draws a number of wide characters using the given font of fontset.
- * If the font is a 1-byte font, the string is converted into 1-byte 
+ * If the font is a 1-byte font, the string is converted into 1-byte
  * characters (discarding the high bytes) before output.
- * 
+ *
  * Deprecated: 2.4: Use gdk_draw_layout() instead.
  **/
 void
@@ -655,8 +655,8 @@ gdk_draw_text_wc (GdkDrawable	 *drawable,
  * colormap, or errors will result. (On X11, failure to match
  * visual/colormap results in a BadMatch error from the X server.)
  * A common cause of this problem is an attempt to draw a bitmap to
- * a color drawable. The way to draw a bitmap is to set the bitmap as 
- * the stipple on the #GdkGC, set the fill mode to %GDK_STIPPLED, and 
+ * a color drawable. The way to draw a bitmap is to set the bitmap as
+ * the stipple on the #GdkGC, set the fill mode to %GDK_STIPPLED, and
  * then draw the rectangle.
  *
  * Deprecated: 2.22: Use gdk_cairo_set_source_pixmap(), cairo_rectangle()
@@ -686,7 +686,7 @@ gdk_draw_drawable (GdkDrawable *drawable,
     {
       gint real_width;
       gint real_height;
-      
+
       gdk_drawable_get_size (src, &real_width, &real_height);
 
       if (width < 0)
@@ -735,11 +735,11 @@ gdk_draw_drawable (GdkDrawable *drawable,
  * @ysrc: the top of the source rectangle within @image.
  * @xdest: the x coordinate of the destination within @drawable.
  * @ydest: the y coordinate of the destination within @drawable.
- * @width: the width of the area to be copied, or -1 to make the area 
+ * @width: the width of the area to be copied, or -1 to make the area
  *     extend to the right edge of @image.
- * @height: the height of the area to be copied, or -1 to make the area 
+ * @height: the height of the area to be copied, or -1 to make the area
  *     extend to the bottom edge of @image.
- * 
+ *
  * Draws a #GdkImage onto a drawable.
  * The depth of the #GdkImage must match the depth of the #GdkDrawable.
  *
@@ -784,14 +784,14 @@ gdk_draw_image (GdkDrawable *drawable,
  * @dither: Dithering mode for #GdkRGB.
  * @x_dither: X offset for dither.
  * @y_dither: Y offset for dither.
- * 
+ *
  * Renders a rectangular portion of a pixbuf to a drawable.  The destination
  * drawable must have a colormap. All windows have a colormap, however, pixmaps
- * only have colormap by default if they were created with a non-%NULL window 
- * argument. Otherwise a colormap must be set on them with 
+ * only have colormap by default if they were created with a non-%NULL window
+ * argument. Otherwise a colormap must be set on them with
  * gdk_drawable_set_colormap().
  *
- * On older X servers, rendering pixbufs with an alpha channel involves round 
+ * On older X servers, rendering pixbufs with an alpha channel involves round
  * trips to the X server, and may be somewhat slow.
  *
  * If GDK is built with the Sun mediaLib library, the gdk_draw_pixbuf
@@ -844,8 +844,8 @@ gdk_draw_pixbuf (GdkDrawable     *drawable,
  * @gc: a #GdkGC.
  * @points: an array of #GdkPoint structures.
  * @n_points: the number of points to be drawn.
- * 
- * Draws a number of points, using the foreground color and other 
+ *
+ * Draws a number of points, using the foreground color and other
  * attributes of the #GdkGC.
  *
  * Deprecated: 2.22: Use @n_points calls to cairo_rectangle() and
@@ -873,11 +873,11 @@ gdk_draw_points (GdkDrawable    *drawable,
  * gdk_draw_segments:
  * @drawable: a #GdkDrawable (a #GdkWindow or a #GdkPixmap).
  * @gc: a #GdkGC.
- * @segs: an array of #GdkSegment structures specifying the start and 
+ * @segs: an array of #GdkSegment structures specifying the start and
  *   end points of the lines to be drawn.
- * @n_segs: the number of line segments to draw, i.e. the size of the 
+ * @n_segs: the number of line segments to draw, i.e. the size of the
  *   @segs array.
- * 
+ *
  * Draws a number of unconnected lines.
  *
  * Deprecated: 2.22: Use cairo_move_to(), cairo_line_to() and cairo_stroke()
@@ -909,7 +909,7 @@ gdk_draw_segments (GdkDrawable      *drawable,
  * @gc: a #GdkGC.
  * @points: an array of #GdkPoint structures specifying the endpoints of the
  * @n_points: the size of the @points array.
- * 
+ *
  * Draws a series of lines connecting the given points.
  * The way in which joins between lines are draw is determined by the
  * #GdkCapStyle value in the #GdkGC. This can be set with
@@ -960,7 +960,7 @@ real_draw_glyphs (GdkDrawable       *drawable,
       cairo_matrix.yy = matrix->yy;
       cairo_matrix.x0 = matrix->x0;
       cairo_matrix.y0 = matrix->y0;
-      
+
       cairo_set_matrix (cr, &cairo_matrix);
     }
 
@@ -987,7 +987,7 @@ real_draw_glyphs (GdkDrawable       *drawable,
  * lot about internationalized text handling, which you don't want to
  * understand; thus, use gdk_draw_layout() instead of this function,
  * gdk_draw_layout() handles the details.
- * 
+ *
  * Deprecated: 2.22: Use pango_cairo_show_glyphs() instead.
  **/
 void
@@ -1000,7 +1000,7 @@ gdk_draw_glyphs (GdkDrawable      *drawable,
 {
   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
   g_return_if_fail (GDK_IS_GC (gc));
-  
+
   real_draw_glyphs (drawable, gc, NULL, font,
 		    x, y, glyphs);
 }
@@ -1016,7 +1016,7 @@ gdk_draw_glyphs (GdkDrawable      *drawable,
  * @y:       the y position of the baseline (in Pango units
  *           in user space coordinates)
  * @glyphs:  the glyph string to draw
- * 
+ *
  * Renders a #PangoGlyphString onto a drawable, possibly
  * transforming the layed-out coordinates through a transformation
  * matrix. Note that the transformation matrix for @font is not
@@ -1027,7 +1027,7 @@ gdk_draw_glyphs (GdkDrawable      *drawable,
  * See also gdk_draw_glyphs(), gdk_draw_layout().
  *
  * Since: 2.6
- * 
+ *
  * Deprecated: 2.22: Use pango_cairo_show_glyphs() instead.
  **/
 void
@@ -1052,7 +1052,7 @@ gdk_draw_glyphs_transformed (GdkDrawable       *drawable,
  * @gc: a #GdkGC
  * @trapezoids: an array of #GdkTrapezoid structures
  * @n_trapezoids: the number of trapezoids to draw
- * 
+ *
  * Draws a set of anti-aliased trapezoids. The trapezoids are
  * combined using saturation addition, then drawn over the background
  * as a set. This is low level functionality used internally to implement
@@ -1079,7 +1079,7 @@ gdk_draw_trapezoids (GdkDrawable        *drawable,
 
   cr = gdk_cairo_create (drawable);
   _gdk_gc_update_context (gc, cr, NULL, NULL, TRUE, drawable);
-  
+
   for (i = 0; i < n_trapezoids; i++)
     {
       cairo_move_to (cr, trapezoids[i].x11, trapezoids[i].y1);
@@ -1108,10 +1108,10 @@ gdk_draw_trapezoids (GdkDrawable        *drawable,
  * Copies a portion of @drawable into the client side image structure
  * @image. If @image is %NULL, creates a new image of size @width x @height
  * and copies into that. See gdk_drawable_get_image() for further details.
- * 
+ *
  * Return value: @image, or a new a #GdkImage containing the contents
  *               of @drawable
- * 
+ *
  * Since: 2.4
  *
  * Deprecated: 2.22: Use @drawable as the source and draw to a Cairo image
@@ -1132,7 +1132,7 @@ gdk_drawable_copy_to_image (GdkDrawable *drawable,
   gint composite_y_offset = 0;
   GdkImage *retval;
   GdkColormap *cmap;
-  
+
   g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (src_x >= 0, NULL);
   g_return_val_if_fail (src_y >= 0, NULL);
@@ -1140,19 +1140,19 @@ gdk_drawable_copy_to_image (GdkDrawable *drawable,
   /* FIXME? Note race condition since we get the size then
    * get the image, and the size may have changed.
    */
-  
+
   if (width < 0 || height < 0)
     gdk_drawable_get_size (drawable,
                            width < 0 ? &width : NULL,
                            height < 0 ? &height : NULL);
-  
+
   composite =
     GDK_DRAWABLE_GET_CLASS (drawable)->get_composite_drawable (drawable,
                                                                src_x, src_y,
                                                                width, height,
                                                                &composite_x_offset,
-                                                               &composite_y_offset); 
-  
+                                                               &composite_y_offset);
+
   retval = GDK_DRAWABLE_GET_CLASS (composite)->_copy_to_image (composite,
 							       image,
 							       src_x - composite_x_offset,
@@ -1165,11 +1165,11 @@ gdk_drawable_copy_to_image (GdkDrawable *drawable,
   if (!image && retval)
     {
       cmap = gdk_drawable_get_colormap (drawable);
-      
+
       if (cmap)
 	gdk_image_set_colormap (retval, cmap);
     }
-  
+
   return retval;
 }
 
@@ -1180,7 +1180,7 @@ gdk_drawable_copy_to_image (GdkDrawable *drawable,
  * @y: y coordinate on @drawable
  * @width: width of region to get
  * @height: height or region to get
- * 
+ *
  * A #GdkImage stores client-side image data (pixels). In contrast,
  * #GdkPixmap and #GdkWindow are server-side
  * objects. gdk_drawable_get_image() obtains the pixels from a
@@ -1210,7 +1210,7 @@ gdk_drawable_copy_to_image (GdkDrawable *drawable,
  * If the source drawable is a #GdkWindow and partially offscreen
  * or obscured, then the obscured portions of the returned image
  * will contain undefined data.
- * 
+ *
  * Return value: a #GdkImage containing the contents of @drawable
  *
  * Deprecated: 2.22: Use @drawable as the source and draw to a Cairo image
@@ -1228,7 +1228,7 @@ gdk_drawable_get_image (GdkDrawable *drawable,
   gint composite_y_offset = 0;
   GdkImage *retval;
   GdkColormap *cmap;
-  
+
   g_return_val_if_fail (GDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (x >= 0, NULL);
   g_return_val_if_fail (y >= 0, NULL);
@@ -1236,19 +1236,19 @@ gdk_drawable_get_image (GdkDrawable *drawable,
   /* FIXME? Note race condition since we get the size then
    * get the image, and the size may have changed.
    */
-  
+
   if (width < 0 || height < 0)
     gdk_drawable_get_size (drawable,
                            width < 0 ? &width : NULL,
                            height < 0 ? &height : NULL);
-  
+
   composite =
     GDK_DRAWABLE_GET_CLASS (drawable)->get_composite_drawable (drawable,
                                                                x, y,
                                                                width, height,
                                                                &composite_x_offset,
-                                                               &composite_y_offset); 
-  
+                                                               &composite_y_offset);
+
   retval = GDK_DRAWABLE_GET_CLASS (composite)->get_image (composite,
                                                           x - composite_x_offset,
                                                           y - composite_y_offset,
@@ -1257,10 +1257,10 @@ gdk_drawable_get_image (GdkDrawable *drawable,
   g_object_unref (composite);
 
   cmap = gdk_drawable_get_colormap (drawable);
-  
+
   if (retval && cmap)
     gdk_image_set_colormap (retval, cmap);
-  
+
   return retval;
 }
 
@@ -1287,21 +1287,21 @@ gdk_drawable_real_get_composite_drawable (GdkDrawable *drawable,
 
   *composite_x_offset = 0;
   *composite_y_offset = 0;
-  
+
   return g_object_ref (drawable);
 }
 
 /**
  * gdk_drawable_get_clip_region:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Computes the region of a drawable that potentially can be written
  * to by drawing primitives. This region will not take into account
  * the clip region for the GC, and may also not take into account
  * other factors such as if the window is obscured by other windows,
  * but no area outside of this region will be affected by drawing
  * primitives.
- * 
+ *
  * Returns: a #GdkRegion. This must be freed with gdk_region_destroy()
  *          when you are done.
  **/
@@ -1316,12 +1316,12 @@ gdk_drawable_get_clip_region (GdkDrawable *drawable)
 /**
  * gdk_drawable_get_visible_region:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Computes the region of a drawable that is potentially visible.
  * This does not necessarily take into account if the window is
  * obscured by other windows, but no area outside of this region
  * is visible.
- * 
+ *
  * Returns: a #GdkRegion. This must be freed with gdk_region_destroy()
  *          when you are done.
  **/
@@ -1349,11 +1349,11 @@ gdk_drawable_real_get_visible_region (GdkDrawable *drawable)
 /**
  * _gdk_drawable_ref_cairo_surface:
  * @drawable: a #GdkDrawable
- * 
+ *
  * Obtains a #cairo_surface_t for the given drawable. If a
  * #cairo_surface_t for the drawable already exists, it will be
  * referenced, otherwise a new surface will be created.
- * 
+ *
  * Return value: a newly referenced #cairo_surface_t that points
  *  to @drawable. Unref with cairo_surface_destroy()
  **/
@@ -1397,7 +1397,7 @@ composite (guchar *src_buf,
 	  p += 4;
 	  q += 3;
 	}
-      
+
       src += src_rowstride;
       dest += dest_rowstride;
     }
@@ -1426,7 +1426,7 @@ composite_0888 (guchar      *src_buf,
 	  while (twidth--)
 	    {
 	      guint t;
-	      
+
 	      t = p[3] * p[2] + (255 - p[3]) * q[0] + 0x80;
 	      q[0] = (t + (t >> 8)) >> 8;
 	      t = p[3] * p[1] + (255 - p[3]) * q[1] + 0x80;
@@ -1442,7 +1442,7 @@ composite_0888 (guchar      *src_buf,
 	  while (twidth--)
 	    {
 	      guint t;
-	      
+
 	      t = p[3] * p[0] + (255 - p[3]) * q[1] + 0x80;
 	      q[1] = (t + (t >> 8)) >> 8;
 	      t = p[3] * p[1] + (255 - p[3]) * q[2] + 0x80;
@@ -1453,7 +1453,7 @@ composite_0888 (guchar      *src_buf,
 	      q += 4;
 	    }
 	}
-      
+
       src += src_rowstride;
       dest += dest_rowstride;
     }
@@ -1543,7 +1543,7 @@ composite_565 (guchar      *src_buf,
 	   */
 	  guint tr2, tg2, tb2;
 	  guint tr3, tg3, tb3;
-	  
+
 	  tr = (tmp & 0xf800);
 	  tr1 = (255 - a) * ((tr >> 8) + (tr >> 13)) + 0x80;
 	  tr2 = a * p[0] + 0x80;
@@ -1563,11 +1563,11 @@ composite_565 (guchar      *src_buf,
 		((tg3 & 0xfc) << 3) |
 		((tb3 >> 3)));
 #endif
-	  
+
 	  p += 4;
 	  q++;
 	}
-      
+
       src += src_rowstride;
       dest += dest_rowstride;
     }
@@ -1627,7 +1627,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
 
   g_return_if_fail (drawable != NULL);
 
-  if (width == -1) 
+  if (width == -1)
     width = gdk_pixbuf_get_width (pixbuf);
   if (height == -1)
     height = gdk_pixbuf_get_height (pixbuf);
@@ -1639,7 +1639,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
   /* Clip to the drawable; this is required for get_from_drawable() so
    * can't be done implicitly
    */
-  
+
   if (dest_x < 0)
     {
       src_x -= dest_x;
@@ -1668,7 +1668,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
   /* Clip to the clip region; this avoids getting more
    * image data from the server than we need to.
    */
-  
+
   tmp_rect.x = dest_x;
   tmp_rect.y = dest_y;
   tmp_rect.width = width;
@@ -1680,14 +1680,14 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
   gdk_region_intersect (drect, clip);
 
   gdk_region_get_clipbox (drect, &tmp_rect);
-  
+
   gdk_region_destroy (drect);
   gdk_region_destroy (clip);
 
   if (tmp_rect.width == 0 ||
       tmp_rect.height == 0)
     return;
-  
+
   /* Actually draw */
   if (!gc)
     gc = _gdk_drawable_get_scratch_gc (drawable, FALSE);
@@ -1722,7 +1722,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
 	{
 	  gint bits_per_pixel = _gdk_windowing_get_bits_for_depth (gdk_drawable_get_display (drawable),
 								   visual->depth);
-	  
+
 	  if (visual->byte_order == (G_BYTE_ORDER == G_BIG_ENDIAN ? GDK_MSB_FIRST : GDK_LSB_FIRST) &&
 	      visual->depth == 16 &&
 	      visual->red_mask   == 0xf800 &&
@@ -1756,13 +1756,13 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
 	      for (x0 = 0; x0 < width; x0 += GDK_SCRATCH_IMAGE_WIDTH)
 		{
 		  gint xs0, ys0;
-		  
+
 		  gint width1 = MIN (width - x0, GDK_SCRATCH_IMAGE_WIDTH);
-		  
+
 		  GdkImage *image = _gdk_image_get_scratch (gdk_drawable_get_screen (drawable),
 							    width1, height1,
 							    gdk_drawable_get_depth (drawable), &xs0, &ys0);
-		  
+
 		  gdk_drawable_copy_to_image (drawable, image,
 					      dest_x + x0, dest_y + y0,
 					      xs0, ys0,
@@ -1779,7 +1779,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
 				  width1, height1);
 		}
 	    }
-	  
+
 	  goto out;
 	}
       else
@@ -1793,7 +1793,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
 						     dest_x, dest_y,
 						     0, 0,
 						     width, height);
-	  
+
 	  if (composited)
 	    composite (gdk_pixbuf_get_pixels (pixbuf) + src_y * gdk_pixbuf_get_rowstride (pixbuf) + src_x * 4,
 		       gdk_pixbuf_get_rowstride (pixbuf),
@@ -1809,7 +1809,7 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
       src_y = 0;
       pixbuf = composited;
     }
-  
+
   if (gdk_pixbuf_get_n_channels (pixbuf) == 4)
     {
       guchar *buf = gdk_pixbuf_get_pixels (pixbuf) + src_y * gdk_pixbuf_get_rowstride (pixbuf) + src_x * 4;
@@ -1843,17 +1843,17 @@ gdk_drawable_real_draw_pixbuf (GdkDrawable  *drawable,
 /**
  * _gdk_drawable_get_scratch_gc:
  * @drawable: A #GdkDrawable
- * @graphics_exposures: Whether the returned #GdkGC should generate graphics exposures 
- * 
+ * @graphics_exposures: Whether the returned #GdkGC should generate graphics exposures
+ *
  * Returns a #GdkGC suitable for drawing on @drawable. The #GdkGC has
  * the standard values for @drawable, except for the graphics_exposures
  * field which is determined by the @graphics_exposures parameter.
  *
  * The foreground color of the returned #GdkGC is undefined. The #GdkGC
  * must not be altered in any way, except to change its foreground color.
- * 
+ *
  * Return value: A #GdkGC suitable for drawing on @drawable
- * 
+ *
  * Since: 2.4
  **/
 GdkGC *
@@ -1879,7 +1879,7 @@ _gdk_drawable_get_scratch_gc (GdkDrawable *drawable,
 	  GdkGCValuesMask mask;
 
 	  values.graphics_exposures = TRUE;
-	  mask = GDK_GC_EXPOSURES;  
+	  mask = GDK_GC_EXPOSURES;
 
 	  screen->exposure_gcs[depth] =
 	    gdk_gc_new_with_values (drawable, &values, mask);
@@ -1902,16 +1902,16 @@ _gdk_drawable_get_scratch_gc (GdkDrawable *drawable,
 /**
  * _gdk_drawable_get_subwindow_scratch_gc:
  * @drawable: A #GdkDrawable
- * 
+ *
  * Returns a #GdkGC suitable for drawing on @drawable. The #GdkGC has
  * the standard values for @drawable, except for the graphics_exposures
  * field which is %TRUE and the subwindow mode which is %GDK_INCLUDE_INFERIORS.
  *
  * The foreground color of the returned #GdkGC is undefined. The #GdkGC
  * must not be altered in any way, except to change its foreground color.
- * 
+ *
  * Return value: A #GdkGC suitable for drawing on @drawable
- * 
+ *
  * Since: 2.18
  **/
 GdkGC *
@@ -1932,15 +1932,15 @@ _gdk_drawable_get_subwindow_scratch_gc (GdkDrawable *drawable)
     {
       GdkGCValues values;
       GdkGCValuesMask mask;
-      
+
       values.graphics_exposures = TRUE;
       values.subwindow_mode = GDK_INCLUDE_INFERIORS;
-      mask = GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW;  
-      
+      mask = GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW;
+
       screen->subwindow_gcs[depth] =
 	gdk_gc_new_with_values (drawable, &values, mask);
     }
-  
+
   return screen->subwindow_gcs[depth];
 }
 

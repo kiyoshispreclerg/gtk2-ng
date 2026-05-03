@@ -223,8 +223,8 @@ gtk_dial_realize (GtkWidget *widget)
   attributes.height = widget->allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.event_mask = gtk_widget_get_events (widget) | 
-    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | 
+  attributes.event_mask = gtk_widget_get_events (widget) |
+    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK |
     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK |
     GDK_POINTER_MOTION_HINT_MASK;
   attributes.visual = gtk_widget_get_visual (widget);
@@ -240,7 +240,7 @@ gtk_dial_realize (GtkWidget *widget)
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
 }
 
-static void 
+static void
 gtk_dial_size_request (GtkWidget      *widget,
 		       GtkRequisition *requisition)
 {
@@ -293,7 +293,7 @@ gtk_dial_expose( GtkWidget      *widget,
 
   if (event->count > 0)
     return FALSE;
-  
+
   dial = GTK_DIAL (widget);
 
 /*  gdk_window_clear_area (widget->window,
@@ -367,7 +367,7 @@ gtk_dial_expose( GtkWidget      *widget,
       theta = ((gfloat)i*M_PI / (18*inc/24.) - M_PI/6.);
 
       if ((theta - last) < (increment))
-	continue;     
+	continue;
       last = theta;
 
       s = sin (theta);
@@ -430,20 +430,20 @@ gtk_dial_button_press( GtkWidget      *widget,
 
   dial = GTK_DIAL (widget);
 
-  /* Determine if button press was within pointer region - we 
+  /* Determine if button press was within pointer region - we
      do this by computing the parallel and perpendicular distance of
      the point where the mouse was pressed from the line passing through
      the pointer */
-  
+
   dx = event->x - widget->allocation.width / 2;
   dy = widget->allocation.height / 2 - event->y;
-  
+
   s = sin (dial->angle);
   c = cos (dial->angle);
-  
+
   d_parallel = s*dy + c*dx;
   d_perpendicular = fabs (s*dx - c*dy);
-  
+
   if (!dial->button &&
       (d_perpendicular < dial->pointer_width/2) &&
       (d_parallel > - dial->pointer_width))
@@ -478,7 +478,7 @@ gtk_dial_button_release( GtkWidget      *widget,
 
       if (dial->policy == GTK_UPDATE_DELAYED)
 	g_source_remove (dial->timer);
-      
+
       if ((dial->policy != GTK_UPDATE_CONTINUOUS) &&
 	  (dial->old_value != dial->adjustment->value))
 	g_signal_emit_by_name (GTK_OBJECT (dial->adjustment), "value_changed");
@@ -598,12 +598,12 @@ static void
 gtk_dial_update (GtkDial *dial)
 {
   gfloat new_value;
-  
+
   g_return_if_fail (dial != NULL);
   g_return_if_fail (GTK_IS_DIAL (dial));
 
   new_value = dial->adjustment->value;
-  
+
   if (new_value < dial->adjustment->lower)
     new_value = dial->adjustment->lower;
 

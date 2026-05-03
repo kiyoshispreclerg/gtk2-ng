@@ -42,18 +42,18 @@ record_bytes (gpointer mem, gsize bytes)
     {
       if (mem)
         free (mem);
-      
+
       return NULL;
     }
-  
+
   *(void **)mem = GINT_TO_POINTER (bytes);
 
   g_assert (GPOINTER_TO_INT (*(void**)mem) == bytes);
-  
+
   g_assert (current_allocation >= 0);
   current_allocation += bytes;
   g_assert (current_allocation >= 0);
-  
+
   g_assert ( mem == (void*) ((((char*)mem) + HEADER_SPACE) - HEADER_SPACE) );
   return ((char*)mem) + HEADER_SPACE;
 }
@@ -88,7 +88,7 @@ limited_free (gpointer mem)
   g_assert (current_allocation >= 0);
   current_allocation -= GPOINTER_TO_INT (*(void**)real);
   g_assert (current_allocation >= 0);
-  
+
   free (real);
 }
 
@@ -107,7 +107,7 @@ limited_try_realloc (gpointer mem,
       g_assert (mem);
 
       real = ((char*)mem) - HEADER_SPACE;
-      
+
       g_assert (current_allocation >= 0);
       current_allocation -= GPOINTER_TO_INT (*(void**)real);
       g_assert (current_allocation >= 0);
@@ -137,10 +137,10 @@ mem_test (const gchar *bytes, gsize len)
 {
   gboolean did_fail = FALSE;
   GError *err = NULL;
-  GdkPixbufLoader *loader; 
+  GdkPixbufLoader *loader;
   GList *loaders = NULL;
   GList *i;
-  
+
   do {
     loader = gdk_pixbuf_loader_new ();
     gdk_pixbuf_loader_write (loader, (guchar *) bytes, len, &err);
@@ -159,7 +159,7 @@ mem_test (const gchar *bytes, gsize len)
       }
     loaders = g_list_prepend (loaders, loader);
   } while (!did_fail);
-  
+
   for (i = loaders; i != NULL; i = i->next)
     g_object_unref (i->data);
   g_list_free (loaders);
@@ -189,26 +189,26 @@ main (int argc, char **argv)
 
   if (argc <= 2)
     usage();
-  
+
   max_allocation = strtol (argv[1], &endptr, 10);
   if (endptr == argv[1])
     usage();
 
   /* Set a malloc which emulates low mem */
   g_mem_set_vtable (&limited_table);
-  
+
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL);
-  
+
   /* memory tests */
 
   /* How do the loaders behave when memory is low?
-     It depends on the state the above tests left the 
+     It depends on the state the above tests left the
      memory in.
 
-     - Sometimes the png loader tries to report an 
+     - Sometimes the png loader tries to report an
        "out of memory", but then g_strdup_printf() calls
        g_malloc(), which fails.
-       
+
      - There are unchecked realloc()s inside libtiff, which means it
        will never work with low memory, unless something drastic is
        done, like allocating a lot of memory upfront and release it
@@ -243,6 +243,6 @@ main (int argc, char **argv)
 	  g_free (contents);
 	}
     }
-  
+
   return 0;
 }

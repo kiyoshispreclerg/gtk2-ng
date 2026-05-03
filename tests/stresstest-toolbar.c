@@ -60,7 +60,7 @@ remove_random (GtkToolbar *toolbar)
   position = g_random_int_range (0, g_list_length (toolbar->children));
 
   child = g_list_nth_data (toolbar->children, position);
-  
+
   gtk_container_remove (GTK_CONTAINER (toolbar), child->widget);
 }
 
@@ -72,10 +72,10 @@ stress_test_old_api (gpointer data)
     REMOVE_RANDOM,
     LAST_ACTION
   } Action;
-      
+
   Info *info = data;
   Action action;
-  
+
   if (info->counter++ == 200)
     {
       gtk_main_quit ();
@@ -102,7 +102,7 @@ stress_test_old_api (gpointer data)
 	remove_random (info->toolbar);
       return TRUE;
     }
-  
+
   action = g_random_int_range (0, LAST_ACTION);
 
   switch (action)
@@ -114,12 +114,12 @@ stress_test_old_api (gpointer data)
     case REMOVE_RANDOM:
       remove_random (info->toolbar);
       break;
-      
+
     default:
       g_assert_not_reached();
       break;
     }
-  
+
   return TRUE;
 }
 
@@ -128,7 +128,7 @@ gint
 main (gint argc, gchar **argv)
 {
   Info info;
-  
+
   gtk_init (&argc, &argv);
 
   info.toolbar = NULL;
@@ -136,17 +136,17 @@ main (gint argc, gchar **argv)
   info.window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
 
   gtk_widget_show (GTK_WIDGET (info.window));
-  
+
   gdk_threads_add_idle (stress_test_old_api, &info);
 
   gtk_widget_show_all (GTK_WIDGET (info.window));
-  
+
   gtk_main ();
 
   gtk_widget_destroy (GTK_WIDGET (info.window));
 
   info.toolbar = NULL;
   info.window = NULL;
-  
+
   return 0;
 }

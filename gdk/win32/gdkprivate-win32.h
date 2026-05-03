@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_PRIVATE_WIN32_H__
@@ -362,7 +362,7 @@ void    _gdk_other_api_failed        (const gchar *where,
 #define WIN32_API_FAILED(api) _gdk_win32_api_failed (G_STRLOC , api)
 #define WIN32_GDI_FAILED(api) WIN32_API_FAILED (api)
 #define OTHER_API_FAILED(api) _gdk_other_api_failed (G_STRLOC, api)
- 
+
 /* These two macros call a GDI or other Win32 API and if the return
  * value is zero or NULL, print a warning message. The majority of GDI
  * calls return zero or NULL on failure. The value of the macros is nonzero
@@ -371,7 +371,7 @@ void    _gdk_other_api_failed        (const gchar *where,
 
 #define GDI_CALL(api, arglist) (api arglist ? 1 : (WIN32_GDI_FAILED (#api), 0))
 #define API_CALL(api, arglist) (api arglist ? 1 : (WIN32_API_FAILED (#api), 0))
- 
+
 extern LRESULT CALLBACK _gdk_win32_window_procedure (HWND, UINT, WPARAM, LPARAM);
 
 extern GdkWindow        *_gdk_root;

@@ -552,7 +552,7 @@ do_appwindow (GtkWidget *do_widget)
 
       /* Show text widget info in the statusbar */
       buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (contents));
-      
+
       g_signal_connect_object (buffer,
                                "changed",
                                G_CALLBACK (update_statusbar),

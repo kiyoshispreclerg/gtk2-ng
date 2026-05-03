@@ -61,6 +61,6 @@ main (int argc, char **argv)
 
 /*   gtk_widget_profiler_profile_boot (profiler); */
   gtk_widget_profiler_profile_expose (profiler);
-  
+
   return 0;
 }

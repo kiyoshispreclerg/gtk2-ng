@@ -256,7 +256,7 @@ gtk_rotated_bin_realize (GtkWidget *widget)
   attributes.wclass = GDK_INPUT_OUTPUT;
 
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  
+
   gdk_window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
   gtk_widget_set_window (widget, gdk_window);
   gdk_window_set_user_data (gdk_window, widget);
@@ -384,9 +384,9 @@ gtk_rotated_bin_size_request (GtkWidget      *widget,
   gint border_width;
   double s, c;
   double w, h;
-  
+
   border_width = gtk_container_get_border_width (GTK_CONTAINER (widget));
-  
+
   child_requisition.width = 0;
   child_requisition.height = 0;
 

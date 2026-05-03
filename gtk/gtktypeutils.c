@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GTK_DISABLE_DEPRECATED
@@ -138,7 +138,7 @@ GType
 gtk_identifier_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     {
       GTypeInfo tinfo = { 0, };
@@ -154,9 +154,9 @@ gtk_type_enum_get_values (GtkType enum_type)
   GEnumClass *class;
 
   g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);
-  
+
   class = gtk_type_class (enum_type);
-  
+
   return class->values;
 }
 

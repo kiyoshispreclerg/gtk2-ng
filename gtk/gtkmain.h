@@ -96,7 +96,7 @@ void     gtk_init                 (int    *argc,
 
 gboolean gtk_init_check           (int    *argc,
                                    char ***argv);
-  
+
 gboolean gtk_init_with_args       (int            *argc,
 				   char         ***argv,
 				   const char     *parameter_string,
@@ -105,7 +105,7 @@ gboolean gtk_init_with_args       (int            *argc,
 				   GError        **error);
 
 GOptionGroup *gtk_get_option_group (gboolean open_default_display);
-  
+
 #ifdef G_PLATFORM_WIN32
 
 /* Variants that are used to check for correct struct packing
@@ -213,7 +213,7 @@ gboolean        gtk_get_current_event_state (GdkModifierType *state);
 GtkWidget* gtk_get_event_widget	   (GdkEvent	   *event);
 
 
-/* Private routines internal to GTK+ 
+/* Private routines internal to GTK+
  */
 void       gtk_propagate_event     (GtkWidget         *widget,
 				    GdkEvent          *event);

@@ -1001,7 +1001,7 @@ populate_dialog (GtkCustomPaperUnixDialog *dialog)
 
   cell = gtk_cell_renderer_text_new ();
   g_object_set (cell, "editable", TRUE, NULL);
-  g_signal_connect (cell, "edited", 
+  g_signal_connect (cell, "edited",
 		    G_CALLBACK (custom_size_name_edited), dialog);
   priv->text_column = column =
     gtk_tree_view_column_new_with_attributes ("paper", cell,

@@ -33,7 +33,7 @@ do_builder (GtkWidget *do_widget)
   static GtkWidget *window = NULL;
   GError *err = NULL;
   gchar *filename;
-  
+
   if (!window)
     {
       builder = gtk_builder_new ();
@@ -58,7 +58,7 @@ do_builder (GtkWidget *do_widget)
       gtk_widget_show_all (window);
     }
   else
-    {	 
+    {
       gtk_widget_destroy (window);
       window = NULL;
     }

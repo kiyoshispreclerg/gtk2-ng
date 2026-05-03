@@ -11,10 +11,10 @@ AM_CPPFLAGS = 		\
 	-I$(top_builddir)/gdk		\
 	-DG_DISABLE_DEPRECATED		\
 	@GTK_DEBUG_FLAGS@		\
-	@GDK_DEP_CFLAGS@		
+	@GDK_DEP_CFLAGS@
 
 LDADDS = 		\
-	@GDK_DEP_LIBS@		
+	@GDK_DEP_LIBS@
 
 noinst_LTLIBRARIES = libgdk-directfb.la
 
@@ -55,6 +55,6 @@ libgdkinclude_HEADERS =		\
 	gdkprivate-directfb.h
 
 
-EXTRA_DIST += AUTHORS README TODO 
+EXTRA_DIST += AUTHORS README TODO
 
 -include $(top_srcdir)/git.mk

@@ -311,7 +311,7 @@ gail_clist_real_initialize (AtkObject *obj,
   clist->previous_selected_cell = NULL;
 
   gtk_clist = GTK_CLIST (data);
- 
+
   clist->n_cols = gtk_clist->columns;
   clist->columns = g_new (GailCListColumn, gtk_clist->columns);
   for (i = 0; i < gtk_clist->columns; i++)
@@ -479,12 +479,12 @@ gail_clist_clear_selection (AtkSelection   *selection)
 {
   GtkCList *clist;
   GtkWidget *widget;
-  
+
   widget = GTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
-  
+
   clist = GTK_CLIST (widget);
   gtk_clist_unselect_all(clist);
   return TRUE;
@@ -506,10 +506,10 @@ gail_clist_ref_selection (AtkSelection   *selection,
   gail_clist_get_selected_rows (ATK_TABLE (selection), &selected_rows);
   selected_row = selected_rows[i / visible_columns];
   g_free (selected_rows);
-  selected_column = gail_clist_get_actual_column (ATK_TABLE (selection), 
+  selected_column = gail_clist_get_actual_column (ATK_TABLE (selection),
                                                   i % visible_columns);
 
-  return gail_clist_ref_at (ATK_TABLE (selection), selected_row, 
+  return gail_clist_ref_at (ATK_TABLE (selection), selected_row,
                             selected_column);
 }
 
@@ -548,7 +548,7 @@ gail_clist_select_all_selection (AtkSelection   *selection)
   GtkCList *clist;
   GtkWidget *widget;
   /* GtkArg arg; */
-  
+
   widget = GTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
@@ -625,15 +625,15 @@ gail_clist_ref_at_actual (AtkTable      *table,
   GailCell *cell;
 
   g_return_val_if_fail (GTK_IS_ACCESSIBLE (table), NULL);
-  
+
   widget = GTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   clist = GTK_CLIST (widget);
-  n_rows = gail_clist_get_n_rows (table); 
-  n_columns = gail_clist_get_n_actual_columns (clist); 
+  n_rows = gail_clist_get_n_rows (table);
+  n_columns = gail_clist_get_n_actual_columns (clist);
 
   if (row < 0 || row >= n_rows)
     return NULL;
@@ -651,7 +651,7 @@ gail_clist_ref_at_actual (AtkTable      *table,
       return ATK_OBJECT (cell);
     }
   cellType = gtk_clist_get_cell_type(clist, row, column);
-  switch (cellType) 
+  switch (cellType)
     {
     case GTK_CELL_TEXT:
     case GTK_CELL_PIXTEXT:
@@ -683,7 +683,7 @@ gail_clist_ref_at_actual (AtkTable      *table,
       if (clist->column[column].visible)
         {
           GdkRectangle cell_rect, visible_rect;
-  
+
           gail_clist_get_cell_area (GAIL_CELL_PARENT (table), cell, &cell_rect);
           gail_clist_get_visible_rect (clist, &visible_rect);
           gail_cell_add_state (cell, ATK_STATE_VISIBLE, FALSE);
@@ -701,7 +701,7 @@ gail_clist_ref_at_actual (AtkTable      *table,
         }
     }
 
-  return return_object; 
+  return return_object;
 }
 
 static gint
@@ -769,8 +769,8 @@ gail_clist_get_n_columns (AtkTable      *table)
 
   clist = GTK_CLIST (widget);
 
-  return gail_clist_get_visible_column (table, 
-                                  gail_clist_get_n_actual_columns (clist)); 
+  return gail_clist_get_visible_column (table,
+                                  gail_clist_get_n_actual_columns (clist));
 }
 
 static gint
@@ -822,7 +822,7 @@ gail_clist_get_column_header (AtkTable      *table,
   if (widget == NULL)
     return NULL;
 
-  return_widget = gtk_clist_get_column_widget (GTK_CLIST (widget), 
+  return_widget = gtk_clist_get_column_widget (GTK_CLIST (widget),
                                                actual_column);
   if (return_widget == NULL)
     return NULL;
@@ -896,7 +896,7 @@ gail_clist_add_row_selection (AtkTable      *table,
   gtk_clist_select_row (clist, row, -1);
   if (gail_clist_is_row_selected (table, row))
     return TRUE;
-  
+
   return FALSE;
 }
 
@@ -937,10 +937,10 @@ gail_clist_get_selected_rows (AtkTable *table,
     return 0;
 
   clist = GTK_CLIST (widget);
- 
+
   n_selected = g_list_length (clist->selection);
 
-  if (n_selected == 0) 
+  if (n_selected == 0)
     return 0;
 
   if (rows_selected)
@@ -976,7 +976,7 @@ gail_clist_is_row_selected (AtkTable      *table,
 	return FALSE;
 
   clist = GTK_CLIST (widget);
-      
+
   if (row < 0 || row >= clist->rows)
     return FALSE;
 
@@ -1015,8 +1015,8 @@ gail_clist_set_caption (AtkTable      *table,
   g_value_set_pointer (&values.new_value, obj->caption);
 
   values.property_name = "accessible-table-caption";
-  g_signal_emit_by_name (table, 
-                         "property_change::accessible-table-caption", 
+  g_signal_emit_by_name (table,
+                         "property_change::accessible-table-caption",
                          &values, NULL);
   if (old_caption)
     g_object_unref (old_caption);
@@ -1045,7 +1045,7 @@ gail_clist_set_column_description (AtkTable      *table,
   g_value_set_int (&values.new_value, column);
 
   values.property_name = "accessible-table-column-description";
-  g_signal_emit_by_name (table, 
+  g_signal_emit_by_name (table,
                          "property_change::accessible-table-column-description",
                           &values, NULL);
 
@@ -1074,7 +1074,7 @@ gail_clist_set_column_header (AtkTable      *table,
   g_value_set_int (&values.new_value, column);
 
   values.property_name = "accessible-table-column-header";
-  g_signal_emit_by_name (table, 
+  g_signal_emit_by_name (table,
                          "property_change::accessible-table-column-header",
                          &values, NULL);
 }
@@ -1114,8 +1114,8 @@ gail_clist_set_summary (AtkTable      *table,
   g_value_set_pointer (&values.new_value, obj->summary);
 
   values.property_name = "accessible-table-summary";
-  g_signal_emit_by_name (table, 
-                         "property_change::accessible-table-summary", 
+  g_signal_emit_by_name (table,
+                         "property_change::accessible-table-summary",
                          &values, NULL);
   if (old_summary)
     g_object_unref (old_summary);
@@ -1185,7 +1185,7 @@ gail_clist_get_cell_area (GailCellParent *parent,
   n_columns = gail_clist_get_n_actual_columns (clist);
   g_return_if_fail (n_columns > 0);
   column = cell->index % n_columns;
-  row = cell->index / n_columns; 
+  row = cell->index / n_columns;
   cell_rect->x = COLUMN_LEFT (clist, column);
   cell_rect->y = ROW_TOP (clist, row);
   cell_rect->width = clist->column[column].area.width;
@@ -1291,7 +1291,7 @@ gail_clist_get_visible_column (AtkTable *table,
     if (clist->column[i].visible)
       vis_columns++;
 
-  return vis_columns;  
+  return vis_columns;
 }
 
 static gint
@@ -1318,7 +1318,7 @@ gail_clist_get_actual_column (AtkTable *table,
           vis_columns++;
         }
     }
-  return 0;  
+  return 0;
 }
 
 static void
@@ -1350,7 +1350,7 @@ gail_clist_set_row_data (AtkTable      *table,
   gail_clist = GAIL_CLIST (table);
 
   if (gail_clist->row_data == NULL)
-    gail_clist->row_data = g_array_sized_new (FALSE, TRUE, 
+    gail_clist->row_data = g_array_sized_new (FALSE, TRUE,
                                               sizeof (GailCListRow *), 0);
 
   array = gail_clist->row_data;
@@ -1377,7 +1377,7 @@ gail_clist_set_row_data (AtkTable      *table,
             }
           break;
         }
-    } 
+    }
   if (!found)
     {
       GList *elem;
@@ -1416,7 +1416,7 @@ gail_clist_set_row_data (AtkTable      *table,
       values.property_name = "accessible-table-row-description";
       signal_name = "property_change::accessible-table-row-description";
     }
-  g_signal_emit_by_name (table, 
+  g_signal_emit_by_name (table,
                          signal_name,
                          &values, NULL);
 
@@ -1456,7 +1456,7 @@ gail_clist_get_row_data (AtkTable      *table,
       if (row == row_data->row_number)
         return row_data;
     }
- 
+
   return NULL;
 }
 
@@ -1597,7 +1597,7 @@ gail_clist_adjustment_changed (GtkAdjustment *adjustment,
       cell_data = (GailCListCellData *) (temp_list->data);
       cell = cell_data->gail_cell;
 
-      gail_clist_get_cell_area (GAIL_CELL_PARENT (atk_obj), 
+      gail_clist_get_cell_area (GAIL_CELL_PARENT (atk_obj),
                                 cell, &cell_rect);
       if (gail_clist_is_cell_visible (&cell_rect, &visible_rect))
         gail_cell_add_state (cell, ATK_STATE_SHOWING, TRUE);

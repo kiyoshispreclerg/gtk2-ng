@@ -27,7 +27,7 @@ static AtkObject *table_obj = NULL;
 static gint expander_column = -1;
 static gboolean editing_cell = FALSE;
 
-static gboolean 
+static gboolean
 state_change_watch (GSignalInvocationHint *ihint,
                     guint                  n_param_values,
                     const GValue          *param_values,
@@ -44,7 +44,7 @@ state_change_watch (GSignalInvocationHint *ihint,
   state_name = g_value_get_string (param_values + 1);
   state_set = g_value_get_boolean (param_values + 2);
 
-  g_print ("Object type: %s state: %s set: %d\n", 
+  g_print ("Object type: %s state: %s set: %d\n",
            g_type_name (G_OBJECT_TYPE (object)), state_name, state_set);
   state_type = atk_state_type_for_name (state_name);
   if (state_type == ATK_STATE_EXPANDED)
@@ -57,7 +57,7 @@ state_change_watch (GSignalInvocationHint *ihint,
   return TRUE;
 }
 
-static void 
+static void
 _check_table (AtkObject *in_obj)
 {
   AtkObject *obj;
@@ -71,17 +71,17 @@ _check_table (AtkObject *in_obj)
       g_signal_add_emission_hook (
                     g_signal_lookup ("state-change", ATK_TYPE_OBJECT),
       /*
-       * To specify an emission hook for a particular state, e.g. 
+       * To specify an emission hook for a particular state, e.g.
        * ATK_STATE_EXPANDED, instead of 0 use
        * g_quark_from_string (atk_state_type_get_name (ATK_STATE_EXPANDED))
-       */  
+       */
                     0,
                     state_change_watch, NULL, (GDestroyNotify) NULL);
     }
 
   role[0] = ATK_ROLE_TABLE;
   role[1] = ATK_ROLE_TREE_TABLE;
-  
+
   g_print ("focus event for: %s\n", g_type_name (G_OBJECT_TYPE (in_obj)));
 
   _check_cell_actions (in_obj);
@@ -127,10 +127,10 @@ _check_table (AtkObject *in_obj)
       else
         g_warning ("Table does not support AtkTable interface\n");
     }
-  else 
+  else
     {
       /*
-       * We do not call these functions at the same time as we set the 
+       * We do not call these functions at the same time as we set the
        * signals as the GtkTreeView may not be displayed yet.
        */
       gint x, y, width, height, first_x, last_x, last_y;
@@ -140,29 +140,29 @@ _check_table (AtkObject *in_obj)
       AtkComponent *component = ATK_COMPONENT (obj);
       AtkTable *table = ATK_TABLE (obj);
 
-      atk_component_get_extents (component, 
+      atk_component_get_extents (component,
                                  &x, &y, &width, &height, ATK_XY_WINDOW);
       g_print ("WINDOW: x: %d y: %d width: %d height: %d\n",
                x, y, width, height);
-      atk_component_get_extents (component, 
+      atk_component_get_extents (component,
                                  &x, &y, &width, &height, ATK_XY_SCREEN);
       g_print ("SCREEN: x: %d y: %d width: %d height: %d\n",
                x, y, width, height);
       last_x = x + width - 1;
       last_y = y + height - 1;
-      first_x = x; 
+      first_x = x;
       header = atk_table_get_column_header (table, 0);
       if (header)
         {
-          atk_component_get_extents (ATK_COMPONENT (header), 
+          atk_component_get_extents (ATK_COMPONENT (header),
                                      &x, &y, &width, &height, ATK_XY_SCREEN);
           g_print ("Got column header: x: %d y: %d width: %d height: %d\n",
                    x, y, width, height);
           y += height;
         }
-      first_child = atk_component_ref_accessible_at_point (component, 
+      first_child = atk_component_ref_accessible_at_point (component,
                                              first_x, y, ATK_XY_SCREEN);
-      atk_component_get_extents (ATK_COMPONENT (first_child), 
+      atk_component_get_extents (ATK_COMPONENT (first_child),
                                  &x, &y, &width, &height, ATK_XY_SCREEN);
       g_print ("first_child: x: %d y: %d width: %d height: %d\n",
                x, y, width, height);
@@ -172,7 +172,7 @@ _check_table (AtkObject *in_obj)
       g_print ("first_row: %d first_column: %d index: %d\n",
                first_row, first_column, index);
       g_assert (index == atk_table_get_index_at (table, first_row, first_column));
-      last_child = atk_component_ref_accessible_at_point (component, 
+      last_child = atk_component_ref_accessible_at_point (component,
                                      last_x, last_y, ATK_XY_SCREEN);
       if (last_child == NULL)
         {
@@ -182,7 +182,7 @@ _check_table (AtkObject *in_obj)
           n_children = atk_object_get_n_accessible_children (obj);
           last_child = atk_object_ref_accessible_child (obj, n_children - 1);
         }
-      atk_component_get_extents (ATK_COMPONENT (last_child), 
+      atk_component_get_extents (ATK_COMPONENT (last_child),
                                  &x, &y, &width, &height, ATK_XY_SCREEN);
       g_print ("last_child: x: %d y: %d width: %d height: %d\n",
                x, y, width, height);
@@ -209,22 +209,22 @@ _check_table (AtkObject *in_obj)
 
               child_obj = atk_table_ref_at (table, i, expander_column);
               state_set = atk_object_ref_state_set (child_obj);
-              showing =  atk_state_set_contains_state (state_set, 
+              showing =  atk_state_set_contains_state (state_set,
                                                        ATK_STATE_SHOWING);
               g_object_unref (state_set);
-              atk_component_get_extents (ATK_COMPONENT (child_obj), 
-                                         &x, &y, &width, &height, 
+              atk_component_get_extents (ATK_COMPONENT (child_obj),
+                                         &x, &y, &width, &height,
                                          ATK_XY_SCREEN);
               g_object_unref (child_obj);
               if (showing)
-                g_print ("Row: %d Column: %d x: %d y: %d width: %d height: %d\n", 
+                g_print ("Row: %d Column: %d x: %d y: %d width: %d height: %d\n",
                          i, expander_column, x, y, width, height);
             }
         }
     }
 }
 
-static void 
+static void
 _check_cell_actions (AtkObject *in_obj)
 {
   AtkRole role;
@@ -262,7 +262,7 @@ _check_cell_actions (AtkObject *in_obj)
   return;
 }
 
-static gint 
+static gint
 _find_expander_column (AtkTable *table)
 {
   gint n_columns, i;
@@ -276,7 +276,7 @@ _find_expander_column (AtkTable *table)
 
       cell = atk_table_ref_at (table, 0, i);
       relation_set =  atk_object_ref_relation_set (cell);
-      if (atk_relation_set_contains (relation_set, 
+      if (atk_relation_set_contains (relation_set,
                                      ATK_RELATION_NODE_CHILD_OF))
         retval = i;
       g_object_unref (relation_set);
@@ -306,7 +306,7 @@ _check_expanders (AtkTable *table,
       cell = atk_table_ref_at (table, i, expander_column);
 
       relation_set =  atk_object_ref_relation_set (cell);
-      relation = atk_relation_set_get_relation_by_type (relation_set, 
+      relation = atk_relation_set_get_relation_by_type (relation_set,
                                      ATK_RELATION_NODE_CHILD_OF);
       g_assert (relation);
       target = atk_relation_get_target (relation);
@@ -332,7 +332,7 @@ _check_expanders (AtkTable *table,
               break;
             default:
               g_assert_not_reached ();
-            } 
+            }
         }
       g_object_unref (relation_set);
       g_object_unref (cell);
@@ -346,7 +346,7 @@ _create_event_watcher (void)
 }
 
 int
-gtk_module_init (gint argc, 
+gtk_module_init (gint argc,
                  char *argv[])
 {
   g_print ("testtreetable Module loaded\n");
@@ -363,15 +363,15 @@ _runtest (AtkObject *obj)
   AtkTable *table;
   AtkObject *caption;
   gint i;
-  gint n_cols, n_rows, n_children; 
+  gint n_cols, n_rows, n_children;
 
   table = ATK_TABLE (obj);
   n_children = atk_object_get_n_accessible_children (ATK_OBJECT (obj));
   n_cols = atk_table_get_n_columns (table);
   n_rows = atk_table_get_n_rows (table);
-  g_print ("n_children: %d n_rows: %d n_cols: %d\n", 
+  g_print ("n_children: %d n_rows: %d n_cols: %d\n",
             n_children, n_rows, n_cols);
-  
+
   for (i = 0; i < n_rows; i++)
     {
       gint index = atk_table_get_index_at (table, i, expander_column);
@@ -380,7 +380,7 @@ _runtest (AtkObject *obj)
       child_obj = atk_table_ref_at (table, i, expander_column);
       index_in_parent = atk_object_get_index_in_parent (child_obj);
       g_print ("index: %d %d row %d column %d\n", index, index_in_parent, i, expander_column);
-      
+
       g_object_unref (child_obj);
     }
   caption = atk_table_get_caption (table);
@@ -428,7 +428,7 @@ _runtest (AtkObject *obj)
     }
 }
 
-static void 
+static void
 row_inserted (AtkObject *obj,
               gint      row,
               gint      count)
@@ -463,7 +463,7 @@ row_inserted (AtkObject *obj,
 #endif
 }
 
-static void 
+static void
 row_deleted (AtkObject *obj,
              gint      row,
              gint      count)

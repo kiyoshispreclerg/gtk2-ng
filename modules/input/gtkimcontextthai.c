@@ -49,14 +49,14 @@ gtk_im_context_thai_register_type (GTypeModule *type_module)
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
     (GClassInitFunc) gtk_im_context_thai_class_init,
-    NULL,           /* class_finalize */    
+    NULL,           /* class_finalize */
     NULL,           /* class_data */
     sizeof (GtkIMContextThai),
     0,
     (GInstanceInitFunc) gtk_im_context_thai_init,
   };
 
-  gtk_type_im_context_thai = 
+  gtk_type_im_context_thai =
     g_type_module_register_type (type_module,
                                  GTK_TYPE_IM_CONTEXT,
                                  "GtkIMContextThai",

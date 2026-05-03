@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -103,7 +103,7 @@ _gdk_win32_selection_init (void)
     }
 
   g_slist_free (pixbuf_formats);
-  
+
   text_plain = gdk_atom_intern ("text/plain", FALSE);
   text_plain_charset_utf_8= gdk_atom_intern ("text/plain;charset=utf-8", FALSE);
   text_plain_charset_CP1252 = gdk_atom_intern ("text/plain;charset=CP1252", FALSE);
@@ -124,7 +124,7 @@ _gdk_win32_selection_init (void)
  * This routine strips out all non-allowed C0 and C1 characters
  * from the input string and also canonicalizes \r, and \r\n to \n
  */
-static gchar * 
+static gchar *
 sanitize_utf8 (const gchar *src,
 	       gint         length)
 {
@@ -147,7 +147,7 @@ sanitize_utf8 (const gchar *src,
 	  gunichar ch = g_utf8_get_char (p);
 	  char buf[7];
 	  gint buflen;
-	  
+
 	  if (!((ch < 0x20 && ch != '\t' && ch != '\n') || (ch >= 0x7f && ch < 0xa0)))
 	    {
 	      buflen = g_unichar_to_utf8 (ch, buf);
@@ -167,7 +167,7 @@ _gdk_utf8_to_string_target_internal (const gchar *str,
 				     gint         length)
 {
   GError *error = NULL;
-  
+
   gchar *tmp_str = sanitize_utf8 (str, length);
   gchar *result =  g_convert_with_fallback (tmp_str, -1,
 					    "ISO-8859-1", "UTF-8",
@@ -178,7 +178,7 @@ _gdk_utf8_to_string_target_internal (const gchar *str,
 		 error->message);
       g_error_free (error);
     }
-  
+
   g_free (tmp_str);
   return result;
 }
@@ -245,10 +245,10 @@ get_mapped_gdk_atom_name (GdkAtom gdk_target)
 
   if (gdk_target == _image_jpeg)
     return g_strdup ("JFIF");
-  
+
   if (gdk_target == _image_gif)
     return g_strdup ("GIF");
-  
+
   return gdk_atom_name (gdk_target);
 }
 
@@ -355,7 +355,7 @@ gdk_selection_owner_get_for_display (GdkDisplay *display,
 
   GDK_NOTE (DND, {
       gchar *sel_name = gdk_atom_name (selection);
-      
+
       g_print ("gdk_selection_owner_get: %s = %p\n",
 	       sel_name,
 	       (window ? GDK_WINDOW_HWND (window) : NULL));
@@ -404,7 +404,7 @@ gdk_selection_convert (GdkWindow *requestor,
   GDK_NOTE (DND, {
       gchar *sel_name = gdk_atom_name (selection);
       gchar *tgt_name = gdk_atom_name (target);
-      
+
       g_print ("gdk_selection_convert: %p %s %s\n",
 	       GDK_WINDOW_HWND (requestor),
 	       sel_name, tgt_name);
@@ -495,7 +495,7 @@ gdk_selection_convert (GdkWindow *requestor,
 
       GDK_NOTE (DND, {
 	  int i;
-	  
+
 	  g_print ("... ");
 	  for (i = 0; i < ntargets; i++)
 	    {
@@ -648,7 +648,7 @@ gdk_selection_convert (GdkWindow *requestor,
 		{
 		  new_length = data_length + sizeof (BITMAPFILEHEADER);
 		}
-	      
+
               data = g_try_malloc (new_length);
 
               if (data)
@@ -701,7 +701,7 @@ gdk_selection_convert (GdkWindow *requestor,
 			  if (p[3] != 0)
 			    {
 			      gdouble inverse_alpha = 255./p[3];
-			      
+
 			      p[0] = p[0] * inverse_alpha + 0.5;
 			      p[1] = p[1] * inverse_alpha + 0.5;
 			      p[2] = p[2] * inverse_alpha + 0.5;
@@ -761,7 +761,7 @@ gdk_selection_convert (GdkWindow *requestor,
         {
           char sFormat[80];
 
-          if (GetClipboardFormatName (fmt, sFormat, 80) > 0 && 
+          if (GetClipboardFormatName (fmt, sFormat, 80) > 0 &&
               strcmp (sFormat, mapped_target_name) == 0)
             {
               if ((hdata = GetClipboardData (fmt)) != NULL)
@@ -773,9 +773,9 @@ gdk_selection_convert (GdkWindow *requestor,
                   if ((ptr = GlobalLock (hdata)) != NULL)
                     {
                       length = GlobalSize (hdata);
-	      
+
                       GDK_NOTE (DND, g_print ("... %s: %d bytes\n", mapped_target_name, length));
-	      
+
                       selection_property_store (requestor, target, 8,
 						g_memdup (ptr, length), length);
 	              GlobalUnlock (hdata);
@@ -825,7 +825,7 @@ gdk_selection_property_get (GdkWindow  *requestor,
 
   if (GDK_WINDOW_DESTROYED (requestor))
     return 0;
-  
+
   GDK_NOTE (DND, g_print ("gdk_selection_property_get: %p",
 			   GDK_WINDOW_HWND (requestor)));
 
@@ -893,7 +893,7 @@ gdk_selection_send_notify_for_display (GdkDisplay      *display,
       gchar *sel_name = gdk_atom_name (selection);
       gchar *tgt_name = gdk_atom_name (target);
       gchar *prop_name = gdk_atom_name (property);
-      
+
       g_print ("gdk_selection_send_notify_for_display: %p %s %s %s (no-op)\n",
 	       requestor, sel_name, tgt_name, prop_name);
       g_free (sel_name);
@@ -909,7 +909,7 @@ gdk_selection_send_notify_for_display (GdkDisplay      *display,
 gint
 gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 					    GdkAtom       encoding,
-					    gint          format, 
+					    gint          format,
 					    const guchar *text,
 					    gint          length,
 					    gchar      ***list)
@@ -922,12 +922,12 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 
   GDK_NOTE (DND, {
       gchar *enc_name = gdk_atom_name (encoding);
-      
+
       g_print ("gdk_text_property_to_text_list_for_display: %s %d %.20s %d\n",
 	       enc_name, format, text, length);
       g_free (enc_name);
     });
-    
+
   if (!list)
     return 0;
 
@@ -937,7 +937,7 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
     source_charset = g_strdup ("UTF-8");
   else
     source_charset = gdk_atom_name (encoding);
-    
+
   g_get_charset (&charset);
 
   result = g_convert (text, length, charset, source_charset,
@@ -949,7 +949,7 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 
   *list = g_new (gchar *, 1);
   **list = result;
-  
+
   return 1;
 }
 
@@ -979,7 +979,7 @@ make_list (const gchar  *text,
   while (p < text + length)
     {
       gchar *str;
-      
+
       q = p;
       while (*q && q < text + length)
 	q++;
@@ -1013,7 +1013,7 @@ make_list (const gchar  *text,
     *list = g_new (gchar *, n_strings + 1);
 
   (*list)[n_strings] = NULL;
-  
+
   i = n_strings;
   tmp_list = strings;
   while (tmp_list)
@@ -1031,7 +1031,7 @@ make_list (const gchar  *text,
   return n_strings;
 }
 
-gint 
+gint
 gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
                                             GdkAtom        encoding,
                                             gint           format,
@@ -1122,7 +1122,7 @@ gdk_utf8_to_compound_text_for_display (GdkDisplay  *display,
 
   if (format)
     *format = 0;
-  
+
   if (ctext)
     *ctext = NULL;
 
@@ -1161,7 +1161,7 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 
   GDK_NOTE (DND, {
       gchar *sel_name = gdk_atom_name (selection);
-      
+
       g_print ("gdk_win32_selection_add_targets: %p: %s: ",
 	       owner ? GDK_WINDOW_HWND (owner) : NULL,
 	       sel_name);
@@ -1205,7 +1205,7 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
       UINT cf;
       gchar *target_name;
       int j;
-      
+
       for (j = 0; j < n_known_pixbuf_formats; j++)
 	if (targets[i] == known_pixbuf_formats[j])
 	  {
@@ -1221,7 +1221,7 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 	      }
 	    break;
 	  }
-      
+
       /* If it is one of the pixmap formats, already handled or not
        * needed.
        */
@@ -1256,7 +1256,7 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
       g_hash_table_replace (_format_atom_table,
 			    GINT_TO_POINTER (cf),
 			    targets[i]);
-      
+
       GDK_NOTE (DND, g_print ("... SetClipboardData(%s,NULL)\n",
 			      _gdk_win32_cf_to_string (cf)));
       SetClipboardData (cf, NULL);

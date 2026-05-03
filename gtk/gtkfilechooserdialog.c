@@ -106,7 +106,7 @@ gtk_file_chooser_dialog_finalize (GObject *object)
 
   g_free (dialog->priv->file_system);
 
-  G_OBJECT_CLASS (gtk_file_chooser_dialog_parent_class)->finalize (object);  
+  G_OBJECT_CLASS (gtk_file_chooser_dialog_parent_class)->finalize (object);
 }
 
 static gboolean
@@ -250,7 +250,7 @@ file_chooser_widget_response_requested (GtkWidget            *widget,
 
   g_list_free (children);
 }
-  
+
 static GObject*
 gtk_file_chooser_dialog_constructor (GType                  type,
 				     guint                  n_construct_properties,
@@ -433,7 +433,7 @@ gtk_file_chooser_dialog_new (const gchar         *title,
 {
   GtkWidget *result;
   va_list varargs;
-  
+
   va_start (varargs, first_button_text);
   result = gtk_file_chooser_dialog_new_valist (title, parent, action,
 					       NULL, first_button_text,
@@ -472,7 +472,7 @@ gtk_file_chooser_dialog_new_with_backend (const gchar          *title,
 {
   GtkWidget *result;
   va_list varargs;
-  
+
   va_start (varargs, first_button_text);
   result = gtk_file_chooser_dialog_new_valist (title, parent, action,
 					       backend, first_button_text,

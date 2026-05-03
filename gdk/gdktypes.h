@@ -96,7 +96,7 @@ typedef gpointer GdkNativeWindow;
 #else
 typedef guint32 GdkNativeWindow;
 #endif
- 
+
 /* Forward declarations of commonly used types
  */
 typedef struct _GdkColor	      GdkColor;
@@ -142,11 +142,11 @@ typedef enum
   /* The next few modifiers are used by XKB, so we skip to the end.
    * Bits 15 - 25 are currently unused. Bit 29 is used internally.
    */
-  
+
   GDK_SUPER_MASK    = 1 << 26,
   GDK_HYPER_MASK    = 1 << 27,
   GDK_META_MASK     = 1 << 28,
-  
+
   GDK_RELEASE_MASK  = 1 << 30,
 
   GDK_MODIFIER_MASK = 0x5c001fff

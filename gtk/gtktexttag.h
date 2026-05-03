@@ -104,7 +104,7 @@ struct _GtkTextTag
    */
 
   GtkTextAttributes *GSEAL (values);
-  
+
   /* Flags for whether a given value is set; if a value is unset, then
    * this tag does not affect it.
    */
@@ -196,7 +196,7 @@ struct _GtkTextAppearance
    * had background stuff set.
    */
   guint draw_bg : 1;
-  
+
   /* These are only used when we are actually laying out and rendering
    * a paragraph; not when a GtkTextAppearance is part of a
    * GtkTextAttributes.
@@ -226,10 +226,10 @@ struct _GtkTextAttributes
   PangoFontDescription *font;
 
   gdouble font_scale;
-  
+
   gint left_margin;
 
-  gint indent;  
+  gint indent;
 
   gint right_margin;
 

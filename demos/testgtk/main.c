@@ -24,15 +24,15 @@ gboolean
 read_line (FILE *stream, GString *str)
 {
   int n_read = 0;
-  
+
   flockfile (stream);
 
   g_string_truncate (str, 0);
-  
+
   while (1)
     {
       int c;
-      
+
       c = getc_unlocked (stream);
 
       if (c == EOF)
@@ -46,12 +46,12 @@ read_line (FILE *stream, GString *str)
 	case '\n':
 	  {
 	    int next_c = getc_unlocked (stream);
-	    
+
 	    if (!(next_c == EOF ||
 		  (c == '\r' && next_c == '\n') ||
 		  (c == '\n' && next_c == '\r')))
 	      ungetc (next_c, stream);
-	    
+
 	    goto done;
 	  }
 	default:
@@ -80,7 +80,7 @@ load_file (const gchar *filename)
 
   g_free (current_file);
   current_file = g_strdup (filename);
-  
+
   gtk_text_buffer_get_bounds (info_buffer, &start, &end);
   gtk_text_buffer_delete (info_buffer, &start, &end);
 
@@ -99,7 +99,7 @@ load_file (const gchar *filename)
     {
       gchar *p = buffer->str;
       gchar *q;
-      
+
       switch (state)
 	{
 	case 0:
@@ -124,11 +124,11 @@ load_file (const gchar *filename)
 	      gtk_text_buffer_apply_tag_by_name (info_buffer, "title", &start, &end);
 
 	      start = end;
-	      
+
 	      state++;
 	    }
 	  break;
-	    
+
 	case 1:
 	  /* Reading body of info section */
 	  while (isspace (*p))
@@ -141,14 +141,14 @@ load_file (const gchar *filename)
 	  else
 	    {
 	      int len;
-	      
+
 	      while (*p == '*' || isspace (*p))
 		p++;
 
 	      len = strlen (p);
 	      while (isspace (*(p + len - 1)))
 		len--;
-	      
+
 	      if (len > 0)
 		{
 		  if (in_para)
@@ -178,7 +178,7 @@ load_file (const gchar *filename)
 	    }
 	  else
 	    break;
-	  
+
 	case 3:
 	  /* Reading program body */
 	  gtk_text_buffer_insert (source_buffer, &start, p, -1);
@@ -231,7 +231,7 @@ button_press_event_cb (GtkTreeView    *tree_view,
       g_signal_stop_emission_by_name (tree_view, "button-press-event");
       return TRUE;
     }
-  
+
   return FALSE;
 }
 
@@ -266,10 +266,10 @@ create_text (GtkTextBuffer **buffer,
 				  GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
 				       GTK_SHADOW_IN);
-  
+
   text_view = gtk_text_view_new ();
   gtk_container_add (GTK_CONTAINER (scrolled_window), text_view);
-  
+
   *buffer = gtk_text_buffer_new (NULL);
   gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), *buffer);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), FALSE);
@@ -281,9 +281,9 @@ create_text (GtkTextBuffer **buffer,
       gtk_widget_modify_font (text_view, font_desc);
       pango_font_description_free (font_desc);
     }
-  
+
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_view), !is_source);
-  
+
   return scrolled_window;
 }
 
@@ -345,7 +345,7 @@ main (int argc, char **argv)
   GtkTextTag *tag;
 
   gtk_init (&argc, &argv);
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
@@ -382,10 +382,10 @@ main (int argc, char **argv)
 
   gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
   gtk_widget_show_all (window);
-  
+
 
   load_file (testgtk_demos[0].filename);
-  
+
   gtk_main ();
 
   return 0;

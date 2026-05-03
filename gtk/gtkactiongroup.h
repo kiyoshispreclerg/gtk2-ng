@@ -77,7 +77,7 @@ struct _GtkActionGroupClass
   void (*_gtk_reserved4) (void);
 };
 
-struct _GtkActionEntry 
+struct _GtkActionEntry
 {
   const gchar     *name;
   const gchar     *stock_id;
@@ -87,7 +87,7 @@ struct _GtkActionEntry
   GCallback  callback;
 };
 
-struct _GtkToggleActionEntry 
+struct _GtkToggleActionEntry
 {
   const gchar     *name;
   const gchar     *stock_id;
@@ -98,14 +98,14 @@ struct _GtkToggleActionEntry
   gboolean   is_active;
 };
 
-struct _GtkRadioActionEntry 
+struct _GtkRadioActionEntry
 {
   const gchar *name;
   const gchar *stock_id;
   const gchar *label;
   const gchar *accelerator;
   const gchar *tooltip;
-  gint   value; 
+  gint   value;
 };
 
 GType           gtk_action_group_get_type                (void) G_GNUC_CONST;

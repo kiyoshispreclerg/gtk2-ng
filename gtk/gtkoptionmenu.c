@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -142,7 +142,7 @@ gtk_option_menu_class_init (GtkOptionMenuClass *class)
   gobject_class->set_property = gtk_option_menu_set_property;
   gobject_class->get_property = gtk_option_menu_get_property;
   object_class->destroy = gtk_option_menu_destroy;
-  
+
   widget_class->size_request = gtk_option_menu_size_request;
   widget_class->size_allocate = gtk_option_menu_size_allocate;
   widget_class->expose_event = gtk_option_menu_expose;
@@ -162,7 +162,7 @@ gtk_option_menu_class_init (GtkOptionMenuClass *class)
                                                         P_("The menu of options"),
                                                         GTK_TYPE_MENU,
                                                         GTK_PARAM_READWRITE));
-  
+
   gtk_widget_class_install_style_property (widget_class,
 					   g_param_spec_boxed ("indicator-size",
 							       P_("Indicator Size"),
@@ -230,7 +230,7 @@ gtk_option_menu_detacher (GtkWidget     *widget,
   g_signal_handlers_disconnect_by_func (option_menu->menu,
 					gtk_option_menu_calc_size,
 					option_menu);
-  
+
   option_menu->menu = NULL;
   g_object_notify (G_OBJECT (option_menu), "menu");
 }
@@ -264,7 +264,7 @@ gtk_option_menu_set_menu (GtkOptionMenu *option_menu,
 	gtk_widget_queue_resize (GTK_WIDGET (option_menu));
 
       gtk_option_menu_update_contents (option_menu);
-      
+
       g_object_notify (G_OBJECT (option_menu), "menu");
     }
 }
@@ -278,7 +278,7 @@ gtk_option_menu_remove_menu (GtkOptionMenu *option_menu)
     {
       if (GTK_MENU_SHELL (option_menu->menu)->active)
 	gtk_menu_shell_cancel (GTK_MENU_SHELL (option_menu->menu));
-      
+
       gtk_menu_detach (GTK_MENU (option_menu->menu));
     }
 }
@@ -304,10 +304,10 @@ gtk_option_menu_set_history (GtkOptionMenu *option_menu,
 /**
  * gtk_option_menu_get_history:
  * @option_menu: a #GtkOptionMenu
- * 
+ *
  * Retrieves the index of the currently selected menu item. The menu
- * items are numbered from top to bottom, starting with 0. 
- * 
+ * items are numbered from top to bottom, starting with 0.
+ *
  * Return value: index of the selected menu item, or -1 if there are no menu items
  * Deprecated: 2.4: Use #GtkComboBox instead.
  **/
@@ -315,7 +315,7 @@ gint
 gtk_option_menu_get_history (GtkOptionMenu *option_menu)
 {
   GtkWidget *active_widget;
-  
+
   g_return_val_if_fail (GTK_IS_OPTION_MENU (option_menu), -1);
 
   if (option_menu->menu)
@@ -345,7 +345,7 @@ gtk_option_menu_set_property (GObject            *object,
     case PROP_MENU:
       gtk_option_menu_set_menu (option_menu, g_value_get_object (value));
       break;
-      
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -365,7 +365,7 @@ gtk_option_menu_get_property (GObject            *object,
     case PROP_MENU:
       g_value_set_object (value, option_menu->menu);
       break;
-      
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -389,7 +389,7 @@ gtk_option_menu_get_props (GtkOptionMenu       *option_menu,
 {
   GtkRequisition *indicator_size;
   GtkBorder *indicator_spacing;
-  
+
   gtk_widget_style_get (GTK_WIDGET (option_menu),
 			"indicator-size", &indicator_size,
 			"indicator-spacing", &indicator_spacing,
@@ -420,9 +420,9 @@ gtk_option_menu_size_request (GtkWidget      *widget,
   GtkOptionMenuProps props;
   gint tmp;
   GtkRequisition child_requisition = { 0, 0 };
-      
+
   gtk_option_menu_get_props (option_menu, &props);
- 
+
   if (GTK_BIN (option_menu)->child && gtk_widget_get_visible (GTK_BIN (option_menu)->child))
     {
       gtk_widget_size_request (GTK_BIN (option_menu)->child, &child_requisition);
@@ -430,7 +430,7 @@ gtk_option_menu_size_request (GtkWidget      *widget,
       requisition->width += child_requisition.width;
       requisition->height += child_requisition.height;
     }
-  
+
   requisition->width = ((GTK_CONTAINER (widget)->border_width +
 			 GTK_WIDGET (widget)->style->xthickness + props.focus_pad) * 2 +
 			MAX (child_requisition.width, option_menu->width) +
@@ -456,7 +456,7 @@ gtk_option_menu_size_allocate (GtkWidget     *widget,
   GtkAllocation child_allocation;
   GtkOptionMenuProps props;
   gint border_width;
-    
+
   gtk_option_menu_get_props (GTK_OPTION_MENU (widget), &props);
   border_width = GTK_CONTAINER (widget)->border_width;
 
@@ -471,7 +471,7 @@ gtk_option_menu_size_allocate (GtkWidget     *widget,
     {
       gint xthickness = GTK_WIDGET (widget)->style->xthickness;
       gint ythickness = GTK_WIDGET (widget)->style->ythickness;
-      
+
       child_allocation.x = widget->allocation.x + border_width + xthickness + props.focus_width + props.focus_pad + CHILD_LEFT_SPACING;
       child_allocation.y = widget->allocation.y + border_width + ythickness + props.focus_width + props.focus_pad + CHILD_TOP_SPACING;
       child_allocation.width = MAX (1, allocation->width - (border_width + xthickness + props.focus_width + props.focus_pad) * 2 -
@@ -480,7 +480,7 @@ gtk_option_menu_size_allocate (GtkWidget     *widget,
       child_allocation.height = MAX (1, allocation->height - (border_width + ythickness + props.focus_width + props.focus_pad) * 2 -
 				     CHILD_TOP_SPACING - CHILD_BOTTOM_SPACING);
 
-      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL) 
+      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL)
 	child_allocation.x += props.indicator_size.width + props.indicator_spacing.left + props.indicator_spacing.right;
 
       gtk_widget_size_allocate (child, &child_allocation);
@@ -516,18 +516,18 @@ gtk_option_menu_paint (GtkWidget    *widget,
 	  button_area.width -= 2 * (props.focus_width + props.focus_pad);
 	  button_area.height -= 2 * (props.focus_width + props.focus_pad);
 	}
-      
+
       gtk_paint_box (widget->style, widget->window,
 		     gtk_widget_get_state (widget), GTK_SHADOW_OUT,
 		     area, widget, "optionmenu",
 		     button_area.x, button_area.y,
 		     button_area.width, button_area.height);
-      
-      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL) 
-	tab_x = button_area.x + props.indicator_spacing.right + 
+
+      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL)
+	tab_x = button_area.x + props.indicator_spacing.right +
 	  widget->style->xthickness;
       else
-	tab_x = button_area.x + button_area.width - 
+	tab_x = button_area.x + button_area.width -
 	  props.indicator_size.width - props.indicator_spacing.right -
 	  widget->style->xthickness;
 
@@ -537,7 +537,7 @@ gtk_option_menu_paint (GtkWidget    *widget,
 		     tab_x,
 		     button_area.y + (button_area.height - props.indicator_size.height) / 2,
 		     props.indicator_size.width, props.indicator_size.height);
-      
+
       if (gtk_widget_has_focus (widget))
 	{
 	  if (props.interior_focus)
@@ -549,7 +549,7 @@ gtk_option_menu_paint (GtkWidget    *widget,
 		      props.indicator_spacing.right +
 		      props.indicator_size.width;
 	      button_area.height -= 2 * (widget->style->ythickness + props.focus_pad);
-	      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL) 
+	      if (gtk_widget_get_direction (GTK_WIDGET (widget)) == GTK_TEXT_DIR_RTL)
 		button_area.x += props.indicator_spacing.left +
 		  props.indicator_spacing.right +
 		  props.indicator_size.width;
@@ -561,11 +561,11 @@ gtk_option_menu_paint (GtkWidget    *widget,
 	      button_area.width += 2 * (props.focus_width + props.focus_pad);
 	      button_area.height += 2 * (props.focus_width + props.focus_pad);
 	    }
-	    
+
 	  gtk_paint_focus (widget->style, widget->window, gtk_widget_get_state (widget),
 			   area, widget, "button",
-			   button_area.x, 
-			   button_area.y, 
+			   button_area.x,
+			   button_area.y,
 			   button_area.width,
 			   button_area.height);
 	}
@@ -589,11 +589,11 @@ gtk_option_menu_expose (GtkWidget      *widget,
        *
        * - If the child is not no-window, removing generates
        *   more expose events. Bad, bad, bad.
-       * 
+       *
        * - Even if the child is no-window, removing it now (properly)
        *   clears the space where it was, so it does no good
        */
-      
+
 #if 0
       remove_child = FALSE;
       child = GTK_BUTTON (widget)->child;
@@ -681,7 +681,7 @@ gtk_option_menu_key_press (GtkWidget   *widget,
 	gtk_menu_shell_select_item (GTK_MENU_SHELL (option_menu->menu), menu_item);
       return TRUE;
     }
-  
+
   return FALSE;
 }
 
@@ -718,7 +718,7 @@ gtk_option_menu_select_first_sensitive (GtkOptionMenu *option_menu)
 	      gtk_option_menu_set_history (option_menu, index);
 	      return;
 	    }
-	  
+
 	  children = children->next;
 	  index++;
 	}
@@ -764,7 +764,7 @@ gtk_option_menu_update_contents (GtkOptionMenu *option_menu)
   if (option_menu->menu)
     {
       GtkWidget *old_item = option_menu->menu_item;
-      
+
       gtk_option_menu_remove_contents (option_menu);
 
       option_menu->menu_item = gtk_menu_get_active (GTK_MENU (option_menu->menu));
@@ -801,13 +801,13 @@ static void
 gtk_option_menu_remove_contents (GtkOptionMenu *option_menu)
 {
   GtkWidget *child;
-  
+
   g_return_if_fail (GTK_IS_OPTION_MENU (option_menu));
 
   if (option_menu->menu_item)
     {
       child = GTK_BIN (option_menu)->child;
-  
+
       if (child)
 	{
 	  gtk_widget_set_sensitive (child, TRUE);
@@ -817,11 +817,11 @@ gtk_option_menu_remove_contents (GtkOptionMenu *option_menu)
 
       g_signal_handlers_disconnect_by_func (option_menu->menu_item,
 					    gtk_option_menu_item_state_changed_cb,
-					    option_menu);				     
+					    option_menu);
       g_signal_handlers_disconnect_by_func (option_menu->menu_item,
 					    gtk_option_menu_item_destroy_cb,
-					    option_menu);   
-      
+					    option_menu);
+
       g_object_unref (option_menu->menu_item);
       option_menu->menu_item = NULL;
     }
@@ -932,7 +932,7 @@ gtk_option_menu_position (GtkMenu  *menu,
 
   /* Clamp the position on screen */
   screen_width = gdk_screen_get_width (gtk_widget_get_screen (widget));
-  
+
   if (menu_xpos < 0)
     menu_xpos = 0;
   else if ((menu_xpos + menu_width) > screen_width)
@@ -949,7 +949,7 @@ gtk_option_menu_show_all (GtkWidget *widget)
 {
   GtkContainer *container;
   GtkOptionMenu *option_menu;
-  
+
   g_return_if_fail (GTK_IS_OPTION_MENU (widget));
   container = GTK_CONTAINER (widget);
   option_menu = GTK_OPTION_MENU (widget);
@@ -993,13 +993,13 @@ gtk_option_menu_scroll_event (GtkWidget          *widget,
   gint index_dir;
   GList *l;
   GtkMenuItem *item;
-    
+
   index = gtk_option_menu_get_history (option_menu);
 
   if (index != -1)
     {
       n_children = g_list_length (GTK_MENU_SHELL (option_menu->menu)->children);
-      
+
       if (event->direction == GDK_SCROLL_UP)
 	index_dir = -1;
       else
@@ -1024,7 +1024,7 @@ gtk_option_menu_scroll_event (GtkWidget          *widget,
 	      gtk_menu_item_activate (GTK_MENU_ITEM (item));
 	      break;
 	    }
-	      
+
 	}
     }
 

@@ -4,7 +4,7 @@
 
 /*
  * This module tests the selection interface on menu items.
- * To use this module run the test program testgtk and use the menus 
+ * To use this module run the test program testgtk and use the menus
  * option.
  */
 static void _do_selection (AtkObject *obj);
@@ -12,8 +12,8 @@ static gint _finish_selection (gpointer data);
 static AtkObject* _find_object (AtkObject* obj, AtkRole role);
 static void _print_type (AtkObject *obj);
 
-static AtkObject* 
-_find_object (AtkObject *obj, 
+static AtkObject*
+_find_object (AtkObject *obj,
               AtkRole   role)
 {
   /*
@@ -28,7 +28,7 @@ _find_object (AtkObject *obj,
   AtkObject *child;
 
   n_children = atk_object_get_n_accessible_children (obj);
-  for (i = 0; i < n_children; i++) 
+  for (i = 0; i < n_children; i++)
   {
     AtkObject* found_obj;
 
@@ -69,7 +69,7 @@ static void _print_type (AtkObject *obj)
   g_print ("Accessible Role: %d\n", role);
 }
 
-static void 
+static void
 _do_selection (AtkObject *obj)
 {
   gint i;
@@ -97,7 +97,7 @@ _do_selection (AtkObject *obj)
 
   g_print ("*** Start do_selection ***\n");
 
-  
+
   if (!selection_obj)
   {
     g_print ("no selection_obj\n");
@@ -117,8 +117,8 @@ _do_selection (AtkObject *obj)
       {
         g_print ("%d child not selected\n", i);
       }
-    } 
-  } 
+    }
+  }
   /*
    * Should not be able to select all items on a menu bar
    */
@@ -140,7 +140,7 @@ _do_selection (AtkObject *obj)
   atk_selection_add_selection (ATK_SELECTION (selection_obj), 1);
   g_timeout_add (2000, _finish_selection, selection_obj);
   g_print ("*** End _do_selection ***\n");
-} 
+}
 
 static gint _finish_selection (gpointer data)
 {
@@ -152,7 +152,7 @@ static gint _finish_selection (gpointer data)
   g_print ("*** Start Finish selection ***\n");
 
   /*
-   * If being run for for menus, at this point menu item foo should be 
+   * If being run for for menus, at this point menu item foo should be
    * selected which means that its submenu should be visible.
    */
   i = atk_selection_get_selection_count (ATK_SELECTION (obj));

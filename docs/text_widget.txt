@@ -7,8 +7,8 @@ Subject: [gtk-list] gtktext widget internal documentation
 Pete convinced me to just write up the text widget and let someone else
 finish it.  I'm pretty busy and have other commitments now.  Sorry.  I think
 I'm not the most qualified for some of the remaining work anyway, because I
-don't really know Gtk and it's event model very well.  Most of the work so 
-far was possible without knowing Gtk all that well, it was simply a data 
+don't really know Gtk and it's event model very well.  Most of the work so
+far was possible without knowing Gtk all that well, it was simply a data
 structure exercise (though after reading this you might say it was a fairly
 complicated data structure exercise).  I'm happy to answer questions.
 
@@ -166,7 +166,7 @@ often, the last index is treated as a newline.
   length 1 unless there are no other characters in the text. That
   is, its properties are always that of the preceding character,
   if any.
-  
+
   There is a fair bit of special case code to maintain this condition -
   which is needed so that user has control over the properties of
   characters inserted at the last position. OWT 2/9/98 ]

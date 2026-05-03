@@ -38,14 +38,14 @@ typedef struct _GtkSearchEngineBeagle GtkSearchEngineBeagle;
 typedef struct _GtkSearchEngineBeagleClass GtkSearchEngineBeagleClass;
 typedef struct _GtkSearchEngineBeaglePrivate GtkSearchEngineBeaglePrivate;
 
-struct _GtkSearchEngineBeagle 
+struct _GtkSearchEngineBeagle
 {
   GtkSearchEngine parent;
 
   GtkSearchEngineBeaglePrivate *priv;
 };
 
-struct _GtkSearchEngineBeagleClass 
+struct _GtkSearchEngineBeagleClass
 {
   GtkSearchEngineClass parent_class;
 };

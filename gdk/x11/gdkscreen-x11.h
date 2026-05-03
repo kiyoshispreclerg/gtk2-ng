@@ -1,7 +1,7 @@
 /*
  * gdkscreen-x11.h
- * 
- * Copyright 2001 Sun Microsystems Inc. 
+ *
+ * Copyright 2001 Sun Microsystems Inc.
  *
  * Erwann Chenede <erwann.chenede@sun.com>
  *
@@ -32,7 +32,7 @@
 #include <X11/Xlib.h>
 
 G_BEGIN_DECLS
-  
+
 typedef struct _GdkScreenX11 GdkScreenX11;
 typedef struct _GdkScreenX11Class GdkScreenX11Class;
 
@@ -48,7 +48,7 @@ typedef struct _GdkX11Monitor GdkX11Monitor;
 struct _GdkScreenX11
 {
   GdkScreen parent_instance;
-  
+
   GdkDisplay *display;
   Display *xdisplay;
   Screen *xscreen;
@@ -68,7 +68,7 @@ struct _GdkScreenX11
    * fetch of window manager name
    */
   guint need_refetch_wm_name : 1;
-  
+
   /* Visual Part */
   GdkVisualPrivate *system_visual;
   GdkVisualPrivate **visuals;
@@ -80,7 +80,7 @@ struct _GdkScreenX11
   GHashTable *visual_hash;
   GHashTable *colormap_hash;
   GdkVisual *rgba_visual;
-  
+
   /* Colormap Part */
   GdkColormap *default_colormap;
   GdkColormap *system_colormap;
@@ -89,7 +89,7 @@ struct _GdkScreenX11
   /* X settings */
   XSettingsClient *xsettings_client;
   guint xsettings_in_init : 1;
-  
+
   /* Xinerama/RandR 1.2 */
   gint		 n_monitors;
   GdkX11Monitor	*monitors;
@@ -111,7 +111,7 @@ struct _GdkScreenX11
   GdkAtom cm_selection_atom;
   gboolean is_composited;
 };
-  
+
 struct _GdkScreenX11Class
 {
   GdkScreenClass parent_class;

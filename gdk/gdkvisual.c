@@ -1,7 +1,7 @@
 /* GDK - The GIMP Drawing Kit
  * gdkvisual.c
- * 
- * Copyright 2001 Sun Microsystems Inc. 
+ *
+ * Copyright 2001 Sun Microsystems Inc.
  *
  * Erwann Chenede <erwann.chenede@sun.com>
  *
@@ -28,7 +28,7 @@
 
 /**
  * gdk_list_visuals:
- * 
+ *
  * Lists the available visuals for the default screen.
  * (See gdk_screen_list_visuals())
  * A visual describes a hardware image data format.
@@ -36,7 +36,7 @@
  * and might expect pixels to be in a certain format.
  *
  * Call g_list_free() on the return value when you're finished with it.
- * 
+ *
  * Return value: (transfer container) (element-type GdkVisual):
  *     a list of visuals; the list must be freed, but not its contents
  **/
@@ -48,11 +48,11 @@ gdk_list_visuals (void)
 
 /**
  * gdk_visual_get_system:
- * 
+ *
  * Get the system's default visual for the default GDK screen.
  * This is the visual for the root window of the display.
  * The return value should not be freed.
- * 
+ *
  * Return value: (transfer none): system visual
  **/
 GdkVisual*

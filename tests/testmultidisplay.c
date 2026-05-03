@@ -108,7 +108,7 @@ main (int argc, char *argv[])
 
   if (argc == 2)
     screen2_name = g_strdup (argv[1]);
-  
+
   /* Get the second display information */
 
   dialog = gtk_dialog_new_with_buttons ("Second Display Selection",
@@ -131,14 +131,14 @@ main (int argc, char *argv[])
 
   gtk_widget_grab_focus (display_entry);
   gtk_widget_show_all (GTK_BIN (dialog)->child);
-  
+
   while (!correct_second_display)
     {
       if (screen2_name)
 	{
 	  if (!g_ascii_strcasecmp (screen2_name, ""))
 	    g_printerr ("No display name, reverting to default display\n");
-	  
+
 	  dpy2 = gdk_display_open (screen2_name);
 	  if (dpy2)
 	    {
@@ -158,7 +158,7 @@ main (int argc, char *argv[])
       if (!correct_second_display)
 	gtk_dialog_run (GTK_DIALOG (dialog));
     }
-  
+
   gtk_widget_destroy (dialog);
 
   entry = g_object_new (GTK_TYPE_ENTRY,

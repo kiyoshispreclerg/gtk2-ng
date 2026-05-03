@@ -51,7 +51,7 @@ cedilla_register_type (GTypeModule *module)
     (GInstanceInitFunc) cedilla_init,
   };
 
-  type_cedilla = 
+  type_cedilla =
     g_type_module_register_type (module,
 				 GTK_TYPE_IM_CONTEXT_SIMPLE,
 				 "GtkIMContextCedillaTranslit",
@@ -87,7 +87,7 @@ cedilla_init (GtkIMContextSimple *im_context)
 				   G_N_ELEMENTS (cedilla_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo cedilla_info = { 
+static const GtkIMContextInfo cedilla_info = {
   "cedilla",		           /* ID */
   N_("Cedilla"),                   /* Human readable name */
   GETTEXT_PACKAGE,		   /* Translation domain */

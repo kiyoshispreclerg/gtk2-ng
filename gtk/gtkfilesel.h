@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef GTK_DISABLE_DEPRECATED
@@ -67,11 +67,11 @@ struct _GtkFileSelection
   GtkWidget *fileop_entry;
   gchar     *fileop_file;
   gpointer   cmpl_state;
-  
+
   GtkWidget *fileop_c_dir;
   GtkWidget *fileop_del_file;
   GtkWidget *fileop_ren_file;
-  
+
   GtkWidget *button_area;
   GtkWidget *action_area;
 

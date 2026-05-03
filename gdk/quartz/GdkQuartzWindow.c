@@ -58,7 +58,7 @@
 {
   GdkWindow *window = [[self contentView] gdkWindow];
 
-  gdk_synthesize_window_state (window, 0, 
+  gdk_synthesize_window_state (window, 0,
 			       GDK_WINDOW_STATE_ICONIFIED);
 }
 
@@ -254,7 +254,7 @@
     case GDK_WINDOW_TYPE_HINT_NORMAL:
     case GDK_WINDOW_TYPE_HINT_DIALOG:
       return YES;
-      
+
     case GDK_WINDOW_TYPE_HINT_MENU:
     case GDK_WINDOW_TYPE_HINT_TOOLBAR:
     case GDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
@@ -269,7 +269,7 @@
     case GDK_WINDOW_TYPE_HINT_DND:
       return NO;
     }
-  
+
   return YES;
 }
 
@@ -301,14 +301,14 @@
     case GDK_WINDOW_TYPE_HINT_POPUP_MENU:
     case GDK_WINDOW_TYPE_HINT_COMBO:
       return YES;
-      
+
     case GDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
     case GDK_WINDOW_TYPE_HINT_TOOLTIP:
     case GDK_WINDOW_TYPE_HINT_NOTIFICATION:
     case GDK_WINDOW_TYPE_HINT_DND:
       return NO;
     }
-  
+
   return YES;
 }
 
@@ -514,7 +514,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 
   if (current_context)
     g_object_unref (current_context);
-  
+
   current_context = gdk_drag_context_new ();
   update_context_from_dragging_info (sender);
 
@@ -543,7 +543,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
   GdkEvent event;
-  
+
   event.dnd.type = GDK_DRAG_LEAVE;
   event.dnd.window = g_object_ref ([[self contentView] gdkWindow]);
   event.dnd.send_event = FALSE;
@@ -551,7 +551,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
   event.dnd.time = GDK_CURRENT_TIME;
 
   (*_gdk_event_func) (&event, _gdk_event_data);
-  
+
   g_object_unref (current_context);
   current_context = NULL;
 }
@@ -638,7 +638,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
       windows = gdk_screen_get_toplevel_windows (screen);
       _gdk_quartz_window_nspoint_to_gdk_xy (aPoint, &gx, &gy);
 
-      for (list = windows; list; list = list->next) 
+      for (list = windows; list; list = list->next)
         {
           GdkWindow* win = (GdkWindow*) list->data;
           gint wx, wy;

@@ -165,7 +165,7 @@ gtk_tree_selection_set_mode (GtkTreeSelection *selection,
   if (selection->type == type)
     return;
 
-  
+
   if (type == GTK_SELECTION_NONE)
     {
       /* We do this so that we unconditionally unset all rows
@@ -311,9 +311,9 @@ gtk_tree_selection_get_user_data (GtkTreeSelection *selection)
 /**
  * gtk_tree_selection_get_tree_view:
  * @selection: A #GtkTreeSelection
- * 
+ *
  * Returns the tree view associated with @selection.
- * 
+ *
  * Return value: (transfer none): A #GtkTreeView
  **/
 GtkTreeView *
@@ -500,7 +500,7 @@ gtk_tree_selection_get_selected_rows (GtkTreeSelection   *selection,
 		    {
 		      gtk_tree_path_free (path);
 
-		      goto done; 
+		      goto done;
 		    }
 
 		  gtk_tree_path_up (path);
@@ -540,7 +540,7 @@ gtk_tree_selection_count_selected_rows_helper (GtkRBTree *tree,
  * Returns the number of rows that have been selected in @tree.
  *
  * Return value: The number of rows selected.
- * 
+ *
  * Since: 2.2
  **/
 gint
@@ -629,7 +629,7 @@ gtk_tree_selection_selected_foreach (GtkTreeSelection            *selection,
 
   tree = selection->tree_view->priv->tree;
   node = selection->tree_view->priv->tree->root;
-  
+
   while (node->left != tree->nil)
     node = node->left;
 
@@ -647,7 +647,7 @@ gtk_tree_selection_selected_foreach (GtkTreeSelection            *selection,
 					   G_CALLBACK (model_changed),
 				           &stop);
   changed_id = g_signal_connect_swapped (selection->tree_view, "notify::model",
-					 G_CALLBACK (model_changed), 
+					 G_CALLBACK (model_changed),
 					 &stop);
 
   /* find the node internally */
@@ -862,10 +862,10 @@ gtk_tree_selection_unselect_iter (GtkTreeSelection *selection,
  * gtk_tree_selection_path_is_selected:
  * @selection: A #GtkTreeSelection.
  * @path: A #GtkTreePath to check selection on.
- * 
+ *
  * Returns %TRUE if the row pointed to by @path is currently selected.  If @path
  * does not point to a valid location, %FALSE is returned
- * 
+ *
  * Return value: %TRUE if @path is selected.
  **/
 gboolean
@@ -899,9 +899,9 @@ gtk_tree_selection_path_is_selected (GtkTreeSelection *selection,
  * gtk_tree_selection_iter_is_selected:
  * @selection: A #GtkTreeSelection
  * @iter: A valid #GtkTreeIter
- * 
+ *
  * Returns %TRUE if the row at @iter is currently selected.
- * 
+ *
  * Return value: %TRUE, if @iter is selected
  **/
 gboolean
@@ -1101,7 +1101,7 @@ gtk_tree_selection_unselect_all (GtkTreeSelection *selection)
 
   if (selection->tree_view->priv->tree == NULL || selection->tree_view->priv->model == NULL)
     return;
-  
+
   if (gtk_tree_selection_real_unselect_all (selection))
     g_signal_emit (selection, tree_selection_signals[CHANGED], 0);
 }
@@ -1209,7 +1209,7 @@ gtk_tree_selection_real_modify_range (GtkTreeSelection *selection,
  * @end_path: The final node of the range.
  *
  * Selects a range of nodes, determined by @start_path and @end_path inclusive.
- * @selection must be set to #GTK_SELECTION_MULTIPLE mode. 
+ * @selection must be set to #GTK_SELECTION_MULTIPLE mode.
  **/
 void
 gtk_tree_selection_select_range (GtkTreeSelection *selection,
@@ -1424,14 +1424,14 @@ _gtk_tree_selection_internal_select_node (GtkTreeSelection *selection,
     gtk_tree_path_free (anchor_path);
 
   if (dirty)
-    g_signal_emit (selection, tree_selection_signals[CHANGED], 0);  
+    g_signal_emit (selection, tree_selection_signals[CHANGED], 0);
 }
 
 
-void 
+void
 _gtk_tree_selection_emit_changed (GtkTreeSelection *selection)
 {
-  g_signal_emit (selection, tree_selection_signals[CHANGED], 0);  
+  g_signal_emit (selection, tree_selection_signals[CHANGED], 0);
 }
 
 /* NOTE: Any {un,}selection ever done _MUST_ be done through this function!
@@ -1460,7 +1460,7 @@ gtk_tree_selection_real_select_node (GtkTreeSelection *selection,
       node->flags ^= GTK_RBNODE_IS_SELECTED;
 
       _gtk_tree_view_queue_draw_node (selection->tree_view, tree, node, NULL);
-      
+
       return TRUE;
     }
 

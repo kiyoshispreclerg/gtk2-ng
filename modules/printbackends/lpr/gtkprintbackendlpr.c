@@ -1,6 +1,6 @@
 /* GTK - The GIMP Toolkit
- * gtkprintbackendlpr.c: LPR implementation of GtkPrintBackend 
- * for printing to lpr 
+ * gtkprintbackendlpr.c: LPR implementation of GtkPrintBackend
+ * for printing to lpr
  * Copyright (C) 2006, 2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -107,19 +107,19 @@ gtk_print_backend_lpr_register_type (GTypeModule *module)
                                                         &print_backend_lpr_info, 0);
 }
 
-G_MODULE_EXPORT void 
+G_MODULE_EXPORT void
 pb_module_init (GTypeModule *module)
 {
   gtk_print_backend_lpr_register_type (module);
 }
 
-G_MODULE_EXPORT void 
+G_MODULE_EXPORT void
 pb_module_exit (void)
 {
 
 }
-  
-G_MODULE_EXPORT GtkPrintBackend * 
+
+G_MODULE_EXPORT GtkPrintBackend *
 pb_module_create (void)
 {
   return gtk_print_backend_lpr_new ();
@@ -153,7 +153,7 @@ static void
 gtk_print_backend_lpr_class_init (GtkPrintBackendLprClass *class)
 {
   GtkPrintBackendClass *backend_class = GTK_PRINT_BACKEND_CLASS (class);
-  
+
   backend_parent_class = g_type_class_peek_parent (class);
 
   backend_class->print_stream = gtk_print_backend_lpr_print_stream;
@@ -177,7 +177,7 @@ _cairo_write (void                *closure,
   GTK_NOTE (PRINTING,
             g_print ("LPR Backend: Writting %i byte chunk to temp file\n", length));
 
-  while (length > 0) 
+  while (length > 0)
     {
       g_io_channel_write_chars (io, (const gchar*)data, length, &written, &error);
 
@@ -188,7 +188,7 @@ _cairo_write (void                *closure,
 
           g_error_free (error);
 	  return CAIRO_STATUS_WRITE_ERROR;
-	}    
+	}
 
       GTK_NOTE (PRINTING,
                 g_print ("LPR Backend: Wrote %" G_GSIZE_FORMAT " bytes to temp file\n", written));
@@ -203,12 +203,12 @@ _cairo_write (void                *closure,
 static cairo_surface_t *
 lpr_printer_create_cairo_surface (GtkPrinter       *printer,
 				  GtkPrintSettings *settings,
-				  gdouble           width, 
+				  gdouble           width,
 				  gdouble           height,
 				  GIOChannel       *cache_io)
 {
   cairo_surface_t *surface;
-  
+
   surface = cairo_ps_surface_create_for_stream (_cairo_write, cache_io, width, height);
 
   cairo_surface_set_fallback_resolution (surface,
@@ -235,7 +235,7 @@ lpr_print_cb (GtkPrintBackendLpr *print_backend,
 {
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
-  if (ps->in != NULL) 
+  if (ps->in != NULL)
     g_io_channel_unref (ps->in);
 
   if (ps->callback)
@@ -244,13 +244,13 @@ lpr_print_cb (GtkPrintBackendLpr *print_backend,
   if (ps->dnotify)
     ps->dnotify (ps->user_data);
 
-  gtk_print_job_set_status (ps->job, 
-			    error ? GTK_PRINT_STATUS_FINISHED_ABORTED 
+  gtk_print_job_set_status (ps->job,
+			    error ? GTK_PRINT_STATUS_FINISHED_ABORTED
 			          : GTK_PRINT_STATUS_FINISHED);
 
   if (ps->job)
     g_object_unref (ps->job);
-  
+
   g_free (ps);
 }
 
@@ -267,7 +267,7 @@ lpr_write (GIOChannel   *source,
 
   error = NULL;
 
-  status = 
+  status =
     g_io_channel_read_chars (source,
                              buf,
                              _LPR_MAX_CHUNK_SIZE,
@@ -279,15 +279,15 @@ lpr_write (GIOChannel   *source,
       gsize bytes_written;
 
       g_io_channel_write_chars (ps->in,
-                                buf, 
-				bytes_read, 
-				&bytes_written, 
+                                buf,
+				bytes_read,
+				&bytes_written,
 				&error);
     }
 
   if (error != NULL || status == G_IO_STATUS_EOF)
     {
-      lpr_print_cb (GTK_PRINT_BACKEND_LPR (ps->backend), 
+      lpr_print_cb (GTK_PRINT_BACKEND_LPR (ps->backend),
 		    error, user_data);
 
 
@@ -297,7 +297,7 @@ lpr_write (GIOChannel   *source,
                     g_print ("LPR Backend: %s\n", error->message));
 
           g_error_free (error);
-        } 
+        }
 
       return FALSE;
     }
@@ -439,7 +439,7 @@ lpr_printer_get_options (GtkPrinter           *printer,
   else
     gtk_printer_option_set (option, LPR_COMMAND);
   gtk_printer_option_set_add (set, option);
-    
+
   return set;
 }
 
@@ -474,12 +474,12 @@ lpr_printer_prepare_for_print (GtkPrinter       *printer,
   print_job->print_pages = gtk_print_settings_get_print_pages (settings);
   print_job->page_ranges = NULL;
   print_job->num_page_ranges = 0;
-  
+
   if (print_job->print_pages == GTK_PRINT_PAGES_RANGES)
     print_job->page_ranges =
       gtk_print_settings_get_page_ranges (settings,
 					  &print_job->num_page_ranges);
-  
+
   print_job->collate = gtk_print_settings_get_collate (settings);
   print_job->reverse = gtk_print_settings_get_reverse (settings);
   print_job->num_copies = gtk_print_settings_get_n_copies (settings);

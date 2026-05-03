@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -103,9 +103,9 @@ gtk_text_tag_table_class_init (GtkTextTagTableClass *klass)
 
   object_class->set_property = gtk_text_tag_table_set_property;
   object_class->get_property = gtk_text_tag_table_get_property;
-  
+
   object_class->finalize = gtk_text_tag_table_finalize;
-  
+
   signals[TAG_CHANGED] =
     g_signal_new (I_("tag-changed"),
                   G_OBJECT_CLASS_TYPE (object_class),
@@ -116,7 +116,7 @@ gtk_text_tag_table_class_init (GtkTextTagTableClass *klass)
                   G_TYPE_NONE,
                   2,
                   GTK_TYPE_TEXT_TAG,
-                  G_TYPE_BOOLEAN);  
+                  G_TYPE_BOOLEAN);
 
   signals[TAG_ADDED] =
     g_signal_new (I_("tag-added"),
@@ -130,7 +130,7 @@ gtk_text_tag_table_class_init (GtkTextTagTableClass *klass)
                   GTK_TYPE_TEXT_TAG);
 
   signals[TAG_REMOVED] =
-    g_signal_new (I_("tag-removed"),  
+    g_signal_new (I_("tag-removed"),
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GtkTextTagTableClass, tag_removed),
@@ -149,10 +149,10 @@ gtk_text_tag_table_init (GtkTextTagTable *table)
 
 /**
  * gtk_text_tag_table_new:
- * 
+ *
  * Creates a new #GtkTextTagTable. The table contains no tags by
  * default.
- * 
+ *
  * Return value: a new #GtkTextTagTable
  **/
 GtkTextTagTable*
@@ -169,7 +169,7 @@ static void
 foreach_unref (GtkTextTag *tag, gpointer data)
 {
   GSList *tmp;
-  
+
   /* We don't want to emit the remove signal here; so we just unparent
    * and unref the tag.
    */
@@ -179,10 +179,10 @@ foreach_unref (GtkTextTag *tag, gpointer data)
     {
       _gtk_text_buffer_notify_will_remove_tag (GTK_TEXT_BUFFER (tmp->data),
                                                tag);
-      
+
       tmp = tmp->next;
     }
-  
+
   tag->table = NULL;
   g_object_unref (tag);
 }
@@ -193,7 +193,7 @@ gtk_text_tag_table_finalize (GObject *object)
   GtkTextTagTable *table;
 
   table = GTK_TEXT_TAG_TABLE (object);
-  
+
   gtk_text_tag_table_foreach (table, foreach_unref, NULL);
 
   g_hash_table_destroy (table->hash);
@@ -278,7 +278,7 @@ gtk_text_tag_table_add (GtkTextTagTable *table,
                  tag->name);
       return;
     }
-  
+
   g_object_ref (tag);
 
   if (tag->name)
@@ -303,11 +303,11 @@ gtk_text_tag_table_add (GtkTextTagTable *table,
 
 /**
  * gtk_text_tag_table_lookup:
- * @table: a #GtkTextTagTable 
+ * @table: a #GtkTextTagTable
  * @name: name of a tag
- * 
+ *
  * Look up a named tag.
- * 
+ *
  * Return value: (transfer none): The tag, or %NULL if none by that name is in the table.
  **/
 GtkTextTag*
@@ -324,7 +324,7 @@ gtk_text_tag_table_lookup (GtkTextTagTable *table,
  * gtk_text_tag_table_remove:
  * @table: a #GtkTextTagTable
  * @tag: a #GtkTextTag
- * 
+ *
  * Remove a tag from the table. This will remove the table's
  * reference to the tag, so be careful - the tag will end
  * up destroyed if you don't have a reference to it.
@@ -334,7 +334,7 @@ gtk_text_tag_table_remove (GtkTextTagTable *table,
                            GtkTextTag      *tag)
 {
   GSList *tmp;
-  
+
   g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
   g_return_if_fail (GTK_IS_TEXT_TAG (tag));
   g_return_if_fail (tag->table == table);
@@ -347,10 +347,10 @@ gtk_text_tag_table_remove (GtkTextTagTable *table,
     {
       _gtk_text_buffer_notify_will_remove_tag (GTK_TEXT_BUFFER (tmp->data),
                                                tag);
-      
+
       tmp = tmp->next;
     }
-  
+
   /* Set ourselves to the highest priority; this means
      when we're removed, there won't be any gaps in the
      priorities of the tags in the table. */
@@ -404,7 +404,7 @@ list_foreach (gpointer data, gpointer user_data)
  * @data: user data
  *
  * Calls @func on each tag in @table, with user data @data.
- * Note that the table may not be modified while iterating 
+ * Note that the table may not be modified while iterating
  * over it (you can't add/remove tags).
  **/
 void
@@ -427,9 +427,9 @@ gtk_text_tag_table_foreach (GtkTextTagTable       *table,
 /**
  * gtk_text_tag_table_get_size:
  * @table: a #GtkTextTagTable
- * 
+ *
  * Returns the size of the table (number of tags)
- * 
+ *
  * Return value: number of tags in @table
  **/
 gint
@@ -466,7 +466,7 @@ _gtk_text_tag_table_remove_buffer (GtkTextTagTable *table,
   g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
 
   gtk_text_tag_table_foreach (table, foreach_remove_tag, buffer);
-  
+
   table->buffers = g_slist_remove (table->buffers, buffer);
 }
 

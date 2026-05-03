@@ -38,7 +38,7 @@ typedef struct _GtkQuery GtkQuery;
 typedef struct _GtkQueryClass GtkQueryClass;
 typedef struct _GtkQueryPrivate GtkQueryPrivate;
 
-struct _GtkQuery 
+struct _GtkQuery
 {
   GObject parent;
 
@@ -56,17 +56,17 @@ gboolean  _gtk_query_enabled        (void);
 GtkQuery* _gtk_query_new            (void);
 
 gchar*    _gtk_query_get_text       (GtkQuery    *query);
-void      _gtk_query_set_text       (GtkQuery    *query, 
+void      _gtk_query_set_text       (GtkQuery    *query,
 				     const gchar *text);
 
 gchar*    _gtk_query_get_location   (GtkQuery    *query);
-void      _gtk_query_set_location   (GtkQuery    *query, 
+void      _gtk_query_set_location   (GtkQuery    *query,
 				     const gchar *uri);
 
 GList*    _gtk_query_get_mime_types (GtkQuery    *query);
-void      _gtk_query_set_mime_types (GtkQuery    *query, 
+void      _gtk_query_set_mime_types (GtkQuery    *query,
 				     GList       *mime_types);
-void      _gtk_query_add_mime_type  (GtkQuery    *query, 
+void      _gtk_query_add_mime_type  (GtkQuery    *query,
 				     const gchar *mime_type);
 
 G_END_DECLS

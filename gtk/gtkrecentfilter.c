@@ -1,7 +1,7 @@
 /* GTK - The GIMP Toolkit
  * gtkrecentfilter.h - Filter object for recently used resources
  * Copyright (C) 2006, Emmanuele Bassi
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -44,10 +44,10 @@ typedef enum {
 struct _GtkRecentFilter
 {
   GtkObject parent_instance;
-  
+
   gchar *name;
   GSList *rules;
-  
+
   GtkRecentFilterFlags needed;
 };
 
@@ -60,7 +60,7 @@ struct _FilterRule
 {
   FilterRuleType type;
   GtkRecentFilterFlags needed;
-  
+
   union {
     gchar *uri;
     gchar *pattern;
@@ -113,7 +113,7 @@ filter_rule_free (FilterRule *rule)
       g_assert_not_reached ();
       break;
     }
-  
+
   g_free (rule);
 }
 
@@ -121,9 +121,9 @@ static void
 gtk_recent_filter_finalize (GObject *object)
 {
   GtkRecentFilter *filter = GTK_RECENT_FILTER (object);
-  
+
   g_free (filter->name);
-  
+
   if (filter->rules)
     {
       g_slist_foreach (filter->rules,
@@ -131,7 +131,7 @@ gtk_recent_filter_finalize (GObject *object)
       		       NULL);
       g_slist_free (filter->rules);
     }
-  
+
   G_OBJECT_CLASS (gtk_recent_filter_parent_class)->finalize (object);
 }
 
@@ -139,7 +139,7 @@ static void
 gtk_recent_filter_class_init (GtkRecentFilterClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  
+
   gobject_class->finalize = gtk_recent_filter_finalize;
 }
 
@@ -152,7 +152,7 @@ gtk_recent_filter_init (GtkRecentFilter *filter)
 /*
  * Public API
  */
- 
+
 /**
  * gtk_recent_filter_new:
  *
@@ -193,9 +193,9 @@ gtk_recent_filter_set_name (GtkRecentFilter *filter,
 			    const gchar     *name)
 {
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
-  
+
   g_free (filter->name);
-  
+
   if (name)
     filter->name = g_strdup (name);
 }
@@ -216,7 +216,7 @@ const gchar *
 gtk_recent_filter_get_name (GtkRecentFilter *filter)
 {
   g_return_val_if_fail (GTK_IS_RECENT_FILTER (filter), NULL);
-  
+
   return filter->name;
 }
 
@@ -226,11 +226,11 @@ gtk_recent_filter_get_name (GtkRecentFilter *filter)
  *
  * Gets the fields that need to be filled in for the structure
  * passed to gtk_recent_filter_filter()
- * 
+ *
  * This function will not typically be used by applications; it
  * is intended principally for use in the implementation of
  * #GtkRecentChooser.
- * 
+ *
  * Return value: bitfield of flags indicating needed fields when
  *   calling gtk_recent_filter_filter()
  *
@@ -264,15 +264,15 @@ gtk_recent_filter_add_mime_type (GtkRecentFilter *filter,
 				 const gchar     *mime_type)
 {
   FilterRule *rule;
-  
+
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (mime_type != NULL);
-  
+
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_MIME_TYPE;
   rule->needed = GTK_RECENT_FILTER_MIME_TYPE;
   rule->u.mime_type = g_strdup (mime_type);
-  
+
   recent_filter_add_rule (filter, rule);
 }
 
@@ -291,15 +291,15 @@ gtk_recent_filter_add_pattern (GtkRecentFilter *filter,
 			       const gchar     *pattern)
 {
   FilterRule *rule;
-  
+
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (pattern != NULL);
-  
+
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_DISPLAY_NAME;
   rule->needed = GTK_RECENT_FILTER_DISPLAY_NAME;
   rule->u.pattern = g_strdup (pattern);
-  
+
   recent_filter_add_rule (filter, rule);
 }
 
@@ -323,7 +323,7 @@ gtk_recent_filter_add_pixbuf_formats (GtkRecentFilter *filter)
   rule->type = FILTER_RULE_PIXBUF_FORMATS;
   rule->needed = GTK_RECENT_FILTER_MIME_TYPE;
   rule->u.pixbuf_formats = gdk_pixbuf_get_formats ();
-  
+
   recent_filter_add_rule (filter, rule);
 }
 
@@ -342,15 +342,15 @@ gtk_recent_filter_add_application (GtkRecentFilter *filter,
 				   const gchar     *application)
 {
   FilterRule *rule;
-  
+
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (application != NULL);
-  
+
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_APPLICATION;
   rule->needed = GTK_RECENT_FILTER_APPLICATION;
   rule->u.application = g_strdup (application);
-  
+
   recent_filter_add_rule (filter, rule);
 }
 
@@ -369,15 +369,15 @@ gtk_recent_filter_add_group (GtkRecentFilter *filter,
 			     const gchar     *group)
 {
   FilterRule *rule;
-  
+
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (group != NULL);
-  
+
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_GROUP;
   rule->needed = GTK_RECENT_FILTER_GROUP;
   rule->u.group = g_strdup (group);
-  
+
   recent_filter_add_rule (filter, rule);
 }
 
@@ -396,14 +396,14 @@ gtk_recent_filter_add_age (GtkRecentFilter *filter,
 			   gint             days)
 {
   FilterRule *rule;
-  
+
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
-  
+
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_AGE;
   rule->needed = GTK_RECENT_FILTER_AGE;
   rule->u.age = days;
-  
+
   recent_filter_add_rule (filter, rule);
 }
 
@@ -416,13 +416,13 @@ gtk_recent_filter_add_age (GtkRecentFilter *filter,
  *   the file will be displayed.
  * @data: data to pass to @func
  * @data_destroy: function to call to free @data when it is no longer needed.
- * 
+ *
  * Adds a rule to a filter that allows resources based on a custom callback
  * function. The bitfield @needed which is passed in provides information
  * about what sorts of information that the filter function needs;
  * this allows GTK+ to avoid retrieving expensive information when
  * it isn't needed by the filter.
- * 
+ *
  * Since: 2.10
  **/
 void
@@ -433,7 +433,7 @@ gtk_recent_filter_add_custom (GtkRecentFilter      *filter,
 			      GDestroyNotify        data_destroy)
 {
   FilterRule *rule;
-  
+
   g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (func != NULL);
 
@@ -461,7 +461,7 @@ gtk_recent_filter_add_custom (GtkRecentFilter      *filter,
  * This function will not typically be used by applications; it
  * is intended principally for use in the implementation of
  * #GtkRecentChooser.
- * 
+ *
  * Return value: %TRUE if the file should be displayed
  *
  * Since: 2.10
@@ -471,10 +471,10 @@ gtk_recent_filter_filter (GtkRecentFilter           *filter,
 			  const GtkRecentFilterInfo *filter_info)
 {
   GSList *l;
-  
+
   g_return_val_if_fail (GTK_IS_RECENT_FILTER (filter), FALSE);
   g_return_val_if_fail (filter_info != NULL, FALSE);
-  
+
   for (l = filter->rules; l != NULL; l = l->next)
     {
       FilterRule *rule = (FilterRule *) l->data;
@@ -504,7 +504,7 @@ gtk_recent_filter_filter (GtkRecentFilter           *filter,
           if (filter_info->applications)
             {
               gint i;
-              
+
               for (i = 0; filter_info->applications[i] != NULL; i++)
                 {
                   if (strcmp (filter_info->applications[i], rule->u.application) == 0)
@@ -571,7 +571,7 @@ gtk_recent_filter_filter (GtkRecentFilter           *filter,
           break;
         }
     }
-  
+
   return FALSE;
 }
 

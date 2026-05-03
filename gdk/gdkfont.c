@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GDK_DISABLE_DEPRECATED
@@ -36,7 +36,7 @@ GType
 gdk_font_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (g_intern_static_string ("GdkFont"),
 					     (GBoxedCopyFunc)gdk_font_ref,
@@ -47,9 +47,9 @@ gdk_font_get_type (void)
 /**
  * gdk_font_ref:
  * @font: a #GdkFont
- * 
+ *
  * Increases the reference count of a font by one.
- * 
+ *
  * Return value: @font
  **/
 GdkFont*
@@ -67,7 +67,7 @@ gdk_font_ref (GdkFont *font)
 /**
  * gdk_font_unref:
  * @font: a #GdkFont
- * 
+ *
  * Decreases the reference count of a font by one.
  * If the result is zero, destroys the font.
  **/
@@ -89,12 +89,12 @@ gdk_font_unref (GdkFont *font)
  * gdk_string_width:
  * @font:  a #GdkFont
  * @string: the nul-terminated string to measure
- * 
+ *
  * Determines the width of a nul-terminated string.
- * (The distance from the origin of the string to the 
+ * (The distance from the origin of the string to the
  * point where the next string in a sequence of strings
  * should be drawn)
- * 
+ *
  * Return value: the width of the string in pixels.
  **/
 gint
@@ -111,9 +111,9 @@ gdk_string_width (GdkFont     *font,
  * gdk_char_width:
  * @font: a #GdkFont
  * @character: the character to measure.
- * 
+ *
  * Determines the width of a given character.
- * 
+ *
  * Return value: the width of the character in pixels.
  *
  * Deprecated: 2.2: Use gdk_text_extents() instead.
@@ -131,10 +131,10 @@ gdk_char_width (GdkFont *font,
  * gdk_char_width_wc:
  * @font: a #GdkFont
  * @character: the character to measure.
- * 
+ *
  * Determines the width of a given wide character. (Encoded
  * in the wide-character encoding of the current locale).
- * 
+ *
  * Return value: the width of the character in pixels.
  **/
 gint
@@ -150,13 +150,13 @@ gdk_char_width_wc (GdkFont *font,
  * gdk_string_measure:
  * @font: a #GdkFont
  * @string: the nul-terminated string to measure.
- * 
+ *
  * Determines the distance from the origin to the rightmost
  * portion of a nul-terminated string when drawn. This is not the
  * correct value for determining the origin of the next
  * portion when drawing text in multiple pieces.
  * See gdk_string_width().
- * 
+ *
  * Return value: the right bearing of the string in pixels.
  **/
 gint
@@ -178,7 +178,7 @@ gdk_string_measure (GdkFont     *font,
  * @width: the width of the string.
  * @ascent: the ascent of the string.
  * @descent: the descent of the string.
- * 
+ *
  * Gets the metrics of a nul-terminated string.
  **/
 void
@@ -203,13 +203,13 @@ gdk_string_extents (GdkFont     *font,
  * @font: a #GdkFont
  * @text: the text to measure.
  * @text_length: the length of the text in bytes.
- * 
+ *
  * Determines the distance from the origin to the rightmost
  * portion of a string when drawn. This is not the
  * correct value for determining the origin of the next
- * portion when drawing text in multiple pieces. 
+ * portion when drawing text in multiple pieces.
  * See gdk_text_width().
- * 
+ *
  * Return value: the right bearing of the string in pixels.
  **/
 gint
@@ -230,12 +230,12 @@ gdk_text_measure (GdkFont     *font,
  * gdk_char_measure:
  * @font: a #GdkFont
  * @character: the character to measure.
- * 
+ *
  * Determines the distance from the origin to the rightmost
  * portion of a character when drawn. This is not the
  * correct value for determining the origin of the next
- * portion when drawing text in multiple pieces. 
- * 
+ * portion when drawing text in multiple pieces.
+ *
  * Return value: the right bearing of the character in pixels.
  **/
 gint
@@ -251,12 +251,12 @@ gdk_char_measure (GdkFont *font,
  * gdk_string_height:
  * @font: a #GdkFont
  * @string: the nul-terminated string to measure.
- * 
+ *
  * Determines the total height of a given nul-terminated
  * string. This value is not generally useful, because you
  * cannot determine how this total height will be drawn in
  * relation to the baseline. See gdk_string_extents().
- * 
+ *
  * Return value: the height of the string in pixels.
  **/
 gint
@@ -274,12 +274,12 @@ gdk_string_height (GdkFont     *font,
  * @font: a #GdkFont
  * @text: the text to measure.
  * @text_length: the length of the text in bytes.
- * 
+ *
  * Determines the total height of a given string.
  * This value is not generally useful, because you cannot
  * determine how this total height will be drawn in
  * relation to the baseline. See gdk_text_extents().
- * 
+ *
  * Return value: the height of the string in pixels.
  **/
 gint
@@ -300,12 +300,12 @@ gdk_text_height (GdkFont     *font,
  * gdk_char_height:
  * @font: a #GdkFont
  * @character: the character to measure.
- * 
+ *
  * Determines the total height of a given character.
  * This value is not generally useful, because you cannot
  * determine how this total height will be drawn in
  * relation to the baseline. See gdk_text_extents().
- * 
+ *
  * Return value: the height of the character in pixels.
  *
  * Deprecated: 2.2: Use gdk_text_extents() instead.
@@ -322,13 +322,13 @@ gdk_char_height (GdkFont *font,
 /**
  * gdk_font_from_description:
  * @font_desc: a #PangoFontDescription.
- * 
+ *
  * Load a #GdkFont based on a Pango font description. This font will
  * only be an approximation of the Pango font, and
  * internationalization will not be handled correctly. This function
  * should only be used for legacy code that cannot be easily converted
  * to use Pango. Using Pango directly will produce better results.
- * 
+ *
  * Return value: the newly loaded font, or %NULL if the font
  * cannot be loaded.
  **/
@@ -341,17 +341,17 @@ gdk_font_from_description (PangoFontDescription *font_desc)
 /**
  * gdk_font_load:
  * @font_name: a XLFD describing the font to load.
- * 
+ *
  * Loads a font.
- * 
- * The font may be newly loaded or looked up the font in a cache. 
+ *
+ * The font may be newly loaded or looked up the font in a cache.
  * You should make no assumptions about the initial reference count.
- * 
+ *
  * Return value: a #GdkFont, or %NULL if the font could not be loaded.
  **/
 GdkFont*
 gdk_font_load (const gchar *font_name)
-{  
+{
    return gdk_font_load_for_display (gdk_display_get_default(), font_name);
 }
 

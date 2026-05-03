@@ -84,10 +84,10 @@ gtk_buildable_set_name (GtkBuildable *buildable,
  * gtk_buildable_get_name:
  * @buildable: a #GtkBuildable
  *
- * Gets the name of the @buildable object. 
- * 
- * #GtkBuilder sets the name based on the the 
- * <link linkend="BUILDER-UI">GtkBuilder UI definition</link> 
+ * Gets the name of the @buildable object.
+ *
+ * #GtkBuilder sets the name based on the the
+ * <link linkend="BUILDER-UI">GtkBuilder UI definition</link>
  * used to construct the @buildable.
  *
  * Returns: the name set with gtk_buildable_set_name()
@@ -175,10 +175,10 @@ gtk_buildable_set_buildable_property (GtkBuildable *buildable,
  * @buildable: a #GtkBuildable
  * @builder: a #GtkBuilder
  *
- * Called when the builder finishes the parsing of a 
- * <link linkend="BUILDER-UI">GtkBuilder UI definition</link>. 
- * Note that this will be called once for each time 
- * gtk_builder_add_from_file() or gtk_builder_add_from_string() 
+ * Called when the builder finishes the parsing of a
+ * <link linkend="BUILDER-UI">GtkBuilder UI definition</link>.
+ * Note that this will be called once for each time
+ * gtk_builder_add_from_file() or gtk_builder_add_from_string()
  * is called on a builder.
  *
  * Since: 2.12
@@ -236,11 +236,11 @@ gtk_buildable_construct_child (GtkBuildable *buildable,
  * @child: (allow-none): child object or %NULL for non-child tags
  * @tagname: name of tag
  * @parser: (out): a #GMarkupParser structure to fill in
- * @data: (out): return location for user data that will be passed in 
+ * @data: (out): return location for user data that will be passed in
  *   to parser functions
  *
  * This is called for each unknown element under &lt;child&gt;.
- * 
+ *
  * Returns: %TRUE if a object has a custom implementation, %FALSE
  *          if it doesn't.
  *
@@ -275,7 +275,7 @@ gtk_buildable_custom_tag_start (GtkBuildable  *buildable,
  * @tagname: name of tag
  * @data: (type gpointer): user data that will be passed in to parser functions
  *
- * This is called at the end of each custom element handled by 
+ * This is called at the end of each custom element handled by
  * the buildable.
  *
  * Since: 2.12
@@ -308,7 +308,7 @@ gtk_buildable_custom_tag_end (GtkBuildable  *buildable,
  *
  * This is similar to gtk_buildable_parser_finished() but is
  * called once for each custom tag handled by the @buildable.
- * 
+ *
  * Since: 2.12
  **/
 void

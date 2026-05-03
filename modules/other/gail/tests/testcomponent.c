@@ -39,12 +39,12 @@ static void _check_position (AtkObject *obj)
   if (ATK_IS_COMPONENT (parent))
   {
     gint px, py, pwidth, pheight;
-    
+
     atk_component_get_extents (ATK_COMPONENT(parent),
                                &px, &py, &pwidth, &pheight, ATK_XY_SCREEN);
     g_print ("Parent Type: %s\n", g_type_name (G_OBJECT_TYPE (parent)));
     g_print ("Parent at %d, %d, size: %d, %d\n", px, py, pwidth, pheight);
-    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent), 
+    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent),
                                                         x, y, ATK_XY_SCREEN);
 
     if (!ret_object)
@@ -61,7 +61,7 @@ static void _check_position (AtkObject *obj)
     }
     if (ret_object)
       g_object_unref (G_OBJECT (ret_object));
-    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent), 
+    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent),
                                                         x+width-1, y+height-1, ATK_XY_SCREEN);
     if (!ret_object)
     {
@@ -71,19 +71,19 @@ static void _check_position (AtkObject *obj)
     {
       g_print ("2:atk_component_ref_accessible_at_point returns wrong value for %d %d\n",
                 x+width-1, y+height-1);
-    } 
+    }
     if (ret_object)
       g_object_unref (G_OBJECT (ret_object));
-    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent), 
+    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent),
                                                         x-1, y-1, ATK_XY_SCREEN);
     if ((ret_object) && (ret_object == obj))
     {
       g_print ("3:atk_component_ref_accessible_at_point returns wrong value for %d %d\n",
                 x-1, y-1);
-    } 
+    }
     if (ret_object)
       g_object_unref (G_OBJECT (ret_object));
-    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent), 
+    ret_object = atk_component_ref_accessible_at_point (ATK_COMPONENT (parent),
                                                         x+width, y+height, ATK_XY_SCREEN);
     if ((ret_object) && (ret_object == obj))
     {
@@ -98,7 +98,7 @@ static void _check_position (AtkObject *obj)
   if (atk_component_contains (ATK_COMPONENT(obj), x-1, y-1, ATK_XY_SCREEN))
     g_print ("Component does contain position, %d %d\n", x-1, y-1);
   if (!atk_component_contains (ATK_COMPONENT(obj), x+width-1, y+height-1, ATK_XY_SCREEN))
-    g_print ("Component does not contain position, %d %d\n", 
+    g_print ("Component does not contain position, %d %d\n",
              x+width-1, y+height-1);
   if (atk_component_contains (ATK_COMPONENT(obj), x+width, y+height, ATK_XY_SCREEN))
     g_print ("Component does contain position, %d %d\n", x+width, y+height);

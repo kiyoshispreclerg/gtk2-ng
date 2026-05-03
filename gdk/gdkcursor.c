@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -34,7 +34,7 @@ GType
 gdk_cursor_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (g_intern_static_string ("GdkCursor"),
 					     (GBoxedCopyFunc)gdk_cursor_ref,
@@ -45,9 +45,9 @@ gdk_cursor_get_type (void)
 /**
  * gdk_cursor_ref:
  * @cursor: a #GdkCursor
- * 
+ *
  * Adds a reference to @cursor.
- * 
+ *
  * Return value: (transfer full): Same @cursor that was passed in
  **/
 GdkCursor*
@@ -67,7 +67,7 @@ gdk_cursor_ref (GdkCursor *cursor)
  *
  * Removes a reference from @cursor, deallocating the cursor
  * if no references remain.
- * 
+ *
  **/
 void
 gdk_cursor_unref (GdkCursor *cursor)
@@ -84,12 +84,12 @@ gdk_cursor_unref (GdkCursor *cursor)
 /**
  * gdk_cursor_new:
  * @cursor_type: cursor to create
- * 
+ *
  * Creates a new cursor from the set of builtin cursors for the default display.
  * See gdk_cursor_new_for_display().
  *
  * To make the cursor invisible, use %GDK_BLANK_CURSOR.
- * 
+ *
  * Return value: a new #GdkCursor
  **/
 GdkCursor*

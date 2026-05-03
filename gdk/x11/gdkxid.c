@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -36,7 +36,7 @@ static gboolean  gdk_xid_equal (XID *a,
 				XID *b);
 
 
-/* The 3 high bits of XIDs are unused. We use one to mark fonts, 
+/* The 3 high bits of XIDs are unused. We use one to mark fonts,
  * since we must be able to skip fonts when iterating over all XIDs.
  */
 #define XID_FONT_BIT (1<<31)
@@ -100,14 +100,14 @@ gdk_xid_table_lookup_for_display (GdkDisplay  *display,
 {
   GdkDisplayX11 *display_x11;
   gpointer data = NULL;
-  
+
   g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  
+
   display_x11 = GDK_DISPLAY_X11 (display);
 
   if (display_x11->xid_ht)
     data = g_hash_table_lookup (display_x11->xid_ht, &xid);
-  
+
   return data;
 }
 

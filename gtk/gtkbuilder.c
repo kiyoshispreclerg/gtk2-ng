@@ -80,7 +80,7 @@ gtk_builder_class_init (GtkBuilderClass *klass)
 
   klass->get_type_from_name = gtk_builder_real_get_type_from_name;
 
- /** 
+ /**
   * GtkBuilder:translation-domain:
   *
   * The translation domain used when translating property values that
@@ -117,15 +117,15 @@ static void
 gtk_builder_finalize (GObject *object)
 {
   GtkBuilderPrivate *priv = GTK_BUILDER (object)->priv;
-  
+
   g_free (priv->domain);
   g_free (priv->filename);
-  
+
   g_hash_table_destroy (priv->objects);
 
   g_slist_foreach (priv->signals, (GFunc) _free_signal_info, NULL);
   g_slist_free (priv->signals);
-  
+
   G_OBJECT_CLASS (gtk_builder_parent_class)->finalize (object);
 }
 
@@ -189,7 +189,7 @@ _gtk_builder_resolve_type_lazily (const gchar *name)
 
   if (!module)
     module = g_module_open (NULL, 0);
-  
+
   for (i = 0; name[i] != '\0'; i++)
     {
       c = name[i];
@@ -203,12 +203,12 @@ _gtk_builder_resolve_type_lazily (const gchar *name)
       g_string_append_c (symbol_name, g_ascii_tolower (c));
     }
   g_string_append (symbol_name, "_get_type");
-  
+
   symbol = g_string_free (symbol_name, FALSE);
 
   if (g_module_symbol (module, symbol, (gpointer)&func))
     gtype = func ();
-  
+
   g_free (symbol);
 
   return gtype;
@@ -219,7 +219,7 @@ _gtk_builder_resolve_type_lazily (const gchar *name)
  */
 
 static GType
-gtk_builder_real_get_type_from_name (GtkBuilder  *builder, 
+gtk_builder_real_get_type_from_name (GtkBuilder  *builder,
                                      const gchar *type_name)
 {
   GType gtype;
@@ -290,7 +290,7 @@ gtk_builder_get_parameters (GtkBuilder  *builder,
               g_value_init (&parameter.value, G_OBJECT_TYPE (object));
               g_value_set_object (&parameter.value, object);
             }
-          else 
+          else
             {
               if (pspec->flags & G_PARAM_CONSTRUCT_ONLY)
                 {
@@ -518,11 +518,11 @@ _gtk_builder_construct (GtkBuilder *builder,
           g_print ("set %s: %s = %s\n", info->id, param->name, str);
           g_free (str);
         }
-#endif      
+#endif
       g_value_unset (&param->value);
     }
   g_array_free (parameters, TRUE);
-  
+
   if (GTK_IS_BUILDABLE (obj))
     gtk_buildable_set_name (buildable, info->id);
   else
@@ -533,7 +533,7 @@ _gtk_builder_construct (GtkBuilder *builder,
 
   /* we already own a reference to obj.  put it in the hash table. */
   g_hash_table_insert (builder->priv->objects, g_strdup (info->id), obj);
-  
+
   return obj;
 }
 
@@ -573,7 +573,7 @@ _gtk_builder_add (GtkBuilder *builder,
             g_print ("adding %s to %s\n",
                      gtk_buildable_get_name (GTK_BUILDABLE (object)),
                      gtk_buildable_get_name (GTK_BUILDABLE (parent))));
-  
+
   gtk_buildable_add_child (GTK_BUILDABLE (parent), builder, object,
 			   child_info->type);
 
@@ -669,11 +669,11 @@ gtk_builder_new (void)
  * @filename: the name of the file to parse
  * @error: (allow-none): return location for an error, or %NULL
  *
- * Parses a file containing a <link linkend="BUILDER-UI">GtkBuilder 
- * UI definition</link> and merges it with the current contents of @builder. 
- * 
+ * Parses a file containing a <link linkend="BUILDER-UI">GtkBuilder
+ * UI definition</link> and merges it with the current contents of @builder.
+ *
  * Upon errors 0 will be returned and @error will be assigned a
- * #GError from the #GTK_BUILDER_ERROR, #G_MARKUP_ERROR or #G_FILE_ERROR 
+ * #GError from the #GTK_BUILDER_ERROR, #G_MARKUP_ERROR or #G_FILE_ERROR
  * domain.
  *
  * Returns: A positive value on success, 0 if an error occurred
@@ -700,7 +700,7 @@ gtk_builder_add_from_file (GtkBuilder   *builder,
       g_propagate_error (error, tmp_error);
       return 0;
     }
-  
+
   g_free (builder->priv->filename);
   builder->priv->filename = g_strdup (filename);
 
@@ -727,18 +727,18 @@ gtk_builder_add_from_file (GtkBuilder   *builder,
  * @object_ids: nul-terminated array of objects to build
  * @error: (allow-none): return location for an error, or %NULL
  *
- * Parses a file containing a <link linkend="BUILDER-UI">GtkBuilder 
+ * Parses a file containing a <link linkend="BUILDER-UI">GtkBuilder
  * UI definition</link> building only the requested objects and merges
- * them with the current contents of @builder. 
+ * them with the current contents of @builder.
  *
  * Upon errors 0 will be returned and @error will be assigned a
- * #GError from the #GTK_BUILDER_ERROR, #G_MARKUP_ERROR or #G_FILE_ERROR 
+ * #GError from the #GTK_BUILDER_ERROR, #G_MARKUP_ERROR or #G_FILE_ERROR
  * domain.
  *
  * <note><para>
- * If you are adding an object that depends on an object that is not 
+ * If you are adding an object that depends on an object that is not
  * its child (for instance a #GtkTreeView that depends on its
- * #GtkTreeModel), you have to explicitely list all of them in @object_ids. 
+ * #GtkTreeModel), you have to explicitely list all of them in @object_ids.
  * </para></note>
  *
  * Returns: A positive value on success, 0 if an error occurred
@@ -767,7 +767,7 @@ gtk_builder_add_objects_from_file (GtkBuilder   *builder,
       g_propagate_error (error, tmp_error);
       return 0;
     }
-  
+
   g_free (builder->priv->filename);
   builder->priv->filename = g_strdup (filename);
 
@@ -794,8 +794,8 @@ gtk_builder_add_objects_from_file (GtkBuilder   *builder,
  * @length: the length of @buffer (may be -1 if @buffer is nul-terminated)
  * @error: (allow-none): return location for an error, or %NULL
  *
- * Parses a string containing a <link linkend="BUILDER-UI">GtkBuilder 
- * UI definition</link> and merges it with the current contents of @builder. 
+ * Parses a string containing a <link linkend="BUILDER-UI">GtkBuilder
+ * UI definition</link> and merges it with the current contents of @builder.
  *
  * Upon errors 0 will be returned and @error will be assigned a
  * #GError from the #GTK_BUILDER_ERROR or #G_MARKUP_ERROR domain.
@@ -842,17 +842,17 @@ gtk_builder_add_from_string (GtkBuilder   *builder,
  * @object_ids: nul-terminated array of objects to build
  * @error: (allow-none): return location for an error, or %NULL
  *
- * Parses a string containing a <link linkend="BUILDER-UI">GtkBuilder 
+ * Parses a string containing a <link linkend="BUILDER-UI">GtkBuilder
  * UI definition</link> building only the requested objects and merges
- * them with the current contents of @builder. 
+ * them with the current contents of @builder.
  *
  * Upon errors 0 will be returned and @error will be assigned a
  * #GError from the #GTK_BUILDER_ERROR or #G_MARKUP_ERROR domain.
- * 
+ *
  * <note><para>
- * If you are adding an object that depends on an object that is not 
+ * If you are adding an object that depends on an object that is not
  * its child (for instance a #GtkTreeView that depends on its
- * #GtkTreeModel), you have to explicitely list all of them in @object_ids. 
+ * #GtkTreeModel), you have to explicitely list all of them in @object_ids.
  * </para></note>
  *
  * Returns: A positive value on success, 0 if an error occurred
@@ -898,7 +898,7 @@ gtk_builder_add_objects_from_string (GtkBuilder   *builder,
  * @name: name of object to get
  *
  * Gets the object named @name. Note that this function does not
- * increment the reference count of the returned object. 
+ * increment the reference count of the returned object.
  *
  * Return value: (transfer none): the object named @name or %NULL if
  *    it could not be found in the object tree.
@@ -927,7 +927,7 @@ object_add_to_list (gchar    *object_id,
  * gtk_builder_get_objects:
  * @builder: a #GtkBuilder
  *
- * Gets all objects that have been constructed by @builder. Note that 
+ * Gets all objects that have been constructed by @builder. Note that
  * this function does not increment the reference counts of the returned
  * objects.
  *
@@ -954,7 +954,7 @@ gtk_builder_get_objects (GtkBuilder *builder)
  * @builder: a #GtkBuilder
  * @domain: (allow-none): the translation domain or %NULL
  *
- * Sets the translation domain of @builder. 
+ * Sets the translation domain of @builder.
  * See #GtkBuilder:translation-domain.
  *
  * Since: 2.12
@@ -964,7 +964,7 @@ gtk_builder_set_translation_domain (GtkBuilder  *builder,
                                     const gchar *domain)
 {
   gchar *new_domain;
-    
+
   g_return_if_fail (GTK_IS_BUILDER (builder));
 
   new_domain = g_strdup (domain);
@@ -1009,7 +1009,7 @@ gtk_builder_connect_signals_default (GtkBuilder    *builder,
 {
   GCallback func;
   connect_args *args = (connect_args*)user_data;
-  
+
   if (!g_module_symbol (args->module, handler_name, (gpointer)&func))
     {
       g_warning ("Could not find signal handler '%s'", handler_name);
@@ -1029,11 +1029,11 @@ gtk_builder_connect_signals_default (GtkBuilder    *builder,
  * @user_data: a pointer to a structure sent in as user data to all signals
  *
  * This method is a simpler variation of gtk_builder_connect_signals_full().
- * It uses #GModule's introspective features (by opening the module %NULL) 
+ * It uses #GModule's introspective features (by opening the module %NULL)
  * to look at the application's symbol table. From here it tries to match
  * the signal handler names given in the interface description with
  * symbols in the application and connects the signals.
- * 
+ *
  * Note that this function will not work correctly if #GModule is not
  * supported on the platform.
  *
@@ -1050,16 +1050,16 @@ gtk_builder_connect_signals (GtkBuilder *builder,
 			     gpointer    user_data)
 {
   connect_args *args;
-  
+
   g_return_if_fail (GTK_IS_BUILDER (builder));
-  
+
   if (!g_module_supported ())
     g_error ("gtk_builder_connect_signals() requires working GModule");
 
   args = g_slice_new0 (connect_args);
   args->module = g_module_open (NULL, G_MODULE_BIND_LAZY);
   args->data = user_data;
-  
+
   gtk_builder_connect_signals_full (builder,
                                     gtk_builder_connect_signals_default,
                                     args);
@@ -1107,10 +1107,10 @@ gtk_builder_connect_signals_full (GtkBuilder            *builder,
   GSList *l;
   GObject *object;
   GObject *connect_object;
-  
+
   g_return_if_fail (GTK_IS_BUILDER (builder));
   g_return_if_fail (func != NULL);
-  
+
   if (!builder->priv->signals)
     return;
 
@@ -1127,7 +1127,7 @@ gtk_builder_connect_signals_full (GtkBuilder            *builder,
       g_assert (object != NULL);
 
       connect_object = NULL;
-      
+
       if (signal->connect_object_name)
 	{
 	  connect_object = g_hash_table_lookup (builder->priv->objects,
@@ -1137,8 +1137,8 @@ gtk_builder_connect_signals_full (GtkBuilder            *builder,
 			 signal->connect_object_name, signal->name,
 			 signal->object_name);
 	}
-						  
-      func (builder, object, signal->name, signal->handler, 
+
+      func (builder, object, signal->name, signal->handler,
 	    connect_object, signal->flags, user_data);
     }
 
@@ -1211,9 +1211,9 @@ gtk_builder_value_from_string (GtkBuilder   *builder,
  * @value: (out): the #GValue to store the result in
  * @error: (allow-none): return location for an error, or %NULL
  *
- * Like gtk_builder_value_from_string(), this function demarshals 
+ * Like gtk_builder_value_from_string(), this function demarshals
  * a value from a string, but takes a #GType instead of #GParamSpec.
- * This function calls g_value_init() on the @value argument, so it 
+ * This function calls g_value_init() on the @value argument, so it
  * need not be initialised beforehand.
  *
  * Upon errors %FALSE will be returned and @error will be assigned a
@@ -1300,7 +1300,7 @@ gtk_builder_value_from_string_type (GtkBuilder   *builder,
           }
         if (G_VALUE_HOLDS_UINT (value))
           g_value_set_uint (value, ul);
-        else 
+        else
           g_value_set_ulong (value, ul);
         break;
       }
@@ -1393,7 +1393,7 @@ gtk_builder_value_from_string_type (GtkBuilder   *builder,
           gchar *filename;
           GError *tmp_error = NULL;
           GdkPixbuf *pixbuf;
-       
+
           if (gtk_builder_get_object (builder, string))
             {
               g_set_error (error,
@@ -1412,19 +1412,19 @@ gtk_builder_value_from_string_type (GtkBuilder   *builder,
             {
               GtkIconTheme *theme;
 
-              g_warning ("Could not load image '%s': %s", 
+              g_warning ("Could not load image '%s': %s",
                          string, tmp_error->message);
               g_error_free (tmp_error);
 
               /* fall back to a missing image */
               theme = gtk_icon_theme_get_default ();
-              pixbuf = gtk_icon_theme_load_icon (theme, 
+              pixbuf = gtk_icon_theme_load_icon (theme,
                                                  GTK_STOCK_MISSING_IMAGE,
                                                  16,
                                                  GTK_ICON_LOOKUP_USE_BUILTIN,
                                                  NULL);
             }
- 
+
           if (pixbuf)
             {
               g_value_set_object (value, pixbuf);
@@ -1442,12 +1442,12 @@ gtk_builder_value_from_string_type (GtkBuilder   *builder,
       ret = FALSE;
       break;
     }
- 
+
   /* Catch unassigned error for object types as well as any unsupported types.
    * While parsing GtkBuilder; object types are deserialized
    * without calling gtk_builder_value_from_string_type().
    */
-  if (!ret && error && *error == NULL) 
+  if (!ret && error && *error == NULL)
     g_set_error (error,
 		 GTK_BUILDER_ERROR,
 		 GTK_BUILDER_ERROR_INVALID_VALUE,
@@ -1457,7 +1457,7 @@ gtk_builder_value_from_string_type (GtkBuilder   *builder,
 }
 
 gboolean
-_gtk_builder_enum_from_string (GType         type, 
+_gtk_builder_enum_from_string (GType         type,
                                const gchar  *string,
 			       gint         *enum_value,
 			       GError      **error)
@@ -1467,10 +1467,10 @@ _gtk_builder_enum_from_string (GType         type,
   gchar *endptr;
   gint value;
   gboolean ret;
-  
+
   g_return_val_if_fail (G_TYPE_IS_ENUM (type), FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
-  
+
   ret = TRUE;
 
   value = strtoul (string, &endptr, 0);
@@ -1494,15 +1494,15 @@ _gtk_builder_enum_from_string (GType         type,
 		       string);
 	  ret = FALSE;
 	}
-      
+
       g_type_class_unref (eclass);
     }
-  
+
   return ret;
 }
 
 gboolean
-_gtk_builder_flags_from_string (GType         type, 
+_gtk_builder_flags_from_string (GType         type,
                                 const gchar  *string,
 				guint        *flags_value,
 				GError      **error)
@@ -1520,7 +1520,7 @@ _gtk_builder_flags_from_string (GType         type,
   g_return_val_if_fail (string != 0, FALSE);
 
   ret = TRUE;
-  
+
   value = strtoul (string, &endptr, 0);
   if (endptr != string) /* parsed a number */
     *flags_value = value;
@@ -1531,21 +1531,21 @@ _gtk_builder_flags_from_string (GType         type,
       flagstr = g_strdup (string);
       for (value = i = j = 0; ; i++)
 	{
-	  
+
 	  eos = flagstr[i] == '\0';
-	  
+
 	  if (!eos && flagstr[i] != '|')
 	    continue;
-	  
+
 	  flag = &flagstr[j];
 	  endptr = &flagstr[i];
-	  
+
 	  if (!eos)
 	    {
 	      flagstr[i++] = '\0';
 	      j = i;
 	    }
-	  
+
 	  /* trim spaces */
 	  for (;;)
 	    {
@@ -1554,7 +1554,7 @@ _gtk_builder_flags_from_string (GType         type,
 		break;
 	      flag = g_utf8_next_char (flag);
 	    }
-	  
+
 	  while (endptr > flag)
 	    {
 	      prevptr = g_utf8_prev_char (endptr);
@@ -1563,15 +1563,15 @@ _gtk_builder_flags_from_string (GType         type,
 		break;
 	      endptr = prevptr;
 	    }
-	  
+
 	  if (endptr > flag)
 	    {
 	      *endptr = '\0';
 	      fv = g_flags_get_value_by_name (fclass, flag);
-	      
+
 	      if (!fv)
 		fv = g_flags_get_value_by_nick (fclass, flag);
-	      
+
 	      if (fv)
 		value |= fv->value;
 	      else
@@ -1585,16 +1585,16 @@ _gtk_builder_flags_from_string (GType         type,
 		  break;
 		}
 	    }
-	  
+
 	  if (eos)
 	    {
 	      *flags_value = value;
 	      break;
 	    }
 	}
-      
+
       g_free (flagstr);
-      
+
       g_type_class_unref (fclass);
     }
 
@@ -1606,17 +1606,17 @@ _gtk_builder_flags_from_string (GType         type,
  * @builder: a #GtkBuilder
  * @type_name: type name to lookup
  *
- * Looks up a type by name, using the virtual function that 
+ * Looks up a type by name, using the virtual function that
  * #GtkBuilder has for that purpose. This is mainly used when
  * implementing the #GtkBuildable interface on a type.
  *
- * Returns: the #GType found for @type_name or #G_TYPE_INVALID 
+ * Returns: the #GType found for @type_name or #G_TYPE_INVALID
  *   if no type was found
  *
  * Since: 2.12
  */
 GType
-gtk_builder_get_type_from_name (GtkBuilder  *builder, 
+gtk_builder_get_type_from_name (GtkBuilder  *builder,
                                 const gchar *type_name)
 {
   g_return_val_if_fail (GTK_IS_BUILDER (builder), G_TYPE_INVALID);
@@ -1636,12 +1636,12 @@ _gtk_builder_get_absolute_filename (GtkBuilder *builder, const gchar *string)
 {
   gchar *filename;
   gchar *dirname = NULL;
-  
+
   if (g_path_is_absolute (string))
     return g_strdup (string);
 
   if (builder->priv->filename &&
-      strcmp (builder->priv->filename, ".") != 0) 
+      strcmp (builder->priv->filename, ".") != 0)
     {
       dirname = g_path_get_dirname (builder->priv->filename);
 
@@ -1653,10 +1653,10 @@ _gtk_builder_get_absolute_filename (GtkBuilder *builder, const gchar *string)
     }
   else
     dirname = g_get_current_dir ();
-    
+
   filename = g_build_filename (dirname, string, NULL);
   g_free (dirname);
-  
+
   return filename;
 }
 

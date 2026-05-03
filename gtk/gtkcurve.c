@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef GDK_DISABLE_DEPRECATED
@@ -78,8 +78,8 @@ static void gtk_curve_set_property  (GObject              *object,
 				     const GValue         *value,
 				     GParamSpec           *pspec);
 static void gtk_curve_finalize     (GObject       *object);
-static gint gtk_curve_graph_events (GtkWidget     *widget, 
-				    GdkEvent      *event, 
+static gint gtk_curve_graph_events (GtkWidget     *widget,
+				    GdkEvent      *event,
 				    GtkCurve      *c);
 static void gtk_curve_size_graph   (GtkCurve      *curve);
 
@@ -113,14 +113,14 @@ static void
 gtk_curve_class_init (GtkCurveClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-  
+
   parent_class = g_type_class_peek_parent (class);
-  
+
   gobject_class->finalize = gtk_curve_finalize;
 
   gobject_class->set_property = gtk_curve_set_property;
   gobject_class->get_property = gtk_curve_get_property;
-  
+
   g_object_class_install_property (gobject_class,
 				   PROP_CURVE_TYPE,
 				   g_param_spec_enum ("curve-type",
@@ -155,7 +155,7 @@ gtk_curve_class_init (GtkCurveClass *class)
                                                        -G_MAXFLOAT,
 						       G_MAXFLOAT,
 						       0.0,
-						       GTK_PARAM_READWRITE));  
+						       GTK_PARAM_READWRITE));
   g_object_class_install_property (gobject_class,
 				   PROP_MAX_Y,
 				   g_param_spec_float ("max-y",
@@ -212,7 +212,7 @@ gtk_curve_set_property (GObject              *object,
 			GParamSpec           *pspec)
 {
   GtkCurve *curve = GTK_CURVE (object);
-  
+
   switch (prop_id)
     {
     case PROP_CURVE_TYPE:
@@ -225,7 +225,7 @@ gtk_curve_set_property (GObject              *object,
     case PROP_MAX_X:
       gtk_curve_set_range (curve, curve->min_x, g_value_get_float (value),
 			   curve->min_y, curve->max_y);
-      break;	
+      break;
     case PROP_MIN_Y:
       gtk_curve_set_range (curve, curve->min_x, curve->max_x,
 			   g_value_get_float (value), curve->max_y);
@@ -724,7 +724,7 @@ gtk_curve_size_graph (GtkCurve *curve)
 {
   gint width, height;
   gfloat aspect;
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (curve)); 
+  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (curve));
 
   width  = (curve->max_x - curve->min_x) + 1;
   height = (curve->max_y - curve->min_y) + 1;

@@ -31,7 +31,7 @@ G_BEGIN_DECLS
  * contains children which are flyweights, i.e. do not have corresponding
  * widgets and the children need help from their parent to provide
  * functionality. One example is GailTreeView where the children GailCell
- * need help from the GailTreeView in order to implement 
+ * need help from the GailTreeView in order to implement
  * atk_component_get_extents
  */
 

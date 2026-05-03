@@ -35,7 +35,7 @@ GSList *sockets = NULL;
 GtkWidget *window;
 GtkWidget *box;
 
-typedef struct 
+typedef struct
 {
   GtkWidget *box;
   GtkWidget *frame;
@@ -85,7 +85,7 @@ plug_added (GtkWidget *widget,
 	    Socket    *socket)
 {
   g_print ("Plug added to socket\n");
-  
+
   gtk_widget_show (socket->socket);
   gtk_widget_hide (socket->frame);
 }
@@ -95,10 +95,10 @@ plug_removed (GtkWidget *widget,
 	      Socket    *socket)
 {
   g_print ("Plug removed from socket\n");
-  
+
   gtk_widget_hide (socket->socket);
   gtk_widget_show (socket->frame);
-  
+
   return TRUE;
 }
 
@@ -106,20 +106,20 @@ static Socket *
 create_socket (void)
 {
   GtkWidget *label;
-  
+
   Socket *socket = g_new (Socket, 1);
-  
+
   socket->box = gtk_vbox_new (FALSE, 0);
 
   socket->socket = gtk_socket_new ();
-  
+
   gtk_box_pack_start (GTK_BOX (socket->box), socket->socket, TRUE, TRUE, 0);
-  
+
   socket->frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (socket->frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (socket->box), socket->frame, TRUE, TRUE, 0);
   gtk_widget_show (socket->frame);
-  
+
   label = gtk_label_new (NULL);
   gtk_label_set_markup (GTK_LABEL (label), "<span color=\"red\">Empty</span>");
   gtk_container_add (GTK_CONTAINER (socket->frame), label);
@@ -179,7 +179,7 @@ child_read_watch (GIOChannel *channel, GIOCondition cond, gpointer data)
   char *line;
   gsize term;
   int xid;
-  
+
   status = g_io_channel_read_line (channel, &line, NULL, &term, &error);
   switch (status)
     {
@@ -195,7 +195,7 @@ child_read_watch (GIOChannel *channel, GIOCondition cond, gpointer data)
 	  Socket *socket = create_socket ();
 	  gtk_box_pack_start (GTK_BOX (box), socket->box, TRUE, TRUE, 0);
 	  gtk_widget_show (socket->box);
-	  
+
 	  gtk_socket_add_id (GTK_SOCKET (socket->socket), xid);
 	}
       g_free (line);
@@ -213,7 +213,7 @@ child_read_watch (GIOChannel *channel, GIOCondition cond, gpointer data)
       g_assert_not_reached ();
       return FALSE;
     }
-  
+
 }
 
 void
@@ -235,7 +235,7 @@ add_child (GtkWidget *window,
       sprintf(buffer, "%#lx", (gulong) gtk_socket_get_id (GTK_SOCKET (socket->socket)));
       argv[1] = buffer;
     }
-  
+
   if (!g_spawn_async_with_pipes (NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, &out_fd, NULL, &error))
     {
       fprintf (stderr, "Can't exec testsocket_child: %s\n", error->message);
@@ -251,7 +251,7 @@ add_child (GtkWidget *window,
       fprintf (stderr, "Error making channel non-blocking: %s\n", error->message);
       exit (1);
     }
-  
+
   g_io_add_watch (channel, G_IO_IN | G_IO_HUP, child_read_watch, NULL);
   g_io_channel_unref (channel);
 }
@@ -326,8 +326,8 @@ grab_window_toggled (GtkToggleButton *button,
       if (status != GDK_GRAB_SUCCESS)
 	g_warning ("Could not grab keyboard!  (%s)", grab_string (status));
 
-    } 
-  else 
+    }
+  else
     {
       gdk_keyboard_ungrab (GDK_CURRENT_TIME);
     }
@@ -349,7 +349,7 @@ main (int argc, char *argv[])
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
 		    G_CALLBACK (gtk_main_quit), NULL);
-  
+
   gtk_window_set_title (GTK_WINDOW (window), "Socket Test");
   gtk_container_set_border_width (GTK_CONTAINER (window), 0);
 
@@ -360,11 +360,11 @@ main (int argc, char *argv[])
   gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
   item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", accel_group);
 
-  
+
   gtk_item_factory_create_items (item_factory,
 				 G_N_ELEMENTS (menu_items), menu_items,
 				 NULL);
-      
+
   gtk_box_pack_start (GTK_BOX (vbox),
 		      gtk_item_factory_get_widget (item_factory, "<main>"),
 		      FALSE, FALSE, 0);
@@ -423,7 +423,7 @@ main (int argc, char *argv[])
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   box = hbox;
-  
+
   gtk_widget_show_all (window);
 
   gtk_main ();

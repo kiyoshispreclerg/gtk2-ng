@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /**
@@ -96,7 +96,7 @@ gtk_alignment_class_init (GtkAlignmentClass *class)
 
   gobject_class = (GObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  
+
   gobject_class->set_property = gtk_alignment_set_property;
   gobject_class->get_property = gtk_alignment_get_property;
 
@@ -112,7 +112,7 @@ gtk_alignment_class_init (GtkAlignmentClass *class)
                                                       1.0,
                                                       0.5,
                                                       GTK_PARAM_READWRITE));
-   
+
   g_object_class_install_property (gobject_class,
                                    PROP_YALIGN,
                                    g_param_spec_float("yalign",
@@ -215,7 +215,7 @@ static void
 gtk_alignment_init (GtkAlignment *alignment)
 {
   GtkAlignmentPrivate *priv;
-  
+
   gtk_widget_set_has_window (GTK_WIDGET (alignment), FALSE);
   gtk_widget_set_redraw_on_allocate (GTK_WIDGET (alignment), FALSE);
 
@@ -276,10 +276,10 @@ gtk_alignment_set_property (GObject         *object,
 {
   GtkAlignment *alignment;
   GtkAlignmentPrivate *priv;
-  
+
   alignment = GTK_ALIGNMENT (object);
   priv = GTK_ALIGNMENT_GET_PRIVATE (alignment);
-  
+
   switch (prop_id)
     {
     case PROP_XALIGN:
@@ -310,7 +310,7 @@ gtk_alignment_set_property (GObject         *object,
 			 alignment->xscale,
 			 g_value_get_float (value));
       break;
-      
+
     /* Padding: */
     case PROP_TOP_PADDING:
       gtk_alignment_set_padding (alignment,
@@ -340,7 +340,7 @@ gtk_alignment_set_property (GObject         *object,
 			 priv->padding_left,
 			 g_value_get_uint (value));
       break;
-    
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -358,7 +358,7 @@ gtk_alignment_get_property (GObject         *object,
 
   alignment = GTK_ALIGNMENT (object);
   priv = GTK_ALIGNMENT_GET_PRIVATE (alignment);
-   
+
   switch (prop_id)
     {
     case PROP_XALIGN:
@@ -387,7 +387,7 @@ gtk_alignment_get_property (GObject         *object,
     case PROP_RIGHT_PADDING:
       g_value_set_uint (value, priv->padding_right);
       break;
-      
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -476,7 +476,7 @@ gtk_alignment_size_request (GtkWidget      *widget,
   if (bin->child && gtk_widget_get_visible (bin->child))
     {
       GtkRequisition child_requisition;
-      
+
       gtk_widget_size_request (bin->child, &child_requisition);
 
       requisition->width += child_requisition.width;
@@ -507,7 +507,7 @@ gtk_alignment_size_allocate (GtkWidget     *widget,
   widget->allocation = *allocation;
   alignment = GTK_ALIGNMENT (widget);
   bin = GTK_BIN (widget);
-  
+
   if (bin->child && gtk_widget_get_visible (bin->child))
     {
       gtk_widget_get_child_requisition (bin->child, &child_requisition);
@@ -520,14 +520,14 @@ gtk_alignment_size_allocate (GtkWidget     *widget,
 
       width  = MAX (1, allocation->width - padding_horizontal - 2 * border_width);
       height = MAX (1, allocation->height - padding_vertical - 2 * border_width);
-    
+
       if (width > child_requisition.width)
 	child_allocation.width = (child_requisition.width *
 				  (1.0 - alignment->xscale) +
 				  width * alignment->xscale);
       else
 	child_allocation.width = width;
-      
+
       if (height > child_requisition.height)
 	child_allocation.height = (child_requisition.height *
 				   (1.0 - alignment->yscale) +
@@ -537,7 +537,7 @@ gtk_alignment_size_allocate (GtkWidget     *widget,
 
       if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
 	child_allocation.x = (1.0 - alignment->xalign) * (width - child_allocation.width) + allocation->x + border_width + priv->padding_right;
-      else 
+      else
 	child_allocation.x = alignment->xalign * (width - child_allocation.width) + allocation->x + border_width + priv->padding_left;
 
       child_allocation.y = alignment->yalign * (height - child_allocation.height) + allocation->y + border_width + priv->padding_top;
@@ -569,7 +569,7 @@ gtk_alignment_set_padding (GtkAlignment    *alignment,
 			   guint            padding_right)
 {
   GtkAlignmentPrivate *priv;
-  
+
   g_return_if_fail (GTK_IS_ALIGNMENT (alignment));
 
   priv = GTK_ALIGNMENT_GET_PRIVATE (alignment);
@@ -598,7 +598,7 @@ gtk_alignment_set_padding (GtkAlignment    *alignment,
     }
 
   g_object_thaw_notify (G_OBJECT (alignment));
-  
+
   /* Make sure that the widget and children are redrawn with the new setting: */
   if (GTK_BIN (alignment)->child)
     gtk_widget_queue_resize (GTK_BIN (alignment)->child);
@@ -631,7 +631,7 @@ gtk_alignment_get_padding (GtkAlignment    *alignment,
 			   guint           *padding_right)
 {
   GtkAlignmentPrivate *priv;
- 
+
   g_return_if_fail (GTK_IS_ALIGNMENT (alignment));
 
   priv = GTK_ALIGNMENT_GET_PRIVATE (alignment);

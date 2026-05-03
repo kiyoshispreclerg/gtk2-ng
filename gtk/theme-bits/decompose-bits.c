@@ -65,7 +65,7 @@ do_part (GdkPixbuf  *pixbuf,
   color2 = pixels + part2_index * n_channels;
   color3 = pixels + part3_index * n_channels;
   pixels += rowstride;
-  
+
   g_printf ("static const guchar %s_%s_bits[] = {\n", base_name, part_name);
   g_printf ("  ");
 
@@ -100,7 +100,7 @@ do_part (GdkPixbuf  *pixbuf,
 
       pixels += rowstride;
     }
-  
+
   g_printf ("};\n");
 }
 
@@ -144,7 +144,7 @@ int main (int argc, char **argv)
       g_fprintf (stderr, "%s: cannot open file '%s': %s\n", progname, argv[1], error->message);
       exit (1);
     }
-  
+
   if (gdk_pixbuf_get_width (pixbuf) < PART_LAST)
     {
       g_fprintf (stderr, "%s: source image must be at least %d pixels wide\n", progname, PART_LAST);

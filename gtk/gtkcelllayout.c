@@ -65,7 +65,7 @@ gtk_cell_layout_get_type (void)
  * then the @cell is allocated no more space than it needs. Any unused space
  * is divided evenly between cells for which @expand is %TRUE.
  *
- * Note that reusing the same cell renderer is not supported. 
+ * Note that reusing the same cell renderer is not supported.
  *
  * Since: 2.4
  */
@@ -92,7 +92,7 @@ gtk_cell_layout_pack_start (GtkCellLayout   *cell_layout,
  * @cell is allocated no more space than it needs. Any unused space is
  * divided evenly between cells for which @expand is %TRUE.
  *
- * Note that reusing the same cell renderer is not supported. 
+ * Note that reusing the same cell renderer is not supported.
  *
  * Since: 2.4
  */
@@ -289,7 +289,7 @@ gtk_cell_layout_reorder (GtkCellLayout   *cell_layout,
 /**
  * gtk_cell_layout_get_cells:
  * @cell_layout: a #GtkCellLayout
- * 
+ *
  * Returns the cell renderers which have been added to @cell_layout.
  *
  * Return value: (element-type GtkCellRenderer) (transfer container): a list of cell renderers. The list, but not the
@@ -305,7 +305,7 @@ gtk_cell_layout_get_cells (GtkCellLayout *cell_layout)
 
   g_return_val_if_fail (GTK_IS_CELL_LAYOUT (cell_layout), NULL);
 
-  iface = GTK_CELL_LAYOUT_GET_IFACE (cell_layout);  
+  iface = GTK_CELL_LAYOUT_GET_IFACE (cell_layout);
   if (iface->get_cells)
     return iface->get_cells (cell_layout);
 
@@ -352,7 +352,7 @@ attributes_text_element (GMarkupParseContext *context,
   glong l;
   gchar *endptr;
   gchar *string;
-  
+
   if (!parser_data->attr_name)
     return;
 
@@ -361,7 +361,7 @@ attributes_text_element (GMarkupParseContext *context,
   l = strtol (string, &endptr, 0);
   if (errno || endptr == string)
     {
-      g_set_error (error, 
+      g_set_error (error,
                    GTK_BUILDER_ERROR,
                    GTK_BUILDER_ERROR_INVALID_VALUE,
                    "Could not parse integer `%s'",
@@ -434,7 +434,7 @@ _gtk_cell_layout_buildable_add_child (GtkBuildable      *buildable,
 				      const gchar       *type)
 {
   GtkCellLayoutIface *iface;
-  
+
   g_return_if_fail (GTK_IS_CELL_LAYOUT (buildable));
   g_return_if_fail (GTK_IS_CELL_RENDERER (child));
 

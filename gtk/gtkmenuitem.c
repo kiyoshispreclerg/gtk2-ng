@@ -144,9 +144,9 @@ static void gtk_menu_item_update                     (GtkActivatable       *acti
 						      const gchar          *property_name);
 static void gtk_menu_item_sync_action_properties     (GtkActivatable       *activatable,
 						      GtkAction            *action);
-static void gtk_menu_item_set_related_action         (GtkMenuItem          *menu_item, 
+static void gtk_menu_item_set_related_action         (GtkMenuItem          *menu_item,
 						      GtkAction            *action);
-static void gtk_menu_item_set_use_action_appearance  (GtkMenuItem          *menu_item, 
+static void gtk_menu_item_set_use_action_appearance  (GtkMenuItem          *menu_item,
 						      gboolean              use_appearance);
 
 
@@ -191,7 +191,7 @@ gtk_menu_item_class_init (GtkMenuItemClass *klass)
   widget_class->mnemonic_activate = gtk_menu_item_mnemonic_activate;
   widget_class->parent_set = gtk_menu_item_parent_set;
   widget_class->can_activate_accel = gtk_menu_item_can_activate_accel;
-  
+
   container_class->forall = gtk_menu_item_forall;
 
   item_class->select      = gtk_real_menu_item_select;
@@ -274,7 +274,7 @@ gtk_menu_item_class_init (GtkMenuItemClass *klass)
                                                         P_("The submenu attached to the menu item, or NULL if it has none"),
                                                         GTK_TYPE_MENU,
                                                         GTK_PARAM_READWRITE));
-  
+
 
   /**
    * GtkMenuItem:accel-path:
@@ -311,7 +311,7 @@ gtk_menu_item_class_init (GtkMenuItemClass *klass)
   /**
    * GtkMenuItem:use-underline:
    *
-   * %TRUE if underlines in the text indicate mnemonics  
+   * %TRUE if underlines in the text indicate mnemonics
    *
    * Since: 2.16
    **/
@@ -395,7 +395,7 @@ gtk_menu_item_init (GtkMenuItem *menu_item)
 
   priv->action = NULL;
   priv->use_action_appearance = TRUE;
-  
+
   menu_item->submenu = NULL;
   menu_item->toggle_size = 0;
   menu_item->accelerator_width = 0;
@@ -419,7 +419,7 @@ gtk_menu_item_new (void)
 GtkWidget*
 gtk_menu_item_new_with_label (const gchar *label)
 {
-  return g_object_new (GTK_TYPE_MENU_ITEM, 
+  return g_object_new (GTK_TYPE_MENU_ITEM,
 		       "label", label,
 		       NULL);
 }
@@ -438,7 +438,7 @@ gtk_menu_item_new_with_label (const gchar *label)
 GtkWidget*
 gtk_menu_item_new_with_mnemonic (const gchar *label)
 {
-  return g_object_new (GTK_TYPE_MENU_ITEM, 
+  return g_object_new (GTK_TYPE_MENU_ITEM,
 		       "use-underline", TRUE,
 		       "label", label,
 		       NULL);
@@ -454,20 +454,20 @@ gtk_menu_item_dispose (GObject *object)
     {
       gtk_action_disconnect_accelerator (priv->action);
       gtk_activatable_do_set_related_action (GTK_ACTIVATABLE (menu_item), NULL);
-      
+
       priv->action = NULL;
     }
   G_OBJECT_CLASS (gtk_menu_item_parent_class)->dispose (object);
 }
 
-static void 
+static void
 gtk_menu_item_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
 			    GParamSpec   *pspec)
 {
   GtkMenuItem *menu_item = GTK_MENU_ITEM (object);
-  
+
   switch (prop_id)
     {
     case PROP_RIGHT_JUSTIFIED:
@@ -497,7 +497,7 @@ gtk_menu_item_set_property (GObject      *object,
     }
 }
 
-static void 
+static void
 gtk_menu_item_get_property (GObject    *object,
 			    guint       prop_id,
 			    GValue     *value,
@@ -505,7 +505,7 @@ gtk_menu_item_get_property (GObject    *object,
 {
   GtkMenuItem *menu_item = GTK_MENU_ITEM (object);
   GtkMenuItemPrivate *priv = GET_PRIVATE (menu_item);
-  
+
   switch (prop_id)
     {
     case PROP_RIGHT_JUSTIFIED:
@@ -565,7 +565,7 @@ gtk_menu_item_buildable_interface_init (GtkBuildableIface *iface)
   iface->custom_finished = gtk_menu_item_buildable_custom_finished;
 }
 
-static void 
+static void
 gtk_menu_item_buildable_add_child (GtkBuildable *buildable,
 				   GtkBuilder   *builder,
 				   GObject      *child,
@@ -579,7 +579,7 @@ gtk_menu_item_buildable_add_child (GtkBuildable *buildable,
 }
 
 
-static void 
+static void
 gtk_menu_item_buildable_custom_finished (GtkBuildable        *buildable,
 					 GtkBuilder          *builder,
 					 GObject             *child,
@@ -598,7 +598,7 @@ gtk_menu_item_buildable_custom_finished (GtkBuildable        *buildable,
 	  while (GTK_IS_MENU (menu_shell) &&
 		 (attach = gtk_menu_get_attach_widget (GTK_MENU (menu_shell))) != NULL)
 	    menu_shell = (GtkMenuShell *)attach->parent;
-	  
+
 	  toplevel = gtk_widget_get_toplevel (GTK_WIDGET (menu_shell));
 	}
       else
@@ -650,7 +650,7 @@ gtk_menu_item_update (GtkActivatable *activatable,
   GtkMenuItemPrivate *priv = GET_PRIVATE (menu_item);
 
   if (strcmp (property_name, "visible") == 0)
-    _gtk_action_sync_menu_visible (action, GTK_WIDGET (menu_item), 
+    _gtk_action_sync_menu_visible (action, GTK_WIDGET (menu_item),
 				   _gtk_menu_is_empty (gtk_menu_item_get_submenu (menu_item)));
   else if (strcmp (property_name, "sensitive") == 0)
     gtk_widget_set_sensitive (GTK_WIDGET (menu_item), gtk_action_is_sensitive (action));
@@ -730,7 +730,7 @@ gtk_menu_item_set_related_action (GtkMenuItem *menu_item,
     if (action)
       {
 	const gchar *accel_path;
-	
+
 	accel_path = gtk_action_get_accel_path (action);
 	if (accel_path)
 	  {
@@ -773,7 +773,7 @@ gtk_menu_item_set_submenu (GtkMenuItem *menu_item,
 {
   g_return_if_fail (GTK_IS_MENU_ITEM (menu_item));
   g_return_if_fail (submenu == NULL || GTK_IS_MENU (submenu));
-  
+
   if (menu_item->submenu != submenu)
     {
       if (menu_item->submenu)
@@ -963,7 +963,7 @@ gtk_menu_item_size_request (GtkWidget      *widget,
   gtk_widget_style_get (widget,
  			"horizontal-padding", &horizontal_padding,
 			NULL);
-  
+
   bin = GTK_BIN (widget);
   menu_item = GTK_MENU_ITEM (widget);
 
@@ -993,7 +993,7 @@ gtk_menu_item_size_request (GtkWidget      *widget,
   if (bin->child && gtk_widget_get_visible (bin->child))
     {
       GtkRequisition child_requisition;
-      
+
       gtk_widget_size_request (bin->child, &child_requisition);
 
       requisition->width += child_requisition.width;
@@ -1002,7 +1002,7 @@ gtk_menu_item_size_request (GtkWidget      *widget,
       if (menu_item->submenu && menu_item->show_submenu_indicator)
 	{
 	  guint arrow_spacing;
-	  
+
 	  gtk_widget_style_get (widget,
 				"arrow-spacing", &arrow_spacing,
 				NULL);
@@ -1052,7 +1052,7 @@ gtk_menu_item_size_allocate (GtkWidget     *widget,
 
   menu_item = GTK_MENU_ITEM (widget);
   bin = GTK_BIN (widget);
-  
+
   direction = gtk_widget_get_direction (widget);
 
   if (GTK_IS_MENU_BAR (widget->parent))
@@ -1065,7 +1065,7 @@ gtk_menu_item_size_allocate (GtkWidget     *widget,
       pack_dir = GTK_PACK_DIRECTION_LTR;
       child_pack_dir = GTK_PACK_DIRECTION_LTR;
     }
-    
+
   widget->allocation = *allocation;
 
   if (bin->child)
@@ -1086,7 +1086,7 @@ gtk_menu_item_size_allocate (GtkWidget     *widget,
       else if ((pack_dir == GTK_PACK_DIRECTION_TTB || pack_dir == GTK_PACK_DIRECTION_BTT) &&
 	       (child_pack_dir == GTK_PACK_DIRECTION_TTB || child_pack_dir == GTK_PACK_DIRECTION_BTT))
 	child_allocation.y += horizontal_padding;
-      
+
       child_allocation.width = MAX (1, (gint)allocation->width - child_allocation.x * 2);
       child_allocation.height = MAX (1, (gint)allocation->height - child_allocation.y * 2);
 
@@ -1108,13 +1108,13 @@ gtk_menu_item_size_allocate (GtkWidget     *widget,
       child_allocation.y += widget->allocation.y;
 
       gtk_widget_get_child_requisition (bin->child, &child_requisition);
-      if (menu_item->submenu && menu_item->show_submenu_indicator) 
+      if (menu_item->submenu && menu_item->show_submenu_indicator)
 	{
 	  if (direction == GTK_TEXT_DIR_RTL)
 	    child_allocation.x += child_requisition.height;
 	  child_allocation.width -= child_requisition.height;
 	}
-      
+
       if (child_allocation.width < 1)
 	child_allocation.width = 1;
 
@@ -1141,7 +1141,7 @@ gtk_menu_item_realize (GtkWidget *widget)
 
   widget->window = gtk_widget_get_parent_window (widget);
   g_object_ref (widget->window);
-  
+
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
   attributes.width = widget->allocation.width;
@@ -1178,7 +1178,7 @@ static void
 gtk_menu_item_map (GtkWidget *widget)
 {
   GtkMenuItem *menu_item = GTK_MENU_ITEM (widget);
-  
+
   GTK_WIDGET_CLASS (gtk_menu_item_parent_class)->map (widget);
 
   gdk_window_show (menu_item->event_window);
@@ -1188,7 +1188,7 @@ static void
 gtk_menu_item_unmap (GtkWidget *widget)
 {
   GtkMenuItem *menu_item = GTK_MENU_ITEM (widget);
-    
+
   gdk_window_hide (menu_item->event_window);
 
   GTK_WIDGET_CLASS (gtk_menu_item_parent_class)->unmap (widget);
@@ -1210,12 +1210,12 @@ gtk_menu_item_paint (GtkWidget    *widget,
       menu_item = GTK_MENU_ITEM (widget);
 
       state_type = widget->state;
-      
+
       x = widget->allocation.x + border_width;
       y = widget->allocation.y + border_width;
       width = widget->allocation.width - border_width * 2;
       height = widget->allocation.height - border_width * 2;
-      
+
       if ((state_type == GTK_STATE_PRELIGHT) &&
 	  (GTK_BIN (menu_item)->child))
 	{
@@ -1229,7 +1229,7 @@ gtk_menu_item_paint (GtkWidget    *widget,
 			 area, widget, "menuitem",
 			 x, y, width, height);
 	}
-  
+
       if (menu_item->submenu && menu_item->show_submenu_indicator)
 	{
 	  gint arrow_x, arrow_y;
@@ -1243,14 +1243,14 @@ gtk_menu_item_paint (GtkWidget    *widget,
 	  PangoFontMetrics *metrics;
 
 	  direction = gtk_widget_get_direction (widget);
-      
+
  	  gtk_widget_style_get (widget,
  				"horizontal-padding", &horizontal_padding,
                                 "arrow-scaling", &arrow_scaling,
  				NULL);
- 	  
+
 	  context = gtk_widget_get_pango_context (GTK_BIN (menu_item)->child);
-	  metrics = pango_context_get_metrics (context, 
+	  metrics = pango_context_get_metrics (context,
 					       GTK_WIDGET (GTK_BIN (menu_item)->child)->style->font_desc,
 					       pango_context_get_language (context));
 
@@ -1279,8 +1279,8 @@ gtk_menu_item_paint (GtkWidget    *widget,
 	  arrow_y = y + (height - arrow_extent) / 2;
 
 	  gtk_paint_arrow (widget->style, widget->window,
-			   state_type, shadow_type, 
-			   area, widget, "menuitem", 
+			   state_type, shadow_type,
+			   area, widget, "menuitem",
 			   arrow_type, TRUE,
 			   arrow_x, arrow_y,
 			   arrow_extent, arrow_extent);
@@ -1395,11 +1395,11 @@ gtk_menu_item_mnemonic_activate (GtkWidget *widget,
     }
   else
     g_signal_emit (widget, menu_item_signals[ACTIVATE_ITEM], 0);
-  
+
   return TRUE;
 }
 
-static void 
+static void
 gtk_real_menu_item_activate (GtkMenuItem *menu_item)
 {
   GtkMenuItemPrivate *priv;
@@ -1419,7 +1419,7 @@ gtk_real_menu_item_activate_item (GtkMenuItem *menu_item)
   g_return_if_fail (GTK_IS_MENU_ITEM (menu_item));
 
   widget = GTK_WIDGET (menu_item);
-  
+
   if (widget->parent &&
       GTK_IS_MENU_SHELL (widget->parent))
     {
@@ -1463,7 +1463,7 @@ gtk_real_menu_item_set_label (GtkMenuItem *menu_item,
   if (GTK_IS_LABEL (GTK_BIN (menu_item)->child))
     {
       gtk_label_set_label (GTK_LABEL (GTK_BIN (menu_item)->child), label ? label : "");
-      
+
       g_object_notify (G_OBJECT (menu_item), "label");
     }
 }
@@ -1547,12 +1547,12 @@ gtk_menu_item_popup_timeout (gpointer data)
 {
   GtkMenuItem *menu_item;
   GtkWidget *parent;
-  
+
   menu_item = GTK_MENU_ITEM (data);
 
   parent = GTK_WIDGET (menu_item)->parent;
 
-  if ((GTK_IS_MENU_SHELL (parent) && GTK_MENU_SHELL (parent)->active) || 
+  if ((GTK_IS_MENU_SHELL (parent) && GTK_MENU_SHELL (parent)->active) ||
       (GTK_IS_MENU (parent) && GTK_MENU (parent)->torn_off))
     {
       gtk_menu_item_real_popup_submenu (GTK_WIDGET (menu_item), TRUE);
@@ -1562,7 +1562,7 @@ gtk_menu_item_popup_timeout (gpointer data)
 
   menu_item->timer = 0;
 
-  return FALSE;  
+  return FALSE;
 }
 
 static gint
@@ -1657,7 +1657,7 @@ get_offsets (GtkMenu *menu,
 {
   gint vertical_padding;
   gint horizontal_padding;
-  
+
   gtk_widget_style_get (GTK_WIDGET (menu),
 			"horizontal-offset", horizontal_offset,
 			"vertical-offset", vertical_offset,
@@ -1741,13 +1741,13 @@ gtk_menu_item_position_menu (GtkMenu  *menu,
     {
       menu_item->from_menubar = FALSE;
     }
-  
+
   switch (menu_item->submenu_placement)
     {
     case GTK_TOP_BOTTOM:
       if (direction == GTK_TEXT_DIR_LTR)
 	menu_item->submenu_direction = GTK_DIRECTION_RIGHT;
-      else 
+      else
 	{
 	  menu_item->submenu_direction = GTK_DIRECTION_LEFT;
 	  tx += widget->allocation.width - twidth;
@@ -1767,7 +1767,7 @@ gtk_menu_item_position_menu (GtkMenu  *menu,
 	parent_menu_item = GTK_MENU_ITEM (GTK_MENU (widget->parent)->parent_menu_item);
       else
 	parent_menu_item = NULL;
-      
+
       parent_xthickness = widget->parent->style->xthickness;
 
       if (parent_menu_item && !GTK_MENU (widget->parent)->torn_off)
@@ -1808,7 +1808,7 @@ gtk_menu_item_position_menu (GtkMenu  *menu,
 	}
 
       ty += vertical_offset;
-      
+
       /* If the height of the menu doesn't fit we move it upward. */
       ty = CLAMP (ty, monitor.y, MAX (monitor.y, monitor.y + monitor.height - theight));
       break;
@@ -1832,9 +1832,9 @@ gtk_menu_item_position_menu (GtkMenu  *menu,
 /**
  * gtk_menu_item_set_right_justified:
  * @menu_item: a #GtkMenuItem.
- * @right_justified: if %TRUE the menu item will appear at the 
+ * @right_justified: if %TRUE the menu item will appear at the
  *   far right if added to a menu bar.
- * 
+ *
  * Sets whether the menu item appears justified at the right
  * side of a menu bar. This was traditionally done for "Help" menu
  * items, but is now considered a bad idea. (If the widget
@@ -1859,10 +1859,10 @@ gtk_menu_item_set_right_justified (GtkMenuItem *menu_item,
 /**
  * gtk_menu_item_get_right_justified:
  * @menu_item: a #GtkMenuItem
- * 
+ *
  * Gets whether the menu item appears justified at the right
  * side of the menu bar.
- * 
+ *
  * Return value: %TRUE if the menu item will appear at the
  *   far right if added to a menu bar.
  **/
@@ -1870,7 +1870,7 @@ gboolean
 gtk_menu_item_get_right_justified (GtkMenuItem *menu_item)
 {
   g_return_val_if_fail (GTK_IS_MENU_ITEM (menu_item), FALSE);
-  
+
   return menu_item->right_justify;
 }
 
@@ -2025,7 +2025,7 @@ _gtk_menu_item_refresh_accel_path (GtkMenuItem   *menu_item,
  * gtk_menu_set_accel_group() for this to work.
  *
  * Note that @accel_path string will be stored in a #GQuark. Therefore, if you
- * pass a static string, you can save some memory by interning it first with 
+ * pass a static string, you can save some memory by interning it first with
  * g_intern_static_string().
  */
 void
@@ -2121,7 +2121,7 @@ gtk_menu_item_ensure_label (GtkMenuItem *menu_item)
       gtk_misc_set_alignment (GTK_MISC (accel_label), 0.0, 0.5);
 
       gtk_container_add (GTK_CONTAINER (menu_item), accel_label);
-      gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (accel_label), 
+      gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (accel_label),
 					GTK_WIDGET (menu_item));
       gtk_widget_show (accel_label);
     }
@@ -2167,7 +2167,7 @@ gtk_menu_item_get_label (GtkMenuItem *menu_item)
 /**
  * gtk_menu_item_set_use_underline:
  * @menu_item: a #GtkMenuItem
- * @setting: %TRUE if underlines in the text indicate mnemonics  
+ * @setting: %TRUE if underlines in the text indicate mnemonics
  *
  * If true, an underline in the text indicates the next character should be
  * used for the mnemonic accelerator key.
@@ -2208,7 +2208,7 @@ gtk_menu_item_get_use_underline (GtkMenuItem *menu_item)
   g_return_val_if_fail (GTK_IS_MENU_ITEM (menu_item), FALSE);
 
   gtk_menu_item_ensure_label (menu_item);
-  
+
   if (GTK_IS_LABEL (GTK_BIN (menu_item)->child))
     return gtk_label_get_use_underline (GTK_LABEL (GTK_BIN (menu_item)->child));
 

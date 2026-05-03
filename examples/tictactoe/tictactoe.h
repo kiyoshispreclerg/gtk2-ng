@@ -40,7 +40,7 @@ typedef struct _TictactoeClass  TictactoeClass;
 struct _Tictactoe
 {
   GtkTable table;
-  
+
   GtkWidget *buttons[3][3];
 };
 

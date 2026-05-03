@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -79,7 +79,7 @@ _gtk_socket_windowing_realize_window (GtkSocket *socket)
      this for GtkSocket, so we unselect it here, fixing the crashes in
      firefox. */
   XSelectInput (GDK_WINDOW_XDISPLAY (window),
-		GDK_WINDOW_XWINDOW (window), 
+		GDK_WINDOW_XWINDOW (window),
 		(xattrs.your_event_mask & ~ButtonPressMask) |
 		SubstructureNotifyMask | SubstructureRedirectMask);
 }
@@ -96,12 +96,12 @@ _gtk_socket_windowing_size_request (GtkSocket *socket)
 {
   XSizeHints hints;
   long supplied;
-	  
+
   gdk_error_trap_push ();
 
   socket->request_width = 1;
   socket->request_height = 1;
-	  
+
   if (XGetWMNormalHints (GDK_WINDOW_XDISPLAY (socket->plug_window),
 			 GDK_WINDOW_XWINDOW (socket->plug_window),
 			 &hints, &supplied))
@@ -118,7 +118,7 @@ _gtk_socket_windowing_size_request (GtkSocket *socket)
 	}
     }
   socket->have_size = TRUE;
-  
+
   gdk_error_trap_pop ();
 }
 
@@ -203,7 +203,7 @@ _gtk_socket_windowing_focus (GtkSocket       *socket,
       detail = XEMBED_FOCUS_FIRST;
       break;
     }
-  
+
   _gtk_xembed_send_focus_message (socket->plug_window, XEMBED_FOCUS_IN, detail);
 }
 
@@ -228,7 +228,7 @@ _gtk_socket_windowing_send_configure_event (GtkSocket *socket)
   gdk_error_trap_push ();
   gdk_window_get_origin (socket->plug_window, &x, &y);
   gdk_error_trap_pop ();
-			 
+
   xconfigure.x = x;
   xconfigure.y = y;
   xconfigure.width = GTK_WIDGET(socket)->allocation.width;
@@ -302,7 +302,7 @@ xembed_get_info (GdkWindow     *window,
   unsigned char *data;
   unsigned long *data_long;
   int status;
-  
+
   gdk_error_trap_push();
   status = XGetWindowProperty (GDK_DISPLAY_XDISPLAY (display),
 			       GDK_WINDOW_XWINDOW (window),
@@ -323,20 +323,20 @@ xembed_get_info (GdkWindow     *window,
       g_warning ("_XEMBED_INFO property has wrong type\n");
       return FALSE;
     }
-  
+
   if (nitems < 2)
     {
       g_warning ("_XEMBED_INFO too short\n");
       XFree (data);
       return FALSE;
     }
-  
+
   data_long = (unsigned long *)data;
   if (version)
     *version = data_long[0];
   if (flags)
     *flags = data_long[1] & XEMBED_MAPPED;
-  
+
   XFree (data);
   return TRUE;
 }
@@ -363,7 +363,7 @@ handle_xembed_message (GtkSocket        *socket,
 {
   GTK_NOTE (PLUGSOCKET,
 	    g_message ("GtkSocket: %s received", _gtk_xembed_message_name (message)));
-  
+
   switch (message)
     {
     case XEMBED_EMBEDDED_NOTIFY:
@@ -375,7 +375,7 @@ handle_xembed_message (GtkSocket        *socket,
     case XEMBED_FOCUS_OUT:
       g_warning ("GtkSocket: Invalid _XEMBED message %s received", _gtk_xembed_message_name (message));
       break;
-      
+
     case XEMBED_REQUEST_FOCUS:
       _gtk_socket_claim_focus (socket, TRUE);
       break;
@@ -386,10 +386,10 @@ handle_xembed_message (GtkSocket        *socket,
 					  (message == XEMBED_FOCUS_NEXT ?
 					   GTK_DIR_TAB_FORWARD : GTK_DIR_TAB_BACKWARD));
       break;
-      
+
     case XEMBED_GTK_GRAB_KEY:
       _gtk_socket_add_grabbed_key (socket, data1, data2);
-      break; 
+      break;
     case XEMBED_GTK_UNGRAB_KEY:
       _gtk_socket_remove_grabbed_key (socket, data1, data2);
       break;
@@ -397,7 +397,7 @@ handle_xembed_message (GtkSocket        *socket,
     case XEMBED_GRAB_KEY:
     case XEMBED_UNGRAB_KEY:
       break;
-      
+
     default:
       GTK_NOTE (PLUGSOCKET,
 		g_message ("GtkSocket: Ignoring unknown _XEMBED message of type %d", message));
@@ -416,7 +416,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
   XEvent *xevent;
 
   GdkFilterReturn return_val;
-  
+
   socket = GTK_SOCKET (data);
 
   return_val = GDK_FILTER_CONTINUE;
@@ -441,7 +441,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 				 xevent->xclient.data.l[4],
 				 xevent->xclient.data.l[0]);
 	  _gtk_xembed_pop_message ();
-	  
+
 	  return_val = GDK_FILTER_REMOVE;
 	}
       break;
@@ -459,23 +459,23 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 		GTK_NOTE (PLUGSOCKET, g_message ("GtkSocket - window created"));
 	      }
 	  }
-	
+
 	return_val = GDK_FILTER_REMOVE;
-	
+
 	break;
       }
 
     case ConfigureRequest:
       {
 	XConfigureRequestEvent *xcre = &xevent->xconfigurerequest;
-	
+
 	if (!socket->plug_window)
 	  _gtk_socket_add_window (socket, xcre->window, FALSE);
-	
+
 	if (socket->plug_window)
 	  {
 	    GtkSocketPrivate *private = _gtk_socket_get_private (socket);
-	    
+
 	    if (xcre->value_mask & (CWWidth | CWHeight))
 	      {
 		GTK_NOTE (PLUGSOCKET,
@@ -491,7 +491,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 		_gtk_socket_windowing_send_configure_event (socket);
 	      }
 	    /* Ignore stacking requests. */
-	    
+
 	    return_val = GDK_FILTER_REMOVE;
 	  }
 	break;
@@ -507,9 +507,9 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	if (socket->plug_window && (xdwe->window == GDK_WINDOW_XWINDOW (socket->plug_window)))
 	  {
 	    gboolean result;
-	    
+
 	    GTK_NOTE (PLUGSOCKET, g_message ("GtkSocket - destroy notify"));
-	    
+
 	    gdk_window_destroy_notify (socket->plug_window);
 	    _gtk_socket_end_embedding (socket);
 
@@ -518,7 +518,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	    if (!result)
 	      gtk_widget_destroy (widget);
 	    g_object_unref (widget);
-	    
+
 	    return_val = GDK_FILTER_REMOVE;
 	  }
 	break;
@@ -539,7 +539,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	{
 	  _gtk_socket_add_window (socket, xevent->xmaprequest.window, FALSE);
 	}
-	
+
       if (socket->plug_window)
 	{
 	  GTK_NOTE (PLUGSOCKET, g_message ("GtkSocket - Map Request"));
@@ -579,7 +579,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	  else if (xevent->xproperty.atom == gdk_x11_get_xatom_by_name_for_display (display, "_XEMBED_INFO"))
 	    {
 	      unsigned long flags;
-	      
+
 	      if (xembed_get_info (socket->plug_window, NULL, &flags))
 		{
 		  gboolean was_mapped = socket->is_mapped;
@@ -595,7 +595,7 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 			  gdk_window_show (socket->plug_window);
 			  gdk_flush ();
 			  gdk_error_trap_pop ();
-			  
+
 			  _gtk_socket_unmap_notify (socket);
 			}
 		    }
@@ -612,12 +612,12 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	if (!socket->plug_window && xre->parent == GDK_WINDOW_XWINDOW (widget->window))
 	  {
 	    _gtk_socket_add_window (socket, xre->window, FALSE);
-	    
+
 	    if (socket->plug_window)
 	      {
 		GTK_NOTE (PLUGSOCKET, g_message ("GtkSocket - window reparented"));
 	      }
-	    
+
 	    return_val = GDK_FILTER_REMOVE;
 	  }
         else
@@ -650,8 +650,8 @@ _gtk_socket_windowing_filter_func (GdkXEvent *gdk_xevent,
 	  return_val = GDK_FILTER_REMOVE;
 	}
       break;
-      
+
     }
-  
+
   return return_val;
 }

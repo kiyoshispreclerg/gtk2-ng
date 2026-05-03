@@ -478,7 +478,7 @@ get_volumes_list (GtkFileSystem *file_system)
 
 	      g_object_unref (volume);
             }
-  
+
            g_list_free (volumes);
         }
       else if (g_drive_is_media_removable (drive) && !g_drive_is_media_check_automatic (drive))
@@ -1824,7 +1824,7 @@ gboolean
 _gtk_file_info_consider_as_directory (GFileInfo *info)
 {
   GFileType type = g_file_info_get_file_type (info);
-  
+
   return (type == G_FILE_TYPE_DIRECTORY ||
           type == G_FILE_TYPE_MOUNTABLE ||
           type == G_FILE_TYPE_SHORTCUT);

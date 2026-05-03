@@ -53,7 +53,7 @@ static void      gail_progress_bar_value_changed     (GtkAdjustment  *adjustment
 G_DEFINE_TYPE_WITH_CODE (GailProgressBar, gail_progress_bar, GAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
 
-static void	 
+static void
 gail_progress_bar_class_init		(GailProgressBarClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -102,7 +102,7 @@ gail_progress_bar_real_initialize (AtkObject *obj,
   obj->role = ATK_ROLE_PROGRESS_BAR;
 }
 
-static void	 
+static void
 atk_value_interface_init (AtkValueIface *iface)
 {
   iface->get_current_value = gail_progress_bar_get_current_value;
@@ -110,7 +110,7 @@ atk_value_interface_init (AtkValueIface *iface)
   iface->get_minimum_value = gail_progress_bar_get_minimum_value;
 }
 
-static void	 
+static void
 gail_progress_bar_get_current_value (AtkValue   *obj,
                                      GValue     *value)
 {
@@ -128,7 +128,7 @@ gail_progress_bar_get_current_value (AtkValue   *obj,
   atk_value_get_current_value (ATK_VALUE (progress_bar->adjustment), value);
 }
 
-static void	 
+static void
 gail_progress_bar_get_maximum_value (AtkValue   *obj,
                                      GValue     *value)
 {
@@ -146,7 +146,7 @@ gail_progress_bar_get_maximum_value (AtkValue   *obj,
   atk_value_get_maximum_value (ATK_VALUE (progress_bar->adjustment), value);
 }
 
-static void	 
+static void
 gail_progress_bar_get_minimum_value (AtkValue    *obj,
                               	     GValue      *value)
 {

@@ -118,10 +118,10 @@ typedef struct
 {
   GdkDrawable *drawable;
   GdkGC *gc;
-  
+
   gint x_offset;
   gint y_offset;
-  
+
   /*< private >*/
   gpointer data;
 } XpDCInfo;

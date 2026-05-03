@@ -37,16 +37,16 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
 				 gint         height)
 {
   GdkScreen *screen;
-  
+
   g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_QUARTZ (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
 
   screen = gdk_drawable_get_screen (drawable);
   if (!image)
-    image = _gdk_image_new_for_depth (screen, GDK_IMAGE_FASTEST, NULL, 
+    image = _gdk_image_new_for_depth (screen, GDK_IMAGE_FASTEST, NULL,
 				      width, height,
 				      gdk_drawable_get_depth (drawable));
-  
+
   if (GDK_IS_PIXMAP_IMPL_QUARTZ (drawable))
     {
       GdkPixmapImplQuartz *pix_impl;
@@ -74,7 +74,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
               for (x = 0; x < width; x++)
                 {
                   gint32 pixel;
-	  
+
                   /* RGB24, 4 bytes per pixel, skip first. */
                   pixel = src[0] << 16 | src[1] << 8 | src[2];
                   src += 4;
@@ -93,7 +93,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
               for (x = 0; x < width; x++)
                 {
                   gint32 pixel;
-	  
+
                   /* ARGB32, 4 bytes per pixel. */
                   pixel = src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3];
                   src += 4;
@@ -112,7 +112,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
               for (x = 0; x < width; x++)
                 {
                   gint32 pixel;
-	  
+
                   /* 8 bits */
                   pixel = src[0];
                   src++;
@@ -266,7 +266,7 @@ gdk_image_class_init (GdkImageClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
-  
+
   object_class->finalize = gdk_image_finalize;
 }
 
@@ -289,20 +289,20 @@ gdk_image_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkImage",
                                             &object_info,
 					    0);
     }
-  
+
   return object_type;
 }
 
 GdkImage *
 gdk_image_new_bitmap (GdkVisual *visual, gpointer data, gint width, gint height)
 {
-  /* We don't implement this function because it's broken, deprecated and 
+  /* We don't implement this function because it's broken, deprecated and
    * tricky to implement. */
   g_warning ("This function is unimplemented");
 
@@ -345,7 +345,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
       image->bpl = image->width * image->bpp;
       image->bits_per_pixel = image->bpp * 8;
     }
-  
+
   image->mem = g_malloc (image->bpl * image->height);
   memset (image->mem, 0x00, image->bpl * image->height);
 

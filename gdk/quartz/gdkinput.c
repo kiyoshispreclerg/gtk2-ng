@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -111,12 +111,12 @@ gdk_device_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             "GdkDevice",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -323,12 +323,12 @@ gdk_device_get_state (GdkDevice       *device,
     }
 }
 
-void 
+void
 gdk_device_free_history (GdkTimeCoord **events,
 			 gint           n_events)
 {
   gint i;
-  
+
   for (i = 0; i < n_events; i++)
     g_free (events[i]);
 
@@ -432,7 +432,7 @@ gdk_input_set_extension_events (GdkWindow *window, gint mask,
       /* Add enter window events to the event mask */
       /* FIXME, this is not needed for XINPUT_NONE */
       gdk_window_set_events (window,
-			     gdk_window_get_events (window) | 
+			     gdk_window_get_events (window) |
 			     GDK_ENTER_NOTIFY_MASK);
     }
   else
@@ -574,12 +574,12 @@ gboolean
 gdk_device_get_axis (GdkDevice *device, gdouble *axes, GdkAxisUse use, gdouble *value)
 {
   gint i;
-  
+
   g_return_val_if_fail (device != NULL, FALSE);
 
   if (axes == NULL)
     return FALSE;
-  
+
   for (i = 0; i < device->num_axes; i++)
     if (device->axes[i].use == use)
       {
@@ -587,7 +587,7 @@ gdk_device_get_axis (GdkDevice *device, gdouble *axes, GdkAxisUse use, gdouble *
 	  *value = axes[i];
 	return TRUE;
       }
-  
+
   return FALSE;
 }
 

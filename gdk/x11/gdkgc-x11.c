@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -63,7 +63,7 @@ _gdk_gc_x11_class_init (GdkGCX11Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkGCClass *gc_class = GDK_GC_CLASS (klass);
-  
+
   object_class->finalize = gdk_gc_x11_finalize;
 
   gc_class->get_values = gdk_x11_gc_get_values;
@@ -80,7 +80,7 @@ static void
 gdk_gc_x11_finalize (GObject *object)
 {
   GdkGCX11 *x11_gc = GDK_GC_X11 (object);
-  
+
   XFreeGC (GDK_GC_XDISPLAY (x11_gc), GDK_GC_XGC (x11_gc));
 
   G_OBJECT_CLASS (_gdk_gc_x11_parent_class)->finalize (object);
@@ -94,7 +94,7 @@ _gdk_x11_gc_new (GdkDrawable      *drawable,
 {
   GdkGC *gc;
   GdkGCX11 *private;
-  
+
   XGCValues xvalues;
   unsigned long xvalues_mask;
 
@@ -110,7 +110,7 @@ _gdk_x11_gc_new (GdkDrawable      *drawable,
 
   private->dirty_mask = 0;
   private->have_clip_mask = FALSE;
-    
+
   private->screen = GDK_DRAWABLE_IMPL_X11 (drawable)->screen;
 
   private->depth = gdk_drawable_get_depth (drawable);
@@ -138,7 +138,7 @@ _gdk_x11_gc_new (GdkDrawable      *drawable,
   xvalues_mask = GCFunction | GCFillStyle | GCArcMode | GCSubwindowMode | GCGraphicsExposures;
 
   gdk_x11_gc_values_to_xvalues (values, values_mask, &xvalues, &xvalues_mask);
-  
+
   private->xgc = XCreateGC (GDK_GC_XDISPLAY (gc),
                             GDK_DRAWABLE_IMPL_X11 (drawable)->xid,
                             xvalues_mask, &xvalues);
@@ -156,7 +156,7 @@ _gdk_x11_gc_flush (GdkGC *gc)
   if (private->dirty_mask & GDK_GC_DIRTY_CLIP)
     {
       GdkRegion *clip_region = _gdk_gc_get_clip_region (gc);
-      
+
       if (!clip_region)
 	XSetClipOrigin (xdisplay, xgc,
 			gc->clip_x_origin, gc->clip_y_origin);
@@ -170,11 +170,11 @@ _gdk_x11_gc_flush (GdkGC *gc)
                                        gc->clip_y_origin,
                                        &rectangles,
                                        &n_rects);
-	  
+
 	  XSetClipRectangles (xdisplay, xgc, 0, 0,
                               rectangles,
                               n_rects, YXBanded);
-          
+
 	  g_free (rectangles);
 	}
     }
@@ -194,7 +194,7 @@ gdk_x11_gc_get_values (GdkGC       *gc,
 		       GdkGCValues *values)
 {
   XGCValues xvalues;
-  
+
   if (XGetGCValues (GDK_GC_XDISPLAY (gc), GDK_GC_XGC (gc),
 		    GCForeground | GCBackground | GCFont |
 		    GCFunction | GCTile | GCStipple | /* GCClipMask | */
@@ -397,7 +397,7 @@ gdk_x11_gc_values_to_xvalues (GdkGCValues    *values,
   /* Optimization for the common case (gdk_gc_new()) */
   if (values == NULL || mask == 0)
     return;
-  
+
   if (mask & GDK_GC_FOREGROUND)
     {
       xvalues->foreground = values->foreground.pixel;
@@ -493,7 +493,7 @@ gdk_x11_gc_values_to_xvalues (GdkGCValues    *values,
 	xvalues->tile = GDK_DRAWABLE_XID (values->tile);
       else
 	xvalues->tile = None;
-      
+
       *xvalues_mask |= GCTile;
     }
   if (mask & GDK_GC_STIPPLE)
@@ -502,7 +502,7 @@ gdk_x11_gc_values_to_xvalues (GdkGCValues    *values,
 	xvalues->stipple = GDK_DRAWABLE_XID (values->stipple);
       else
 	xvalues->stipple = None;
-      
+
       *xvalues_mask |= GCStipple;
     }
   if (mask & GDK_GC_CLIP_MASK)
@@ -513,7 +513,7 @@ gdk_x11_gc_values_to_xvalues (GdkGCValues    *values,
 	xvalues->clip_mask = None;
 
       *xvalues_mask |= GCClipMask;
-      
+
     }
   if (mask & GDK_GC_SUBWINDOW)
     {
@@ -658,20 +658,20 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
  *
  * Since: 2.2
  */
-GdkScreen *  
+GdkScreen *
 gdk_gc_get_screen (GdkGC *gc)
 {
   g_return_val_if_fail (GDK_IS_GC_X11 (gc), NULL);
-  
+
   return GDK_GC_X11 (gc)->screen;
 }
 
 /**
  * gdk_x11_gc_get_xdisplay:
  * @gc: a #GdkGC.
- * 
+ *
  * Returns the display of a #GdkGC.
- * 
+ *
  * Return value: an Xlib <type>Display*</type>.
  *
  * Deprecated: 2.22: #GdkGC has been replaced by #cairo_t.
@@ -687,9 +687,9 @@ gdk_x11_gc_get_xdisplay (GdkGC *gc)
 /**
  * gdk_x11_gc_get_xgc:
  * @gc: a #GdkGC.
- * 
+ *
  * Returns the X GC of a #GdkGC.
- * 
+ *
  * Return value: an Xlib <type>GC</type>.
  *
  * Deprecated: 2.22: #GdkGC has been replaced by #cairo_t.
@@ -698,7 +698,7 @@ GC
 gdk_x11_gc_get_xgc (GdkGC *gc)
 {
   GdkGCX11 *gc_x11;
-  
+
   g_return_val_if_fail (GDK_IS_GC_X11 (gc), NULL);
 
   gc_x11 = GDK_GC_X11 (gc);

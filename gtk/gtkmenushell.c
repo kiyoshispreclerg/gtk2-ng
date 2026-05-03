@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #define GTK_MENU_INTERNALS
@@ -69,11 +69,11 @@ enum {
 };
 
 /* Terminology:
- * 
+ *
  * A menu item can be "selected", this means that it is displayed
  * in the prelight state, and if it has a submenu, that submenu
- * will be popped up. 
- * 
+ * will be popped up.
+ *
  * A menu is "active" when it is visible onscreen and the user
  * is selecting from it. A menubar is not active until the user
  * clicks on one of its menuitems. When a menu is active,
@@ -88,7 +88,7 @@ enum {
  * that is furthest down in the hierarchy. (Every active menu_shell
  * does not necessarily contain a selected menu item, but if
  * it does, then menu_shell->parent_menu_shell must also contain
- * a selected menu item. The current menu is the menu that 
+ * a selected menu item. The current menu is the menu that
  * contains the current menu_item. It will always have a GTK
  * grab and receive all key presses.
  *
@@ -103,11 +103,11 @@ enum {
  *          a submenu.
  *       GTK_MENU_DIR_NEXT/PREV: To the next or previous item
  *          in this menu.
- * 
+ *
  *     As a a bit of a hack to get movement between menus and
  *     menubars working, if submenu_placement is different for
  *     the menu and its MenuShell then the following apply:
- * 
+ *
  *       - For 'parent' the current menu is not just moved to
  *         the parent, but moved to the previous entry in the parent
  *       - For 'child', if there is no child, then current is
@@ -117,7 +117,7 @@ enum {
  *    before menus and menubars had support for RTL flipping and
  *    different packing directions, and therefore only applies for
  *    when text direction and packing direction are both left-to-right.
- * 
+ *
  *  ::activate_current (GBoolean *force_hide)
  *     Activate the current item. If 'force_hide' is true, hide
  *     the current menu item always. Otherwise, only hide
@@ -187,7 +187,7 @@ static GtkWidget *gtk_menu_shell_get_item    (GtkMenuShell      *menu_shell,
 static GType    gtk_menu_shell_child_type  (GtkContainer      *container);
 static void gtk_menu_shell_real_select_item  (GtkMenuShell      *menu_shell,
 					      GtkWidget         *menu_item);
-static gboolean gtk_menu_shell_select_submenu_first (GtkMenuShell   *menu_shell); 
+static gboolean gtk_menu_shell_select_submenu_first (GtkMenuShell   *menu_shell);
 
 static void gtk_real_menu_shell_move_current (GtkMenuShell      *menu_shell,
 					      GtkMenuDirectionType direction);
@@ -200,7 +200,7 @@ static void gtk_real_menu_shell_cycle_focus      (GtkMenuShell      *menu_shell,
 static void     gtk_menu_shell_reset_key_hash    (GtkMenuShell *menu_shell);
 static gboolean gtk_menu_shell_activate_mnemonic (GtkMenuShell *menu_shell,
 						  GdkEventKey  *event);
-static gboolean gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell, 
+static gboolean gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell,
 						   gint           distance);
 
 static guint menu_shell_signals[LAST_SIGNAL] = { 0 };
@@ -658,9 +658,9 @@ gtk_menu_shell_grab_broken (GtkWidget          *widget,
     {
       /* Unset the active menu item so gtk_menu_popdown() doesn't see it.
        */
-      
+
       gtk_menu_shell_deselect (menu_shell);
-      
+
       gtk_menu_shell_deactivate (menu_shell);
       g_signal_emit (menu_shell, menu_shell_signals[SELECTION_DONE], 0);
     }
@@ -1043,7 +1043,7 @@ gtk_menu_shell_remove (GtkContainer *container,
 
   was_visible = gtk_widget_get_visible (widget);
   menu_shell->children = g_list_remove (menu_shell->children, widget);
-  
+
   if (widget == menu_shell->active_menu_item)
     {
       gtk_item_deselect (GTK_ITEM (menu_shell->active_menu_item));
@@ -1051,7 +1051,7 @@ gtk_menu_shell_remove (GtkContainer *container,
     }
 
   gtk_widget_unparent (widget);
-  
+
   /* queue resize regardless of gtk_widget_get_visible (container),
    * since that's what is needed by toplevels.
    */
@@ -1142,7 +1142,7 @@ gtk_menu_shell_get_item (GtkMenuShell *menu_shell,
   GtkWidget *menu_item;
 
   menu_item = gtk_get_event_widget ((GdkEvent*) event);
-  
+
   while (menu_item && !GTK_IS_MENU_ITEM (menu_item))
     menu_item = menu_item->parent;
 
@@ -1260,7 +1260,7 @@ gtk_menu_shell_activate_item (GtkMenuShell      *menu_shell,
       shells = g_slist_reverse (shells);
 
       gtk_menu_shell_deactivate (menu_shell);
-  
+
       /* flush the x-queue, so any grabs are removed and
        * the menu is actually taken down
        */
@@ -1282,7 +1282,7 @@ gtk_menu_shell_activate_item (GtkMenuShell      *menu_shell,
 
 /* Distance should be +/- 1 */
 static gboolean
-gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell, 
+gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell,
 				   gint           distance)
 {
   if (menu_shell->active_menu_item)
@@ -1299,7 +1299,7 @@ gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell,
       if (distance > 0)
 	{
 	  node = node->next;
-	  while (node != start_node && 
+	  while (node != start_node &&
 		 (!node || !_gtk_menu_item_is_selectable (node->data)))
 	    {
 	      if (node)
@@ -1330,7 +1330,7 @@ gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell,
                 }
 	    }
 	}
-      
+
       if (node)
 	gtk_menu_shell_select_item (menu_shell, node->data);
     }
@@ -1340,7 +1340,7 @@ gtk_menu_shell_real_move_selected (GtkMenuShell  *menu_shell,
 
 /* Distance should be +/- 1 */
 static void
-gtk_menu_shell_move_selected (GtkMenuShell  *menu_shell, 
+gtk_menu_shell_move_selected (GtkMenuShell  *menu_shell,
 			      gint           distance)
 {
   gboolean handled = FALSE;
@@ -1357,7 +1357,7 @@ gtk_menu_shell_move_selected (GtkMenuShell  *menu_shell,
  *                    the first item isn't sensitive. This
  *                    should be %FALSE if the menu is being
  *                    popped up initially.
- * 
+ *
  * Select the first visible or selectable child of the menu shell;
  * don't select tearoff items unless the only item is a tearoff
  * item.
@@ -1375,7 +1375,7 @@ gtk_menu_shell_select_first (GtkMenuShell *menu_shell,
   while (tmp_list)
     {
       GtkWidget *child = tmp_list->data;
-      
+
       if ((!search_sensitive && gtk_widget_get_visible (child)) ||
 	  _gtk_menu_item_is_selectable (child))
 	{
@@ -1383,7 +1383,7 @@ gtk_menu_shell_select_first (GtkMenuShell *menu_shell,
 	  if (!GTK_IS_TEAROFF_MENU_ITEM (child))
 	    break;
 	}
-      
+
       tmp_list = tmp_list->next;
     }
 
@@ -1402,7 +1402,7 @@ _gtk_menu_shell_select_last (GtkMenuShell *menu_shell,
   while (tmp_list)
     {
       GtkWidget *child = tmp_list->data;
-      
+
       if ((!search_sensitive && gtk_widget_get_visible (child)) ||
 	  _gtk_menu_item_is_selectable (child))
 	{
@@ -1410,7 +1410,7 @@ _gtk_menu_shell_select_last (GtkMenuShell *menu_shell,
 	  if (!GTK_IS_TEAROFF_MENU_ITEM (child))
 	    break;
 	}
-      
+
       tmp_list = tmp_list->prev;
     }
 
@@ -1426,8 +1426,8 @@ gtk_menu_shell_select_submenu_first (GtkMenuShell     *menu_shell)
   if (menu_shell->active_menu_item == NULL)
     return FALSE;
 
-  menu_item = GTK_MENU_ITEM (menu_shell->active_menu_item); 
-  
+  menu_item = GTK_MENU_ITEM (menu_shell->active_menu_item);
+
   if (menu_item->submenu)
     {
       _gtk_menu_item_popup_submenu (GTK_WIDGET (menu_item), FALSE);
@@ -1582,7 +1582,7 @@ gtk_real_menu_shell_cancel (GtkMenuShell      *menu_shell)
   /* Unset the active menu item so gtk_menu_popdown() doesn't see it.
    */
   gtk_menu_shell_deselect (menu_shell);
-  
+
   gtk_menu_shell_deactivate (menu_shell);
   g_signal_emit (menu_shell, menu_shell_signals[SELECTION_DONE], 0);
 }
@@ -1607,7 +1607,7 @@ gint
 _gtk_menu_shell_get_popup_delay (GtkMenuShell *menu_shell)
 {
   GtkMenuShellClass *klass = GTK_MENU_SHELL_GET_CLASS (menu_shell);
-  
+
   if (klass->get_popup_delay)
     {
       return klass->get_popup_delay (menu_shell);
@@ -1616,11 +1616,11 @@ _gtk_menu_shell_get_popup_delay (GtkMenuShell *menu_shell)
     {
       gint popup_delay;
       GtkWidget *widget = GTK_WIDGET (menu_shell);
-      
+
       g_object_get (gtk_widget_get_settings (widget),
 		    "gtk-menu-popup-delay", &popup_delay,
 		    NULL);
-      
+
       return popup_delay;
     }
 }
@@ -1628,9 +1628,9 @@ _gtk_menu_shell_get_popup_delay (GtkMenuShell *menu_shell)
 /**
  * gtk_menu_shell_cancel:
  * @menu_shell: a #GtkMenuShell
- * 
- * Cancels the selection within the menu shell.  
- * 
+ *
+ * Cancels the selection within the menu shell.
+ *
  * Since: 2.4
  */
 void
@@ -1649,7 +1649,7 @@ gtk_menu_shell_get_mnemonic_hash (GtkMenuShell *menu_shell,
 
   if (!private->mnemonic_hash && create)
     private->mnemonic_hash = _gtk_mnemonic_hash_new ();
-  
+
   return private->mnemonic_hash;
 }
 
@@ -1678,14 +1678,14 @@ gtk_menu_shell_get_key_hash (GtkMenuShell *menu_shell,
 
       if (!mnemonic_hash)
 	return NULL;
-      
+
       private->key_hash = _gtk_key_hash_new (keymap, NULL);
 
       _gtk_mnemonic_hash_foreach (mnemonic_hash,
 				  menu_shell_add_mnemonic_foreach,
 				  private->key_hash);
     }
-  
+
   return private->key_hash;
 }
 
@@ -1717,7 +1717,7 @@ gtk_menu_shell_activate_mnemonic (GtkMenuShell *menu_shell,
   key_hash = gtk_menu_shell_get_key_hash (menu_shell, TRUE);
   if (!key_hash)
     return FALSE;
-  
+
   entries = _gtk_key_hash_lookup (key_hash,
 				  event->hardware_keycode,
 				  event->state,
@@ -1751,7 +1751,7 @@ _gtk_menu_shell_remove_mnemonic (GtkMenuShell *menu_shell,
 {
   g_return_if_fail (GTK_IS_MENU_SHELL (menu_shell));
   g_return_if_fail (GTK_IS_WIDGET (target));
-  
+
   _gtk_mnemonic_hash_remove (gtk_menu_shell_get_mnemonic_hash (menu_shell, TRUE),
 			     keyval, target);
   gtk_menu_shell_reset_key_hash (menu_shell);
@@ -1784,7 +1784,7 @@ gtk_menu_shell_get_take_focus (GtkMenuShell *menu_shell)
  * @menu_shell: a #GtkMenuShell
  * @take_focus: %TRUE if the menu shell should take the keyboard focus on popup.
  *
- * If @take_focus is %TRUE (the default) the menu shell will take the keyboard 
+ * If @take_focus is %TRUE (the default) the menu shell will take the keyboard
  * focus so that it will receive all keyboard events which is needed to enable
  * keyboard navigation in menus.
  *

@@ -34,7 +34,7 @@ request_page_setup (GtkPrintOperation *operation,
   if (page_nr == 1)
     {
       GtkPaperSize *a5_size = gtk_paper_size_new ("iso_a5");
-      
+
       gtk_page_setup_set_orientation (setup, GTK_PAGE_ORIENTATION_LANDSCAPE);
       gtk_page_setup_set_paper_size (setup, a5_size);
       gtk_paper_size_free (a5_size);
@@ -49,13 +49,13 @@ draw_page (GtkPrintOperation *operation,
   cairo_t *cr;
   PangoLayout *layout;
   PangoFontDescription *desc;
-  
+
   cr = gtk_print_context_get_cairo_context (context);
 
   /* Draw a red rectangle, as wide as the paper (inside the margins) */
   cairo_set_source_rgb (cr, 1.0, 0, 0);
   cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
-  
+
   cairo_fill (cr);
 
   /* Draw some lines */
@@ -63,16 +63,16 @@ draw_page (GtkPrintOperation *operation,
   cairo_line_to (cr, 40, 20);
   cairo_arc (cr, 60, 60, 20, 0, G_PI);
   cairo_line_to (cr, 80, 20);
-  
+
   cairo_set_source_rgb (cr, 0, 0, 0);
   cairo_set_line_width (cr, 5);
   cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
-  
+
   cairo_stroke (cr);
 
   /* Draw some text */
-  
+
   layout = gtk_print_context_create_pango_layout (context);
   pango_layout_set_text (layout, "Hello World! Printing is easy", -1);
   desc = pango_font_description_from_string ("sans 28");
@@ -90,7 +90,7 @@ draw_page (GtkPrintOperation *operation,
   /* Font Fill */
   cairo_set_source_rgb (cr, 0, 0.0, 1.0);
   cairo_fill (cr);
-  
+
   g_object_unref (layout);
 }
 
@@ -116,6 +116,6 @@ main (int argc, char **argv)
   test_print_file_operation_set_font_size (print_file, 12.0);
   gtk_print_operation_set_export_filename (GTK_PRINT_OPERATION (print_file), "test2.pdf");
   gtk_print_operation_run (GTK_PRINT_OPERATION (print_file), GTK_PRINT_OPERATION_ACTION_EXPORT, NULL, NULL);
-  
+
   return 0;
 }

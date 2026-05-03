@@ -85,7 +85,7 @@ gtk_tree_sortable_base_init (gpointer g_class)
 /**
  * gtk_tree_sortable_sort_column_changed:
  * @sortable: A #GtkTreeSortable
- * 
+ *
  * Emits a #GtkTreeSortable::sort-column-changed signal on @sortable.
  */
 void
@@ -101,12 +101,12 @@ gtk_tree_sortable_sort_column_changed (GtkTreeSortable *sortable)
  * @sortable: A #GtkTreeSortable
  * @sort_column_id: The sort column id to be filled in
  * @order: The #GtkSortType to be filled in
- * 
+ *
  * Fills in @sort_column_id and @order with the current sort column and the
- * order. It returns %TRUE unless the @sort_column_id is 
- * %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or 
+ * order. It returns %TRUE unless the @sort_column_id is
+ * %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
  * %GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
- * 
+ *
  * Return value: %TRUE if the sort column is not one of the special sort
  *   column ids.
  **/
@@ -132,7 +132,7 @@ gtk_tree_sortable_get_sort_column_id (GtkTreeSortable  *sortable,
  * @sortable: A #GtkTreeSortable
  * @sort_column_id: the sort column id to set
  * @order: The sort order of the column
- * 
+ *
  * Sets the current sort column to be @sort_column_id. The @sortable will
  * resort itself to reflect this change, after emitting a
  * #GtkTreeSortable::sort-column-changed signal. @sort_column_id may either be
@@ -161,7 +161,7 @@ gtk_tree_sortable_set_sort_column_id (GtkTreeSortable  *sortable,
 
   g_return_if_fail (iface != NULL);
   g_return_if_fail (iface->set_sort_column_id != NULL);
-  
+
   (* iface->set_sort_column_id) (sortable, sort_column_id, order);
 }
 
@@ -172,9 +172,9 @@ gtk_tree_sortable_set_sort_column_id (GtkTreeSortable  *sortable,
  * @sort_func: The comparison function
  * @user_data: (allow-none): User data to pass to @sort_func, or %NULL
  * @destroy: (allow-none): Destroy notifier of @user_data, or %NULL
- * 
+ *
  * Sets the comparison function used when sorting to be @sort_func. If the
- * current sort column id of @sortable is the same as @sort_column_id, then 
+ * current sort column id of @sortable is the same as @sort_column_id, then
  * the model will sort using this function.
  */
 void
@@ -204,15 +204,15 @@ gtk_tree_sortable_set_sort_func (GtkTreeSortable        *sortable,
  * @sort_func: The comparison function
  * @user_data: (allow-none): User data to pass to @sort_func, or %NULL
  * @destroy: (allow-none): Destroy notifier of @user_data, or %NULL
- * 
- * Sets the default comparison function used when sorting to be @sort_func.  
+ *
+ * Sets the default comparison function used when sorting to be @sort_func.
  * If the current sort column id of @sortable is
- * %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, then the model will sort using 
+ * %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, then the model will sort using
  * this function.
  *
  * If @sort_func is %NULL, then there will be no default comparison function.
  * This means that once the model  has been sorted, it can't go back to the
- * default state. In this case, when the current sort column id of @sortable 
+ * default state. In this case, when the current sort column id of @sortable
  * is %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, the model will be unsorted.
  */
 void
@@ -229,18 +229,18 @@ gtk_tree_sortable_set_default_sort_func (GtkTreeSortable        *sortable,
 
   g_return_if_fail (iface != NULL);
   g_return_if_fail (iface->set_default_sort_func != NULL);
-  
+
   (* iface->set_default_sort_func) (sortable, sort_func, user_data, destroy);
 }
 
 /**
  * gtk_tree_sortable_has_default_sort_func:
  * @sortable: A #GtkTreeSortable
- * 
+ *
  * Returns %TRUE if the model has a default sort function. This is used
- * primarily by GtkTreeViewColumns in order to determine if a model can 
+ * primarily by GtkTreeViewColumns in order to determine if a model can
  * go back to the default state, or not.
- * 
+ *
  * Return value: %TRUE, if the model has a default sort function
  */
 gboolean
@@ -254,7 +254,7 @@ gtk_tree_sortable_has_default_sort_func (GtkTreeSortable *sortable)
 
   g_return_val_if_fail (iface != NULL, FALSE);
   g_return_val_if_fail (iface->has_default_sort_func != NULL, FALSE);
-  
+
   return (* iface->has_default_sort_func) (sortable);
 }
 

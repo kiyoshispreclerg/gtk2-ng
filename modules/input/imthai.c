@@ -30,7 +30,7 @@
 
 GType type_thai = 0;
 
-static const GtkIMContextInfo thai_info = { 
+static const GtkIMContextInfo thai_info = {
   "thai",	   /* ID */
   N_("Thai-Lao"),  /* Human readable name */
   GETTEXT_PACKAGE, /* Translation domain */

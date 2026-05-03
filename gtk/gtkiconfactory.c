@@ -1997,7 +1997,7 @@ icon_source_clear (GtkIconSource *source)
       g_free (source->cp_filename);
       source->cp_filename = NULL;
 #endif
-      if (source->filename_pixbuf) 
+      if (source->filename_pixbuf)
 	g_object_unref (source->filename_pixbuf);
       source->filename_pixbuf = NULL;
       break;

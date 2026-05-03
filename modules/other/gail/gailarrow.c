@@ -31,7 +31,7 @@ static void gail_arrow_initialize       (AtkObject      *accessible,
 static void  atk_image_interface_init   (AtkImageIface  *iface);
 static const gchar* gail_arrow_get_image_description
                                         (AtkImage       *obj);
-static gboolean gail_arrow_set_image_description 
+static gboolean gail_arrow_set_image_description
                                         (AtkImage       *obj,
                                         const gchar    *description);
 static void  gail_arrow_finalize       (GObject         *object);
@@ -39,7 +39,7 @@ static void  gail_arrow_finalize       (GObject         *object);
 G_DEFINE_TYPE_WITH_CODE (GailArrow, gail_arrow, GAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (ATK_TYPE_IMAGE, atk_image_interface_init))
 
-static void	 
+static void
 gail_arrow_class_init		(GailArrowClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -84,7 +84,7 @@ gail_arrow_get_image_description (AtkImage       *obj)
   return arrow->image_description;
 }
 
-static gboolean 
+static gboolean
 gail_arrow_set_image_description (AtkImage       *obj,
                                   const gchar    *description)
 {
@@ -102,12 +102,12 @@ gail_arrow_set_image_description (AtkImage       *obj,
 }
 
 /*
- * static void  
+ * static void
  * gail_arrow_get_image_size (AtkImage       *obj,
  *                          gint           *height,
  *                          gint           *width)
  *
- * We dont implement this function for GailArrow as gtk hardcodes the size 
+ * We dont implement this function for GailArrow as gtk hardcodes the size
  * of the arrow to be 7x5 and it is not possible to query this.
  */
 

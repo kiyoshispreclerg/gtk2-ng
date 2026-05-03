@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2003.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -176,12 +176,12 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
 
   widget_class = GTK_WIDGET_CLASS (class);
   gobject_class = G_OBJECT_CLASS (class);
-  
+
   widget_class->style_set = gtk_message_dialog_style_set;
 
   gobject_class->set_property = gtk_message_dialog_set_property;
   gobject_class->get_property = gtk_message_dialog_get_property;
-  
+
   gtk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("message-border",
                                                              P_("Image/label border"),
@@ -210,7 +210,7 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
    * GtkMessageDialog:message-type:
    *
    * The type of the message. The type is used to determine
-   * the image that is shown in the dialog, unless the image is 
+   * the image that is shown in the dialog, unless the image is
    * explicitly set by the ::image property.
    */
   g_object_class_install_property (gobject_class,
@@ -232,8 +232,8 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
 
   /**
    * GtkMessageDialog:text:
-   * 
-   * The primary text of the message dialog. If the dialog has 
+   *
+   * The primary text of the message dialog. If the dialog has
    * a secondary text, this will appear as the title.
    *
    * Since: 2.10
@@ -248,9 +248,9 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
 
   /**
    * GtkMessageDialog:use-markup:
-   * 
-   * %TRUE if the primary text of the dialog includes Pango markup. 
-   * See pango_parse_markup(). 
+   *
+   * %TRUE if the primary text of the dialog includes Pango markup.
+   * See pango_parse_markup().
    *
    * Since: 2.10
    */
@@ -261,11 +261,11 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
 							 P_("The primary text of the title includes Pango markup."),
 							 FALSE,
 							 GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkMessageDialog:secondary-text:
-   * 
-   * The secondary text of the message dialog. 
+   *
+   * The secondary text of the message dialog.
    *
    * Since: 2.10
    */
@@ -279,9 +279,9 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
 
   /**
    * GtkMessageDialog:secondary-use-markup:
-   * 
-   * %TRUE if the secondary text of the dialog includes Pango markup. 
-   * See pango_parse_markup(). 
+   *
+   * %TRUE if the secondary text of the dialog includes Pango markup.
+   * See pango_parse_markup().
    *
    * Since: 2.10
    */
@@ -295,7 +295,7 @@ gtk_message_dialog_class_init (GtkMessageDialogClass *class)
 
   /**
    * GtkMessageDialog:image:
-   * 
+   *
    * The image for this dialog.
    *
    * Since: 2.10
@@ -343,15 +343,15 @@ gtk_message_dialog_init (GtkMessageDialog *dialog)
   priv->has_secondary_text = FALSE;
   priv->secondary_label = gtk_label_new (NULL);
   gtk_widget_set_no_show_all (priv->secondary_label, TRUE);
-  
+
   dialog->label = gtk_label_new (NULL);
   dialog->image = gtk_image_new_from_stock (NULL, GTK_ICON_SIZE_DIALOG);
   gtk_misc_set_alignment (GTK_MISC (dialog->image), 0.5, 0.0);
-  
+
   gtk_label_set_line_wrap  (GTK_LABEL (dialog->label), TRUE);
   gtk_label_set_selectable (GTK_LABEL (dialog->label), TRUE);
   gtk_misc_set_alignment   (GTK_MISC  (dialog->label), 0.0, 0.0);
-  
+
   gtk_label_set_line_wrap  (GTK_LABEL (priv->secondary_label), TRUE);
   gtk_label_set_selectable (GTK_LABEL (priv->secondary_label), TRUE);
   gtk_misc_set_alignment   (GTK_MISC  (priv->secondary_label), 0.0, 0.0);
@@ -416,7 +416,7 @@ setup_type (GtkMessageDialog *dialog,
   GtkMessageDialogPrivate *priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
   const gchar *stock_id = NULL;
   AtkObject *atk_obj;
- 
+
   priv->message_type = type;
 
   switch (type)
@@ -432,7 +432,7 @@ setup_type (GtkMessageDialog *dialog,
     case GTK_MESSAGE_WARNING:
       stock_id = GTK_STOCK_DIALOG_WARNING;
       break;
-      
+
     case GTK_MESSAGE_ERROR:
       stock_id = GTK_STOCK_DIALOG_ERROR;
       break;
@@ -448,7 +448,7 @@ setup_type (GtkMessageDialog *dialog,
   if (stock_id)
     gtk_image_set_from_stock (GTK_IMAGE (dialog->image), stock_id,
                               GTK_ICON_SIZE_DIALOG);
-      
+
   atk_obj = gtk_widget_get_accessible (GTK_WIDGET (dialog));
   if (GTK_IS_ACCESSIBLE (atk_obj))
     {
@@ -463,7 +463,7 @@ setup_type (GtkMessageDialog *dialog,
     }
 }
 
-static void 
+static void
 gtk_message_dialog_set_property (GObject      *object,
 				 guint         prop_id,
 				 const GValue *value,
@@ -474,7 +474,7 @@ gtk_message_dialog_set_property (GObject      *object,
 
   dialog = GTK_MESSAGE_DIALOG (object);
   priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
-  
+
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
@@ -485,22 +485,22 @@ gtk_message_dialog_set_property (GObject      *object,
       break;
     case PROP_TEXT:
       if (priv->has_primary_markup)
-	gtk_label_set_markup (GTK_LABEL (dialog->label), 
+	gtk_label_set_markup (GTK_LABEL (dialog->label),
 			      g_value_get_string (value));
       else
-	gtk_label_set_text (GTK_LABEL (dialog->label), 
+	gtk_label_set_text (GTK_LABEL (dialog->label),
 			    g_value_get_string (value));
       break;
     case PROP_USE_MARKUP:
       priv->has_primary_markup = g_value_get_boolean (value) != FALSE;
-      gtk_label_set_use_markup (GTK_LABEL (dialog->label), 
+      gtk_label_set_use_markup (GTK_LABEL (dialog->label),
 				priv->has_primary_markup);
       setup_primary_label_font (dialog);
       break;
     case PROP_SECONDARY_TEXT:
       {
 	const gchar *txt = g_value_get_string (value);
-	
+
 	if (gtk_label_get_use_markup (GTK_LABEL (priv->secondary_label)))
 	  gtk_label_set_markup (GTK_LABEL (priv->secondary_label), txt);
 	else
@@ -520,7 +520,7 @@ gtk_message_dialog_set_property (GObject      *object,
       }
       break;
     case PROP_SECONDARY_USE_MARKUP:
-      gtk_label_set_use_markup (GTK_LABEL (priv->secondary_label), 
+      gtk_label_set_use_markup (GTK_LABEL (priv->secondary_label),
 				g_value_get_boolean (value));
       break;
     case PROP_IMAGE:
@@ -533,7 +533,7 @@ gtk_message_dialog_set_property (GObject      *object,
     }
 }
 
-static void 
+static void
 gtk_message_dialog_get_property (GObject     *object,
 				 guint        prop_id,
 				 GValue      *value,
@@ -544,7 +544,7 @@ gtk_message_dialog_get_property (GObject     *object,
 
   dialog = GTK_MESSAGE_DIALOG (object);
   priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
-    
+
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
@@ -558,14 +558,14 @@ gtk_message_dialog_get_property (GObject     *object,
       break;
     case PROP_SECONDARY_TEXT:
       if (priv->has_secondary_text)
-      g_value_set_string (value, 
+      g_value_set_string (value,
 			  gtk_label_get_label (GTK_LABEL (priv->secondary_label)));
       else
 	g_value_set_string (value, NULL);
       break;
     case PROP_SECONDARY_USE_MARKUP:
       if (priv->has_secondary_text)
-	g_value_set_boolean (value, 
+	g_value_set_boolean (value,
 			     gtk_label_get_use_markup (GTK_LABEL (priv->secondary_label)));
       else
 	g_value_set_boolean (value, FALSE);
@@ -641,7 +641,7 @@ gtk_message_dialog_new (GtkWindow     *parent,
   if (parent != NULL)
     gtk_window_set_transient_for (GTK_WINDOW (widget),
                                   GTK_WINDOW (parent));
-  
+
   if (flags & GTK_DIALOG_MODAL)
     gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 
@@ -653,13 +653,13 @@ gtk_message_dialog_new (GtkWindow     *parent,
 
 /**
  * gtk_message_dialog_new_with_markup:
- * @parent: (allow-none): transient parent, or %NULL for none 
+ * @parent: (allow-none): transient parent, or %NULL for none
  * @flags: flags
  * @type: type of message
  * @buttons: set of buttons to use
  * @message_format: (allow-none): printf()-style format string, or %NULL
  * @...: arguments for @message_format
- * 
+ *
  * Creates a new message dialog, which is a simple dialog with an icon
  * indicating the dialog type (error, warning, etc.) and some text which
  * is marked up with the <link linkend="PangoMarkupFormat">Pango text markup language</link>.
@@ -685,7 +685,7 @@ gtk_message_dialog_new (GtkWindow     *parent,
  *  gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog),
  *                                 markup);
  * ]|
- * 
+ *
  * Return value: a new #GtkMessageDialog
  *
  * Since: 2.4
@@ -724,7 +724,7 @@ gtk_message_dialog_new_with_markup (GtkWindow     *parent,
  * gtk_message_dialog_set_image:
  * @dialog: a #GtkMessageDialog
  * @image: the image
- * 
+ *
  * Sets the dialog's image to @image.
  *
  * Since: 2.10
@@ -748,7 +748,7 @@ gtk_message_dialog_set_image (GtkMessageDialog *dialog,
   priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
 
   priv->message_type = GTK_MESSAGE_OTHER;
-  
+
   parent = dialog->image->parent;
   gtk_container_add (GTK_CONTAINER (parent), image);
   gtk_container_remove (GTK_CONTAINER (parent), dialog->image);
@@ -781,7 +781,7 @@ gtk_message_dialog_get_image (GtkMessageDialog *dialog)
  * gtk_message_dialog_set_markup:
  * @message_dialog: a #GtkMessageDialog
  * @str: markup string (see <link linkend="PangoMarkupFormat">Pango markup format</link>)
- * 
+ *
  * Sets the text of the message dialog to be @str, which is marked
  * up with the <link linkend="PangoMarkupFormat">Pango text markup
  * language</link>.
@@ -806,8 +806,8 @@ gtk_message_dialog_set_markup (GtkMessageDialog *message_dialog,
  * @message_dialog: a #GtkMessageDialog
  * @message_format: (allow-none): printf()-style format string, or %NULL
  * @...: arguments for @message_format
- * 
- * Sets the secondary text of the message dialog to be @message_format 
+ *
+ * Sets the secondary text of the message dialog to be @message_format
  * (with printf()-style).
  *
  * Note that setting a secondary text makes the primary text become
@@ -853,25 +853,25 @@ gtk_message_dialog_format_secondary_text (GtkMessageDialog *message_dialog,
 /**
  * gtk_message_dialog_format_secondary_markup:
  * @message_dialog: a #GtkMessageDialog
- * @message_format: printf()-style markup string (see 
+ * @message_format: printf()-style markup string (see
      <link linkend="PangoMarkupFormat">Pango markup format</link>), or %NULL
  * @...: arguments for @message_format
- * 
- * Sets the secondary text of the message dialog to be @message_format (with 
- * printf()-style), which is marked up with the 
+ *
+ * Sets the secondary text of the message dialog to be @message_format (with
+ * printf()-style), which is marked up with the
  * <link linkend="PangoMarkupFormat">Pango text markup language</link>.
  *
  * Note that setting a secondary text makes the primary text become
  * bold, unless you have provided explicit markup.
  *
  * Due to an oversight, this function does not escape special XML characters
- * like gtk_message_dialog_new_with_markup() does. Thus, if the arguments 
+ * like gtk_message_dialog_new_with_markup() does. Thus, if the arguments
  * may contain special XML characters, you should use g_markup_printf_escaped()
  * to escape it.
 
  * <informalexample><programlisting>
  * gchar *msg;
- *  
+ *
  * msg = g_markup_printf_escaped (message_format, ...);
  * gtk_message_dialog_format_secondary_markup (message_dialog, "&percnt;s", msg);
  * g_free (msg);
@@ -997,11 +997,11 @@ gtk_message_dialog_add_buttons (GtkMessageDialog* message_dialog,
 					       GTK_RESPONSE_CANCEL,
 					       -1);
       break;
-      
+
     default:
       g_warning ("Unknown GtkButtonsType");
       break;
-    } 
+    }
 
   g_object_notify (G_OBJECT (message_dialog), "buttons");
 }
@@ -1021,7 +1021,7 @@ gtk_message_dialog_style_set (GtkWidget *widget,
     {
       gtk_widget_style_get (widget, "message-border",
                             &border_width, NULL);
-      
+
       gtk_container_set_border_width (GTK_CONTAINER (parent),
                                       MAX (0, border_width - 7));
     }

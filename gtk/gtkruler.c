@@ -134,7 +134,7 @@ gtk_ruler_class_init (GtkRulerClass *class)
 							-G_MAXDOUBLE,
 							G_MAXDOUBLE,
 							0.0,
-							GTK_PARAM_READWRITE));  
+							GTK_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_UPPER,
@@ -144,7 +144,7 @@ gtk_ruler_class_init (GtkRulerClass *class)
 							-G_MAXDOUBLE,
 							G_MAXDOUBLE,
 							0.0,
-							GTK_PARAM_READWRITE));  
+							GTK_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_POSITION,
@@ -154,7 +154,7 @@ gtk_ruler_class_init (GtkRulerClass *class)
 							-G_MAXDOUBLE,
 							G_MAXDOUBLE,
 							0.0,
-							GTK_PARAM_READWRITE));  
+							GTK_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_MAX_SIZE,
@@ -164,7 +164,7 @@ gtk_ruler_class_init (GtkRulerClass *class)
 							-G_MAXDOUBLE,
 							G_MAXDOUBLE,
 							0.0,
-							GTK_PARAM_READWRITE));  
+							GTK_PARAM_READWRITE));
   /**
    * GtkRuler:metric:
    *
@@ -177,9 +177,9 @@ gtk_ruler_class_init (GtkRulerClass *class)
                                    g_param_spec_enum ("metric",
 						      P_("Metric"),
 						      P_("The metric used for the ruler"),
-						      GTK_TYPE_METRIC_TYPE, 
+						      GTK_TYPE_METRIC_TYPE,
 						      GTK_PIXELS,
-						      GTK_PARAM_READWRITE));  
+						      GTK_PARAM_READWRITE));
 }
 
 static void
@@ -330,7 +330,7 @@ gtk_ruler_get_metric (GtkRuler *ruler)
  * @max_size: the maximum size of the ruler used when calculating the space to
  * leave for the text
  *
- * This sets the range of the ruler. 
+ * This sets the range of the ruler.
  *
  * @Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
  *              unmaintained and too specialized. There is no replacement.
@@ -546,13 +546,13 @@ gtk_ruler_expose (GtkWidget      *widget,
       cairo_t *cr;
 
       gtk_ruler_draw_ticks (ruler);
-      
+
       cr = gdk_cairo_create (widget->window);
       gdk_cairo_set_source_pixmap (cr, ruler->backing_store, 0, 0);
       gdk_cairo_rectangle (cr, &event->area);
       cairo_fill (cr);
       cairo_destroy (cr);
-      
+
       gtk_ruler_draw_pos (ruler);
     }
 

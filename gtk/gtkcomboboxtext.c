@@ -189,7 +189,7 @@ item_start_element (GMarkupParseContext *context,
 	    {
 	      /* do nothing, comments are for translators */
 	    }
-	  else if (strcmp (names[i], "context") == 0) 
+	  else if (strcmp (names[i], "context") == 0)
 	    data->context = g_strdup (values[i]);
 	  else
 	    g_warning ("Unknown custom combo box item attribute: %s", names[i]);
@@ -265,7 +265,7 @@ gtk_combo_box_text_buildable_custom_tag_start (GtkBuildable     *buildable,
 					       GMarkupParser    *parser,
 					       gpointer         *data)
 {
-  if (buildable_parent_iface->custom_tag_start (buildable, builder, child, 
+  if (buildable_parent_iface->custom_tag_start (buildable, builder, child,
 						tagname, parser, data))
     return TRUE;
 
@@ -293,7 +293,7 @@ gtk_combo_box_text_buildable_custom_finished (GtkBuildable *buildable,
 {
   ItemParserData *data;
 
-  buildable_parent_iface->custom_finished (buildable, builder, child, 
+  buildable_parent_iface->custom_finished (buildable, builder, child,
 					   tagname, user_data);
 
   if (strcmp (tagname, "items") == 0)

@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- * 
+ *
  * This file contains code shared between GtkTreeStore and GtkListStore.  Please
  * do not use it.
  */
@@ -257,7 +257,7 @@ _gtk_tree_data_list_node_copy (GtkTreeDataList *list,
   GtkTreeDataList *new_list;
 
   g_return_val_if_fail (list != NULL, NULL);
-  
+
   new_list = _gtk_tree_data_list_alloc ();
   new_list->next = NULL;
 
@@ -530,7 +530,7 @@ _gtk_tree_data_list_set_header (GList                  *header_list,
       if (list->next == NULL)
 	break;
     }
-  
+
   if (header == NULL)
     {
       header = g_slice_new0 (GtkTreeDataSortHeader);
@@ -544,11 +544,11 @@ _gtk_tree_data_list_set_header (GList                  *header_list,
   if (header->destroy)
     {
       GDestroyNotify d = header->destroy;
-      
+
       header->destroy = NULL;
       d (header->data);
     }
-  
+
   header->func = func;
   header->data = data;
   header->destroy = destroy;

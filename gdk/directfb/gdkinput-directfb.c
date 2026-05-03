@@ -62,9 +62,9 @@ void
 _gdk_init_input_core (void)
 {
   GdkDisplay *display = GDK_DISPLAY_OBJECT (_gdk_display);
-  
+
   _gdk_core_pointer = g_object_new (GDK_TYPE_DEVICE, NULL);
-  
+
   _gdk_core_pointer->name       = "Core Pointer";
   _gdk_core_pointer->source     = GDK_SOURCE_MOUSE;
   _gdk_core_pointer->mode       = GDK_MODE_SCREEN;

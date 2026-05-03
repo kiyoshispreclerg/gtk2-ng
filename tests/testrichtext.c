@@ -148,7 +148,7 @@ main (gint   argc,
   gtk_init (&argc, &argv);
 
   /* initialize random numbers, disable this for deterministic testing */
-  if (1)        
+  if (1)
     quick_rand32_accu = g_random_int();
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);

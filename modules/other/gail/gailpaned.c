@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 #include "gailpaned.h"
 
-static void         gail_paned_class_init          (GailPanedClass *klass); 
+static void         gail_paned_class_init          (GailPanedClass *klass);
 
 static void         gail_paned_init                (GailPaned      *paned);
 
@@ -94,7 +94,7 @@ gail_paned_real_initialize (AtkObject *obj,
 
   obj->role = ATK_ROLE_SPLIT_PANE;
 }
- 
+
 static void
 gail_paned_size_allocate_gtk (GtkWidget      *widget,
                               GtkAllocation  *allocation)
@@ -171,7 +171,7 @@ gail_paned_get_minimum_value (AtkValue             *obj,
 /*
  * Calling atk_value_set_current_value() is no guarantee that the value is
  * acceptable; it is necessary to listen for accessible-value signals
- * and check whether the current value has been changed or check what the 
+ * and check whether the current value has been changed or check what the
  * maximum and minimum values are.
  */
 

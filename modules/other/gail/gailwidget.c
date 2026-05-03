@@ -67,7 +67,7 @@ static AtkLayer gail_widget_get_layer      (AtkComponent *component);
 static gboolean gail_widget_grab_focus     (AtkComponent    *component);
 
 
-static void     gail_widget_remove_focus_handler 
+static void     gail_widget_remove_focus_handler
                                            (AtkComponent    *component,
                                             guint           handler_id);
 
@@ -136,10 +136,10 @@ gail_widget_init (GailWidget *accessible)
 }
 
 /**
- * This function  specifies the GtkWidget for which the GailWidget was created 
+ * This function  specifies the GtkWidget for which the GailWidget was created
  * and specifies a handler to be called when the GtkWidget is destroyed.
  **/
-static void 
+static void
 gail_widget_real_initialize (AtkObject *obj,
                              gpointer  data)
 {
@@ -188,7 +188,7 @@ gail_widget_real_initialize (AtkObject *obj,
   obj->role = ATK_ROLE_UNKNOWN;
 }
 
-AtkObject* 
+AtkObject*
 gail_widget_new (GtkWidget *widget)
 {
   GObject *object;
@@ -225,7 +225,7 @@ gail_widget_connect_widget_destroyed (GtkAccessible *accessible)
  * It sets the widget field in the GtkAccessible structure to NULL
  * and emits a state-change signal for the state ATK_STATE_DEFUNCT
  */
-static void 
+static void
 gail_widget_destroyed (GtkWidget     *widget,
                        GtkAccessible *accessible)
 {
@@ -251,14 +251,14 @@ gail_widget_get_description (AtkObject *accessible)
          * Object is defunct
          */
         return NULL;
- 
+
       gail_return_val_if_fail (GTK_WIDGET (obj->widget), NULL);
 
       return gtk_widget_get_tooltip_text (obj->widget);
     }
 }
 
-static AtkObject* 
+static AtkObject*
 gail_widget_get_parent (AtkObject *accessible)
 {
   AtkObject *parent;
@@ -333,7 +333,7 @@ find_label (GtkWidget *widget)
           if (labels->next)
             {
               g_warning ("Widget (%s) has more than one label", G_OBJECT_TYPE_NAME (widget));
-              
+
             }
           else
             {
@@ -358,7 +358,7 @@ find_label (GtkWidget *widget)
             }
           temp_widget = gtk_widget_get_parent (temp_widget);
         }
-    } 
+    }
   return label;
 }
 
@@ -384,7 +384,7 @@ gail_widget_ref_relation_set (AtkObject *obj)
 
   if (GTK_IS_BOX (widget) && !GTK_IS_COMBO (widget))
       /*
-       * Do not report labelled-by for a GtkBox which could be a 
+       * Do not report labelled-by for a GtkBox which could be a
        * GnomeFileEntry.
        */
     return relation_set;
@@ -411,7 +411,7 @@ gail_widget_ref_relation_set (AtkObject *obj)
                   if (GTK_IS_BOX (temp_widget))
                     {
                       label = find_label (temp_widget);
-                 
+
                       if (!label)
                         label = find_label (gtk_widget_get_parent (temp_widget));
                     }
@@ -487,28 +487,28 @@ gail_widget_ref_state_set (AtkObject *accessible)
           atk_state_set_add_state (state_set, ATK_STATE_SENSITIVE);
           atk_state_set_add_state (state_set, ATK_STATE_ENABLED);
         }
-  
+
       if (gtk_widget_get_can_focus (widget))
         {
           atk_state_set_add_state (state_set, ATK_STATE_FOCUSABLE);
         }
       /*
-       * We do not currently generate notifications when an ATK object 
-       * corresponding to a GtkWidget changes visibility by being scrolled 
-       * on or off the screen.  The testcase for this is the main window 
-       * of the testgtk application in which a set of buttons in a GtkVBox 
+       * We do not currently generate notifications when an ATK object
+       * corresponding to a GtkWidget changes visibility by being scrolled
+       * on or off the screen.  The testcase for this is the main window
+       * of the testgtk application in which a set of buttons in a GtkVBox
        * is in a scrooled window with a viewport.
        *
-       * To generate the notifications we would need to do the following: 
+       * To generate the notifications we would need to do the following:
        * 1) Find the GtkViewPort among the antecendents of the objects
        * 2) Create an accesible for the GtkViewPort
        * 3) Connect to the value-changed signal on the viewport
-       * 4) When the signal is received we need to traverse the children 
-       * of the viewport and check whether the children are visible or not 
-       * visible; we may want to restrict this to the widgets for which 
+       * 4) When the signal is received we need to traverse the children
+       * of the viewport and check whether the children are visible or not
+       * visible; we may want to restrict this to the widgets for which
        * accessible objects have been created.
-       * 5) We probably need to store a variable on_screen in the 
-       * GailWidget data structure so we can determine whether the value has 
+       * 5) We probably need to store a variable on_screen in the
+       * GailWidget data structure so we can determine whether the value has
        * changed.
        */
       if (gtk_widget_get_visible (widget))
@@ -520,7 +520,7 @@ gail_widget_ref_state_set (AtkObject *accessible)
               atk_state_set_add_state (state_set, ATK_STATE_SHOWING);
             }
         }
-  
+
       if (gtk_widget_has_focus (widget) && (widget == focus_widget))
         {
           AtkObject *focus_obj;
@@ -578,7 +578,7 @@ gail_widget_get_index_in_parent (AtkObject *accessible)
               if (child == accessible)
                 found = TRUE;
 
-              g_object_unref (child); 
+              g_object_unref (child);
               if (found)
                 return i;
             }
@@ -595,10 +595,10 @@ gail_widget_get_index_in_parent (AtkObject *accessible)
 
   index = g_list_index (children, widget);
   g_list_free (children);
-  return index;  
+  return index;
 }
 
-static void 
+static void
 atk_component_interface_init (AtkComponentIface *iface)
 {
   /*
@@ -615,7 +615,7 @@ atk_component_interface_init (AtkComponentIface *iface)
   iface->set_size = gail_widget_set_size;
 }
 
-static guint 
+static guint
 gail_widget_add_focus_handler (AtkComponent    *component,
                                AtkFocusHandler handler)
 {
@@ -630,7 +630,7 @@ gail_widget_add_focus_handler (AtkComponent    *component,
                                (gpointer) handler, NULL);
   if (!ret)
     {
-      return g_signal_connect_closure_by_id (component, 
+      return g_signal_connect_closure_by_id (component,
                                              signal_id, 0,
                                              g_cclosure_new (
                                              G_CALLBACK (handler), NULL,
@@ -643,7 +643,7 @@ gail_widget_add_focus_handler (AtkComponent    *component,
     }
 }
 
-static void 
+static void
 gail_widget_get_extents (AtkComponent   *component,
                          gint           *x,
                          gint           *y,
@@ -689,9 +689,9 @@ gail_widget_get_extents (AtkComponent   *component,
   *x += x_window;
   *y += y_window;
 
- 
- if (coord_type == ATK_XY_WINDOW) 
-    { 
+
+ if (coord_type == ATK_XY_WINDOW)
+    {
       window = gdk_window_get_toplevel (widget->window);
       gdk_window_get_origin (window, &x_toplevel, &y_toplevel);
 
@@ -700,7 +700,7 @@ gail_widget_get_extents (AtkComponent   *component,
     }
 }
 
-static void 
+static void
 gail_widget_get_size (AtkComponent   *component,
                       gint           *width,
                       gint           *height)
@@ -728,7 +728,7 @@ gail_widget_get_layer (AtkComponent *component)
   return (AtkLayer) layer;
 }
 
-static gboolean 
+static gboolean
 gail_widget_grab_focus (AtkComponent   *component)
 {
   GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
@@ -753,14 +753,14 @@ gail_widget_grab_focus (AtkComponent   *component)
     return FALSE;
 }
 
-static void 
+static void
 gail_widget_remove_focus_handler (AtkComponent   *component,
                                   guint          handler_id)
 {
   g_signal_handler_disconnect (component, handler_id);
 }
 
-static gboolean 
+static gboolean
 gail_widget_set_extents (AtkComponent   *component,
                          gint           x,
                          gint           y,
@@ -797,7 +797,7 @@ gail_widget_set_extents (AtkComponent   *component,
             }
         }
       else if (coord_type == ATK_XY_SCREEN)
-        {  
+        {
           gtk_widget_set_uposition (widget, x, y);
           gtk_widget_set_size_request (widget, width, height);
           return TRUE;
@@ -840,7 +840,7 @@ gail_widget_set_position (AtkComponent   *component,
             }
         }
       else if (coord_type == ATK_XY_SCREEN)
-        {  
+        {
           gtk_widget_set_uposition (widget, x, y);
           return TRUE;
         }
@@ -848,7 +848,7 @@ gail_widget_set_position (AtkComponent   *component,
   return FALSE;
 }
 
-static gboolean 
+static gboolean
 gail_widget_set_size (AtkComponent   *component,
                       gint           width,
                       gint           height)
@@ -942,12 +942,12 @@ gail_widget_map_gtk (GtkWidget     *widget)
 }
 
 /*
- * This function is a signal handler for notify signal which gets emitted 
+ * This function is a signal handler for notify signal which gets emitted
  * when a property changes value on the GtkWidget associated with the object.
  *
  * It calls a function for the GailWidget type
  */
-static void 
+static void
 gail_widget_notify_gtk (GObject     *obj,
                         GParamSpec  *pspec)
 {
@@ -961,14 +961,14 @@ gail_widget_notify_gtk (GObject     *obj,
 }
 
 /*
- * This function is a signal handler for notify signal which gets emitted 
+ * This function is a signal handler for notify signal which gets emitted
  * when a property changes value on the GtkWidget associated with a GailWidget.
  *
  * It constructs an AtkPropertyValues structure and emits a "property_changed"
  * signal which causes the user specified AtkPropertyChangeHandler
  * to be called.
  */
-static void 
+static void
 gail_widget_real_notify_gtk (GObject     *obj,
                              GParamSpec  *pspec)
 {
@@ -1008,7 +1008,7 @@ gail_widget_real_notify_gtk (GObject     *obj,
 
 }
 
-static void 
+static void
 gail_widget_focus_event (AtkObject   *obj,
                          gboolean    focus_in)
 {
@@ -1039,10 +1039,10 @@ gail_widget_find_viewport (GtkWidget *widget)
 }
 
 /*
- * This function checks whether the widget has an antecedent which is 
+ * This function checks whether the widget has an antecedent which is
  * a GtkViewport and, if so, whether any part of the widget intersects
  * the visible rectangle of the GtkViewport.
- */ 
+ */
 static gboolean gail_widget_on_screen (GtkWidget *widget)
 {
   GtkWidget *viewport;
@@ -1060,7 +1060,7 @@ static gboolean gail_widget_on_screen (GtkWidget *widget)
       visible_rect.x = adjustment->value;
       visible_rect.width = viewport->allocation.width;
       visible_rect.height = viewport->allocation.height;
-             
+
       if (((widget->allocation.x + widget->allocation.width) < visible_rect.x) ||
          ((widget->allocation.y + widget->allocation.height) < visible_rect.y) ||
          (widget->allocation.x > (visible_rect.x + visible_rect.width)) ||
@@ -1078,7 +1078,7 @@ static gboolean gail_widget_on_screen (GtkWidget *widget)
       if (widget->allocation.x + widget->allocation.width <= 0 &&
           widget->allocation.y + widget->allocation.height <= 0)
         return_value = FALSE;
-      else 
+      else
         return_value = TRUE;
     }
 

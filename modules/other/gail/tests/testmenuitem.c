@@ -17,7 +17,7 @@ static void _create_event_watcher (void);
 static void _check_object (AtkObject *obj);
 static gint _do_menu_item_action (gpointer data);
 
-static void 
+static void
 _check_object (AtkObject *obj)
 {
   AtkRole role;
@@ -108,7 +108,7 @@ _check_object (AtkObject *obj)
     {
       GtkWidget *widget = GTK_ACCESSIBLE (obj)->widget;
       g_print ("Type: %s\n", g_type_name (G_OBJECT_TYPE (widget)));
-    } 
+    }
   }
 }
 

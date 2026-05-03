@@ -109,7 +109,7 @@ enum {
 
   /* Behavior args */
   PROP_ACCUMULATIVE_MARGIN,
-  
+
   /* Whether-a-style-arg-is-set args */
   PROP_BACKGROUND_SET,
   PROP_FOREGROUND_SET,
@@ -163,7 +163,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
 
   object_class->set_property = gtk_text_tag_set_property;
   object_class->get_property = gtk_text_tag_get_property;
-  
+
   object_class->finalize = gtk_text_tag_finalize;
 
   /* Construct */
@@ -201,14 +201,14 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                          FALSE,
                                                          GTK_PARAM_READWRITE));
 
-  
+
   g_object_class_install_property (object_class,
                                    PROP_BACKGROUND_STIPPLE,
                                    g_param_spec_object ("background-stipple",
                                                         P_("Background stipple mask"),
                                                         P_("Bitmap to use as a mask when drawing the text background"),
                                                         GDK_TYPE_PIXMAP,
-                                                        GTK_PARAM_READWRITE));  
+                                                        GTK_PARAM_READWRITE));
 
 
   g_object_class_install_property (object_class,
@@ -227,15 +227,15 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                        GDK_TYPE_COLOR,
                                                        GTK_PARAM_READWRITE));
 
-  
+
   g_object_class_install_property (object_class,
                                    PROP_FOREGROUND_STIPPLE,
                                    g_param_spec_object ("foreground-stipple",
                                                         P_("Foreground stipple mask"),
                                                         P_("Bitmap to use as a mask when drawing the text foreground"),
                                                         GDK_TYPE_PIXMAP,
-                                                        GTK_PARAM_READWRITE));  
-  
+                                                        GTK_PARAM_READWRITE));
+
   g_object_class_install_property (object_class,
                                    PROP_DIRECTION,
                                    g_param_spec_enum ("direction",
@@ -256,7 +256,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   /**
    * GtkTextTag:font:
    *
-   * Font description as string, e.g. \"Sans Italic 12\". 
+   * Font description as string, e.g. \"Sans Italic 12\".
    *
    * Note that the initial value of this property depends on
    * the internals of #PangoFontDescription.
@@ -276,7 +276,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                        P_("Font description as a PangoFontDescription struct"),
                                                        PANGO_TYPE_FONT_DESCRIPTION,
                                                        GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_FAMILY,
                                    g_param_spec_string ("family",
@@ -302,7 +302,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                       PANGO_TYPE_VARIANT,
                                                       PANGO_VARIANT_NORMAL,
                                                       GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_WEIGHT,
                                    g_param_spec_int ("weight",
@@ -312,7 +312,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                      G_MAXINT,
                                                      PANGO_WEIGHT_NORMAL,
                                                      GTK_PARAM_READWRITE));
-  
+
 
   g_object_class_install_property (object_class,
                                    PROP_STRETCH,
@@ -322,7 +322,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                       PANGO_TYPE_STRETCH,
                                                       PANGO_STRETCH_NORMAL,
                                                       GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_SIZE,
                                    g_param_spec_int ("size",
@@ -342,7 +342,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                         G_MAXDOUBLE,
                                                         1.0,
                                                         GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_SIZE_POINTS,
                                    g_param_spec_double ("size-points",
@@ -351,7 +351,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                         0.0,
                                                         G_MAXDOUBLE,
                                                         0.0,
-                                                        GTK_PARAM_READWRITE));  
+                                                        GTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
                                    PROP_JUSTIFICATION,
@@ -365,8 +365,8 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   /**
    * GtkTextTag:language:
    *
-   * The language this text is in, as an ISO code. Pango can use this as a 
-   * hint when rendering the text. If not set, an appropriate default will be 
+   * The language this text is in, as an ISO code. Pango can use this as a
+   * hint when rendering the text. If not set, an appropriate default will be
    * used.
    *
    * Note that the initial value of this property depends on the current
@@ -378,7 +378,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                         P_("Language"),
                                                         P_("The language this text is in, as an ISO code. Pango can use this as a hint when rendering the text. If not set, an appropriate default will be used."),
                                                         NULL,
-                                                        GTK_PARAM_READWRITE));  
+                                                        GTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
                                    PROP_LEFT_MARGIN,
@@ -400,7 +400,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                      0,
                                                      GTK_PARAM_READWRITE));
 
-  
+
   g_object_class_install_property (object_class,
                                    PROP_INDENT,
                                    g_param_spec_int ("indent",
@@ -411,7 +411,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                      0,
                                                      GTK_PARAM_READWRITE));
 
-  
+
   g_object_class_install_property (object_class,
                                    PROP_RISE,
                                    g_param_spec_int ("rise",
@@ -431,7 +431,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                      G_MAXINT,
                                                      0,
                                                      GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_PIXELS_BELOW_LINES,
                                    g_param_spec_int ("pixels-below-lines",
@@ -459,7 +459,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                          P_("Whether to strike through the text"),
                                                          FALSE,
                                                          GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_UNDERLINE,
                                    g_param_spec_enum ("underline",
@@ -468,7 +468,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                       PANGO_TYPE_UNDERLINE,
                                                       PANGO_UNDERLINE_NONE,
                                                       GTK_PARAM_READWRITE));
-  
+
   g_object_class_install_property (object_class,
                                    PROP_WRAP_MODE,
                                    g_param_spec_enum ("wrap-mode",
@@ -477,7 +477,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                       GTK_TYPE_WRAP_MODE,
                                                       GTK_WRAP_NONE,
                                                       GTK_PARAM_READWRITE));
-  
+
 
   g_object_class_install_property (object_class,
                                    PROP_TABS,
@@ -486,15 +486,15 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
                                                        P_("Custom tabs for this text"),
                                                        PANGO_TYPE_TAB_ARRAY,
                                                        GTK_PARAM_READWRITE));
-  
+
   /**
    * GtkTextTag:invisible:
    *
    * Whether this text is hidden.
    *
-   * Note that there may still be problems with the support for invisible 
+   * Note that there may still be problems with the support for invisible
    * text, in particular when navigating programmatically inside a buffer
-   * containing invisible segments. 
+   * containing invisible segments.
    *
    * Since: 2.8
    */
@@ -524,7 +524,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   /**
    * GtkTextTag:paragraph-background-gdk:
    *
-   * The paragraph background color as a as a (possibly unallocated) 
+   * The paragraph background color as a as a (possibly unallocated)
    * #GdkColor.
    *
    * Since: 2.8
@@ -542,8 +542,8 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
    *
    * Whether the margins accumulate or override each other.
    *
-   * When set to %TRUE the margins of this tag are added to the margins 
-   * of any other non-accumulative margins present. When set to %FALSE 
+   * When set to %TRUE the margins of this tag are added to the margins
+   * of any other non-accumulative margins present. When set to %FALSE
    * the margins override one another (the default).
    *
    * Since: 2.12
@@ -563,14 +563,14 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   ADD_SET_PROP ("background-set", PROP_BACKGROUND_SET,
                 P_("Background set"),
                 P_("Whether this tag affects the background color"));
-  
+
   ADD_SET_PROP ("background-full-height-set", PROP_BACKGROUND_FULL_HEIGHT_SET,
                 P_("Background full height set"),
                 P_("Whether this tag affects background height"));
 
   ADD_SET_PROP ("background-stipple-set", PROP_BACKGROUND_STIPPLE_SET,
                 P_("Background stipple set"),
-                P_("Whether this tag affects the background stipple"));  
+                P_("Whether this tag affects the background stipple"));
 
   ADD_SET_PROP ("foreground-set", PROP_FOREGROUND_SET,
                 P_("Foreground set"),
@@ -579,14 +579,14 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   ADD_SET_PROP ("foreground-stipple-set", PROP_FOREGROUND_STIPPLE_SET,
                 P_("Foreground stipple set"),
                 P_("Whether this tag affects the foreground stipple"));
-  
+
   ADD_SET_PROP ("editable-set", PROP_EDITABLE_SET,
                 P_("Editability set"),
                 P_("Whether this tag affects text editability"));
 
   ADD_SET_PROP ("family-set", PROP_FAMILY_SET,
                 P_("Font family set"),
-                P_("Whether this tag affects the font family"));  
+                P_("Whether this tag affects the font family"));
 
   ADD_SET_PROP ("style-set", PROP_STYLE_SET,
                 P_("Font style set"),
@@ -611,11 +611,11 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   ADD_SET_PROP ("scale-set", PROP_SCALE_SET,
                 P_("Font scale set"),
                 P_("Whether this tag scales the font size by a factor"));
-  
+
   ADD_SET_PROP ("justification-set", PROP_JUSTIFICATION_SET,
                 P_("Justification set"),
                 P_("Whether this tag affects paragraph justification"));
-  
+
   ADD_SET_PROP ("language-set", PROP_LANGUAGE_SET,
                 P_("Language set"),
                 P_("Whether this tag affects the language the text is rendered as"));
@@ -647,7 +647,7 @@ gtk_text_tag_class_init (GtkTextTagClass *klass)
   ADD_SET_PROP ("strikethrough-set", PROP_STRIKETHROUGH_SET,
                 P_("Strikethrough set"),
                 P_("Whether this tag affects strikethrough"));
-  
+
   ADD_SET_PROP ("right-margin-set", PROP_RIGHT_MARGIN_SET,
                 P_("Right margin set"),
                 P_("Whether this tag affects the right margin"));
@@ -708,10 +708,10 @@ gtk_text_tag_init (GtkTextTag *text_tag)
 /**
  * gtk_text_tag_new:
  * @name: (allow-none): tag name, or %NULL
- * 
+ *
  * Creates a #GtkTextTag. Configure the tag using object arguments,
  * i.e. using g_object_set().
- * 
+ *
  * Return value: a new #GtkTextTag
  **/
 GtkTextTag*
@@ -740,7 +740,7 @@ gtk_text_tag_finalize (GObject *object)
 
   gtk_text_attributes_unref (text_tag->values);
   text_tag->values = NULL;
-  
+
   g_free (text_tag->name);
   text_tag->name = NULL;
 
@@ -757,7 +757,7 @@ set_bg_color (GtkTextTag *tag, GdkColor *color)
           tag->bg_color_set = TRUE;
           g_object_notify (G_OBJECT (tag), "background-set");
         }
-      
+
       tag->values->appearance.bg_color = *color;
     }
   else
@@ -847,7 +847,7 @@ set_font_desc_fields (PangoFontDescription *desc,
 		      PangoFontMask         to_set)
 {
   PangoFontMask changed_mask = 0;
-  
+
   if (to_set & PANGO_FONT_MASK_FAMILY)
     {
       const char *family = pango_font_description_get_family (desc);
@@ -875,7 +875,7 @@ set_font_desc_fields (PangoFontDescription *desc,
 	  size = 10 * PANGO_SCALE;
 	  changed_mask |= PANGO_FONT_MASK_SIZE;
 	}
-      
+
       pango_font_description_set_size (desc, size);
     }
 
@@ -925,7 +925,7 @@ set_font_description (GtkTextTag           *text_tag,
   GObject *object = G_OBJECT (text_tag);
   PangoFontDescription *new_font_desc;
   PangoFontMask old_mask, new_mask, changed_mask, set_changed_mask;
-  
+
   if (font_desc)
     new_font_desc = pango_font_description_copy (font_desc);
   else
@@ -935,7 +935,7 @@ set_font_description (GtkTextTag           *text_tag,
     old_mask = pango_font_description_get_set_fields (text_tag->values->font);
   else
     old_mask = 0;
-  
+
   new_mask = pango_font_description_get_set_fields (new_font_desc);
 
   changed_mask = old_mask | new_mask;
@@ -944,12 +944,12 @@ set_font_description (GtkTextTag           *text_tag,
   if (text_tag->values->font)
     pango_font_description_free (text_tag->values->font);
   text_tag->values->font = new_font_desc;
-  
+
   g_object_freeze_notify (object);
 
   g_object_notify (object, "font-desc");
   g_object_notify (object, "font");
-  
+
   if (changed_mask & PANGO_FONT_MASK_FAMILY)
     g_object_notify (object, "family");
   if (changed_mask & PANGO_FONT_MASK_STYLE)
@@ -967,7 +967,7 @@ set_font_description (GtkTextTag           *text_tag,
     }
 
   notify_set_changed (object, set_changed_mask);
-  
+
   g_object_thaw_notify (object);
 }
 
@@ -1050,7 +1050,7 @@ gtk_text_tag_set_property (GObject      *object,
 
         text_tag->bg_stipple_set = TRUE;
         g_object_notify (object, "background-stipple-set");
-        
+
         if (text_tag->values->appearance.bg_stipple != bitmap)
           {
             if (bitmap != NULL)
@@ -1097,7 +1097,7 @@ gtk_text_tag_set_property (GObject      *object,
         set_font_description (text_tag, font_desc);
 	if (font_desc)
 	  pango_font_description_free (font_desc);
-        
+
         size_changed = TRUE;
       }
       break;
@@ -1126,7 +1126,7 @@ gtk_text_tag_set_property (GObject      *object,
 
 	gtk_text_tag_ensure_font (text_tag);
 	old_set_mask = pango_font_description_get_set_fields (text_tag->values->font);
- 
+
 	switch (prop_id)
 	  {
 	  case PROP_FAMILY:
@@ -1168,14 +1168,14 @@ gtk_text_tag_set_property (GObject      *object,
 
 	break;
       }
-      
+
     case PROP_SCALE:
       text_tag->values->font_scale = g_value_get_double (value);
       text_tag->scale_set = TRUE;
       g_object_notify (object, "scale-set");
       size_changed = TRUE;
       break;
-      
+
     case PROP_PIXELS_ABOVE_LINES:
       text_tag->pixels_above_lines_set = TRUE;
       text_tag->values->pixels_above_lines = g_value_get_int (value);
@@ -1258,7 +1258,7 @@ gtk_text_tag_set_property (GObject      *object,
       text_tag->rise_set = TRUE;
       text_tag->values->appearance.rise = g_value_get_int (value);
       g_object_notify (object, "rise-set");
-      size_changed = TRUE;      
+      size_changed = TRUE;
       break;
 
     case PROP_BACKGROUND_FULL_HEIGHT:
@@ -1284,7 +1284,7 @@ gtk_text_tag_set_property (GObject      *object,
         pango_tab_array_copy (g_value_get_boxed (value));
 
       g_object_notify (object, "tabs-set");
-      
+
       size_changed = TRUE;
       break;
 
@@ -1294,7 +1294,7 @@ gtk_text_tag_set_property (GObject      *object,
       g_object_notify (object, "invisible-set");
       size_changed = TRUE;
       break;
-      
+
     case PROP_PARAGRAPH_BACKGROUND:
       {
         GdkColor color;
@@ -1369,7 +1369,7 @@ gtk_text_tag_set_property (GObject      *object,
       else
 	{
 	  PangoFontMask changed_mask;
-	  
+
 	  gtk_text_tag_ensure_font (text_tag);
 	  changed_mask = set_font_desc_fields (text_tag->values->font,
 					       get_property_font_set_mask (prop_id));
@@ -1381,7 +1381,7 @@ gtk_text_tag_set_property (GObject      *object,
       text_tag->scale_set = g_value_get_boolean (value);
       size_changed = TRUE;
       break;
-      
+
     case PROP_PIXELS_ABOVE_LINES_SET:
       text_tag->pixels_above_lines_set = g_value_get_boolean (value);
       size_changed = TRUE;
@@ -1410,7 +1410,7 @@ gtk_text_tag_set_property (GObject      *object,
       text_tag->justification_set = g_value_get_boolean (value);
       size_changed = TRUE;
       break;
-      
+
     case PROP_LEFT_MARGIN_SET:
       text_tag->left_margin_set = g_value_get_boolean (value);
       size_changed = TRUE;
@@ -1457,7 +1457,7 @@ gtk_text_tag_set_property (GObject      *object,
       text_tag->invisible_set = g_value_get_boolean (value);
       size_changed = TRUE;
       break;
-      
+
     case PROP_PARAGRAPH_BACKGROUND_SET:
       text_tag->pg_bg_color_set = g_value_get_boolean (value);
       break;
@@ -1522,7 +1522,7 @@ gtk_text_tag_get_property (GObject      *object,
           gchar *str;
 
 	  gtk_text_tag_ensure_font (tag);
-	  
+
 	  str = pango_font_description_to_string (tag->values->font);
           g_value_take_string (value, str);
         }
@@ -1546,37 +1546,37 @@ gtk_text_tag_get_property (GObject      *object,
 	case PROP_FAMILY:
 	  g_value_set_string (value, pango_font_description_get_family (tag->values->font));
 	  break;
-	  
+
 	case PROP_STYLE:
 	  g_value_set_enum (value, pango_font_description_get_style (tag->values->font));
 	  break;
-	  
+
 	case PROP_VARIANT:
 	  g_value_set_enum (value, pango_font_description_get_variant (tag->values->font));
 	  break;
-	  
+
 	case PROP_WEIGHT:
 	  g_value_set_int (value, pango_font_description_get_weight (tag->values->font));
 	  break;
-	  
+
 	case PROP_STRETCH:
 	  g_value_set_enum (value, pango_font_description_get_stretch (tag->values->font));
 	  break;
-	  
+
 	case PROP_SIZE:
 	  g_value_set_int (value, pango_font_description_get_size (tag->values->font));
 	  break;
-	  
+
 	case PROP_SIZE_POINTS:
 	  g_value_set_double (value, ((double)pango_font_description_get_size (tag->values->font)) / (double)PANGO_SCALE);
 	  break;
 	}
       break;
-      
+
     case PROP_SCALE:
       g_value_set_double (value, tag->values->font_scale);
       break;
-      
+
     case PROP_PIXELS_ABOVE_LINES:
       g_value_set_int (value,  tag->values->pixels_above_lines);
       break;
@@ -1604,7 +1604,7 @@ gtk_text_tag_get_property (GObject      *object,
     case PROP_DIRECTION:
       g_value_set_enum (value, tag->values->direction);
       break;
-      
+
     case PROP_LEFT_MARGIN:
       g_value_set_int (value,  tag->values->left_margin);
       break;
@@ -1645,7 +1645,7 @@ gtk_text_tag_get_property (GObject      *object,
     case PROP_INVISIBLE:
       g_value_set_boolean (value, tag->values->invisible);
       break;
-      
+
     case PROP_PARAGRAPH_BACKGROUND_GDK:
       g_value_set_boxed (value, tag->values->pg_bg_color);
       break;
@@ -1687,7 +1687,7 @@ gtk_text_tag_get_property (GObject      *object,
     case PROP_SCALE_SET:
       g_value_set_boolean (value, tag->scale_set);
       break;
-      
+
     case PROP_PIXELS_ABOVE_LINES_SET:
       g_value_set_boolean (value, tag->pixels_above_lines_set);
       break;
@@ -1711,7 +1711,7 @@ gtk_text_tag_get_property (GObject      *object,
     case PROP_JUSTIFICATION_SET:
       g_value_set_boolean (value, tag->justification_set);
       break;
-      
+
     case PROP_LEFT_MARGIN_SET:
       g_value_set_boolean (value, tag->left_margin_set);
       break;
@@ -1751,7 +1751,7 @@ gtk_text_tag_get_property (GObject      *object,
     case PROP_INVISIBLE_SET:
       g_value_set_boolean (value, tag->invisible_set);
       break;
-      
+
     case PROP_PARAGRAPH_BACKGROUND_SET:
       g_value_set_boolean (value, tag->pg_bg_color_set);
       break;
@@ -1788,9 +1788,9 @@ delta_priority_foreach (GtkTextTag *tag, gpointer user_data)
 /**
  * gtk_text_tag_get_priority:
  * @tag: a #GtkTextTag
- * 
+ *
  * Get the tag priority.
- * 
+ *
  * Return value: The tag's priority.
  **/
 gint
@@ -1805,7 +1805,7 @@ gtk_text_tag_get_priority (GtkTextTag *tag)
  * gtk_text_tag_set_priority:
  * @tag: a #GtkTextTag
  * @priority: the new priority
- * 
+ *
  * Sets the priority of a #GtkTextTag. Valid priorities are
  * start at 0 and go to one less than gtk_text_tag_table_get_size().
  * Each tag in a table has a unique priority; setting the priority
@@ -1858,9 +1858,9 @@ gtk_text_tag_set_priority (GtkTextTag *tag,
  * @event_object: object that received the event, such as a widget
  * @event: the event
  * @iter: location where the event was received
- * 
+ *
  * Emits the "event" signal on the #GtkTextTag.
- * 
+ *
  * Return value: result of signal emission (whether the event was handled)
  **/
 gboolean
@@ -1952,10 +1952,10 @@ _gtk_text_tag_array_sort (GtkTextTag** tag_array_p,
 
 /**
  * gtk_text_attributes_new:
- * 
+ *
  * Creates a #GtkTextAttributes, which describes
  * a set of properties on some text.
- * 
+ *
  * Return value: a new #GtkTextAttributes
  **/
 GtkTextAttributes*
@@ -1974,16 +1974,16 @@ gtk_text_attributes_new (void)
   values->font_scale = 1.0;
 
   values->editable = TRUE;
-      
+
   return values;
 }
 
 /**
  * gtk_text_attributes_copy:
  * @src: a #GtkTextAttributes to be copied
- * 
+ *
  * Copies @src and returns a new #GtkTextAttributes.
- * 
+ *
  * Return value: a copy of @src
  **/
 GtkTextAttributes*
@@ -2001,7 +2001,7 @@ GType
 gtk_text_attributes_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (our_type == 0)
     our_type = g_boxed_type_register_static (I_("GtkTextAttributes"),
 					     (GBoxedCopyFunc) gtk_text_attributes_ref,
@@ -2014,7 +2014,7 @@ gtk_text_attributes_get_type (void)
  * gtk_text_attributes_copy_values:
  * @src: a #GtkTextAttributes
  * @dest: another #GtkTextAttributes
- * 
+ *
  * Copies the values from @src to @dest so that @dest has the same values
  * as @src. Frees existing values in @dest.
  **/
@@ -2047,7 +2047,7 @@ gtk_text_attributes_copy_values (GtkTextAttributes *src,
 
   if (dest->font)
     pango_font_description_free (dest->font);
-  
+
   /* Copy */
   orig_refcount = dest->refcount;
 
@@ -2060,7 +2060,7 @@ gtk_text_attributes_copy_values (GtkTextAttributes *src,
 
   if (dest->font)
     dest->font = pango_font_description_copy (src->font);
-  
+
   if (src->pg_bg_color)
     dest->pg_bg_color = gdk_color_copy (src->pg_bg_color);
 
@@ -2071,7 +2071,7 @@ gtk_text_attributes_copy_values (GtkTextAttributes *src,
 /**
  * gtk_text_attributes_ref:
  * @values: a #GtkTextAttributes
- * 
+ *
  * Increments the reference count on @values.
  *
  * Returns: the #GtkTextAttributes that were passed in
@@ -2089,7 +2089,7 @@ gtk_text_attributes_ref (GtkTextAttributes *values)
 /**
  * gtk_text_attributes_unref:
  * @values: a #GtkTextAttributes
- * 
+ *
  * Decrements the reference count on @values, freeing the structure
  * if the reference count reaches 0.
  **/
@@ -2172,7 +2172,7 @@ _gtk_text_attributes_unrealize (GtkTextAttributes *values,
   if (values->pg_bg_color)
     {
       gdk_colormap_free_colors (cmap, values->pg_bg_color, 1);
-      
+
       values->pg_bg_color->pixel = 0;
     }
 
@@ -2208,7 +2208,7 @@ _gtk_text_attributes_fill_from_tags (GtkTextAttributes *dest,
         }
       if (tag->fg_color_set)
         dest->appearance.fg_color = vals->appearance.fg_color;
-      
+
       if (tag->pg_bg_color_set)
         {
           dest->pg_bg_color = gdk_color_copy (vals->pg_bg_color);
@@ -2243,14 +2243,14 @@ _gtk_text_attributes_fill_from_tags (GtkTextAttributes *dest,
       /* multiply all the scales together to get a composite */
       if (tag->scale_set)
         dest->font_scale *= vals->font_scale;
-      
+
       if (tag->justification_set)
         dest->justification = vals->justification;
 
       if (vals->direction != GTK_TEXT_DIR_NONE)
         dest->direction = vals->direction;
 
-      if (tag->left_margin_set) 
+      if (tag->left_margin_set)
         {
           if (tag->accumulative_margin)
             left_margin_accumulative += vals->left_margin;
@@ -2264,7 +2264,7 @@ _gtk_text_attributes_fill_from_tags (GtkTextAttributes *dest,
       if (tag->rise_set)
         dest->appearance.rise = vals->appearance.rise;
 
-      if (tag->right_margin_set) 
+      if (tag->right_margin_set)
         {
           if (tag->accumulative_margin)
             right_margin_accumulative += vals->right_margin;

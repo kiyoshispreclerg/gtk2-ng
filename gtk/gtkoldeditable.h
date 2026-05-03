@@ -61,14 +61,14 @@ struct _GtkOldEditable
   /*< private >*/
   guint      editable : 1;
   guint      visible : 1;
-  
+
   gchar *clipboard_text;
 };
 
 struct _GtkOldEditableClass
 {
   GtkWidgetClass parent_class;
-  
+
   /* Bindings actions */
   void (* activate)        (GtkOldEditable *editable);
   void (* set_editable)    (GtkOldEditable *editable,

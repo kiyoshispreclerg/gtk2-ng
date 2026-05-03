@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -73,7 +73,7 @@ _gdk_x11_initialize_locale (void)
        * really a UTF8 locale. The below still probably will
        * screw up on Greek, Cyrillic, etc, encoded as UTF8.
        */
-      
+
       if ((MB_CUR_MAX == 2) &&
 	  (mbstowcs (&result, "\xdd\xa5", 1) > 0) &&
 	  result == 0x765)
@@ -87,9 +87,9 @@ _gdk_x11_initialize_locale (void)
     }
 
   GDK_NOTE (XIM,
-	    g_message ("%s multi-byte string functions.", 
+	    g_message ("%s multi-byte string functions.",
 		       gdk_use_mb ? "Using" : "Not using"));
-  
+
   return;
 }
 
@@ -100,7 +100,7 @@ gdk_set_locale (void)
     g_warning ("locale not supported by C library");
 
   _gdk_x11_initialize_locale ();
-  
+
   return setlocale (LC_ALL, NULL);
 }
 
@@ -118,11 +118,11 @@ find_a_display (void)
 /**
  * gdk_wcstombs:
  * @src: a wide character string.
- * 
+ *
  * Converts a wide character string to a multi-byte string.
  * (The function name comes from an acronym of 'Wide Character String TO
  * Multi-Byte String').
- * 
+ *
  * Return value: the multi-byte string corresponding to @src, or %NULL if the
  * conversion failed. The returned string should be freed with g_free() when no
  * longer needed.
@@ -157,13 +157,13 @@ gdk_wcstombs (const GdkWChar *src)
       else
 	{
 	  wchar_t *tmp;
-	  
+
 	  if (XwcTextListToTextProperty (xdisplay, &tmp, 1,
 					 XTextStyle, &tpr) != Success)
 	    {
 	      return NULL;
 	    }
-	  
+
 	  src = (GdkWChar *)tmp;
 	}
       /*
@@ -180,7 +180,7 @@ gdk_wcstombs (const GdkWChar *src)
 
       while (src[length] != 0)
 	length++;
-      
+
       mbstr = g_new (gchar, length + 1);
 
       for (i=0; i<length+1; i++)
@@ -194,15 +194,15 @@ gdk_wcstombs (const GdkWChar *src)
  * @dest: the space to place the converted wide character string into.
  * @src: the multi-byte string to convert, which must be nul-terminated.
  * @dest_max: the maximum number of wide characters to place in @dest.
- * 
+ *
  * Converts a multi-byte string to a wide character string.
  * (The function name comes from an acronym of 'Multi-Byte String TO Wide
  * Character String').
- * 
- * Return value: the number of wide characters written into @dest, or -1 if 
+ *
+ * Return value: the number of wide characters written into @dest, or -1 if
  *   the conversion failed.
  **/
-  
+
 gint
 gdk_mbstowcs (GdkWChar *dest, const gchar *src, gint dest_max)
 {

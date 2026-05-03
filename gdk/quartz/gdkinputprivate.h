@@ -21,7 +21,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #ifndef __GDK_INPUTPRIVATE_H__
@@ -43,7 +43,7 @@ struct _GdkInputVTable {
 		    guint   index,
 		    guint   keyval,
 		    GdkModifierType modifiers);
-	
+
   GdkTimeCoord* (*motion_events) (GdkWindow *window,
 				  guint32 deviceid,
 				  guint32 start,
@@ -86,7 +86,7 @@ struct _GdkAxisInfo
   /* calibrated resolution (for aspect ration) - only relative values
      between axes used */
   gint resolution;
-  
+
   /* calibrated minimum/maximum values */
   gint min_value, max_value;
 };

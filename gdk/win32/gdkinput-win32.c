@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -350,9 +350,9 @@ _gdk_input_wintab_init_check (void)
 
   if (wintab_initialized)
     return;
-  
+
   wintab_initialized = TRUE;
-  
+
   wintab_contexts = NULL;
 
   if (_gdk_input_ignore_wintab)
@@ -365,7 +365,7 @@ _gdk_input_wintab_init_check (void)
 
   wintab32_dll_path = g_malloc (n + 1 + strlen (WINTAB32_DLL));
   k = GetSystemDirectory (wintab32_dll_path, n);
-  
+
   if (k == 0 || k > n)
     {
       g_free (wintab32_dll_path);
@@ -397,7 +397,7 @@ _gdk_input_wintab_init_check (void)
     return;
   if ((p_WTQueueSizeSet = (t_WTQueueSizeSet) GetProcAddress (wintab32, "WTQueueSizeSet")) == NULL)
     return;
-    
+
   if (!(*p_WTInfoA) (0, 0, NULL))
     return;
 
@@ -424,11 +424,11 @@ _gdk_input_wintab_init_check (void)
       return;
     }
   g_object_ref (wintab_window);
-      
+
   for (devix = 0; devix < ndevices; devix++)
     {
       LOGCONTEXT lc;
-      
+
       /* We open the Wintab device (hmm, what if there are several, or
        * can there even be several, probably not?) as a system
        * pointing device, i.e. it controls the normal Windows
@@ -493,7 +493,7 @@ _gdk_input_wintab_init_check (void)
 	}
       GDK_NOTE (INPUT, g_print ("opened Wintab device %d %p\n",
 				devix, *hctx));
-      
+
       wintab_contexts = g_list_append (wintab_contexts, hctx);
 
       (*p_WTOverlap) (*hctx, TRUE);
@@ -565,14 +565,14 @@ _gdk_input_wintab_init_check (void)
 	  if ((gdkdev->pktdata & PK_ORIENTATION)
 	      && axis_or[0].axResolution == 0)
 	    gdkdev->pktdata &= ~PK_ORIENTATION;
-	  
+
 	  if (gdkdev->pktdata & PK_ORIENTATION)
 	    gdkdev->info.num_axes += 2; /* x and y tilt */
 
 	  gdkdev->info.axes = g_new (GdkDeviceAxis, gdkdev->info.num_axes);
 	  gdkdev->axes = g_new (GdkAxisInfo, gdkdev->info.num_axes);
 	  gdkdev->last_axis_data = g_new (gint, gdkdev->info.num_axes);
-	  
+
 	  k = 0;
 	  if (gdkdev->pktdata & PK_X)
 	    {
@@ -608,7 +608,7 @@ _gdk_input_wintab_init_check (void)
 	  if (gdkdev->pktdata & PK_ORIENTATION)
 	    {
 	      GdkAxisUse axis;
-	      
+
 	      gdkdev->orientation_axes[0] = axis_or[0];
 	      gdkdev->orientation_axes[1] = axis_or[1];
 	      for (axis = GDK_AXIS_XTILT; axis <= GDK_AXIS_YTILT; axis++)
@@ -634,8 +634,8 @@ _gdk_input_wintab_init_check (void)
 	  for (i = 0; i < gdkdev->info.num_axes; i++)
 	    GDK_NOTE (INPUT, g_print ("... axis %d: %d--%d@%d\n",
 				      i,
-				      gdkdev->axes[i].min_value, 
-				      gdkdev->axes[i].max_value, 
+				      gdkdev->axes[i].min_value,
+				      gdkdev->axes[i].max_value,
 				      gdkdev->axes[i].resolution));
 	  _gdk_input_devices = g_list_append (_gdk_input_devices,
 					      gdkdev);
@@ -652,14 +652,14 @@ decode_tilt (gint   *axis_data,
   /* As I don't have a tilt-sensing tablet,
    * I cannot test this code.
    */
-  
+
   double az, el;
 
   az = TWOPI * packet->pkOrientation.orAzimuth /
     (axes[0].axResolution / 65536.);
   el = TWOPI * packet->pkOrientation.orAltitude /
     (axes[1].axResolution / 65536.);
-  
+
   /* X tilt */
   axis_data[0] = cos (az) * cos (el) * 1000;
   /* Y tilt */
@@ -701,13 +701,13 @@ gdk_input_translate_coordinates (GdkDevicePrivate *gdkdev,
 	  break;
 	}
     }
-  
+
   device_width = gdkdev->axes[x_axis].max_value - gdkdev->axes[x_axis].min_value;
   x_min = gdkdev->axes[x_axis].min_value;
   device_height = gdkdev->axes[y_axis].max_value - gdkdev->axes[y_axis].min_value;
   y_min = gdkdev->axes[y_axis].min_value;
 
-  if (gdkdev->info.mode == GDK_MODE_SCREEN) 
+  if (gdkdev->info.mode == GDK_MODE_SCREEN)
     {
       root_impl = GDK_WINDOW_IMPL_WIN32 (GDK_WINDOW_OBJECT (_gdk_root)->impl);
       x_scale = GDK_WINDOW_OBJECT (_gdk_root)->width / device_width;
@@ -812,7 +812,7 @@ static guint
 get_modifier_key_state (void)
 {
   guint state;
-  
+
   state = 0;
   /* High-order bit is up/down, low order bit is toggled/untoggled */
   if (GetKeyState (VK_CONTROL) < 0)
@@ -928,7 +928,7 @@ find_window_for_input_event (MSG* msg, int *x, int *y)
   return _gdk_root;
 }
 
-gboolean 
+gboolean
 _gdk_input_other_event (GdkEvent  *event,
 			MSG       *msg,
 			GdkWindow *window)
@@ -984,7 +984,7 @@ _gdk_input_other_event (GdkEvent  *event,
 
       if (gdkdev->info.mode == GDK_MODE_DISABLED)
 	return FALSE;
-      
+
       k = 0;
       if (gdkdev->pktdata & PK_X)
 	gdkdev->last_axis_data[k++] = packet.pkX;
@@ -1011,7 +1011,7 @@ _gdk_input_other_event (GdkEvent  *event,
 	   * we get a packet
 	   */
 	  button_diff = translated_buttons ^ gdkdev->button_state;
-	  
+
 	  /* Gdk buttons are numbered 1.. */
 	  event->button.button = 1;
 
@@ -1049,30 +1049,30 @@ _gdk_input_other_event (GdkEvent  *event,
       if (window == NULL ||
 	  obj->extension_events == 0)
 	return FALSE;
-      
+
       impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
       input_window = impl_window->input_window;
 
       g_assert (input_window != NULL);
 
-      if (gdkdev->info.mode == GDK_MODE_WINDOW && 
+      if (gdkdev->info.mode == GDK_MODE_WINDOW &&
 	  (obj->extension_events & GDK_ALL_DEVICES_MASK) == 0)
 	return FALSE;
 
       event->any.window = window;
       key_state = get_modifier_key_state ();
-      if (event->any.type == GDK_BUTTON_PRESS || 
+      if (event->any.type == GDK_BUTTON_PRESS ||
 	  event->any.type == GDK_BUTTON_RELEASE)
 	{
 	  event->button.time = _gdk_win32_get_next_tick (msg->time);
 	  event->button.device = &gdkdev->info;
-	  
+
 	  event->button.axes = g_new(gdouble, gdkdev->info.num_axes);
 
 	  gdk_input_translate_coordinates (gdkdev, window,
 					   gdkdev->last_axis_data,
 					   event->button.axes,
-					   &event->button.x, 
+					   &event->button.x,
 					   &event->button.y);
 
 	  /* Also calculate root coordinates. Note that input_window->root_x
@@ -1103,7 +1103,7 @@ _gdk_input_other_event (GdkEvent  *event,
 	  gdk_input_translate_coordinates (gdkdev, window,
 					   gdkdev->last_axis_data,
 					   event->motion.axes,
-					   &event->motion.x, 
+					   &event->motion.x,
 					   &event->motion.y);
 
 	  /* Also calculate root coordinates. Note that input_window->root_x
@@ -1193,7 +1193,7 @@ _gdk_input_select_events (GdkWindow *impl_window)
   GdkWindowObject *w;
   GdkInputWindow *iw;
   GList *l, *dev_list;
-  
+
 
   iw = ((GdkWindowObject *)impl_window)->input_window;
 
@@ -1214,10 +1214,10 @@ _gdk_input_select_events (GdkWindow *impl_window)
 	    }
 	}
     }
-  
+
   event_mask &= ~GDK_ALL_DEVICES_MASK;
   if (event_mask)
-    event_mask |= 
+    event_mask |=
       GDK_PROXIMITY_OUT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK;
 
   GDK_WINDOW_IMPL_WIN32 (((GdkWindowObject *)impl_window)->impl)->extension_events_mask = event_mask;
@@ -1238,7 +1238,7 @@ _gdk_input_grab_pointer (GdkWindow    *window,
   return GDK_GRAB_SUCCESS;
 }
 
-void 
+void
 _gdk_input_ungrab_pointer (guint32 time)
 {
 
@@ -1257,7 +1257,7 @@ _gdk_device_get_history (GdkDevice         *device,
   return FALSE;
 }
 
-void 
+void
 gdk_device_get_state (GdkDevice       *device,
 		      GdkWindow       *window,
 		      gdouble         *axes,
@@ -1269,7 +1269,7 @@ gdk_device_get_state (GdkDevice       *device,
   if (GDK_IS_CORE (device))
     {
       gint x_int, y_int;
-      
+
       gdk_window_get_pointer (window, &x_int, &y_int, mask);
 
       if (axes)
@@ -1281,7 +1281,7 @@ gdk_device_get_state (GdkDevice       *device,
   else
     {
       GdkDevicePrivate *gdkdev;
-      
+
       gdkdev = (GdkDevicePrivate *)device;
       /* For now just use the last known button and axis state of the device.
        * Since graphical tablets send an insane amount of motion events each
@@ -1312,10 +1312,10 @@ _gdk_input_set_tablet_active (void)
 
   /* Bring the contexts to the top of the overlap order when one of the
    * application's windows is activated */
-  
+
   if (!wintab_contexts)
     return; /* No tablet devices found, or Wintab not initialized yet */
-  
+
   GDK_NOTE (INPUT, g_print ("_gdk_input_set_tablet_active: "
 	"Bringing Wintab contexts to the top of the overlap order\n"));
 
@@ -1328,7 +1328,7 @@ _gdk_input_set_tablet_active (void)
     }
 }
 
-void 
+void
 _gdk_input_init (GdkDisplay *display)
 {
   _gdk_input_devices = NULL;

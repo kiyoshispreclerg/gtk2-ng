@@ -25,7 +25,7 @@
 
 #include "gtkquery.h"
 
-struct _GtkQueryPrivate 
+struct _GtkQueryPrivate
 {
   gchar *text;
   gchar *location_uri;
@@ -38,9 +38,9 @@ static void
 finalize (GObject *object)
 {
   GtkQuery *query;
-  
+
   query = GTK_QUERY (object);
-  
+
   g_free (query->priv->text);
 
   G_OBJECT_CLASS (_gtk_query_parent_class)->finalize (object);
@@ -74,8 +74,8 @@ _gtk_query_get_text (GtkQuery *query)
   return g_strdup (query->priv->text);
 }
 
-void 
-_gtk_query_set_text (GtkQuery    *query, 
+void
+_gtk_query_set_text (GtkQuery    *query,
 		    const gchar *text)
 {
   g_free (query->priv->text);
@@ -87,9 +87,9 @@ _gtk_query_get_location (GtkQuery *query)
 {
   return g_strdup (query->priv->location_uri);
 }
-	
+
 void
-_gtk_query_set_location (GtkQuery    *query, 
+_gtk_query_set_location (GtkQuery    *query,
 			const gchar *uri)
 {
   g_free (query->priv->location_uri);
@@ -113,7 +113,7 @@ _gtk_query_get_mime_types (GtkQuery *query)
 }
 
 void
-_gtk_query_set_mime_types (GtkQuery *query, 
+_gtk_query_set_mime_types (GtkQuery *query,
 			   GList    *mime_types)
 {
   GList *l;
@@ -131,7 +131,7 @@ _gtk_query_set_mime_types (GtkQuery *query,
 }
 
 void
-_gtk_query_add_mime_type (GtkQuery    *query, 
+_gtk_query_add_mime_type (GtkQuery    *query,
 			  const gchar *mime_type)
 {
   query->priv->mime_types = g_list_prepend (query->priv->mime_types,

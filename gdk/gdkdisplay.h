@@ -1,7 +1,7 @@
 /*
  * gdkdisplay.h
- * 
- * Copyright 2001 Sun Microsystems Inc. 
+ *
+ * Copyright 2001 Sun Microsystems Inc.
  *
  * Erwann Chenede <erwann.chenede@sun.com>
  *
@@ -64,7 +64,7 @@ typedef struct
 {
   GdkWindow *toplevel_under_pointer; /* The toplevel window with mouse inside, tracked via native events */
   GdkWindow *window_under_pointer; /* The window that last got sent a normal enter event */
-  gdouble toplevel_x, toplevel_y; 
+  gdouble toplevel_x, toplevel_y;
   guint32 state;
   guint32 button;
   gulong motion_hint_serial; /* 0 == didn't deliver hinted motion event */
@@ -89,7 +89,7 @@ struct _GdkDisplay
   GdkDevice *GSEAL (core_pointer);	/* Core pointer device */
 
   const GdkDisplayPointerHooks *GSEAL (pointer_hooks); /* Current hooks for querying pointer */
-  
+
   guint GSEAL (closed) : 1;		/* Whether this display has been closed */
   guint GSEAL (ignore_core_events) : 1; /* Don't send core motion and button event */
 
@@ -108,14 +108,14 @@ struct _GdkDisplay
 struct _GdkDisplayClass
 {
   GObjectClass parent_class;
-  
+
   const gchar *              (*get_display_name)   (GdkDisplay *display);
   gint			     (*get_n_screens)      (GdkDisplay *display);
   GdkScreen *		     (*get_screen)         (GdkDisplay *display,
 						    gint        screen_num);
   GdkScreen *		     (*get_default_screen) (GdkDisplay *display);
 
-  
+
   /* Signals */
   void (*closed) (GdkDisplay *display,
 		  gboolean    is_error);
@@ -207,7 +207,7 @@ void     gdk_display_get_maximal_cursor_size   (GdkDisplay    *display,
 						guint         *width,
 						guint         *height);
 
-GdkWindow *gdk_display_get_default_group       (GdkDisplay *display); 
+GdkWindow *gdk_display_get_default_group       (GdkDisplay *display);
 
 gboolean gdk_display_supports_selection_notification (GdkDisplay *display);
 gboolean gdk_display_request_selection_notification  (GdkDisplay *display,

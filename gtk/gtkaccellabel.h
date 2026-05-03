@@ -82,7 +82,7 @@ struct _GtkAccelLabelClass
   gchar		*mod_separator;
   gchar		*accel_seperator;
   guint		 latin1_to_char : 1;
-  
+
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
   void (*_gtk_reserved2) (void);

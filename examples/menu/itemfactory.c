@@ -79,15 +79,15 @@ static gboolean popup_cb( GtkWidget *widget,
                           GtkWidget *menu )
 {
    GdkEventButton *bevent = (GdkEventButton *)event;
-  
+
    /* Only take button presses */
    if (event->type != GDK_BUTTON_PRESS)
      return FALSE;
-  
+
    /* Show the menu */
    gtk_menu_popup (GTK_MENU(menu), NULL, NULL,
                    NULL, NULL, bevent->button, bevent->time);
-  
+
    return TRUE;
 }
 
@@ -97,13 +97,13 @@ GtkWidget *get_popup_menu( void )
 {
    GtkItemFactory *item_factory;
    GtkWidget *button, *menu;
-  
+
    /* Same as before but don't bother with the accelerators */
    item_factory = gtk_item_factory_new (GTK_TYPE_MENU, "<main>",
                                         NULL);
    gtk_item_factory_create_items (item_factory, nmenu_items, menu_items, NULL);
    menu = gtk_item_factory_get_widget (item_factory, "<main>");
-  
+
    /* Make a button to activate the popup menu */
    button = gtk_button_new_with_label ("Popup");
    /* Make the menu popup when clicked */
@@ -120,7 +120,7 @@ GtkWidget *get_option_menu( void )
 {
    GtkItemFactory *item_factory;
    GtkWidget *option_menu;
-  
+
    /* Same again, not bothering with the accelerators */
    item_factory = gtk_item_factory_new (GTK_TYPE_OPTION_MENU, "<main>",
                                         NULL);
@@ -137,10 +137,10 @@ int main( int argc,
   GtkWidget *window;
   GtkWidget *main_vbox;
   GtkWidget *menubar, *option_menu, *popup_button;
- 
+
   /* Initialize GTK */
   gtk_init (&argc, &argv);
- 
+
   /* Make a window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (G_OBJECT (window), "destroy",
@@ -148,19 +148,19 @@ int main( int argc,
                     NULL);
   gtk_window_set_title (GTK_WINDOW(window), "Item Factory");
   gtk_widget_set_size_request (GTK_WIDGET(window), 300, 200);
- 
+
   /* Make a vbox to put the three menus in */
   main_vbox = gtk_vbox_new (FALSE, 1);
   gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 1);
   gtk_container_add (GTK_CONTAINER (window), main_vbox);
- 
+
   /* Get the three types of menu */
   /* Note: all three menus are separately created, so they are not the
      same menu */
   menubar = get_menubar_menu (window);
   popup_button = get_popup_menu ();
   option_menu = get_option_menu ();
-  
+
   /* Pack it all together */
   gtk_box_pack_start (GTK_BOX (main_vbox), menubar, FALSE, TRUE, 0);
   gtk_box_pack_end (GTK_BOX (main_vbox), popup_button, FALSE, TRUE, 0);
@@ -168,9 +168,9 @@ int main( int argc,
 
   /* Show the widgets */
   gtk_widget_show_all (window);
-  
+
   /* Finished! */
   gtk_main ();
- 
+
   return 0;
 }

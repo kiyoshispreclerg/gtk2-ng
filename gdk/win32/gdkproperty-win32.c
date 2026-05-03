@@ -22,7 +22,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -42,7 +42,7 @@ gdk_atom_intern (const gchar *atom_name,
   ATOM win32_atom;
   GdkAtom retval;
   static GHashTable *atom_hash = NULL;
-  
+
   if (!atom_hash)
     atom_hash = g_hash_table_new (g_str_hash, g_str_equal);
 
@@ -76,8 +76,8 @@ gdk_atom_intern (const gchar *atom_name,
 	  win32_atom = GlobalAddAtom (atom_name);
 	  retval = GUINT_TO_POINTER ((guint) win32_atom);
 	}
-      g_hash_table_insert (atom_hash, 
-			   g_strdup (atom_name), 
+      g_hash_table_insert (atom_hash,
+			   g_strdup (atom_name),
 			   retval);
     }
 
@@ -111,9 +111,9 @@ gdk_atom_name (GdkAtom atom)
   else if (GDK_SELECTION_TYPE_PIXMAP == atom) return g_strdup ("PIXMAP");
   else if (GDK_SELECTION_TYPE_WINDOW == atom) return g_strdup ("WINDOW");
   else if (GDK_SELECTION_TYPE_STRING == atom) return g_strdup ("STRING");
-  
+
   win32_atom = GPOINTER_TO_UINT (atom);
-  
+
   if (win32_atom < 0xC000)
     return g_strdup_printf ("#%p", atom);
   else if (GlobalGetAtomName (win32_atom, name, sizeof (name)) == 0)
@@ -169,7 +169,7 @@ gdk_property_change (GdkWindow    *window,
   GDK_NOTE (DND, {
       gchar *prop_name = gdk_atom_name (property);
       gchar *type_name = gdk_atom_name (type);
-      
+
       g_print ("gdk_property_change: %p %s %s %s %d*%d bits: %s\n",
 	       GDK_WINDOW_HWND (window),
 	       prop_name,
@@ -221,7 +221,7 @@ gdk_property_change (GdkWindow    *window,
 	  for (i = 0; i < wclen; i++)
 	    if (wcptr[i] == '\n' && (i == 0 || wcptr[i - 1] != '\r'))
 	      size += 2;
-	  
+
 	  if (!(hdata = GlobalAlloc (GMEM_MOVEABLE, size)))
 	    {
 	      WIN32_API_FAILED ("GlobalAlloc");
@@ -247,7 +247,7 @@ gdk_property_change (GdkWindow    *window,
 				  hdata));
 	  if (!SetClipboardData (CF_UNICODETEXT, hdata))
 	    WIN32_API_FAILED ("SetClipboardData");
-      
+
 	  if (!CloseClipboard ())
 	    WIN32_API_FAILED ("CloseClipboard");
 	}
@@ -377,7 +377,7 @@ gdk_screen_get_setting (GdkScreen   *screen,
    * XXX : if these values get changed through the Windoze UI the
    *       respective gdk_events are not generated yet.
    */
-  if (strcmp ("gtk-theme-name", name) == 0) 
+  if (strcmp ("gtk-theme-name", name) == 0)
     {
       g_value_set_string (value, "ms-windows");
     }
@@ -422,7 +422,7 @@ gdk_screen_get_setting (GdkScreen   *screen,
     }
 #if 0
   /*
-   * With 'MS Sans Serif' as windows menu font (default on win98se) you'll get a 
+   * With 'MS Sans Serif' as windows menu font (default on win98se) you'll get a
    * bunch of :
    *   WARNING **: Couldn't load font "MS Sans Serif 8" falling back to "Sans 8"
    * at least with testfilechooser (regardless of the bitmap check below)
@@ -439,7 +439,7 @@ gdk_screen_get_setting (GdkScreen   *screen,
 	   */
           int nHeight = (0 > ncm.lfMenuFont.lfHeight ? -3*ncm.lfMenuFont.lfHeight/4 : 10);
           if (OUT_STRING_PRECIS == ncm.lfMenuFont.lfOutPrecision)
-            GDK_NOTE(MISC, g_print("gdk_screen_get_setting(%s) : ignoring bitmap font '%s'\n", 
+            GDK_NOTE(MISC, g_print("gdk_screen_get_setting(%s) : ignoring bitmap font '%s'\n",
                                    name, ncm.lfMenuFont.lfFaceName));
           else if (ncm.lfMenuFont.lfFaceName && strlen(ncm.lfMenuFont.lfFaceName) > 0 &&
                    /* Avoid issues like those described in bug #135098 */

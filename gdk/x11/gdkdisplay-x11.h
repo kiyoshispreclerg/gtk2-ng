@@ -1,7 +1,7 @@
 /*
  * gdkdisplay-x11.h
- * 
- * Copyright 2001 Sun Microsystems Inc. 
+ *
+ * Copyright 2001 Sun Microsystems Inc.
  *
  * Erwann Chenede <erwann.chenede@sun.com>
  *
@@ -45,7 +45,7 @@ typedef struct _GdkDisplayX11Class GdkDisplayX11Class;
 #define GDK_IS_DISPLAY_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DISPLAY_X11))
 #define GDK_DISPLAY_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DISPLAY_X11, GdkDisplayX11Class))
 
-typedef enum 
+typedef enum
 {
   GDK_UNKNOWN,
   GDK_NO,
@@ -67,7 +67,7 @@ struct _GdkDisplayX11
 
   gint xkb_event_type;
   gboolean use_xkb;
-  
+
   /* Whether we were able to turn on detectable-autorepeat using
    * XkbSetDetectableAutorepeat. If FALSE, we'll fall back
    * to checking the next event with XPending(). */
@@ -90,8 +90,8 @@ struct _GdkDisplayX11
   gboolean have_randr15;
   gint xrandr_event_base;
 
-  /* If the SECURITY extension is in place, whether this client holds 
-   * a trusted authorization and so is allowed to make various requests 
+  /* If the SECURITY extension is in place, whether this client holds
+   * a trusted authorization and so is allowed to make various requests
    * (grabs, properties etc.) Otherwise always TRUE. */
   gboolean trusted_client;
 
@@ -114,13 +114,13 @@ struct _GdkDisplayX11
   Window leader_window;
   GdkWindow *leader_gdk_window;
   gboolean leader_window_title_set;
-  
+
   /* list of filters for client messages */
   GList *client_filters;
 
   /* List of functions to go from extension event => X window */
   GSList *event_types;
-  
+
   /* X ID hashtable */
   GHashTable *xid_ht;
 

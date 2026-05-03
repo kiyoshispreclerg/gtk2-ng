@@ -85,7 +85,7 @@ _gtk_icon_cache_unref (GtkIconCache *cache)
 
   if (cache->ref_count == 0)
     {
-      GTK_NOTE (ICONTHEME, 
+      GTK_NOTE (ICONTHEME,
 		g_print ("unmapping icon cache\n"));
 
       if (cache->map)
@@ -108,7 +108,7 @@ _gtk_icon_cache_new_for_path (const gchar *path)
    /* Check if we have a cache file */
   cache_filename = g_build_filename (path, "icon-theme.cache", NULL);
 
-  GTK_NOTE (ICONTHEME, 
+  GTK_NOTE (ICONTHEME,
 	    g_print ("look for cache in %s\n", path));
 
   if (g_stat (path, &path_st) < 0)
@@ -119,7 +119,7 @@ _gtk_icon_cache_new_for_path (const gchar *path)
 
   if (fd < 0)
     goto done;
-  
+
   /* We need to know the correct function to call for the GStatBuf st we are using here,
    * because GStatBuf may not be stat on Windows
    */
@@ -150,9 +150,9 @@ _gtk_icon_cache_new_for_path (const gchar *path)
   /* Verify cache is uptodate */
   if ((gint64) st.st_mtime < (gint64) path_st.st_mtime)
     {
-      GTK_NOTE (ICONTHEME, 
+      GTK_NOTE (ICONTHEME,
 		g_print ("cache outdated\n"));
-      goto done; 
+      goto done;
     }
 
   map = g_mapped_file_new (cache_filename, FALSE, NULL);
@@ -188,7 +188,7 @@ _gtk_icon_cache_new_for_path (const gchar *path)
   cache->buffer = g_mapped_file_get_contents (map);
 
  done:
-  g_free (cache_filename);  
+  g_free (cache_filename);
   if (fd >= 0)
     close (fd);
 
@@ -204,7 +204,7 @@ _gtk_icon_cache_new (const gchar *data)
   cache->ref_count = 1;
   cache->map = NULL;
   cache->buffer = (gchar *)data;
-  
+
   return cache;
 }
 
@@ -215,7 +215,7 @@ get_directory_index (GtkIconCache *cache,
   guint32 dir_list_offset;
   gint n_dirs;
   gint i;
-  
+
   dir_list_offset = GET_UINT32 (cache->buffer, 8);
 
   n_dirs = GET_UINT32 (cache->buffer, dir_list_offset);
@@ -227,7 +227,7 @@ get_directory_index (GtkIconCache *cache,
       if (strcmp (name, directory) == 0)
 	return i;
     }
-  
+
   return -1;
 }
 
@@ -288,7 +288,7 @@ find_image_offset (GtkIconCache *cache,
           cache->last_chain_offset = chain_offset;
           goto find_dir;
 	}
-  
+
       chain_offset = GET_UINT32 (cache->buffer, chain_offset);
     }
 
@@ -299,11 +299,11 @@ find_dir:
   /* We've found an icon list, now check if we have the right icon in it */
   image_list_offset = GET_UINT32 (cache->buffer, chain_offset + 8);
   n_images = GET_UINT32 (cache->buffer, image_list_offset);
-  
+
   for (i = 0; i < n_images; i++)
     {
       if (GET_UINT16 (cache->buffer, image_list_offset + 4 + 8 * i) ==
-	  directory_index) 
+	  directory_index)
 	return image_list_offset + 4 + 8 * i;
     }
 
@@ -335,12 +335,12 @@ _gtk_icon_cache_add_icons (GtkIconCache *cache,
   guint32 chain_offset;
   guint32 image_list_offset, n_images;
   int i, j;
-  
+
   directory_index = get_directory_index (cache, directory);
 
   if (directory_index == -1)
     return;
-  
+
   hash_offset = GET_UINT32 (cache->buffer, 4);
   n_buckets = GET_UINT32 (cache->buffer, hash_offset);
 
@@ -351,10 +351,10 @@ _gtk_icon_cache_add_icons (GtkIconCache *cache,
 	{
 	  guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
 	  gchar *name = cache->buffer + name_offset;
-	  
+
 	  image_list_offset = GET_UINT32 (cache->buffer, chain_offset + 8);
 	  n_images = GET_UINT32 (cache->buffer, image_list_offset);
-  
+
 	  for (j = 0; j < n_images; j++)
 	    {
 	      if (GET_UINT16 (cache->buffer, image_list_offset + 4 + 8 * j) ==
@@ -364,7 +364,7 @@ _gtk_icon_cache_add_icons (GtkIconCache *cache,
 
 	  chain_offset = GET_UINT32 (cache->buffer, chain_offset);
 	}
-    }  
+    }
 }
 
 gboolean
@@ -375,7 +375,7 @@ _gtk_icon_cache_has_icon (GtkIconCache *cache,
   guint32 n_buckets;
   guint32 chain_offset;
   gint hash;
-  
+
   hash_offset = GET_UINT32 (cache->buffer, 4);
   n_buckets = GET_UINT32 (cache->buffer, hash_offset);
 
@@ -389,7 +389,7 @@ _gtk_icon_cache_has_icon (GtkIconCache *cache,
 
       if (strcmp (name, icon_name) == 0)
 	return TRUE;
-	  
+
       chain_offset = GET_UINT32 (cache->buffer, chain_offset);
     }
 
@@ -412,7 +412,7 @@ _gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
 
   if (directory_index == -1)
     return FALSE;
-  
+
   hash_offset = GET_UINT32 (cache->buffer, 4);
   n_buckets = GET_UINT32 (cache->buffer, hash_offset);
 
@@ -429,7 +429,7 @@ _gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
 	  found_icon = TRUE;
 	  break;
 	}
-	  
+
       chain_offset = GET_UINT32 (cache->buffer, chain_offset);
     }
 
@@ -442,7 +442,7 @@ _gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
       for (i = 0; i < n_images; i++)
 	{
 	  guint16 index = GET_UINT16 (cache->buffer, image_offset);
-	  
+
 	  if (index == directory_index)
 	    return TRUE;
 	  image_offset += 8;
@@ -575,9 +575,9 @@ _gtk_icon_cache_get_icon (GtkIconCache *cache,
   GError *error = NULL;
 
   offset = find_image_offset (cache, icon_name, directory_index);
-  
+
   image_data_offset = GET_UINT32 (cache->buffer, offset + 4);
-  
+
   if (!image_data_offset)
     return NULL;
 
@@ -608,7 +608,7 @@ _gtk_icon_cache_get_icon (GtkIconCache *cache,
   pixbuf = gdk_pixbuf_new_from_data (pixdata.pixel_data, GDK_COLORSPACE_RGB,
 				     (pixdata.pixdata_type & GDK_PIXDATA_COLOR_TYPE_MASK) == GDK_PIXDATA_COLOR_TYPE_RGBA,
 				     8, pixdata.width, pixdata.height, pixdata.rowstride,
-				     (GdkPixbufDestroyNotify)pixbuf_destroy_cb, 
+				     (GdkPixbufDestroyNotify)pixbuf_destroy_cb,
 				     cache);
   if (!pixbuf)
     {
@@ -642,7 +642,7 @@ _gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
     return NULL;
 
   meta_data_offset = GET_UINT32 (cache->buffer, image_data_offset + 4);
-  
+
   if (!meta_data_offset)
     return NULL;
 
@@ -665,8 +665,8 @@ _gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
       data->attach_points = g_new (GdkPoint, data->n_attach_points);
       for (i = 0; i < data->n_attach_points; i++)
 	{
-	  data->attach_points[i].x = GET_UINT16 (cache->buffer, offset + 4 + 4 * i); 
-	  data->attach_points[i].y = GET_UINT16 (cache->buffer, offset + 4 + 4 * i + 2); 
+	  data->attach_points[i].x = GET_UINT16 (cache->buffer, offset + 4 + 4 * i);
+	  data->attach_points[i].y = GET_UINT16 (cache->buffer, offset + 4 + 4 * i + 2);
 	}
     }
 
@@ -679,15 +679,15 @@ _gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
       GHashTable *table = g_hash_table_new (g_str_hash, g_str_equal);
 
       n_names = GET_UINT32 (cache->buffer, offset);
-      
+
       for (i = 0; i < n_names; i++)
 	{
 	  lang = cache->buffer + GET_UINT32 (cache->buffer, offset + 4 + 8 * i);
 	  name = cache->buffer + GET_UINT32 (cache->buffer, offset + 4 + 8 * i + 4);
-	  
+
 	  g_hash_table_insert (table, lang, name);
 	}
-      
+
       langs = (gchar **)g_get_language_names ();
       for (i = 0; langs[i]; i++)
 	{

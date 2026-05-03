@@ -11,5 +11,5 @@ void _notify_caret_handler (GObject *obj, int position);
 void _notify_text_insert_handler (GObject *obj,
   int start_offset, int end_offset);
 void _notify_text_delete_handler (GObject *obj,
-  int start_offset, int end_offset);                                 
+  int start_offset, int end_offset);
 

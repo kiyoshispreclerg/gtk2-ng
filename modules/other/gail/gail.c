@@ -60,7 +60,7 @@ static void     gail_focus_tracker_init (void);
 static void     gail_focus_object_destroyed (gpointer data);
 static void     gail_focus_tracker (AtkObject *object);
 static void     gail_set_focus_widget (GtkWidget *focus_widget,
-                                       GtkWidget *widget); 
+                                       GtkWidget *widget);
 static void     gail_set_focus_object (AtkObject *focus_obj,
                                        AtkObject *obj);
 
@@ -69,7 +69,7 @@ static GtkWidget* next_focus_widget = NULL;
 static gboolean was_deselect = FALSE;
 static GtkWidget* subsequent_focus_widget = NULL;
 static GtkWidget* focus_before_menu = NULL;
-static guint focus_notify_handler = 0;    
+static guint focus_notify_handler = 0;
 static guint focus_tracker_id = 0;
 static GQuark quark_focus_object = 0;
 
@@ -139,8 +139,8 @@ gail_get_accessible_for_widget (GtkWidget *widget,
           gail_set_focus_widget (other_widget, widget);
           widget = other_widget;
         }
-    } 
-  else if (GTK_IS_NOTEBOOK (widget)) 
+    }
+  else if (GTK_IS_NOTEBOOK (widget))
     {
       GtkNotebook *notebook;
       gint page_num = -1;
@@ -196,7 +196,7 @@ gail_get_accessible_for_widget (GtkWidget *widget,
       focus_object = g_object_get_qdata (G_OBJECT (obj), quark_focus_object);
       /*
        * We check whether the object for this focus_object has been deleted.
-       * This can happen when navigating to an empty directory in nautilus. 
+       * This can happen when navigating to an empty directory in nautilus.
        * See bug #141907.
        */
       if (ATK_IS_GOBJECT_ACCESSIBLE (focus_object))
@@ -227,7 +227,7 @@ gail_focus_watcher (GSignalInvocationHint *ihint,
   event = g_value_get_boxed (param_values + 1);
   widget = GTK_WIDGET (object);
 
-  if (event->type == GDK_FOCUS_CHANGE) 
+  if (event->type == GDK_FOCUS_CHANGE)
     {
       if (event->focus_change.in)
         {
@@ -240,7 +240,7 @@ gail_focus_watcher (GSignalInvocationHint *ihint,
                 {
                   /*
                    * If we already have a potential focus widget set this
-                   * windows's focus widget to focus_before_menu so that 
+                   * windows's focus widget to focus_before_menu so that
                    * it will be reported when menu item is unset.
                    */
                   if (next_focus_widget)
@@ -257,7 +257,7 @@ gail_focus_watcher (GSignalInvocationHint *ihint,
                     }
                   widget = window->focus_widget;
                 }
-              else if (window->type == GTK_WINDOW_POPUP) 
+              else if (window->type == GTK_WINDOW_POPUP)
                 {
 	          if (GTK_IS_BIN (widget))
 		    {
@@ -272,19 +272,19 @@ gail_focus_watcher (GSignalInvocationHint *ihint,
 				  /*
 				   * We have a menu which has a menu item selected
 				   * so we do not report focus on the menu.
-				   */ 
-				  return TRUE; 
+				   */
+				  return TRUE;
 				}
 			    }
 			  widget = child;
-			} 
+			}
 		    }
 		  else /* popup window has no children; this edge case occurs in some custom code (OOo for instance) */
 		    {
 		      return TRUE;
 		    }
                 }
-	      else /* Widget is a non-popup toplevel with no focus children; 
+	      else /* Widget is a non-popup toplevel with no focus children;
 		      don't emit for this case either, as it's useless */
 		{
 		  return TRUE;
@@ -299,7 +299,7 @@ gail_focus_watcher (GSignalInvocationHint *ihint,
 
                toplevel = gtk_widget_get_toplevel (next_focus_widget);
                if (toplevel == widget)
-                 next_focus_widget = NULL; 
+                 next_focus_widget = NULL;
             }
           /* focus out */
           widget = NULL;
@@ -331,7 +331,7 @@ gail_focus_watcher (GSignalInvocationHint *ihint,
    * The widget may not yet be visible on the screen so we wait until it is.
    */
   gail_focus_notify_when_idle (widget);
-  return TRUE; 
+  return TRUE;
 }
 
 static gboolean
@@ -384,7 +384,7 @@ gail_finish_select (GtkWidget *widget)
                                               0,
                                               NULL,
                                               (gpointer) gail_map_submenu_cb,
-                                              NULL); 
+                                              NULL);
           if (!handler_id)
             {
               g_signal_connect (menu_item->submenu, "map",
@@ -412,23 +412,23 @@ gail_finish_select (GtkWidget *widget)
           focus_notify_handler = 0;
           was_deselect = FALSE;
         }
-    } 
+    }
   /*
    * If previously focused widget is not a GtkMenuItem or a GtkMenu,
    * keep track of it so we can return to it after menubar is deactivated
    */
-  if (focus_widget && 
-      !GTK_IS_MENU_ITEM (focus_widget) && 
+  if (focus_widget &&
+      !GTK_IS_MENU_ITEM (focus_widget) &&
       !GTK_IS_MENU (focus_widget))
     {
       void *vp_focus_before_menu = &focus_before_menu;
       focus_before_menu = focus_widget;
       g_object_add_weak_pointer (G_OBJECT (focus_before_menu), vp_focus_before_menu);
 
-    } 
+    }
   gail_focus_notify_when_idle (widget);
 
-  return; 
+  return;
 }
 
 static void
@@ -494,10 +494,10 @@ gail_deselect_watcher (GSignalInvocationHint *ihint,
         }
     }
   was_deselect = TRUE;
-  return TRUE; 
+  return TRUE;
 }
 
-static gboolean 
+static gboolean
 gail_switch_page_watcher (GSignalInvocationHint *ihint,
                           guint                  n_param_values,
                           const GValue          *param_values,
@@ -541,7 +541,7 @@ gail_focus_idle_handler (gpointer data)
       g_object_remove_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
       next_focus_widget = NULL;
     }
-    
+
   gail_focus_notify (data);
 
   return FALSE;
@@ -587,7 +587,7 @@ gail_focus_notify (GtkWidget *widget)
       /*
        * Do not report focus on redundant object
        */
-      if (atk_obj && 
+      if (atk_obj &&
 	  (atk_object_get_role(atk_obj) != ATK_ROLE_REDUNDANT_OBJECT))
 	  atk_focus_tracker_notify (atk_obj);
       if (atk_obj && transient)
@@ -625,7 +625,7 @@ gail_focus_notify_when_idle (GtkWidget *widget)
                         g_assert_not_reached ();
                       subsequent_focus_widget = widget;
                       return;
-                    } 
+                    }
                 }
             }
           g_source_remove (focus_notify_handler);
@@ -654,7 +654,7 @@ gail_focus_notify_when_idle (GtkWidget *widget)
       /*
        * We are about to report focus as NULL so remove the weak pointer
        * for the widget we were waiting to report focus on.
-       */ 
+       */
       if (next_focus_widget)
         {
           void *vp_next_focus_widget = &next_focus_widget;
@@ -685,7 +685,7 @@ gail_deactivate_watcher (GSignalInvocationHint *ihint,
   shell = GTK_MENU_SHELL(widget);
   if (!shell->parent_menu_shell)
     focus = focus_before_menu;
-      
+
   /*
    * If we are waiting to report focus on a menubar or a menu item
    * because of a previous deselect, cancel it.
@@ -705,7 +705,7 @@ gail_deactivate_watcher (GSignalInvocationHint *ihint,
     }
   gail_focus_notify_when_idle (focus);
 
-  return TRUE; 
+  return TRUE;
 }
 
 static void
@@ -773,7 +773,7 @@ gail_focus_object_destroyed (gpointer data)
 
   obj = G_OBJECT (data);
   g_object_set_qdata (obj, quark_focus_object, NULL);
-  g_object_unref (obj); 
+  g_object_unref (obj);
 }
 
 static void
@@ -782,7 +782,7 @@ gail_focus_tracker (AtkObject *focus_object)
   /*
    * Do not report focus on redundant object
    */
-  if (focus_object && 
+  if (focus_object &&
       (atk_object_get_role(focus_object) != ATK_ROLE_REDUNDANT_OBJECT))
     {
       AtkObject *old_focus_object;
@@ -821,7 +821,7 @@ gail_focus_tracker (AtkObject *focus_object)
     }
 }
 
-static void 
+static void
 gail_set_focus_widget (GtkWidget *focus_widget,
                        GtkWidget *widget)
 {
@@ -833,7 +833,7 @@ gail_set_focus_widget (GtkWidget *focus_widget,
   gail_set_focus_object (focus_obj, obj);
 }
 
-static void 
+static void
 gail_set_focus_object (AtkObject *focus_obj,
                        AtkObject *obj)
 {
@@ -848,9 +848,9 @@ gail_set_focus_object (AtkObject *focus_obj,
                              obj);
       else
         /*
-         * We call g_object_ref as if obj is destroyed 
-         * while the weak reference exists then destroying the 
-         * focus_obj would cause gail_focus_object_destroyed to be 
+         * We call g_object_ref as if obj is destroyed
+         * while the weak reference exists then destroying the
+         * focus_obj would cause gail_focus_object_destroyed to be
          * called when obj is not a valid GObject.
          */
         g_object_ref (obj);
@@ -883,7 +883,7 @@ gail_accessibility_module_init (void)
     }
   gail_initialized = TRUE;
   quark_focus_object = g_quark_from_static_string ("gail-focus-object");
-  
+
   env_a_t_support = g_getenv (GNOME_ACCESSIBILITY_ENV);
 
   if (env_a_t_support)
@@ -948,8 +948,8 @@ gail_accessibility_module_init (void)
 
 /**
  * gnome_accessibility_module_init:
- * @void: 
- * 
+ * @void:
+ *
  *   This method is invoked by name from libgnome's
  * gnome-program.c to activate accessibility support.
  **/
@@ -961,8 +961,8 @@ gnome_accessibility_module_init (void)
 
 /**
  * gnome_accessibility_module_shutdown:
- * @void: 
- * 
+ * @void:
+ *
  *   This method is invoked by name from libgnome's
  * gnome-program.c to de-activate accessibility support.
  **/
@@ -1006,4 +1006,4 @@ g_module_check_init (GModule *module)
 
   return NULL;
 }
- 
+

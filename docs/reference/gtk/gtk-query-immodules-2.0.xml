@@ -29,8 +29,8 @@ input method modules for GTK+ and writes it to the default cache file
 location, or to <filename>stdout</filename>.
 </para>
 <para>
-If called without arguments, it looks for modules in the GTK+ input method 
-module path.  
+If called without arguments, it looks for modules in the GTK+ input method
+module path.
 </para>
 <para>
 If called with arguments, it looks for the specified modules. The arguments
@@ -56,8 +56,8 @@ can be set to point GTK+ at the file.
 
 <refsect1><title>Environment</title>
 <para>
-The environment variable <link linkend="GTK_PATH"><envar>GTK_PATH</envar></link> can 
-be used to prepend directories to the input method module path. 
+The environment variable <link linkend="GTK_PATH"><envar>GTK_PATH</envar></link> can
+be used to prepend directories to the input method module path.
 </para>
 </refsect1>
 

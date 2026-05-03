@@ -22,8 +22,8 @@ gdkdnd.c divides into 4 pieces:
  3) Xdnd specific code
  4) The public interfaces
 
-The code in gtkdnd.c roughly consists of three parts  
-  
+The code in gtkdnd.c roughly consists of three parts
+
  1) General utility functions
  2) Destination side code
  3) Source side code.
@@ -43,7 +43,7 @@ in the structures GtkSourceInfo and GtkDestInfo.
 
 The GtkSourceInfo structure is created when the drag
 begins, and persists until the drag either completes
-or times out. A pointer to it is stored in 
+or times out. A pointer to it is stored in
 dataset-data for the GdkDragContext, however there
 is no ownership. If the SourceInfo is destroyed
 before the context, the field is simply cleared.
@@ -95,7 +95,7 @@ void             gdk_drag_find_window (GdkDragContext   *context,
 gboolean        gdk_drag_motion      (GdkDragContext *context,
 				      GdkWindow      *dest_window,
 				      GdkDragProtocol protocol,
-				      gint            x_root, 
+				      gint            x_root,
 				      gint            y_root,
 				      GdkDragAction   action,
 				      guint32         time);
@@ -129,7 +129,7 @@ SubstructureNotifyMask on the root window, so that
 it can update this list.
 
 It probably would be easier to just reread the entire
-list when one of these events occurs, instead of 
+list when one of these events occurs, instead of
 incrementally updating, but updating the list in
 sync was sort of fun code, so I did it that way ;-)
 
@@ -144,7 +144,7 @@ the button press, which might actually be before
 the XQueryPointer for the previous MotionNotify
 event is done.)
 
-Probably better is doing MotionNotify compression 
+Probably better is doing MotionNotify compression
 and discarding MotionNotify events when there
 are more on the queue before the next ButtonPress/Release.
 
@@ -174,7 +174,7 @@ Because the abstraction of the drag protocol is at the GDK
 level, a proxy drag from Motif to Xdnd or vice versa happens
 pretty much automatically during the drag, though the
 drop can get complicated. For Xdnd <-> Motif,
-Motif <-> Xdnd, or Motif <-> Motif drags, it is necessary to 
+Motif <-> Xdnd, or Motif <-> Motif drags, it is necessary to
 for the Proxy to retrieve the data and pass it on to
 the true destination, since either the selection names
 differ or (Motif<->Motif), the proxy needs to know
@@ -191,7 +191,7 @@ The spec is at:
 
 Motif:
 
-The Motif DND protocol is best described in the 
+The Motif DND protocol is best described in the
 Hungry Programmers _Inside Lesstif_ book, available
 from:
 

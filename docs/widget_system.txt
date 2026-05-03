@@ -6,7 +6,7 @@ and should work. It consists of three parts:
 
  I) A description of the meaning of the various flags
 
- II) A list of invariants about the states of the widgets. 
+ II) A list of invariants about the states of the widgets.
     (Throughout this document, we refer to the states of the
      widgets by referring to the flags for GtkWidget)
 
@@ -46,7 +46,7 @@ GTK_DESTROYED:
 	This flagged is set for a GtkObject right before its
 	destruction code is executed. Its main use is the
 	prevention of multiple destruction invocations.
-	
+
 GTK_FLOATING:
 	This flag reflects the fact that the holder of the
 	initial reference count is unknown. Refer to refcounting.txt
@@ -63,7 +63,7 @@ GTK_TOPLEVEL:
 	Widgets without a real parent, as there are GtkWindows and
 	GtkMenus have this flag set throughout their lifetime.
 	Toplevel widgets always contain their own GdkWindow.
-	
+
 GTK_NO_WINDOW:
 	This flag is indicative for a widget that does not provide
 	its own GdkWindow. Visible action (e.g. drawing) is performed
@@ -89,7 +89,7 @@ GTK_VISIBLE:
 	Implies that a widget is not onscreen, therefore !GTK_MAPPED.
 
 GTK_CHILD_VISIBLE
-        Set by gtk_widget_set_child_visible, and if FALSE indicates that 
+        Set by gtk_widget_set_child_visible, and if FALSE indicates that
         the widget should not be mapped even if the parent is mapped
         and visible. Containers like GtkNotebook use this flag.
         A private flag, not a public flag, so if you need to check
@@ -120,7 +120,7 @@ GTK_HAS_FOCUS:
 	This flag will be set by gtk_widget_grab_focus for widgets that also
 	have GTK_CAN_FOCUS set. The flag will be unset once another widget
 	grabs the focus.
-	
+
 GTK_CAN_DEFAULT:
 GTK_HAS_DEFAULT:
 	These two flags are mostly equal in functionality to their *_FOCUS
@@ -157,7 +157,7 @@ GTK_USER_STYLE:
 	has been invoked for it. The use of this flag is to tell widgets
 	which share a global user style from the ones which got a certain
 	style assign from outside the toolkit.
-	
+
 GTK_RESIZE_PENDING:
 	First, this is only valid for GtkContainers.
 	[some of the code should move to gtkcontainer.c therefore]
@@ -196,19 +196,19 @@ GTK_IN_REPARENT:
 	process of getting unparented.
 
 GTK_NEED_REQUEST:
-	This flag is set if the widget doesn't have an up to date 
+	This flag is set if the widget doesn't have an up to date
 	requisition. If this flag is set, we must actually emit ::size-request
         when gtk_widget_size_request() is called. Otherwise, we can
         simply widget->requisition. We keep track of this all the time
-        however, widgets with this flag set are only added to the resize 
+        however, widgets with this flag set are only added to the resize
 	queue if they are viewable.
 
 GTK_NEED_ALLOCATION:
-	This flag is set if the widget doesn't have an up to date 
+	This flag is set if the widget doesn't have an up to date
 	allocation. If this flag is set, we must actually emit ::size-allocate
         when gtk_widget_size_allocate() is called, even if the new allocation
         is the same as the current allocation.
- 
+
 Related Macros:
 
 GTK_WIDGET_DRAWABLE:
@@ -224,7 +224,7 @@ GTK_WIDGET_IS_SENSITIVE:
 II. Invariants:
 ---------------
 
-This section describes various constraints on the states of 
+This section describes various constraints on the states of
 the widget:
 
 In the following
@@ -236,8 +236,8 @@ In the following
 
 1)  GTK_WIDGET_DESTROYED (widget) => !GTK_WIDGET_REALIZED (widget)
                                   => !GTK_WIDGET_VISIBLE (widget)
-[ The latter is not currently in place, but it should be ] 
- 
+[ The latter is not currently in place, but it should be ]
+
 2) GTK_WIDGET_MAPPED (widget) => GTK_WIDGET_REALIZED (widget)
 
 3) if GTK_WIDGET_TOPLEVEL (widget):
@@ -253,15 +253,15 @@ In the following
                               => GTK_WIDGET_CHILD_VISIBLE (widget)
                               => GTK_WIDGET_REALIZED (widget)
 
-   widget->parent && GTK_WIDGET_MAPPED (widget->parent) && 
-     GTK_WIDGET_VISIBLE (widget) && GTK_WIDGET_CHILD_VISIBLE 
+   widget->parent && GTK_WIDGET_MAPPED (widget->parent) &&
+     GTK_WIDGET_VISIBLE (widget) && GTK_WIDGET_CHILD_VISIBLE
        => GTK_WIDGET_MAPPED (widget)
 
 Note:, the definition
 
 [  GTK_WIDGET_DRAWABLE = GTK_WIDGET_VISIBLE && GTK_WIDGET_MAPPED
-   is made in gtkwidget.h, but by 3) and 5), 
-     
+   is made in gtkwidget.h, but by 3) and 5),
+
       GTK_WIDGET_MAPPED => GTK_WIDGET_VISIBLE
 ]
 
@@ -277,9 +277,9 @@ How can the user control the state of a widget:
 -----------------------------------------------
 
 (In the following, set flag means set the flag, do appropriate
-actions, and enforce above invariants) 
+actions, and enforce above invariants)
 
-gtk_widget_show: 
+gtk_widget_show:
  if !GTK_DESTROYED sets GTK_VISIBLE
 
 gtk_widget_hide:
@@ -295,14 +295,14 @@ gtk_widget_realize:
   of a toplevel is an ERROR.
 
 gtk_container_add (container, widget) [ and container-specific variants ]
- Sets widget->parent 
+ Sets widget->parent
 
 gtk_container_remove (container, widget)
  unsets widget->parent
 
 gtk_widget_reparent (widget, new_parent)
  Equivalent to removing widget from old parent and adding it to
- the new parent, except that the widget will not be temporarily 
+ the new parent, except that the widget will not be temporarily
  unrealized if both the old parent and the new parent are realized.
 
 
@@ -329,7 +329,7 @@ Adding to a container
 
 When a widget is added to a container, the container:
 
-  1) calls gtk_widget_set_parent_window (widget, window) if 
+  1) calls gtk_widget_set_parent_window (widget, window) if
      the widget is being added to something other than container->window
   2) calls gtk_widget_set_parent (widget, container)
 
@@ -343,14 +343,14 @@ When a widget is removed to a container, the container:
 
 Notes:
 
- gtk_widget_unparent unrealizes the widget except in the 
+ gtk_widget_unparent unrealizes the widget except in the
    special case GTK_IN_REPARENT is set.
 
 
 At widget creation
 ------------------
 
-Widgets are created in an unrealized state. 
+Widgets are created in an unrealized state.
 
  1) The widget should allocate and initialize needed data structures
 
@@ -383,7 +383,7 @@ The Map signal
 
   1) Set the MAPPED flag
   2) If the widget has any windows, gdk_window_show those windows
-  3) call gtk_widget_map for all child widgets that are 
+  3) call gtk_widget_map for all child widgets that are
      VISIBLE, CHILD_VISIBLE and !MAPPED. (A widget will only
      be !CHILD_VISIBLE if the container set it that way, so
      most containers will not have to check this.)
@@ -395,7 +395,7 @@ The Unmap signal
 
 When a widget receives the unmap signal, it must:
 
- 1) If the widget has a window, gdk_window_hide that window, 
+ 1) If the widget has a window, gdk_window_hide that window,
  2) If the widget does not have a window, unmap all child widgets
  3) Do any other functions related to taking the widget offscreen
      (for instance, removing popup windows...)
@@ -436,7 +436,7 @@ Commentary:
   back to the widget. (To use gtk_widget_get_data, for instance)
   If it does so via a pointer in a closure (natural for
   Scheme, or Perl), then the finalization procedure will never
-  be called. 
+  be called.
 
   Also, if we made that the finalization step, we would have
   to propagate the GDK_DESTROY event in any case, since it is
@@ -458,7 +458,7 @@ signal (but see the section on "Finalize" below)
 
 The widget must handle calls to all publically accessible
 functions in an innocuous manner even after a "destroy"
-signal. (A widget can assume that it will not be realized 
+signal. (A widget can assume that it will not be realized
 after a "destroy" signal is received, which may simplify
 handling this requirement)
 
@@ -496,5 +496,5 @@ not Bar.
 Then gtk_foo_destroy will call gtk_widget_destroy (because
 it was not overridden in the Bar class structure) and
 gtk_widget_destroy will call gtk_object_destroy because
-the parent_class variable referenced by gtk_foo_destroy is the 
+the parent_class variable referenced by gtk_foo_destroy is the
 static variable in gtkwidget.c: GtkObjectClass.

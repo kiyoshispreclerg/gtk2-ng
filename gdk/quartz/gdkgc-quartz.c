@@ -43,7 +43,7 @@ gdk_quartz_gc_get_values (GdkGC       *gc,
   values->fill = _gdk_gc_get_fill (gc);
   values->tile = _gdk_gc_get_tile (gc);
   values->stipple = _gdk_gc_get_stipple (gc);
-  
+
   /* The X11 backend always returns a NULL clip_mask. */
   values->clip_mask = NULL;
 
@@ -209,7 +209,7 @@ gdk_gc_quartz_class_init (GdkGCQuartzClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkGCClass *gc_class = GDK_GC_CLASS (klass);
-  
+
   parent_class = g_type_class_peek_parent (klass);
 
   object_class->finalize = gdk_gc_quartz_finalize;
@@ -250,12 +250,12 @@ _gdk_gc_quartz_get_type (void)
         0,              /* n_preallocs */
         (GInstanceInitFunc) gdk_gc_quartz_init,
       };
-      
+
       object_type = g_type_register_static (GDK_TYPE_GC,
                                             "GdkGCQuartz",
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -326,7 +326,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
       CGImageRelease (dst_quartz_gc->clip_mask);
       dst_quartz_gc->clip_mask = NULL;
     }
-  
+
   if (src_quartz_gc->clip_mask)
     dst_quartz_gc->clip_mask = _gdk_pixmap_get_cgimage (GDK_PIXMAP (src_quartz_gc->clip_mask));
 
@@ -342,7 +342,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_quartz_gc->dash_phase = src_quartz_gc->dash_phase;
 }
 
-GdkScreen *  
+GdkScreen *
 gdk_gc_get_screen (GdkGC *gc)
 {
   return _gdk_screen;
@@ -371,13 +371,13 @@ gdk_quartz_draw_tiled_pattern (void         *info,
 
   if (!context)
     return;
-  
+
   pattern_image = _gdk_pixmap_get_cgimage (GDK_PIXMAP (_gdk_gc_get_tile (gc)));
 
   width = CGImageGetWidth (pattern_image);
   height = CGImageGetHeight (pattern_image);
 
-  CGContextDrawImage (context, 
+  CGContextDrawImage (context,
 		      CGRectMake (0, 0, width, height),
 		      pattern_image);
   CGImageRelease (pattern_image);

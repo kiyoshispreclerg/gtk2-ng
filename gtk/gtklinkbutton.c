@@ -1,12 +1,12 @@
 /* GTK - The GIMP Toolkit
  * gtklinkbutton.c - an hyperlink-enabled button
- * 
+ *
  * Copyright (C) 2006 Emmanuele Bassi <ebassi@gmail.com>
  * All rights reserved.
  *
  * Based on gnome-href code by:
  * 	James Henstridge <james@daa.com.au>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -117,23 +117,23 @@ gtk_link_button_class_init (GtkLinkButtonClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
   GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);
   GtkButtonClass *button_class = GTK_BUTTON_CLASS (klass);
-  
+
   gobject_class->set_property = gtk_link_button_set_property;
   gobject_class->get_property = gtk_link_button_get_property;
   gobject_class->finalize = gtk_link_button_finalize;
-  
+
   widget_class->button_press_event = gtk_link_button_button_press;
   widget_class->popup_menu = gtk_link_button_popup_menu;
   widget_class->style_set = gtk_link_button_style_set;
-  
+
   container_class->add = gtk_link_button_add;
 
   button_class->clicked = gtk_link_button_clicked;
 
   /**
    * GtkLinkButton:uri
-   * 
-   * The URI bound to this button. 
+   *
+   * The URI bound to this button.
    *
    * Since: 2.10
    */
@@ -146,7 +146,7 @@ gtk_link_button_class_init (GtkLinkButtonClass *klass)
   				   			G_PARAM_READWRITE));
   /**
    * GtkLinkButton:visited
-   * 
+   *
    * The 'visited' state of this button. A visited link is drawn in a
    * different color.
    *
@@ -167,7 +167,7 @@ gtk_link_button_init (GtkLinkButton *link_button)
   link_button->priv = gtk_link_button_get_instance_private (link_button);
 
   gtk_button_set_relief (GTK_BUTTON (link_button), GTK_RELIEF_NONE);
-  
+
   g_signal_connect (link_button, "enter-notify-event",
   		    G_CALLBACK (gtk_link_button_enter_cb), NULL);
   g_signal_connect (link_button, "leave-notify-event",
@@ -178,7 +178,7 @@ gtk_link_button_init (GtkLinkButton *link_button)
   g_object_set (link_button, "has-tooltip", TRUE, NULL);
   g_signal_connect (link_button, "query-tooltip",
                     G_CALLBACK (gtk_link_button_query_tooltip_cb), NULL);
-  
+
   /* enable drag source */
   gtk_drag_source_set (GTK_WIDGET (link_button),
   		       GDK_BUTTON1_MASK,
@@ -190,9 +190,9 @@ static void
 gtk_link_button_finalize (GObject *object)
 {
   GtkLinkButton *link_button = GTK_LINK_BUTTON (object);
-  
+
   g_free (link_button->priv->uri);
-  
+
   G_OBJECT_CLASS (gtk_link_button_parent_class)->finalize (object);
 }
 
@@ -203,7 +203,7 @@ gtk_link_button_get_property (GObject    *object,
 			      GParamSpec *pspec)
 {
   GtkLinkButton *link_button = GTK_LINK_BUTTON (object);
-  
+
   switch (prop_id)
     {
     case PROP_URI:
@@ -225,7 +225,7 @@ gtk_link_button_set_property (GObject      *object,
 			      GParamSpec   *pspec)
 {
   GtkLinkButton *link_button = GTK_LINK_BUTTON (object);
-  
+
   switch (prop_id)
     {
     case PROP_URI:
@@ -279,7 +279,7 @@ static void
 set_link_underline (GtkLinkButton *link_button)
 {
   GtkWidget *label;
-  
+
   label = gtk_bin_get_child (GTK_BIN (link_button));
   if (GTK_IS_LABEL (label))
     {
@@ -290,7 +290,7 @@ set_link_underline (GtkLinkButton *link_button)
       uline->start_index = 0;
       uline->end_index = G_MAXUINT;
       attributes = pango_attr_list_new ();
-      pango_attr_list_insert (attributes, uline); 
+      pango_attr_list_insert (attributes, uline);
       gtk_label_set_attributes (GTK_LABEL (label), attributes);
       pango_attr_list_unref (attributes);
     }
@@ -358,7 +358,7 @@ popup_position_func (GtkMenu  *menu,
   GtkRequisition req;
   gint monitor_num;
   GdkRectangle monitor;
-  
+
   g_return_if_fail (gtk_widget_get_realized (widget));
 
   gdk_window_get_origin (widget->window, x, y);
@@ -383,7 +383,7 @@ copy_activate_cb (GtkWidget     *widget,
 		  GtkLinkButton *link_button)
 {
   GtkLinkButtonPrivate *priv = link_button->priv;
-  
+
   gtk_clipboard_set_text (gtk_widget_get_clipboard (GTK_WIDGET (link_button),
 			  			    GDK_SELECTION_CLIPBOARD),
 		  	  priv->uri, -1);
@@ -396,7 +396,7 @@ gtk_link_button_do_popup (GtkLinkButton  *link_button,
   GtkLinkButtonPrivate *priv = link_button->priv;
   gint button;
   guint time;
-  
+
   if (event)
     {
       button = event->button;
@@ -411,12 +411,12 @@ gtk_link_button_do_popup (GtkLinkButton  *link_button,
   if (gtk_widget_get_realized (GTK_WIDGET (link_button)))
     {
       GtkWidget *menu_item;
-      
+
       if (priv->popup_menu)
 	gtk_widget_destroy (priv->popup_menu);
 
       priv->popup_menu = gtk_menu_new ();
-      
+
       gtk_menu_attach_to_widget (GTK_MENU (priv->popup_menu),
 		      		 GTK_WIDGET (link_button),
 				 popup_menu_detach);
@@ -429,7 +429,7 @@ gtk_link_button_do_popup (GtkLinkButton  *link_button,
 		        G_CALLBACK (copy_activate_cb), link_button);
       gtk_widget_show (menu_item);
       gtk_menu_shell_append (GTK_MENU_SHELL (priv->popup_menu), menu_item);
-      
+
       if (button)
         gtk_menu_popup (GTK_MENU (priv->popup_menu), NULL, NULL,
 		        NULL, NULL,
@@ -454,13 +454,13 @@ gtk_link_button_button_press (GtkWidget      *widget,
   if (_gtk_button_event_triggers_context_menu (event))
     {
       gtk_link_button_do_popup (GTK_LINK_BUTTON (widget), event);
-      
+
       return TRUE;
     }
 
   if (GTK_WIDGET_CLASS (gtk_link_button_parent_class)->button_press_event)
     return GTK_WIDGET_CLASS (gtk_link_button_parent_class)->button_press_event (widget, event);
-  
+
   return FALSE;
 }
 
@@ -500,7 +500,7 @@ gtk_link_button_popup_menu (GtkWidget *widget)
 {
   gtk_link_button_do_popup (GTK_LINK_BUTTON (widget), NULL);
 
-  return TRUE; 
+  return TRUE;
 }
 
 static gboolean
@@ -509,7 +509,7 @@ gtk_link_button_enter_cb (GtkWidget        *widget,
 			  gpointer          user_data)
 {
   set_hand_cursor (widget, TRUE);
-  
+
   return FALSE;
 }
 
@@ -519,7 +519,7 @@ gtk_link_button_leave_cb (GtkWidget        *widget,
 			  gpointer          user_data)
 {
   set_hand_cursor (widget, FALSE);
-  
+
   return FALSE;
 }
 
@@ -533,14 +533,14 @@ gtk_link_button_drag_data_get_cb (GtkWidget        *widget,
 {
   GtkLinkButton *link_button = GTK_LINK_BUTTON (widget);
   gchar *uri;
-  
+
   uri = g_strdup_printf ("%s\r\n", link_button->priv->uri);
   gtk_selection_data_set (selection,
   			  selection->target,
   			  8,
   			  (guchar *) uri,
 			  strlen (uri));
-  
+
   g_free (uri);
 }
 
@@ -559,9 +559,9 @@ gtk_link_button_new (const gchar *uri)
 {
   gchar *utf8_uri = NULL;
   GtkWidget *retval;
-  
+
   g_return_val_if_fail (uri != NULL, NULL);
-  
+
   if (g_utf8_validate (uri, -1, NULL))
     {
       utf8_uri = g_strdup (uri);
@@ -569,7 +569,7 @@ gtk_link_button_new (const gchar *uri)
   else
     {
       GError *conv_err = NULL;
-    
+
       utf8_uri = g_locale_to_utf8 (uri, -1, NULL, NULL, &conv_err);
       if (conv_err)
         {
@@ -578,18 +578,18 @@ gtk_link_button_new (const gchar *uri)
                      uri,
                      conv_err->message);
           g_error_free (conv_err);
-        
+
           utf8_uri = g_strdup (_("Invalid URI"));
         }
     }
-  
+
   retval = g_object_new (GTK_TYPE_LINK_BUTTON,
   			 "label", utf8_uri,
   			 "uri", uri,
   			 NULL);
-  
+
   g_free (utf8_uri);
-  
+
   return retval;
 }
 
@@ -609,9 +609,9 @@ gtk_link_button_new_with_label (const gchar *uri,
 				const gchar *label)
 {
   GtkWidget *retval;
-  
+
   g_return_val_if_fail (uri != NULL, NULL);
-  
+
   if (!label)
     return gtk_link_button_new (uri);
 
@@ -623,7 +623,7 @@ gtk_link_button_new_with_label (const gchar *uri,
   return retval;
 }
 
-static gboolean 
+static gboolean
 gtk_link_button_query_tooltip_cb (GtkWidget    *widget,
                                   gint          x,
                                   gint          y,
@@ -693,7 +693,7 @@ const gchar *
 gtk_link_button_get_uri (GtkLinkButton *link_button)
 {
   g_return_val_if_fail (GTK_IS_LINK_BUTTON (link_button), NULL);
-  
+
   return link_button->priv->uri;
 }
 
@@ -780,7 +780,7 @@ gboolean
 gtk_link_button_get_visited (GtkLinkButton *link_button)
 {
   g_return_val_if_fail (GTK_IS_LINK_BUTTON (link_button), FALSE);
-  
+
   return link_button->priv->visited;
 }
 

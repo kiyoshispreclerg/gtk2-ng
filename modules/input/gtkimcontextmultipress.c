@@ -158,7 +158,7 @@ cancel_automatic_timeout_commit (GtkImContextMultipress *multipress_context)
 {
   if (multipress_context->timeout_id)
     g_source_remove (multipress_context->timeout_id);
- 
+
   multipress_context->timeout_id = 0;
 }
 
@@ -240,7 +240,7 @@ vfunc_filter_keypress (GtkIMContext *context, GdkEventKey *event)
            * the compose_count and key_last_entered. */
           accept_character (multipress_context,
                             multipress_context->tentative_match);
-        } 
+        }
 
       /* Decide what character this key press would choose: */
       possible = g_hash_table_lookup (multipress_context->key_sequences,
@@ -256,10 +256,10 @@ vfunc_filter_keypress (GtkIMContext *context, GdkEventKey *event)
             multipress_context->compose_count = 0;
 
           /* Store the last key pressed in the compose sequence. */
-          multipress_context->key_last_entered = event->keyval; 
+          multipress_context->key_last_entered = event->keyval;
 
           /* Get the possible match for this number of presses of the key.
-           * compose_count starts at 1, so that 0 can mean not composing. */ 
+           * compose_count starts at 1, so that 0 can mean not composing. */
           multipress_context->tentative_match =
             possible->characters[multipress_context->compose_count++];
 

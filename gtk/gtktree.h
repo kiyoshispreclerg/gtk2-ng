@@ -50,7 +50,7 @@ G_BEGIN_DECLS
 #define GTK_TREE_ROOT_TREE(obj) (GTK_TREE(obj)->root_tree ? GTK_TREE(obj)->root_tree : GTK_TREE(obj))
 #define GTK_TREE_SELECTION_OLD(obj) (GTK_TREE_ROOT_TREE(obj)->selection)
 
-typedef enum 
+typedef enum
 {
   GTK_TREE_VIEW_LINE,  /* default view mode */
   GTK_TREE_VIEW_ITEM
@@ -62,9 +62,9 @@ typedef struct _GtkTreeClass  GtkTreeClass;
 struct _GtkTree
 {
   GtkContainer container;
-  
+
   GList *children;
-  
+
   GtkTree* root_tree; /* owner of selection list */
   GtkWidget* tree_owner;
   GList *selection;
@@ -79,7 +79,7 @@ struct _GtkTree
 struct _GtkTreeClass
 {
   GtkContainerClass parent_class;
-  
+
   void (* selection_changed) (GtkTree   *tree);
   void (* select_child)      (GtkTree   *tree,
 			      GtkWidget *child);
@@ -115,7 +115,7 @@ gint       gtk_tree_child_position     (GtkTree          *tree,
 void       gtk_tree_set_selection_mode (GtkTree          *tree,
 				        GtkSelectionMode  mode);
 void       gtk_tree_set_view_mode      (GtkTree          *tree,
-				        GtkTreeViewMode   mode); 
+				        GtkTreeViewMode   mode);
 void       gtk_tree_set_view_lines     (GtkTree          *tree,
 					gboolean	  flag);
 

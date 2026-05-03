@@ -24,7 +24,7 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include "config.h"
@@ -82,7 +82,7 @@ binding_signal_new (const gchar *signal_name,
   signal->signal_name = (gchar *)g_intern_string (signal_name);
   signal->n_args = n_args;
   signal->args = (GtkBindingArg *)(signal + 1);
-  
+
   return signal;
 }
 
@@ -90,7 +90,7 @@ static void
 binding_signal_free (GtkBindingSignal *sig)
 {
   guint i;
-  
+
   for (i = 0; i < sig->n_args; i++)
     {
       if (G_TYPE_FUNDAMENTAL (sig->args[i].arg_type) == G_TYPE_STRING)
@@ -126,7 +126,7 @@ binding_key_hash_insert_entry (GtkKeyHash      *key_hash,
 			       GtkBindingEntry *entry)
 {
   guint keyval = entry->keyval;
-  
+
   /* We store lowercased accelerators. To deal with this, if <Shift>
    * was specified, uppercase.
    */
@@ -137,7 +137,7 @@ binding_key_hash_insert_entry (GtkKeyHash      *key_hash,
       else
 	keyval = gdk_keyval_to_upper (keyval);
     }
-  
+
   _gtk_key_hash_add_entry (key_hash, keyval, entry->modifiers & ~GDK_RELEASE_MASK, entry);
 }
 
@@ -145,7 +145,7 @@ static void
 binding_key_hash_destroy (gpointer data)
 {
   GtkKeyHash *key_hash = data;
-  
+
   binding_key_hashes = g_slist_remove (binding_key_hashes, key_hash);
   _gtk_key_hash_free (key_hash);
 }
@@ -170,7 +170,7 @@ binding_key_hash_for_keymap (GdkKeymap *keymap)
 
   if (!key_hash_quark)
     key_hash_quark = g_quark_from_static_string ("gtk-binding-key-hash");
-  
+
   key_hash = g_object_get_qdata (G_OBJECT (keymap), key_hash_quark);
 
   if (!key_hash)
@@ -197,7 +197,7 @@ binding_entry_new (GtkBindingSet  *binding_set,
 {
   GSList *tmp_list;
   GtkBindingEntry *entry;
-  
+
   if (!binding_entry_hash_table)
     binding_entry_hash_table = g_hash_table_new (binding_entry_hash, binding_entries_compare);
 
@@ -223,7 +223,7 @@ binding_entry_new (GtkBindingSet  *binding_set,
       GtkKeyHash *key_hash = tmp_list->data;
       binding_key_hash_insert_entry (key_hash, entry);
     }
-  
+
   return entry;
 }
 
@@ -238,12 +238,12 @@ binding_entry_free (GtkBindingEntry *entry)
 	    entry->destroyed == TRUE);
 
   entry->destroyed = FALSE;
-  
+
   sig = entry->signals;
   while (sig)
     {
       GtkBindingSignal *prev;
-      
+
       prev = sig;
       sig = prev->next;
       binding_signal_free (prev);
@@ -278,7 +278,7 @@ binding_entry_destroy (GtkBindingEntry *entry)
       tmp = last->set_next;
     }
   entry->set_next = NULL;
-  
+
   o_entry = g_hash_table_lookup (binding_entry_hash_table, entry);
   begin = o_entry;
   last = NULL;
@@ -297,7 +297,7 @@ binding_entry_destroy (GtkBindingEntry *entry)
       tmp = last->hash_next;
     }
   entry->hash_next = NULL;
-  
+
   if (!begin)
     g_hash_table_remove (binding_entry_hash_table, entry);
   else if (begin != o_entry)
@@ -325,13 +325,13 @@ binding_ht_lookup_entry (GtkBindingSet  *set,
 {
   GtkBindingEntry lookup_entry = { 0 };
   GtkBindingEntry *entry;
-  
+
   if (!binding_entry_hash_table)
     return NULL;
-  
+
   lookup_entry.keyval = keyval;
   lookup_entry.modifiers = modifiers;
-  
+
   entry = g_hash_table_lookup (binding_entry_hash_table, &lookup_entry);
   for (; entry; entry = entry->hash_next)
     if (entry->binding_set == set)
@@ -350,7 +350,7 @@ binding_compose_params (GtkObject       *object,
   const GType *types;
   guint i;
   gboolean valid;
-  
+
   params = g_new0 (GValue, query->n_params + 1);
   *params_p = params;
 
@@ -359,7 +359,7 @@ binding_compose_params (GtkObject       *object,
   g_value_init (params, G_TYPE_OBJECT);
   g_value_set_object (params, G_OBJECT (object));
   params++;
-  
+
   types = query->param_types;
   valid = TRUE;
   for (i = 1; i < query->n_params + 1 && valid; i++)
@@ -385,9 +385,9 @@ binding_compose_params (GtkObject       *object,
 	  if (G_TYPE_FUNDAMENTAL (*types) == G_TYPE_ENUM)
 	    {
 	      GEnumClass *class = G_ENUM_CLASS (g_type_class_ref (*types));
-	      
+
 	      valid = FALSE;
-	      
+
 	      if (args->arg_type == GTK_TYPE_IDENTIFIER)
 		{
 		  GEnumValue *enum_value = NULL;
@@ -411,9 +411,9 @@ binding_compose_params (GtkObject       *object,
 	  else if (G_TYPE_FUNDAMENTAL (*types) == G_TYPE_FLAGS)
 	    {
 	      GFlagsClass *class = G_FLAGS_CLASS (g_type_class_ref (*types));
-	      
+
 	      valid = FALSE;
-	      
+
 	      if (args->arg_type == GTK_TYPE_IDENTIFIER)
 		{
 		  GFlagsValue *flags_value = NULL;
@@ -448,23 +448,23 @@ binding_compose_params (GtkObject       *object,
 
 	  g_value_unset (&tmp_value);
 	}
-      
+
       types++;
       params++;
       args++;
     }
-  
+
   if (!valid)
     {
       guint j;
 
       for (j = 0; j < i; j++)
 	g_value_unset (&(*params_p)[j]);
-      
+
       g_free (*params_p);
       *params_p = NULL;
     }
-  
+
   return valid;
 }
 
@@ -476,12 +476,12 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
   gboolean old_emission;
   gboolean handled = FALSE;
   gint i;
-  
+
   old_emission = entry->in_emission;
   entry->in_emission = TRUE;
-  
+
   g_object_ref (object);
-  
+
   for (sig = entry->signals; sig; sig = sig->next)
     {
       GSignalQuery query;
@@ -489,7 +489,7 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
       GValue *params = NULL;
       GValue return_val = { 0, };
       gchar *accelerator = NULL;
-      
+
       signal_id = g_signal_lookup (sig->signal_name, G_OBJECT_TYPE (object));
       if (!signal_id)
 	{
@@ -503,10 +503,10 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
 	  g_free (accelerator);
 	  continue;
 	}
-      
+
       g_signal_query (signal_id, &query);
       if (query.n_params != sig->n_args ||
-	  (query.return_type != G_TYPE_NONE && query.return_type != G_TYPE_BOOLEAN) || 
+	  (query.return_type != G_TYPE_NONE && query.return_type != G_TYPE_BOOLEAN) ||
 	  !binding_compose_params (object, sig->args, &query, &params))
 	{
 	  accelerator = gtk_accelerator_name (entry->keyval, entry->modifiers);
@@ -533,7 +533,7 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
 
       if (query.return_type == G_TYPE_BOOLEAN)
 	g_value_init (&return_val, G_TYPE_BOOLEAN);
-      
+
       g_signal_emitv (params, signal_id, 0, &return_val);
 
       if (query.return_type == G_TYPE_BOOLEAN)
@@ -544,15 +544,15 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
 	}
       else
 	handled = TRUE;
-      
+
       for (i = 0; i < query.n_params + 1; i++)
 	g_value_unset (&params[i]);
       g_free (params);
-      
+
       if (entry->destroyed)
 	break;
     }
-  
+
   g_object_unref (object);
 
   entry->in_emission = old_emission;
@@ -575,9 +575,9 @@ GtkBindingSet*
 gtk_binding_set_new (const gchar *set_name)
 {
   GtkBindingSet *binding_set;
-  
+
   g_return_val_if_fail (set_name != NULL, NULL);
-  
+
   binding_set = g_new (GtkBindingSet, 1);
   binding_set->set_name = (gchar *) g_intern_string (set_name);
   binding_set->widget_path_pspecs = NULL;
@@ -586,9 +586,9 @@ gtk_binding_set_new (const gchar *set_name)
   binding_set->entries = NULL;
   binding_set->current = NULL;
   binding_set->parsed = FALSE;
-  
+
   binding_set_list = g_slist_prepend (binding_set_list, binding_set);
-  
+
   return binding_set;
 }
 
@@ -642,13 +642,13 @@ GtkBindingSet*
 gtk_binding_set_find (const gchar *set_name)
 {
   GSList *slist;
-  
+
   g_return_val_if_fail (set_name != NULL, NULL);
-  
+
   for (slist = binding_set_list; slist; slist = slist->next)
     {
       GtkBindingSet *binding_set;
-      
+
       binding_set = slist->data;
       if (g_str_equal (binding_set->set_name, (gpointer) set_name))
 	return binding_set;
@@ -675,17 +675,17 @@ gtk_binding_set_activate (GtkBindingSet	 *binding_set,
 			  GtkObject	 *object)
 {
   GtkBindingEntry *entry;
-  
+
   g_return_val_if_fail (binding_set != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_OBJECT (object), FALSE);
-  
+
   keyval = gdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
-  
+
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
   if (entry)
     return gtk_binding_entry_activate (entry, object);
-  
+
   return FALSE;
 }
 
@@ -784,12 +784,12 @@ gtk_binding_entry_remove (GtkBindingSet	 *binding_set,
 			  GdkModifierType modifiers)
 {
   GtkBindingEntry *entry;
-  
+
   g_return_if_fail (binding_set != NULL);
-  
+
   keyval = gdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
-  
+
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
   if (entry)
     binding_entry_destroy (entry);
@@ -831,20 +831,20 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
   GSList *slist;
   guint n = 0;
   GtkBindingArg *arg;
-  
+
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (signal_name != NULL);
-  
+
   keyval = gdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
-  
+
   signal = binding_signal_new (signal_name, g_slist_length (binding_args));
-  
+
   arg = signal->args;
   for (slist = binding_args; slist; slist = slist->next)
     {
       GtkBindingArg *tmp_arg;
-      
+
       tmp_arg = slist->data;
       if (!tmp_arg)
 	{
@@ -884,7 +884,7 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
       arg++;
       n++;
     }
-  
+
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
   if (!entry)
     {
@@ -925,7 +925,7 @@ gtk_binding_entry_add_signal (GtkBindingSet  *binding_set,
 
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (signal_name != NULL);
-  
+
   va_start (args, n_args);
   slist = NULL;
   for (i = 0; i < n_args; i++)
@@ -1013,13 +1013,13 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
   PatternSpec *pspec;
   GSList **slist_p, *slist;
   static guint seq_id = 0;
-  
+
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (path_pattern != NULL);
   g_return_if_fail (priority <= GTK_PATH_PRIO_MASK);
 
   priority &= GTK_PATH_PRIO_MASK;
-  
+
   switch (path_type)
     {
     case  GTK_PATH_WIDGET:
@@ -1036,7 +1036,7 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
       slist_p = NULL;
       break;
     }
-  
+
   pspec = g_new (PatternSpec, 1);
   pspec->type = path_type;
   if (path_type == GTK_PATH_WIDGET_CLASS)
@@ -1049,18 +1049,18 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
       pspec->pspec = g_pattern_spec_new (path_pattern);
       pspec->path = NULL;
     }
-    
+
   pspec->seq_id = priority << 28;
   pspec->user_data = binding_set;
-  
+
   slist = *slist_p;
   while (slist)
     {
       PatternSpec *tmp_pspec;
-      
+
       tmp_pspec = slist->data;
       slist = slist->next;
-      
+
       if (g_pattern_spec_equal (tmp_pspec->pspec, pspec->pspec))
 	{
 	  GtkPathPriorityType lprio = tmp_pspec->seq_id >> 28;
@@ -1101,7 +1101,7 @@ binding_match_activate (GSList          *pspec_list,
 
       binding_set = NULL;
       pspec = slist->data;
-      
+
       if (pspec->type == GTK_PATH_WIDGET_CLASS)
         {
           if (_gtk_rc_match_widget_class (pspec->path, path_length, path, path_reversed))
@@ -1160,7 +1160,7 @@ gtk_binding_entries_sort_patterns (GSList      *entries,
       binding_set = entry->binding_set;
       binding_set->current = NULL;
     }
-  
+
   for (; entries; entries = entries->next)
     {
       GtkBindingEntry *entry = entries->data;
@@ -1316,7 +1316,7 @@ gtk_bindings_activate (GtkObject       *object,
 
   display = gtk_widget_get_display (GTK_WIDGET (object));
   key_hash = binding_key_hash_for_keymap (gdk_keymap_get_for_display (display));
-  
+
   entries = _gtk_key_hash_lookup_keyval (key_hash, keyval, modifiers);
 
   handled = gtk_bindings_activate_list (object, entries, is_release);
@@ -1330,10 +1330,10 @@ gtk_bindings_activate (GtkObject       *object,
  * gtk_bindings_activate_event:
  * @object: a #GtkObject (generally must be a widget)
  * @event: a #GdkEventKey
- * 
+ *
  * Looks up key bindings for @object to find one matching
  * @event, and if one was found, activate it.
- * 
+ *
  * Return value: %TRUE if a matching key binding was found
  *
  * Since: 2.4
@@ -1360,7 +1360,7 @@ gtk_bindings_activate_event (GtkObject   *object,
 				  event->state,
 				  BINDING_MOD_MASK () & ~GDK_RELEASE_MASK,
 				  event->group);
-  
+
   handled = gtk_bindings_activate_list (object, entries,
 					event->type == GDK_KEY_RELEASE);
 
@@ -1385,7 +1385,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
   gboolean seen_comma;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
-  
+
   g_scanner_get_next_token (scanner);
   if (scanner->token != G_TOKEN_STRING)
     return G_TOKEN_STRING;
@@ -1511,7 +1511,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
     }
   while (!done);
   scanner->config->scan_symbols = TRUE;
-  
+
   for (slist = args; slist; slist = slist->next)
     {
       GtkBindingArg *arg;
@@ -1536,7 +1536,7 @@ gtk_binding_parse_bind (GScanner       *scanner,
   gboolean unbind = FALSE;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
-  
+
   g_scanner_get_next_token (scanner);
   if (scanner->token != (guint) GTK_RC_TOKEN_BIND &&
       scanner->token != (guint) GTK_RC_TOKEN_UNBIND)
@@ -1689,7 +1689,7 @@ binding_set_delete (GtkBindingSet *binding_set)
       binding_entry_destroy (entry);
       entry = next;
     }
-  
+
   free_pattern_specs (binding_set->widget_path_pspecs);
   free_pattern_specs (binding_set->widget_class_pspecs);
   free_pattern_specs (binding_set->class_branch_pspecs);
@@ -1699,14 +1699,14 @@ binding_set_delete (GtkBindingSet *binding_set)
 
 /**
  * _gtk_binding_reset_parsed:
- * 
+ *
  * Remove all binding sets that were added by gtk_binding_parse_binding().
  */
 void
 _gtk_binding_reset_parsed (void)
 {
   GSList *slist, *next;
-  
+
   slist = binding_set_list;
   while (slist)
     {

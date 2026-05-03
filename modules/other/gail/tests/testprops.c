@@ -19,17 +19,17 @@ static void _create_event_watcher (void);
 
 static guint id;
 
-static void 
+static void
 _state_changed (AtkObject   *obj,
                 const gchar *name,
                 gboolean    set)
 {
-  g_print ("_state_changed: %s: state %s %s\n", 
+  g_print ("_state_changed: %s: state %s %s\n",
            g_type_name (G_OBJECT_TYPE (obj)),
            set ? "is" : "was", name);
 }
 
-static void 
+static void
 _selection_changed (AtkObject   *obj)
 {
   gchar *type;
@@ -48,21 +48,21 @@ _selection_changed (AtkObject   *obj)
            type, g_type_name (G_OBJECT_TYPE (obj)));
 }
 
-static void 
+static void
 _visible_data_changed (AtkObject   *obj)
 {
   g_print ("In visible_data_changed signal handler, object type: %s\n",
            g_type_name (G_OBJECT_TYPE (obj)));
 }
 
-static void 
+static void
 _model_changed (AtkObject   *obj)
 {
   g_print ("In model_changed signal handler, object type: %s\n",
            g_type_name (G_OBJECT_TYPE (obj)));
 }
 
-static void 
+static void
 _property_change_handler (AtkObject   *obj,
                           AtkPropertyValues   *values)
 {
@@ -82,12 +82,12 @@ _property_change_handler (AtkObject   *obj,
     {
       if (G_IS_VALUE (&values->old_value))
         {
-          g_print ("Child is removed: %s\n", 
+          g_print ("Child is removed: %s\n",
                g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->old_value))));
         }
       if (G_IS_VALUE (&values->new_value))
         {
-          g_print ("Child is added: %s\n", 
+          g_print ("Child is added: %s\n",
                g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->new_value))));
         }
     }
@@ -95,12 +95,12 @@ _property_change_handler (AtkObject   *obj,
     {
       if (G_IS_VALUE (&values->old_value))
         {
-          g_print ("Parent is removed: %s\n", 
+          g_print ("Parent is removed: %s\n",
                g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->old_value))));
         }
       if (G_IS_VALUE (&values->new_value))
         {
-          g_print ("Parent is added: %s\n", 
+          g_print ("Parent is added: %s\n",
                g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->new_value))));
         }
     }
@@ -108,18 +108,18 @@ _property_change_handler (AtkObject   *obj,
     {
       if (G_VALUE_HOLDS_DOUBLE (&values->new_value))
         {
-          g_print ("Value now is (double) %f\n", 
+          g_print ("Value now is (double) %f\n",
                    g_value_get_double (&values->new_value));
         }
     }
 }
 
-static void 
+static void
 _traverse_children (AtkObject *obj)
 {
   gint n_children, i;
   AtkRole role;
- 
+
   role = atk_object_get_role (obj);
 
   if ((role == ATK_ROLE_TABLE) ||
@@ -138,7 +138,7 @@ _traverse_children (AtkObject *obj)
     }
 }
 
-static void 
+static void
 _add_handler (AtkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
@@ -146,7 +146,7 @@ _add_handler (AtkObject *obj)
   gint i;
 
   /*
-   * We create a property handler for each object if one was not associated 
+   * We create a property handler for each object if one was not associated
    * with it already.
    *
    * We add it to our array of objects which have property handlers; if an
@@ -154,7 +154,7 @@ _add_handler (AtkObject *obj)
    */
   if (obj_array == NULL)
     obj_array = g_ptr_array_new ();
- 
+
   for (i = 0; i < obj_array->len; i++)
     {
       if (obj == g_ptr_array_index (obj_array, i))
@@ -167,26 +167,26 @@ _add_handler (AtkObject *obj)
     {
       atk_object_connect_property_change_handler (obj,
                    (AtkPropertyChangeHandler*) _property_change_handler);
-      g_signal_connect (obj, "state-change", 
+      g_signal_connect (obj, "state-change",
                         (GCallback) _state_changed, NULL);
       if (ATK_IS_SELECTION (obj))
-        g_signal_connect (obj, "selection_changed", 
+        g_signal_connect (obj, "selection_changed",
                           (GCallback) _selection_changed, NULL);
-      g_signal_connect (obj, "visible_data_changed", 
+      g_signal_connect (obj, "visible_data_changed",
                         (GCallback) _visible_data_changed, NULL);
       if (ATK_IS_TABLE (obj))
-        g_signal_connect (obj, "model_changed", 
+        g_signal_connect (obj, "model_changed",
                         (GCallback) _model_changed, NULL);
       g_ptr_array_add (obj_array, obj);
     }
 }
- 
-static void 
+
+static void
 _check_properties (AtkObject *obj)
 {
   AtkRole role;
 
-  g_print ("Start of _check_properties: %s\n", 
+  g_print ("Start of _check_properties: %s\n",
            g_type_name (G_OBJECT_TYPE (obj)));
 
   _add_handler (obj);

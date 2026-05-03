@@ -95,7 +95,7 @@ struct _GtkEntry
   guint         GSEAL (cursor_visible)         : 1;
   guint         GSEAL (in_click)               : 1; /* Flag so we don't select all when clicking in entry to focus in */
   guint         GSEAL (is_cell_renderer)       : 1;
-  guint         GSEAL (editing_canceled)       : 1; /* Only used by GtkCellRendererText */ 
+  guint         GSEAL (editing_canceled)       : 1; /* Only used by GtkCellRendererText */
   guint         GSEAL (mouse_cursor_obscured)  : 1;
   guint         GSEAL (select_words)           : 1;
   guint         GSEAL (select_lines)           : 1;

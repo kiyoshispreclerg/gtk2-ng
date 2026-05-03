@@ -81,7 +81,7 @@ struct _GtkRBNode
    */
 
   guint parity : 1;
-  
+
   GtkRBNode *left;
   GtkRBNode *right;
   GtkRBNode *parent;
@@ -90,7 +90,7 @@ struct _GtkRBNode
    * i.e. node->left->count + node->right->count + 1
    */
   gint count;
-  
+
   /* this is the total of sizes of
    * node->left, node->right, our own height, and the height
    * of all trees in ->children, iff children exists because
@@ -171,7 +171,7 @@ void       _gtk_rbtree_prev_full        (GtkRBTree              *tree,
 gint       _gtk_rbtree_get_depth        (GtkRBTree              *tree);
 
 /* This func checks the integrity of the tree */
-#ifdef G_ENABLE_DEBUG  
+#ifdef G_ENABLE_DEBUG
 void       _gtk_rbtree_test             (const gchar            *where,
                                          GtkRBTree              *tree);
 void       _gtk_rbtree_debug_spew       (GtkRBTree              *tree);

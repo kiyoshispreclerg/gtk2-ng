@@ -49,10 +49,10 @@ _gtk_quartz_create_image_from_pixbuf (GdkPixbuf *pixbuf)
   data_provider = CGDataProviderCreateWithData (NULL, data, pixbuf_height * rowstride, NULL);
 
   image = CGImageCreate (pixbuf_width, pixbuf_height, 8,
-			 has_alpha ? 32 : 24, rowstride, 
-			 colorspace, 
+			 has_alpha ? 32 : 24, rowstride,
+			 colorspace,
 			 has_alpha ? kCGImageAlphaLast : 0,
-			 data_provider, NULL, FALSE, 
+			 data_provider, NULL, FALSE,
 			 kCGRenderingIntentDefault);
 
   CGDataProviderRelease (data_provider);
@@ -69,7 +69,7 @@ _gtk_quartz_create_image_from_pixbuf (GdkPixbuf *pixbuf)
 
   context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
   CGContextDrawImage (context, CGRectMake (0, 0, pixbuf_width, pixbuf_height), image);
- 
+
   [nsimage unlockFocus];
 
   CGImageRelease (image);
@@ -116,7 +116,7 @@ _gtk_quartz_pasteboard_types_to_atom_list (NSArray *array)
 
   count = [array count];
 
-  for (i = 0; i < count; i++) 
+  for (i = 0; i < count; i++)
     {
       GdkAtom atom = gdk_quartz_pasteboard_type_to_atom_libgtk_only ([array objectAtIndex:i]);
 
@@ -155,9 +155,9 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
     {
       NSColor *nscolor = [[NSColor colorFromPasteboard:pasteboard]
                           colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-      
+
       guint16 color[4];
-      
+
       selection_data->target = target;
 
       color[0] = 0xffff * [nscolor redComponent];
@@ -246,7 +246,7 @@ _gtk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
 
   type = gdk_quartz_atom_to_pasteboard_type_libgtk_only (gtk_selection_data_get_target (selection_data));
 
-  if ([type isEqualTo:NSStringPboardType]) 
+  if ([type isEqualTo:NSStringPboardType])
     [pasteboard setString:[NSString stringWithUTF8String:(const char *)data]
                   forType:type];
   else if ([type isEqualTo:NSColorPboardType])

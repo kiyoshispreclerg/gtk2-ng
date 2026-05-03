@@ -248,9 +248,9 @@ open_display_cb (GtkWidget         *button,
   gtk_entry_set_activates_default (GTK_ENTRY (display_entry), TRUE);
   dialog_label =
     gtk_label_new ("Please enter the name of\nthe new display\n");
-  
+
   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-  
+
   gtk_container_add (GTK_CONTAINER (content_area), dialog_label);
   gtk_container_add (GTK_CONTAINER (content_area), display_entry);
 

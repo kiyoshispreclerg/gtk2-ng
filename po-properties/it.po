@@ -5753,7 +5753,7 @@ msgstr "Periodo di tempo prima che il suggerimento sia mostrato"
 # Browse mode is enabled when the mouse pointer moves off an object
 # where a tooltip was currently being displayed. If the mouse pointer
 # hits another object before the browse mode timeout expires (see
-# #GtkSettings:gtk-tooltip-browse-mode-timeout), it will take the 
+# #GtkSettings:gtk-tooltip-browse-mode-timeout), it will take the
 # amount of milliseconds specified by this setting to popup the tooltip
 # for the new object.
 #: ../gtk/gtksettings.c:633
@@ -7977,7 +7977,7 @@ msgstr "Indica come visualizzare il metodo di input della barra di stato"
 # Era "Lo spazio dei colori a cui appartengono i campioni"
 # Ho usato una forma + aderente all'originale. Ho controllato
 # (brevemente) sui messaggi del TP per vedere se c'era un
-# motivo particolare per quell'appartenere, ma o mi è 
+# motivo particolare per quell'appartenere, ma o mi è
 # sfuggito o non se n'è discusso    --Luca
 #~ msgid "The colorspace in which the samples are interpreted"
 #~ msgstr "Lo spazio dei colori in cui i campioni vengono interpretati"

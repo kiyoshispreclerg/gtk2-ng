@@ -96,12 +96,12 @@ static void       gail_text_view_get_character_extents (AtkText          *text,
                                                         gint             *width,
                                                         gint             *height,
                                                         AtkCoordType     coords);
-static AtkAttributeSet *  gail_text_view_get_run_attributes 
+static AtkAttributeSet *  gail_text_view_get_run_attributes
                                                        (AtkText          *text,
                                                         gint             offset,
                                                         gint             *start_offset,
                                                         gint             *end_offset);
-static AtkAttributeSet *  gail_text_view_get_default_attributes 
+static AtkAttributeSet *  gail_text_view_get_default_attributes
                                                        (AtkText          *text);
 /* atkeditabletext.h */
 
@@ -211,7 +211,7 @@ gail_text_view_init (GailTextView      *text_view)
 }
 
 static void
-setup_buffer (GtkTextView  *view, 
+setup_buffer (GtkTextView  *view,
               GailTextView *gail_view)
 {
   GtkTextBuffer *buffer;
@@ -383,7 +383,7 @@ gail_text_view_get_text_after_offset (AtkText         *text,
     return NULL;
 
   return get_text_near_offset (text, GAIL_AFTER_OFFSET,
-                               boundary_type, offset, 
+                               boundary_type, offset,
                                start_offset, end_offset);
 }
 
@@ -402,7 +402,7 @@ gail_text_view_get_text_at_offset (AtkText         *text,
     return NULL;
 
   return get_text_near_offset (text, GAIL_AT_OFFSET,
-                               boundary_type, offset, 
+                               boundary_type, offset,
                                start_offset, end_offset);
 }
 
@@ -421,7 +421,7 @@ gail_text_view_get_text_before_offset (AtkText         *text,
     return NULL;
 
   return get_text_near_offset (text, GAIL_BEFORE_OFFSET,
-                               boundary_type, offset, 
+                               boundary_type, offset,
                                start_offset, end_offset);
 }
 
@@ -638,7 +638,7 @@ gail_text_view_get_run_attributes (AtkText *text,
 
   view = GTK_TEXT_VIEW (widget);
 
-  return gail_misc_buffer_get_run_attributes (view->buffer, offset, 
+  return gail_misc_buffer_get_run_attributes (view->buffer, offset,
                                               start_offset, end_offset);
 }
 
@@ -663,95 +663,95 @@ gail_text_view_get_default_attributes (AtkText *text)
 
   if (font)
     {
-      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                               ATK_TEXT_ATTR_STYLE);
 
-      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                               ATK_TEXT_ATTR_VARIANT);
 
-      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                               ATK_TEXT_ATTR_STRETCH);
     }
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_JUSTIFICATION);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_DIRECTION);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_WRAP_MODE);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_FG_STIPPLE);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_BG_STIPPLE);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_FG_COLOR);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_BG_COLOR);
 
   if (font)
     {
-      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                               ATK_TEXT_ATTR_FAMILY_NAME);
     }
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_LANGUAGE);
 
   if (font)
     {
-      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                               ATK_TEXT_ATTR_WEIGHT);
     }
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_SCALE);
 
   if (font)
     {
-      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+      attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                               ATK_TEXT_ATTR_SIZE);
     }
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_STRIKETHROUGH);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_UNDERLINE);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_RISE);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_BG_FULL_HEIGHT);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_PIXELS_INSIDE_WRAP);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                          ATK_TEXT_ATTR_PIXELS_BELOW_LINES);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_PIXELS_ABOVE_LINES);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_EDITABLE);
-    
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_INVISIBLE);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_INDENT);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_RIGHT_MARGIN);
 
-  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs, 
+  attrib_set = gail_misc_add_to_attr_set (attrib_set, text_attrs,
                                           ATK_TEXT_ATTR_LEFT_MARGIN);
 
   gtk_text_attributes_unref (text_attrs);
@@ -1035,7 +1035,7 @@ gail_text_view_set_run_attributes (AtkEditableText *text,
 
       else if (!strcmp (name, atk_text_attribute_get_name (ATK_TEXT_ATTR_BG_FULL_HEIGHT)))
         {
-          g_object_set (G_OBJECT (tag), "bg_full_height", 
+          g_object_set (G_OBJECT (tag), "bg_full_height",
                    (strcmp (value, atk_text_attribute_get_value (ATK_TEXT_ATTR_BG_FULL_HEIGHT, 0))),
                    NULL);
         }
@@ -1048,14 +1048,14 @@ gail_text_view_set_run_attributes (AtkEditableText *text,
 
       else if (!strcmp (name, atk_text_attribute_get_name (ATK_TEXT_ATTR_EDITABLE)))
         {
-          g_object_set (G_OBJECT (tag), "editable", 
+          g_object_set (G_OBJECT (tag), "editable",
                    (strcmp (value, atk_text_attribute_get_value (ATK_TEXT_ATTR_EDITABLE, 0))),
                    NULL);
         }
 
       else if (!strcmp (name, atk_text_attribute_get_name (ATK_TEXT_ATTR_INVISIBLE)))
         {
-          g_object_set (G_OBJECT (tag), "invisible", 
+          g_object_set (G_OBJECT (tag), "invisible",
                    (strcmp (value, atk_text_attribute_get_value (ATK_TEXT_ATTR_EDITABLE, 0))),
                    NULL);
         }
@@ -1069,12 +1069,12 @@ gail_text_view_set_run_attributes (AtkEditableText *text,
                   g_object_set (G_OBJECT (tag), "underline", j, NULL);
                   break;
                 }
-            } 
+            }
         }
 
       else if (!strcmp (name, atk_text_attribute_get_name (ATK_TEXT_ATTR_STRIKETHROUGH)))
         {
-          g_object_set (G_OBJECT (tag), "strikethrough", 
+          g_object_set (G_OBJECT (tag), "strikethrough",
                    (strcmp (value, atk_text_attribute_get_value (ATK_TEXT_ATTR_STRIKETHROUGH, 0))),
                    NULL);
         }
@@ -1088,7 +1088,7 @@ gail_text_view_set_run_attributes (AtkEditableText *text,
           color->blue = atoi (RGB_vals[2]);
           g_object_set (G_OBJECT (tag), "background_gdk", color, NULL);
         }
-  
+
       else if (!strcmp (name, atk_text_attribute_get_name (ATK_TEXT_ATTR_FG_COLOR)))
         {
           RGB_vals = g_strsplit (value, ",", 3);
@@ -1367,10 +1367,10 @@ gail_text_view_paste_received (GtkClipboard *clipboard,
  * character is inserted they have the same value, which is the caret
  * location.  arg2 returns the begin location of the insert.
  */
-static void 
+static void
 _gail_text_view_insert_text_cb (GtkTextBuffer *buffer,
-                                GtkTextIter   *arg1, 
-                                gchar         *arg2, 
+                                GtkTextIter   *arg1,
+                                gchar         *arg2,
                                 gint          arg3,
                                 gpointer      user_data)
 {
@@ -1388,7 +1388,7 @@ _gail_text_view_insert_text_cb (GtkTextBuffer *buffer,
   gail_text_view->signal_name = "text_changed::insert";
   position = gtk_text_iter_get_offset (arg1);
   length = g_utf8_strlen(arg2, arg3);
-  
+
   if (gail_text_view->length == 0)
     {
       gail_text_view->position = position;
@@ -1412,7 +1412,7 @@ _gail_text_view_insert_text_cb (GtkTextBuffer *buffer,
       gail_text_view->position = position;
       gail_text_view->length = length;
     }
-    
+
   /*
    * The signal will be emitted when the changed signal is received
    */
@@ -1423,9 +1423,9 @@ _gail_text_view_insert_text_cb (GtkTextBuffer *buffer,
  * character is deleted they have the same value, which is the caret
  * location.
  */
-static void 
+static void
 _gail_text_view_delete_range_cb (GtkTextBuffer *buffer,
-                                 GtkTextIter   *arg1, 
+                                 GtkTextIter   *arg1,
                                  GtkTextIter   *arg2,
                                  gpointer      user_data)
 {
@@ -1441,7 +1441,7 @@ _gail_text_view_delete_range_cb (GtkTextBuffer *buffer,
     {
       g_source_remove (gail_text_view->insert_notify_handler);
       gail_text_view->insert_notify_handler = 0;
-      if (gail_text_view->position == offset && 
+      if (gail_text_view->position == offset &&
           gail_text_view->length == length)
         {
         /*
@@ -1462,9 +1462,9 @@ _gail_text_view_delete_range_cb (GtkTextBuffer *buffer,
 /* Note arg1 and arg2 point to the same offset, which is the caret
  * position after the move
  */
-static void 
+static void
 _gail_text_view_mark_set_cb (GtkTextBuffer *buffer,
-                             GtkTextIter   *arg1, 
+                             GtkTextIter   *arg1,
                              GtkTextMark   *arg2,
                              gpointer      user_data)
 {
@@ -1520,7 +1520,7 @@ _gail_text_view_mark_set_cb (GtkTextBuffer *buffer,
     }
 }
 
-static void 
+static void
 _gail_text_view_changed_cb (GtkTextBuffer *buffer,
                             gpointer      user_data)
 {
@@ -1556,7 +1556,7 @@ get_text_near_offset (AtkText          *text,
   view = GTK_TEXT_VIEW (GTK_ACCESSIBLE (text)->widget);
 
   /*
-   * Pass the GtkTextView to the function gail_text_util_get_text() 
+   * Pass the GtkTextView to the function gail_text_util_get_text()
    * so it can find the start and end of the current line on the display.
    */
   if (boundary_type == ATK_TEXT_BOUNDARY_LINE_START ||
@@ -1564,7 +1564,7 @@ get_text_near_offset (AtkText          *text,
     layout = view;
 
   return gail_text_util_get_text (GAIL_TEXT_VIEW (text)->textutil, layout,
-                                  function, boundary_type, offset, 
+                                  function, boundary_type, offset,
                                     start_offset, end_offset);
 }
 
@@ -1647,7 +1647,7 @@ insert_idle_handler (gpointer data)
   return FALSE;
 }
 
-static void       
+static void
 atk_streamable_content_interface_init    (AtkStreamableContentIface *iface)
 {
   iface->get_n_mime_types = gail_streamable_content_get_n_mime_types;
@@ -1665,12 +1665,12 @@ static gint       gail_streamable_content_get_n_mime_types (AtkStreamableContent
 	gboolean advertises_plaintext = FALSE;
 	GdkAtom *atoms =
 	     gtk_text_buffer_get_serialize_formats (
-		GAIL_TEXT_VIEW (streamable)->textutil->buffer, 
+		GAIL_TEXT_VIEW (streamable)->textutil->buffer,
 		&n_mime_types);
 	for (i = 0; i < n_mime_types-1; ++i)
 	    if (!strcmp ("text/plain", gdk_atom_name (atoms[i])))
 		advertises_plaintext = TRUE;
-	if (!advertises_plaintext) ++n_mime_types; 
+	if (!advertises_plaintext) ++n_mime_types;
         /* we support text/plain even if the GtkTextBuffer doesn't */
     }
     return n_mime_types;
@@ -1684,7 +1684,7 @@ gail_streamable_content_get_mime_type (AtkStreamableContent *streamable, gint i)
 	gint n_mime_types = 0;
 	GdkAtom *atoms;
 	atoms = gtk_text_buffer_get_serialize_formats (
-	    GAIL_TEXT_VIEW (streamable)->textutil->buffer, 
+	    GAIL_TEXT_VIEW (streamable)->textutil->buffer,
 	    &n_mime_types);
 	if (i < n_mime_types)
 	{
@@ -1704,9 +1704,9 @@ static GIOChannel*       gail_streamable_content_get_stream       (AtkStreamable
     if (!GAIL_IS_TEXT_VIEW (streamable) || !GAIL_TEXT_VIEW (streamable)->textutil)
 	return NULL;
     atoms = gtk_text_buffer_get_serialize_formats (
-	GAIL_TEXT_VIEW (streamable)->textutil->buffer, 
+	GAIL_TEXT_VIEW (streamable)->textutil->buffer,
 	&n_mime_types);
-    for (i = 0; i < n_mime_types; ++i) 
+    for (i = 0; i < n_mime_types; ++i)
     {
 	if (!strcmp ("text/plain", mime_type) ||
 	    !strcmp (gdk_atom_name (atoms[i]), mime_type)) {
@@ -1721,10 +1721,10 @@ static GIOChannel*       gail_streamable_content_get_stream       (AtkStreamable
 	    buffer = GAIL_TEXT_VIEW (streamable)->textutil->buffer;
 	    gtk_text_buffer_get_iter_at_offset (buffer, &start, 0);
 	    gtk_text_buffer_get_iter_at_offset (buffer, &end, -1);
-	    if (!strcmp ("text/plain", mime_type)) 
+	    if (!strcmp ("text/plain", mime_type))
 	    {
 		cbuf = (guint8*) gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
-		len = strlen ((const char *) cbuf); 
+		len = strlen ((const char *) cbuf);
 	    }
 	    else
 	    {
@@ -1747,7 +1747,7 @@ static GIOChannel*       gail_streamable_content_get_stream       (AtkStreamable
 	    /* make sure the file is removed on unref of the giochannel */
 	    else {
 		g_unlink (tname);
-		return gio; 
+		return gio;
 	    }
 	}
     }

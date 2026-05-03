@@ -95,9 +95,9 @@ gtk_cell_renderer_combo_class_init (GtkCellRendererComboClass *klass)
   /**
    * GtkCellRendererCombo:model:
    *
-   * Holds a tree model containing the possible values for the combo box. 
+   * Holds a tree model containing the possible values for the combo box.
    * Use the text_column property to specify the column holding the values.
-   * 
+   *
    * Since: 2.6
    */
   g_object_class_install_property (object_class,
@@ -111,14 +111,14 @@ gtk_cell_renderer_combo_class_init (GtkCellRendererComboClass *klass)
   /**
    * GtkCellRendererCombo:text-column:
    *
-   * Specifies the model column which holds the possible values for the 
-   * combo box. 
+   * Specifies the model column which holds the possible values for the
+   * combo box.
    *
-   * Note that this refers to the model specified in the model property, 
-   * <emphasis>not</emphasis> the model backing the tree view to which 
+   * Note that this refers to the model specified in the model property,
+   * <emphasis>not</emphasis> the model backing the tree view to which
    * this cell renderer is attached.
-   * 
-   * #GtkCellRendererCombo automatically adds a text cell renderer for 
+   *
+   * #GtkCellRendererCombo automatically adds a text cell renderer for
    * this column to its combo box.
    *
    * Since: 2.6
@@ -133,11 +133,11 @@ gtk_cell_renderer_combo_class_init (GtkCellRendererComboClass *klass)
                                                      -1,
                                                      GTK_PARAM_READWRITE));
 
-  /** 
+  /**
    * GtkCellRendererCombo:has-entry:
    *
-   * If %TRUE, the cell renderer will include an entry and allow to enter 
-   * values other than the ones in the popup list. 
+   * If %TRUE, the cell renderer will include an entry and allow to enter
+   * values other than the ones in the popup list.
    *
    * Since: 2.6
    */
@@ -194,16 +194,16 @@ gtk_cell_renderer_combo_init (GtkCellRendererCombo *self)
 }
 
 /**
- * gtk_cell_renderer_combo_new: 
- * 
- * Creates a new #GtkCellRendererCombo. 
- * Adjust how text is drawn using object properties. 
- * Object properties can be set globally (with g_object_set()). 
- * Also, with #GtkTreeViewColumn, you can bind a property to a value 
- * in a #GtkTreeModel. For example, you can bind the "text" property 
- * on the cell renderer to a string value in the model, thus rendering 
+ * gtk_cell_renderer_combo_new:
+ *
+ * Creates a new #GtkCellRendererCombo.
+ * Adjust how text is drawn using object properties.
+ * Object properties can be set globally (with g_object_set()).
+ * Also, with #GtkTreeViewColumn, you can bind a property to a value
+ * in a #GtkTreeModel. For example, you can bind the "text" property
+ * on the cell renderer to a string value in the model, thus rendering
  * a different string in each row of the #GtkTreeView.
- * 
+ *
  * Returns: the new cell renderer
  *
  * Since: 2.6
@@ -211,20 +211,20 @@ gtk_cell_renderer_combo_init (GtkCellRendererCombo *self)
 GtkCellRenderer *
 gtk_cell_renderer_combo_new (void)
 {
-  return g_object_new (GTK_TYPE_CELL_RENDERER_COMBO, NULL); 
+  return g_object_new (GTK_TYPE_CELL_RENDERER_COMBO, NULL);
 }
 
 static void
 gtk_cell_renderer_combo_finalize (GObject *object)
 {
   GtkCellRendererCombo *cell = GTK_CELL_RENDERER_COMBO (object);
-  
+
   if (cell->model)
     {
       g_object_unref (cell->model);
       cell->model = NULL;
     }
-  
+
   G_OBJECT_CLASS (gtk_cell_renderer_combo_parent_class)->finalize (object);
 }
 
@@ -240,7 +240,7 @@ gtk_cell_renderer_combo_get_property (GObject    *object,
     {
     case PROP_MODEL:
       g_value_set_object (value, cell->model);
-      break; 
+      break;
     case PROP_TEXT_COLUMN:
       g_value_set_int (value, cell->text_column);
       break;
@@ -340,7 +340,7 @@ gtk_cell_renderer_combo_editing_done (GtkCellEditable *combo,
       entry = GTK_ENTRY (gtk_bin_get_child (GTK_BIN (combo)));
       new_text = g_strdup (gtk_entry_get_text (entry));
     }
-  else 
+  else
     {
       model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo));
 
@@ -362,28 +362,28 @@ gtk_cell_renderer_combo_focus_out_event (GtkWidget *widget,
 					 GdkEvent  *event,
 					 gpointer   data)
 {
-  
+
   gtk_cell_renderer_combo_editing_done (GTK_CELL_EDITABLE (widget), data);
 
   return FALSE;
 }
 
-typedef struct 
+typedef struct
 {
   GtkCellRendererCombo *cell;
   gboolean found;
   GtkTreeIter iter;
 } SearchData;
 
-static gboolean 
-find_text (GtkTreeModel *model, 
-	   GtkTreePath  *path, 
-	   GtkTreeIter  *iter, 
+static gboolean
+find_text (GtkTreeModel *model,
+	   GtkTreePath  *path,
+	   GtkTreeIter  *iter,
 	   gpointer      data)
 {
   SearchData *search_data = (SearchData *)data;
   gchar *text;
-  
+
   gtk_tree_model_get (model, iter, search_data->cell->text_column, &text, -1);
   if (text && GTK_CELL_RENDERER_TEXT (search_data->cell)->text &&
       strcmp (text, GTK_CELL_RENDERER_TEXT (search_data->cell)->text) == 0)
@@ -393,7 +393,7 @@ find_text (GtkTreeModel *model,
     }
 
   g_free (text);
-  
+
   return search_data->found;
 }
 
@@ -422,7 +422,7 @@ gtk_cell_renderer_combo_start_editing (GtkCellRenderer     *cell,
 
   priv = GTK_CELL_RENDERER_COMBO_GET_PRIVATE (cell_combo);
 
-  if (cell_combo->has_entry) 
+  if (cell_combo->has_entry)
     {
       combo = g_object_new (GTK_TYPE_COMBO_BOX, "has-entry", TRUE, NULL);
 
@@ -432,7 +432,7 @@ gtk_cell_renderer_combo_start_editing (GtkCellRenderer     *cell,
                                            cell_combo->text_column);
 
       if (cell_text->text)
-	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (combo)->child), 
+	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (combo)->child),
 			    cell_text->text);
     }
   else
@@ -444,8 +444,8 @@ gtk_cell_renderer_combo_start_editing (GtkCellRenderer     *cell,
         gtk_combo_box_set_model (GTK_COMBO_BOX (combo), cell_combo->model);
 
       gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell, TRUE);
-      gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), 
-				      cell, "text", cell_combo->text_column, 
+      gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo),
+				      cell, "text", cell_combo->text_column,
 				      NULL);
 
       /* determine the current value */
@@ -473,7 +473,7 @@ gtk_cell_renderer_combo_start_editing (GtkCellRenderer     *cell,
   g_signal_connect (GTK_CELL_EDITABLE (combo), "changed",
 		    G_CALLBACK (gtk_cell_renderer_combo_changed),
 		    cell_combo);
-  cell_combo->focus_out_id = 
+  cell_combo->focus_out_id =
     g_signal_connect (combo, "focus-out-event",
 		      G_CALLBACK (gtk_cell_renderer_combo_focus_out_event),
 		      cell_combo);

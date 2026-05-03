@@ -21,12 +21,12 @@
  * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 /* This file should really be one level up, in the backend-independent
  * GDK, and the x11/gdkinput.c could also be removed.
- * 
+ *
  * That stuff in x11/gdkinput.c which really *is* X11-dependent should
  * be in x11/gdkinput-x11.c.
  */
@@ -55,7 +55,7 @@ void
 _gdk_init_input_core (GdkDisplay *display)
 {
   display->core_pointer = g_object_new (GDK_TYPE_DEVICE, NULL);
-  
+
   display->core_pointer->name = "Core Pointer";
   display->core_pointer->source = GDK_SOURCE_MOUSE;
   display->core_pointer->mode = GDK_MODE_SCREEN;
@@ -85,12 +85,12 @@ gdk_device_get_type (void)
 	  0,			/* n_preallocs */
 	  (GInstanceInitFunc) NULL,
 	};
-      
+
       object_type = g_type_register_static (G_TYPE_OBJECT,
                                             g_intern_static_string ("GdkDevice"),
                                             &object_info, 0);
     }
-  
+
   return object_type;
 }
 
@@ -258,14 +258,14 @@ gdk_device_get_history  (GdkDevice         *device,
 
   if (GDK_WINDOW_DESTROYED (window))
     return FALSE;
-    
+
   if (GDK_IS_CORE (device))
     return FALSE;
   else
     return _gdk_device_get_history (device, window, start, stop, events, n_events);
 }
 
-GdkTimeCoord ** 
+GdkTimeCoord **
 _gdk_device_allocate_history (GdkDevice *device,
 			      gint       n_events)
 {
@@ -279,12 +279,12 @@ _gdk_device_allocate_history (GdkDevice *device,
   return result;
 }
 
-void 
+void
 gdk_device_free_history (GdkTimeCoord **events,
 			 gint           n_events)
 {
   gint i;
-  
+
   for (i=0; i<n_events; i++)
     g_free (events[i]);
 
@@ -449,7 +449,7 @@ _gdk_input_crossing_event (GdkWindow *window,
       input_window = priv->input_window;
       if (input_window != NULL)
 	{
-	  gdk_input_get_root_relative_geometry (GDK_WINDOW_HWND (window), 
+	  gdk_input_get_root_relative_geometry (GDK_WINDOW_HWND (window),
 						&root_x, &root_y);
 	  input_window->root_x = root_x;
 	  input_window->root_y = root_y;
@@ -470,12 +470,12 @@ gdk_device_get_axis (GdkDevice  *device,
 		     gdouble    *value)
 {
   gint i;
-  
+
   g_return_val_if_fail (device != NULL, FALSE);
 
   if (axes == NULL)
     return FALSE;
-  
+
   for (i=0; i<device->num_axes; i++)
     if (device->axes[i].use == use)
       {
@@ -483,7 +483,7 @@ gdk_device_get_axis (GdkDevice  *device,
 	  *value = axes[i];
 	return TRUE;
       }
-  
+
   return FALSE;
 }
 

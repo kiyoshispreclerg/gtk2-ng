@@ -1471,7 +1471,7 @@ update_dialog_from_capabilities (GtkPrintUnixDialog *dialog)
 }
 
 static gboolean
-page_setup_is_equal (GtkPageSetup *a, 
+page_setup_is_equal (GtkPageSetup *a,
 		     GtkPageSetup *b)
 {
   return
@@ -1518,7 +1518,7 @@ set_paper_size (GtkPrintUnixDialog *dialog,
 			      PAGE_SETUP_LIST_COL_PAGE_SETUP, &list_page_setup, -1);
 	  if (list_page_setup == NULL)
 	    continue;
-	  
+
 	  if ((size_only && page_setup_is_same_size (page_setup, list_page_setup)) ||
 	      (!size_only && page_setup_is_equal (page_setup, list_page_setup)))
 	    {
@@ -1529,9 +1529,9 @@ set_paper_size (GtkPrintUnixDialog *dialog,
 	      g_object_unref (list_page_setup);
 	      return TRUE;
 	    }
-	      
+
 	  g_object_unref (list_page_setup);
-	  
+
 	} while (gtk_tree_model_iter_next (model, &iter));
     }
 
@@ -1582,7 +1582,7 @@ fill_custom_paper_sizes (GtkPrintUnixDialog *dialog)
 	  g_object_unref (page_setup);
 	} while (gtk_tree_model_iter_next (model, &iter));
     }
-  
+
   gtk_list_store_append (priv->page_setup_list, &paper_iter);
   gtk_list_store_set (priv->page_setup_list, &paper_iter,
                       PAGE_SETUP_LIST_COL_IS_SEPARATOR, TRUE,
@@ -2610,7 +2610,7 @@ draw_page_cb (GtkWidget          *widget,
 
   cairo_save (cr);
 
-  page_setup = gtk_print_unix_dialog_get_page_setup (dialog);  
+  page_setup = gtk_print_unix_dialog_get_page_setup (dialog);
 
   if (page_setup != NULL)
     {
@@ -3461,7 +3461,7 @@ create_page_setup_page (GtkPrintUnixDialog *dialog)
 
   combo = gtk_combo_box_new_with_model (GTK_TREE_MODEL (priv->page_setup_list));
   priv->paper_size_combo = GTK_WIDGET (combo);
-  gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combo), 
+  gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combo),
                                         paper_size_row_is_separator, NULL, NULL);
   cell = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell, TRUE);

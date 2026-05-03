@@ -29,7 +29,7 @@
 #define QUARTZ_POOL_ALLOC NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]
 #define QUARTZ_POOL_RELEASE [pool release]
 
-@interface GtkQuartzStatusIcon : NSObject 
+@interface GtkQuartzStatusIcon : NSObject
 {
   GtkStatusIcon *status_icon;
   NSStatusBar   *ns_bar;
@@ -79,10 +79,10 @@
 }
 
 - (void) actionCb:(NSObject *)button
-{ 
+{
   NSEvent *event = [NSApp currentEvent];
   double time = [event timestamp];
-  
+
   g_signal_emit (status_icon,
                  status_icon_signals [POPUP_MENU_SIGNAL], 0,
                  1,
@@ -98,7 +98,7 @@
     [current_image release];
     current_image = nil;
   }
-  
+
   if (!pixbuf) {
     [ns_item release];
     ns_item = nil;
@@ -129,7 +129,7 @@
 {
   [ns_tooltip release];
   ns_tooltip = [[NSString stringWithUTF8String:tooltip_text] retain];
-  
+
   [ns_item setToolTip:ns_tooltip];
 }
 
