@@ -71,13 +71,58 @@ sudo make install
 
 ## Dependencies (Debian/Devuan/Ubuntu)
 ```bash
-sudo apt install build-essential autoconf automake gtk-doc-tools libtool pkg-config \
-    libglib2.0-dev libpango1.0-dev libatk1.0-dev libcairo2-dev libfontconfig1-dev \
-    libx11-dev libxext-dev libxrender-dev libxinerama-dev libxi-dev libxcursor-dev \
-    libxrandr-dev libxfixes-dev libxcomposite-dev libxdamage-dev libgdk-pixbuf2.0-dev
+sudo apt install \
+  build-essential git \
+  autoconf automake libtool pkg-config gtk-doc-tools gobject-introspection \
+  libglib2.0-dev libpango1.0-dev libatk1.0-dev libcairo2-dev libgdk-pixbuf-2.0-dev \
+  libfontconfig1-dev libfreetype-dev libharfbuzz-dev libfribidi-dev libpng-dev \
+  libx11-dev libxext-dev libxrender-dev libxrandr-dev libxcursor-dev \
+  libxinerama-dev libxi-dev libxfixes-dev libxcomposite-dev libxdamage-dev \
+  libcups2-dev
 ```
 
-(Adjust for Arch, Gentoo, etc.)
+## Dependencies (Arch/Artix/Manjaro)
+```bash
+sudo pacman -S --needed \
+  base-devel git \
+  autoconf automake libtool pkgconf make gcc binutils \
+  gtk-doc gobject-introspection \
+  glib2 glib2-devel \
+  pango cairo atk gdk-pixbuf2 \
+  fontconfig freetype2 harfbuzz fribidi libpng pixman \
+  libx11 libxext libxrender libxrandr libxcursor libxinerama libxi libxfixes \
+  libxcomposite libxdamage libxft \
+  cups
+```
+
+## Dependencies (Gentoo)
+```bash
+emerge --ask --oneshot \
+  dev-vcs/git \
+  sys-devel/gcc sys-devel/binutils dev-build/make \
+  dev-build/autoconf dev-build/automake dev-build/libtool \
+  dev-util/pkgconf dev-util/ccache \
+  dev-util/gtk-doc dev-libs/gobject-introspection \
+  dev-libs/glib dev-libs/atk \
+  x11-libs/pango x11-libs/cairo x11-libs/gdk-pixbuf \
+  media-libs/fontconfig media-libs/freetype \
+  media-libs/harfbuzz dev-libs/fribidi media-libs/libpng x11-libs/pixman \
+  x11-libs/libX11 x11-libs/libXext x11-libs/libXrender x11-libs/libXrandr \
+  x11-libs/libXcursor x11-libs/libXinerama x11-libs/libXi x11-libs/libXfixes \
+  net-print/cups
+```
+
+## GTK2-ng requires Cairo with Xlib support. If configure reports that cairo-xlib is missing, enable the X USE flag for Cairo:ort
+```bash
+echo 'x11-libs/cairo X' >> /etc/portage/package.use/gtk2-ng
+emerge --ask --oneshot x11-libs/cairo
+```
+
+## If Pango or Freetype dependency resolution requires Harfbuzz support, enable it for Freetype:
+```bash
+echo 'media-libs/freetype harfbuzz' >> /etc/portage/package.use/gtk2-ng
+emerge --ask --oneshot media-libs/freetype x11-libs/pango
+```
 
 ## How to Contribute
 Join the main discussion here:  
