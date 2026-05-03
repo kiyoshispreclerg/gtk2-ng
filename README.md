@@ -112,13 +112,13 @@ emerge --ask --oneshot \
   net-print/cups
 ```
 
-## GTK2-ng requires Cairo with Xlib support. If configure reports that cairo-xlib is missing, enable the X USE flag for Cairo:ort
+## GTK2-ng requires Cairo with Xlib support. If configure reports that cairo-xlib is missing, enable the X USE flag for Cairo (Gentoo)
 ```bash
 echo 'x11-libs/cairo X' >> /etc/portage/package.use/gtk2-ng
 emerge --ask --oneshot x11-libs/cairo
 ```
 
-## If Pango or Freetype dependency resolution requires Harfbuzz support, enable it for Freetype:
+## If Pango or Freetype dependency resolution requires Harfbuzz support, enable it for Freetype: (Gentoo)
 ```bash
 echo 'media-libs/freetype harfbuzz' >> /etc/portage/package.use/gtk2-ng
 emerge --ask --oneshot media-libs/freetype x11-libs/pango
