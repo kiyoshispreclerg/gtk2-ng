@@ -9,7 +9,7 @@ Backed by the **devuanusers.com** community.
 ## What has already been done
 - Added the two GTK2 patches currently used by the AUR maintainers
 - Implemented several modernizations from stefan11111’s GTK2 fork
-- Ported patches from NetBSD
+- Ported patches from NetBSD, OpenBSD, Gentoo and Fedora
 - Fixed all compiler warnings with modern toolchains
 - Made GTK2 compile cleanly with GCC 14/15 and Clang 21
 - Tested on Devuan, Arch, and Gentoo
@@ -66,10 +66,10 @@ sudo make install
 
 ## Dependencies (Debian/Devuan/Ubuntu)
 ```bash
-sudo apt install build-essential autoconf automake libtool pkg-config \
+sudo apt install build-essential autoconf automake gtk-doc-tools libtool pkg-config \
     libglib2.0-dev libpango1.0-dev libatk1.0-dev libcairo2-dev libfontconfig1-dev \
     libx11-dev libxext-dev libxrender-dev libxinerama-dev libxi-dev libxcursor-dev \
-    libxrandr-dev libxfixes-dev libxcomposite-dev libxdamage-dev
+    libxrandr-dev libxfixes-dev libxcomposite-dev libxdamage-dev libgdk-pixbuf2.0-dev
 ```
 
 (Adjust for Arch, Gentoo, etc.)
