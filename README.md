@@ -9,14 +9,21 @@ Backed by the **devuanusers.com** community.
 ## Highlights
 
 - Conservative GTK+ 2.24 maintenance with ABI compatibility as a priority
-- Modern build-system and compiler-warning cleanup
-- Compatibility fixes for current GCC, Clang, Autoconf, Automake and Libtool
+- Existing GTK2 applications should continue to run without recompilation
+- X11-first approach with no forced Wayland migration
+- Modern build-system cleanup for current Autoconf, Automake, Libtool and gtk-doc
+- Compatibility fixes for current GCC and Clang versions
 - Selected safe patches from AUR, BSDs, Gentoo, Fedora and GTK2 maintenance forks
-- Y2038-related internal time-handling improvements where ABI-safe
+- Internal Y2038-related time-handling improvements where ABI-safe
 - Modernized private-data handling in many GTK/GDK classes
-- Improved GtkFileChooser with optional icon view and better icon handling
-- Preserved classic list view, GTK2 theming, engines, modules and legacy paths
+- Fixed many compiler and deprecation warnings without removing features
+- Improved GtkFileChooser with optional icon view
+- Classic list view remains available
+- Better icon handling and reduced unnecessary overhead in the file chooser
+- Preserved GTK2 theming, theme engines, input modules and print backends
+- Preserved legacy configuration and module lookup behaviour
 - Continued focus on performance, low overhead and responsiveness
+- Community-driven maintenance backed by devuanusers.com
 
 ## Roadmap
 
