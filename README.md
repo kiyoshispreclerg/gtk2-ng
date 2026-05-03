@@ -6,32 +6,30 @@ This fork focuses on modern compatibility while preserving stability, performanc
 
 Backed by the **devuanusers.com** community.
 
-## What has already been done
-- Added the two GTK2 patches currently used by the AUR maintainers
-- Implemented several modernizations from stefan11111’s GTK2 fork
-- Ported patches from NetBSD, OpenBSD, Gentoo and Fedora
-- Fixed all compiler warnings with modern toolchains
-- Made GTK2 compile cleanly with GCC 14/15 and Clang 21
-- Tested on Devuan, Arch, and Gentoo
-- Improved the file chooser:
-  - Classic list view still available
-  - New icon view added
-  - Easy switching between list and icon view
-  - Better thumbnail and icon handling
-  - Keeps responsiveness and avoids unnecessary overhead
-- Conservative approach — no ABI breaks where possible
+## Highlights
 
-## Future plans
-- Backport further improvements from stefan11111’s GTK2 fork (Xlibre contributor)
-- Backport useful new features from Ardour’s GTK2 fork (YTK) without breaking ABI
-- Continue fixing bugs and modern compiler issues
-- Improve performance and responsiveness
-- Further file chooser improvements:
-  - Best-effort thumbnail generation for icon view
-  - Asynchronous loading for large/network folders
-  - Optional preview panel
-- Find a better project name
-- Add libppd support for legacy PPD-based printer options with newer CUPS
+- Conservative GTK+ 2.24 maintenance with ABI compatibility as a priority
+- Modern build-system and compiler-warning cleanup
+- Compatibility fixes for current GCC, Clang, Autoconf, Automake and Libtool
+- Selected safe patches from AUR, BSDs, Gentoo, Fedora and GTK2 maintenance forks
+- Y2038-related internal time-handling improvements where ABI-safe
+- Modernized private-data handling in many GTK/GDK classes
+- Improved GtkFileChooser with optional icon view and better icon handling
+- Preserved classic list view, GTK2 theming, engines, modules and legacy paths
+- Continued focus on performance, low overhead and responsiveness
+
+## Roadmap
+
+- Continue removing deprecated internal API usage where safe
+- Improve file chooser responsiveness for large and network directories
+- Add best-effort thumbnail generation and optional preview support
+- Improve compatibility with traditional GTK2 themes and engines
+- Add XDG-aware config, theme and icon lookup paths while keeping legacy paths
+- Review Ardour's YTK GTK2 fork for portable, ABI-safe improvements
+- Review further GTK2 maintenance forks for useful fixes
+- Preserve CUPS/PPD printing workflows and add libppd support for newer CUPS
+- Keep GTK2 useful on modern Unix-like systems without breaking existing apps
+- Choose a better long-term project name
 
 ## Build Instructions (Linux)
 

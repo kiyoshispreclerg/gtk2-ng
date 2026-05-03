@@ -4,28 +4,279 @@ devuanusers.com community with new patches and new features
 to come. A summary of what's been done and roadmap for
 future improvements:
 
-## What has already been done
-- Added the two GTK2 patches currently used by the AUR maintainers
-- Implemented several modernizations from stefan11111's GTK2 fork
-- Fixed all compiler warnings with modern toolchains
-- Made GTK2 compile cleanly with GCC 14/15 and Clang 21
-- Tested on Devuan, Arch, and Gentoo
-- Improved the file chooser:
-  - Classic list view still available
-  - New icon view added
-  - Easy switching between list and icon view
-  - Better thumbnail and icon handling
-  - Keeps responsiveness and avoids unnecessary overhead
-- Conservative approach - no ABI breaks where possible
+Overview of Changes from GTK+ 2.24.33 to gtk2-ng
+================================================
 
-## Future plans
-- Backport further improvements from stefan11111's GTK2 fork (Xlibre contributor)
-- Backport useful new features from Ardour's GTK2 fork (YTK) without breaking ABI
-- Continue fixing bugs and modern compiler issues
-- Improve performance and responsiveness
-- Further file chooser improvements:
-  - Best-effort thumbnail generation for icon view
-  - Asynchronous loading for large/network folders
-  - Optional preview panel
-- Find a better project name
-- Add libppd support for legacy PPD-based printer options with newer CUPS
+* Continue GTK+ 2.24 maintenance as gtk2-ng
+* Preserve GTK+ 2 API and ABI compatibility
+* Preserve existing GTK+ 2 features, behaviour, theming, modules and
+  legacy code paths where possible
+* Integrate selected downstream GTK+ 2 fixes
+* Integrate selected safe improvements from other GTK+ 2 maintenance forks
+
+* Build:
+ - Improve compatibility with current Autoconf, Automake, Libtool and
+   gtk-doc versions
+ - Update autogen.sh handling for newer Automake/aclocal installations
+ - Replace obsolete Autoconf macros with modern equivalents
+ - Use AC_CHECK_TOOL for nm detection
+ - Fix duplicate Automake variable warnings in generated build fragments
+ - Add missing build-system entries for shared internal pixdata helper code
+ - Fix parallel-build ordering for generated GTK type headers
+ - Use a UTF-8 locale when generating the built-in icon cache
+ - Add configure options to disable optional X11 extensions:
+   XRandR, XFixes, XComposite and XDamage
+ - Improve X11/Xext/XShm/XInput related configure checks
+ - Keep gtk-doc optional
+
+* GObject Introspection:
+ - Fix GDK and GTK GIR generation with newer g-ir-scanner versions
+ - Add missing internal include paths and build defines for introspection
+ - Filter private/internal GTK headers from Gtk-2.0.gir generation
+ - Add identifier and symbol prefixes where needed
+ - Remove duplicate gtk-doc return annotations that confused modern
+   introspection parsing
+
+* Compiler warnings:
+ - Fix warnings produced by newer GCC and Clang versions
+ - Fix incompatible function pointer warnings in tests and demos
+ - Fix stricter callback type warnings in GtkItemFactory test code
+ - Fix stricter GLib type-propagation warnings for g_object_ref() and
+   g_object_ref_sink()
+ - Fix missing and implicit function declaration warnings
+ - Fix unused-variable, set-but-not-used and misleading-indentation warnings
+ - Fix const qualifier warnings
+ - Preserve symbol attributes in generated alias definition files
+ - Silence false-positive array-bounds diagnostics in old GTK text segment
+   allocation code without changing the allocation strategy
+ - Avoid broad warning suppression where local source fixes are possible
+
+* Private data:
+ - Modernize many GTK and GDK private-data implementations
+ - Replace g_type_class_add_private() and G_TYPE_INSTANCE_GET_PRIVATE()
+   with G_ADD_PRIVATE and generated instance-private accessors where safe
+ - Keep public structs, public headers and exported symbols compatible
+ - Preserve old widget->priv style access where required for GTK+ 2
+   compatibility
+
+* GLib and GObject modernization:
+ - Replace selected g_memdup() calls with g_memdup2()
+ - Replace deprecated g_value_get_char() and g_value_set_char() usage with
+   signed-char variants
+ - Replace selected deprecated GBookmarkFile application-info APIs
+ - Replace selected deprecated recent-item timestamp APIs with GDateTime-based
+   APIs
+ - Replace g_test_trap_fork() with g_test_trap_subprocess()
+ - Replace deprecated GParameter and g_object_newv() usage in GtkBuilder
+   internals
+ - Replace selected deprecated Pango parser helpers in gtk-icon-sizes parsing
+ - Replace deprecated GCompletion usage in GtkCombo with local completion
+   logic
+ - Replace deprecated g_pattern_match_string() usage where safe
+ - Remove unnecessary type-system initialization from helper code where safe
+
+* Time handling:
+ - Improve internal Y2038 safety without changing public ABI
+ - Convert selected internal timestamp storage to wider integer types
+ - Add safe conversion helpers where public APIs still expose time_t
+ - Replace selected GTimeVal and g_get_current_time() usage
+ - Improve internal timestamp handling in recent-file, file, icon/theme and
+   related code paths
+ - Preserve public time_t based APIs for ABI compatibility
+
+* GtkRecentManager:
+ - Store recent-file timestamps internally in a safer representation
+ - Preserve the public time_t based API
+ - Add safe conversion and clamping for public timestamp access
+ - Modernize bookmark timestamp handling with GDateTime APIs
+
+* GtkFileChooser:
+ - Add an icon/grid view mode
+ - Keep the classic list view available
+ - Add switching between list view and icon view
+ - Add separate pixbuf/model handling for list-view and icon-view icons
+ - Add separate icon sizing for list view and icon view
+ - Add icon-view zoom controls
+ - Add Ctrl + mouse wheel zoom support in icon view
+ - Improve icon-view zoom invalidation and layout updates
+ - Improve scaling of small upscaled icons
+ - Cache shared file chooser theme icons
+ - Clear the file chooser icon cache when the icon theme changes
+ - Update icon sizing when icon theme or monitor metrics change
+ - Fix crashes when switching between list and icon views
+ - Guard hidden-file and backup-file GFileInfo access by checking whether
+   the attributes are present before reading them
+
+* GtkFileSelection:
+ - Fix missing pwd.h declarations for home-directory completion
+ - Define _XOPEN_SOURCE 500 where needed for getpwnam(), setpwent(),
+   getpwent() and endpwent()
+ - Preserve the old GtkFileSelection widget and completion behaviour
+
+* Icon cache and pixdata:
+ - Add shared internal pixdata helper code
+ - Use the shared pixdata helper in gtk-update-icon-cache
+ - Replace deprecated GdkPixdata usage in selected internal code
+ - Replace deprecated gdk_pixbuf_new_from_inline() usage in selected code
+ - Keep the existing icon cache file format compatible
+ - Improve icon cache pixdata validation
+ - Remove invalid temporary icon cache files after validation failure
+ - Ignore image files placed directly in the top-level icon theme directory
+
+* Module loading:
+ - Avoid falling back to loading GTK modules from the current working
+   directory
+ - Preserve normal GTK module search paths, absolute module paths and
+   libtool .la fallback handling
+ - Preserve support for theme engines, input modules and print backends
+
+* X11:
+ - Add support for the _NET_SYSTEM_TRAY_PADDING system tray hint
+ - Apply tray-manager-provided GtkStatusIcon padding according to tray
+   orientation
+ - Update tray padding dynamically when tray orientation or padding changes
+ - Keep default tray padding at zero when no tray hint is provided
+ - Add OpenBSD process lookup support for GtkMountOperation on X11
+ - Replace deprecated pango_unichar_direction() usage in X11 keymap code
+   with an internal FriBidi-based helper
+ - Modernize selected GDK thread initialization code
+
+* Printing:
+ - Preserve CUPS and PPD-related printing functionality
+ - Preserve print backend module loading
+ - Preserve the file print backend
+ - Mark the LPR print backend as accepting both PDF and PostScript data
+ - Fix module path handling so print backends can be found from build and
+   install prefixes
+ - Keep the existing GTK+ 2 print backend model
+ - Improve selected CUPS backend warning and string handling without changing
+   printing behaviour
+
+* Quartz:
+ - Add support for depth-1 Quartz images and drawable sources
+
+* Text and Pango:
+ - Add an internal base-direction helper using FriBidi
+ - Replace deprecated pango_find_base_dir() usage in selected GTK widgets
+ - Centralize text base-direction logic for GtkEntry, GtkTextBTree and
+   GtkTextView
+
+* GtkBuilder:
+ - Replace deprecated GParameter usage internally
+ - Replace g_object_newv() with g_object_new_with_properties()
+ - Preserve GtkBuilder object construction behaviour
+
+* GtkCombo:
+ - Replace deprecated GCompletion usage
+ - Preserve the old case-sensitive Alt+Tab inline completion behaviour
+
+* Tests, demos and tools:
+ - Fix GtkItemFactory callback type mismatches in test programs
+ - Fix test code passing too many arguments to create_menu()
+ - Fix gtk-demo Tool Palette handling for unsupported stock/demo item IDs
+ - Fix warnings in documentation helper tools
+ - Replace mallinfo() with mallinfo2() in test code when available, with
+   mallinfo() retained as fallback
+ - Remove deprecated gtk-doc @Varargs annotations
+
+
+
+Future Plans for gtk2-ng
+========================
+
+* Continue gtk2-ng as a conservative GTK+ 2.24 maintenance fork
+* Preserve GTK+ 2 API and ABI compatibility
+* Keep applications built for GTK+ 2.24.33 working with future gtk2-ng
+  releases
+* Preserve existing GTK+ 2 features, behaviour, theming, modules and
+  legacy code paths
+* Keep changes conservative and avoid unnecessary behaviour changes
+
+* Build and compiler cleanup:
+ - Remove remaining compiler warnings with modern GCC and Clang versions
+ - Remove remaining deprecation warnings by modernizing the affected code
+ - Continue improving compatibility with modern build tools
+ - Keep gtk2-ng buildable on supported Unix-like platforms
+ - Keep optional components optional where possible
+
+* Bug fixing:
+ - Continue fixing regressions, crashes and long-standing GTK+ 2 bugs
+ - Continue fixing issues found by downstream users and applications
+ - Keep compatibility fixes small, reviewable and ABI-safe
+
+* Performance and responsiveness:
+ - Improve performance where this can be done without changing behaviour
+ - Reduce unnecessary CPU and memory overhead
+ - Keep GTK+ 2 responsive on older hardware
+ - Improve responsiveness in large directories and slow filesystems
+ - Avoid blocking the UI on network mounts where possible
+
+* GtkFileChooser:
+ - Continue improving the new icon view
+ - Improve thumbnail handling for icon view
+ - Add best-effort thumbnail generation for image-heavy directories
+ - Avoid aggressive thumbnail retry loops
+ - Add asynchronous loading for very large directories
+ - Add asynchronous loading for slow or network-backed folders
+ - Add an optional preview panel
+ - Keep the classic list view available
+ - Keep switching between list view and icon view lightweight
+ - Preserve existing GtkFileChooser API and behaviour
+
+* Themes and engines:
+ - Keep traditional GTK+ 2 theme engines working
+ - Improve theme-engine loading from system and custom GTK paths
+ - Preserve support for existing GTK+ 2 themes
+ - Preserve support for existing icon themes
+ - Improve compatibility with distributions that package GTK+ 2 engines
+   separately
+
+* XDG path support:
+ - Add support for XDG_CONFIG_HOME/gtk-2.0/gtkrc
+ - Keep support for ~/.gtkrc-2.0
+ - Keep support for GTK2_RC_FILES
+ - Add support for XDG_DATA_HOME/themes
+ - Add support for XDG_DATA_HOME/icons
+ - Keep support for ~/.themes and ~/.icons
+ - Add XDG-aware lookup paths without removing legacy paths
+ - Preserve existing GTK_PATH behaviour
+ - Preserve backwards compatibility with existing user configurations
+
+* YTK and Ardour:
+ - Review Ardour's YTK GTK+ 2 fork for portable, ABI-safe improvements
+ - Backport useful YTK features where they can be added without breaking
+   GTK+ 2 compatibility
+ - Review YTK touch input support for possible gtk2-ng integration
+ - Review YTK smooth scrolling and input-event improvements for possible
+   gtk2-ng integration
+ - Review YTK macOS improvements for possible gtk2-ng integration
+ - Avoid importing Ardour-specific code that only makes sense for Ardour
+ - Keep gtk2-ng usable as a general GTK+ 2 replacement, not an
+   application-specific toolkit
+
+* Other GTK+ 2 maintenance forks:
+ - Continue reviewing stefan11111's GTK+ 2 fork for safe improvements
+ - Backport useful fixes from stefan11111's fork where they preserve GTK+ 2
+   features and compatibility
+ - Avoid importing changes that remove functionality or narrow platform
+   support
+
+* Printing:
+ - Add libppd support for legacy PPD-based printer options with newer CUPS
+ - Preserve existing CUPS 2.x printing support
+ - Preserve legacy PPD workflows where possible
+ - Keep GTK+ 2 print backend behaviour compatible with existing
+   applications
+ - Avoid requiring separate GTK+ 2 builds for different CUPS generations
+
+* Platform support:
+ - Preserve GNU/Linux support
+ - Preserve BSD support where possible
+ - Preserve macOS support where possible
+ - Preserve Windows/ReactOS support where possible
+ - Keep portability in mind when modernizing GLib, GDK and GTK internals
+
+* Project identity:
+ - Choose a better long-term project name
+ - Keep the project clearly identifiable as a GTK+ 2 maintenance fork
+ - Avoid misleading compatibility or trademark implications
