@@ -1353,9 +1353,9 @@ fi
 # Check for Pango flags
 
 if test "x$gdktarget" = "xwin32"; then
-	PANGO_PACKAGES="pangowin32 pangocairo"
+	PANGO_PACKAGES="pangowin32 pangocairo fribidi"
 else
-	PANGO_PACKAGES="pango pangocairo"
+	PANGO_PACKAGES="pango pangocairo fribidi"
 fi
 
 AC_MSG_CHECKING(Pango flags)
