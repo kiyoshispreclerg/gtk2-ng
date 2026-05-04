@@ -32,6 +32,7 @@
 #include "gtktreednd.h"
 #include "gtktreemodel.h"
 #include "gtkalias.h"
+#include "gtkprivate.h"
 
 /*** Structure: how GtkFileSystemModel works
  *
@@ -801,19 +802,11 @@ gtk_file_system_model_sort (GtkFileSystemModel *model)
       n_visible_rows = node_get_tree_row (model, model->files->len - 1) + 1;
       model->n_nodes_valid = 0;
       g_hash_table_remove_all (model->file_lookup);
-#if GLIB_CHECK_VERSION(2,82,0)
-      g_sort_array (get_node (model, 1), /* start at index 1; don't sort the editable row */
-                    model->files->len - 1,
-                    model->node_size,
-                    compare_array_element,
-                    &data);
-#else
-      g_qsort_with_data (get_node (model, 1), /* start at index 1; don't sort the editable row */
-                         model->files->len - 1,
-                         model->node_size,
-                         compare_array_element,
-                         &data);
-#endif
+      _gtk_sort_array (get_node (model, 1), /* start at index 1; don't sort the editable row */
+                       model->files->len - 1,
+                       model->node_size,
+                       compare_array_element,
+                       &data);
       g_assert (model->n_nodes_valid == 0);
       g_assert (g_hash_table_size (model->file_lookup) == 0);
       if (n_visible_rows)

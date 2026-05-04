@@ -27,6 +27,7 @@
 #include "gtkbuildable.h"
 #include "gtkintl.h"
 #include "gtkalias.h"
+#include "gtkprivate.h"
 
 #define G_NODE(node) ((GNode *)node)
 #define GTK_TREE_STORE_IS_SORTED(tree) (((GtkTreeStore*)(tree))->sort_column_id != GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID)
@@ -2193,19 +2194,11 @@ gtk_tree_store_reorder (GtkTreeStore *tree_store,
       node = node->next;
     }
 
-#if GLIB_CHECK_VERSION(2,82,0)
-  g_sort_array (sort_array,
-                length,
-                sizeof (SortTuple),
-                gtk_tree_store_reorder_func,
-                NULL);
-#else
-  g_qsort_with_data (sort_array,
-                     length,
-                     sizeof (SortTuple),
-                     gtk_tree_store_reorder_func,
-                     NULL);
-#endif
+  _gtk_sort_array (sort_array,
+                   length,
+                   sizeof (SortTuple),
+                   gtk_tree_store_reorder_func,
+                   NULL);
 
   /* fix up level */
   for (i = 0; i < length - 1; i++)

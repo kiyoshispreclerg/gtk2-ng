@@ -29,6 +29,13 @@
 
 #include <gtk/gtkwidget.h>
 
+/* Use g_sort_array() when available, otherwise keep the old GTK2 fallback. */
+#if GLIB_CHECK_VERSION (2, 82, 0)
+#define _gtk_sort_array g_sort_array
+#else
+#define _gtk_sort_array(a,n,s,c,d) g_qsort_with_data ((a), (gint) (n), (s), (c), (d))
+#endif
+
 G_BEGIN_DECLS
 
 /* The private flags that are used in the private_flags member of GtkWidget.
