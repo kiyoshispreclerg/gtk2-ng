@@ -455,10 +455,32 @@ _gtk_builder_construct (GtkBuilder *builder,
               values[i] = param->value;
             }
 
+/* GLib 2.54 replaced g_object_newv() with
+ * g_object_new_with_properties().  Keep the old constructor path
+ * for GLib 2.38 compatibility.
+ */
+#if GLIB_CHECK_VERSION (2, 54, 0)
           obj = g_object_new_with_properties (object_type,
                                               construct_parameters->len,
                                               names,
                                               values);
+#else
+          {
+            GParameter *params;
+
+            params = g_newa (GParameter, construct_parameters->len);
+
+            for (i = 0; i < construct_parameters->len; i++)
+              {
+                params[i].name = names[i];
+                params[i].value = values[i];
+              }
+
+            obj = g_object_newv (object_type,
+                                 construct_parameters->len,
+                                 params);
+          }
+#endif
 
           g_free (names);
           g_free (values);
