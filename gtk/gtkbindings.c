@@ -36,6 +36,7 @@
 #include "gtkkeyhash.h"
 #include "gtkwidget.h"
 #include "gtkrc.h"
+#include "gtkprivate.h"
 #include "gtkalias.h"
 
 
@@ -1109,7 +1110,7 @@ binding_match_activate (GSList          *pspec_list,
         }
       else
         {
-          if (g_pattern_spec_match (pspec->pspec, path_length, path, path_reversed))
+          if (_gtk_pattern_spec_match (pspec->pspec, path_length, path, path_reversed))
 	    binding_set = pspec->user_data;
         }
 

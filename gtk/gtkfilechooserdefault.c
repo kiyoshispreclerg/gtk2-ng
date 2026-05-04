@@ -8015,18 +8015,31 @@ file_system_model_set (GtkFileSystemModel *model,
     case MODEL_COL_MTIME:
     case MODEL_COL_MTIME_TEXT:
       {
-        GDateTime *dt;
         gint64 tv = 0;
 
         if (info == NULL)
           break;
 
-        dt = g_file_info_get_modification_date_time (info);
-        if (dt)
-          {
-            tv = g_date_time_to_unix (dt);
-            g_date_time_unref (dt);
-          }
+/* GLib 2.62 replaced the old GTimeVal API with GDateTime. */
+#if GLIB_CHECK_VERSION (2, 62, 0)
+        {
+          GDateTime *dt;
+
+          dt = g_file_info_get_modification_date_time (info);
+          if (dt)
+            {
+              tv = g_date_time_to_unix (dt);
+              g_date_time_unref (dt);
+            }
+        }
+#else
+        {
+          GTimeVal timeval;
+
+          g_file_info_get_modification_time (info, &timeval);
+          tv = timeval.tv_sec;
+        }
+#endif
 
         if (column == MODEL_COL_MTIME)
           g_value_set_int64 (value, tv);

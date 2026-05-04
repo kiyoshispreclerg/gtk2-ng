@@ -539,6 +539,147 @@ gtk_recent_manager_monitor_changed (GFileMonitor      *monitor,
     }
 }
 
+/* GLib 2.66 added GDateTime-based GBookmarkFile APIs.  Older GLib
+ * versions only provide time_t-based APIs, so keep the conversion local
+ * to GtkRecentManager while storing timestamps internally as gint64.
+ *
+ * The old GLib fallback is limited by time_t on platforms where time_t is
+ * still 32-bit; the GDateTime path remains used whenever GLib provides it.
+ */
+static gint64
+gtk_recent_bookmark_file_get_added_time (GBookmarkFile *bookmarks,
+                                         const gchar   *uri)
+{
+#if GLIB_CHECK_VERSION (2, 66, 0)
+  GDateTime *dt;
+  gint64 result;
+
+  dt = g_bookmark_file_get_added_date_time (bookmarks, uri, NULL);
+  result = dt ? g_date_time_to_unix (dt) : -1;
+
+  if (dt)
+    g_date_time_unref (dt);
+
+  return result;
+#else
+  return g_bookmark_file_get_added (bookmarks, uri, NULL);
+#endif
+}
+
+static gint64
+gtk_recent_bookmark_file_get_modified_time (GBookmarkFile *bookmarks,
+                                            const gchar   *uri)
+{
+#if GLIB_CHECK_VERSION (2, 66, 0)
+  GDateTime *dt;
+  gint64 result;
+
+  dt = g_bookmark_file_get_modified_date_time (bookmarks, uri, NULL);
+  result = dt ? g_date_time_to_unix (dt) : -1;
+
+  if (dt)
+    g_date_time_unref (dt);
+
+  return result;
+#else
+  return g_bookmark_file_get_modified (bookmarks, uri, NULL);
+#endif
+}
+
+static gint64
+gtk_recent_bookmark_file_get_visited_time (GBookmarkFile *bookmarks,
+                                           const gchar   *uri)
+{
+#if GLIB_CHECK_VERSION (2, 66, 0)
+  GDateTime *dt;
+  gint64 result;
+
+  dt = g_bookmark_file_get_visited_date_time (bookmarks, uri, NULL);
+  result = dt ? g_date_time_to_unix (dt) : -1;
+
+  if (dt)
+    g_date_time_unref (dt);
+
+  return result;
+#else
+  return g_bookmark_file_get_visited (bookmarks, uri, NULL);
+#endif
+}
+
+static gboolean
+gtk_recent_bookmark_file_get_application_info (GBookmarkFile  *bookmarks,
+                                               const gchar    *uri,
+                                               const gchar    *name,
+                                               gchar         **exec,
+                                               guint          *count,
+                                               gint64         *stamp,
+                                               GError        **error)
+{
+#if GLIB_CHECK_VERSION (2, 66, 0)
+  GDateTime *dt = NULL;
+  gboolean res;
+
+  if (stamp)
+    *stamp = -1;
+
+  res = g_bookmark_file_get_application_info (bookmarks, uri, name,
+                                              exec, count, &dt, error);
+
+  if (stamp && dt)
+    *stamp = g_date_time_to_unix (dt);
+
+  if (dt)
+    g_date_time_unref (dt);
+
+  return res;
+#else
+  time_t old_stamp = (time_t) -1;
+  gboolean res;
+
+  if (stamp)
+    *stamp = -1;
+
+  res = g_bookmark_file_get_app_info (bookmarks, uri, name,
+                                      exec, count, &old_stamp, error);
+
+  if (stamp && res)
+    *stamp = old_stamp;
+
+  return res;
+#endif
+}
+
+static gboolean
+gtk_recent_bookmark_file_set_application_info (GBookmarkFile  *bookmarks,
+                                               const gchar    *uri,
+                                               const gchar    *name,
+                                               const gchar    *exec,
+                                               guint           count,
+                                               gint64          stamp,
+                                               GError        **error)
+{
+#if GLIB_CHECK_VERSION (2, 66, 0)
+  GDateTime *dt = NULL;
+  gboolean res;
+
+  if (stamp != -1)
+    dt = g_date_time_new_from_unix_utc (stamp);
+
+  res = g_bookmark_file_set_application_info (bookmarks, uri, name,
+                                              exec, count, dt, error);
+
+  if (dt)
+    g_date_time_unref (dt);
+
+  return res;
+#else
+  return g_bookmark_file_set_app_info (bookmarks, uri, name,
+                                       exec, count,
+                                       recent_time_to_time_t (stamp),
+                                       error);
+#endif
+}
+
 /*
  * get_default_recent_file:
  *
@@ -630,21 +771,20 @@ get_default_recent_file (void)
       apps = g_bookmark_file_get_applications (bf_old, uris[i], &n_apps, NULL);
       for (j = 0; j < n_apps; j++)
         {
-          char *exec;
-          guint count;
-          GDateTime *stamp;
+          char *exec = NULL;
+          guint count = 0;
+          gint64 stamp = -1;
 
-          g_bookmark_file_get_application_info (bf_old, uris[i], apps[j],
-                                                &exec,
-                                                &count,
-                                                &stamp,
-                                                NULL);
-
-          g_bookmark_file_set_application_info (bf_new, uris[i], apps[j],
-                                                exec,
-                                                count,
-                                                stamp,
-                                                NULL);
+          if (gtk_recent_bookmark_file_get_application_info (bf_old, uris[i], apps[j],
+                                                             &exec,
+                                                             &count,
+                                                             &stamp,
+                                                             NULL))
+            gtk_recent_bookmark_file_set_application_info (bf_new, uris[i], apps[j],
+                                                           exec,
+                                                           count,
+                                                           stamp,
+                                                           NULL);
 
           g_free (exec);
         }
@@ -1292,19 +1432,9 @@ build_recent_info (GBookmarkFile  *bookmarks,
 
   info->is_private = g_bookmark_file_get_is_private (bookmarks, info->uri, NULL);
 
-  {
-    GDateTime *added;
-    GDateTime *modified;
-    GDateTime *visited;
-
-    added = g_bookmark_file_get_added_date_time (bookmarks, info->uri, NULL);
-    modified = g_bookmark_file_get_modified_date_time (bookmarks, info->uri, NULL);
-    visited = g_bookmark_file_get_visited_date_time (bookmarks, info->uri, NULL);
-
-    info->added = added ? g_date_time_to_unix (added) : -1;
-    info->modified = modified ? g_date_time_to_unix (modified) : -1;
-    info->visited = visited ? g_date_time_to_unix (visited) : -1;
-  }
+  info->added = gtk_recent_bookmark_file_get_added_time (bookmarks, info->uri);
+  info->modified = gtk_recent_bookmark_file_get_modified_time (bookmarks, info->uri);
+  info->visited = gtk_recent_bookmark_file_get_visited_time (bookmarks, info->uri);
 
   groups = g_bookmark_file_get_groups (bookmarks, info->uri, &groups_len, NULL);
   for (i = 0; i < groups_len; i++)
@@ -1321,24 +1451,24 @@ build_recent_info (GBookmarkFile  *bookmarks,
     {
       gchar *app_name, *app_exec;
       guint count;
-      GDateTime *stamp;
+      gint64 stamp;
       RecentAppInfo *app_info;
       gboolean res;
 
       app_name = apps[i];
 
-      res = g_bookmark_file_get_application_info (bookmarks, info->uri, app_name,
-                                                  &app_exec,
-                                                  &count,
-                                                  &stamp,
-                                                  NULL);
+      res = gtk_recent_bookmark_file_get_application_info (bookmarks, info->uri, app_name,
+                                                           &app_exec,
+                                                           &count,
+                                                           &stamp,
+                                                           NULL);
       if (!res)
         continue;
 
       app_info = recent_app_info_new (app_name);
       app_info->exec = app_exec;
       app_info->count = count;
-      app_info->stamp = g_date_time_to_unix (stamp);
+      app_info->stamp = stamp;
 
       info->applications = g_slist_prepend (info->applications, app_info);
       g_hash_table_replace (info->apps_lookup, app_info->name, app_info);
@@ -1638,12 +1768,10 @@ gtk_recent_manager_clamp_to_age (GtkRecentManager *manager,
   for (i = 0; i < n_uris; i++)
     {
       const gchar *uri = uris[i];
-      GDateTime *modified_date_time;
       time_t modified;
       gint item_age;
 
-      modified_date_time = g_bookmark_file_get_modified_date_time (priv->recent_items, uri, NULL);
-      modified = modified_date_time ? g_date_time_to_unix (modified_date_time) : (time_t) -1;
+      modified = recent_time_to_time_t (gtk_recent_bookmark_file_get_modified_time (priv->recent_items, uri));
 
       if (recent_time_get_days_elapsed (now, modified, &item_age) &&
           item_age > age)

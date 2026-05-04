@@ -31,6 +31,22 @@
 
 G_BEGIN_DECLS
 
+
+/* GLib 2.70 renamed the old g_pattern_match*() APIs.
+ * Keep the old names for older GLib versions.
+ */
+#if GLIB_CHECK_VERSION (2, 70, 0)
+#define _gtk_pattern_spec_match(pspec, string_length, string, string_reversed) \
+  g_pattern_spec_match ((pspec), (string_length), (string), (string_reversed))
+#define _gtk_pattern_spec_match_string(pspec, string) \
+  g_pattern_spec_match_string ((pspec), (string))
+#else
+#define _gtk_pattern_spec_match(pspec, string_length, string, string_reversed) \
+  g_pattern_match ((pspec), (string_length), (string), (string_reversed))
+#define _gtk_pattern_spec_match_string(pspec, string) \
+  g_pattern_match_string ((pspec), (string))
+#endif
+
 /* GLib 2.68 added g_memdup2() as a gsize-safe replacement for
  * g_memdup().  The old g_memdup() takes the allocation size as guint,
  * which can truncate a gsize value on platforms where gsize is wider.
