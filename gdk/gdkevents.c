@@ -25,11 +25,30 @@
  */
 
 #include "config.h"
-#include <string.h>		/* For memset() */
+#include <string.h>		/* For memset() and memcpy() */
 
 #include "gdk.h"
 #include "gdkinternals.h"
+#include "gdkprivate.h"
 #include "gdkalias.h"
+
+/* See gdkprivate.h for why this avoids g_memdup(). */
+#if !GLIB_CHECK_VERSION (2, 68, 0)
+gpointer
+_gdk_memdup2 (gconstpointer mem,
+              gsize         byte_size)
+{
+  gpointer new_mem;
+
+  if (mem == NULL)
+    return NULL;
+
+  new_mem = g_malloc (byte_size);
+  memcpy (new_mem, mem, byte_size);
+
+  return new_mem;
+}
+#endif
 
 typedef struct _GdkIOClosure GdkIOClosure;
 
@@ -483,13 +502,13 @@ gdk_event_copy (const GdkEvent *event)
     case GDK_BUTTON_PRESS:
     case GDK_BUTTON_RELEASE:
       if (event->button.axes)
-	new_event->button.axes = g_memdup2 (event->button.axes,
+	new_event->button.axes = _gdk_memdup2 (event->button.axes,
 					     sizeof (gdouble) * event->button.device->num_axes);
       break;
 
     case GDK_MOTION_NOTIFY:
       if (event->motion.axes)
-	new_event->motion.axes = g_memdup2 (event->motion.axes,
+	new_event->motion.axes = _gdk_memdup2 (event->motion.axes,
 					   sizeof (gdouble) * event->motion.device->num_axes);
 
       break;

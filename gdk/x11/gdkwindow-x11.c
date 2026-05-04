@@ -50,6 +50,7 @@
 #include "gdkinternals.h"
 #include "MwmUtil.h"
 #include "gdkwindow-x11.h"
+#include "gdkprivate.h"
 #include "gdkalias.h"
 
 #include <stdlib.h>
@@ -5149,7 +5150,7 @@ _gdk_moveresize_handle_event (XEvent *event)
 	    *mv_resize->moveresize_pending_event = *event;
 	  else
 	    mv_resize->moveresize_pending_event =
-	      g_memdup2 (event, sizeof (XEvent));
+	      _gdk_memdup2 (event, sizeof (XEvent));
 
 	  break;
 	}

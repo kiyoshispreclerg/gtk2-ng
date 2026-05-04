@@ -31,6 +31,21 @@
 
 G_BEGIN_DECLS
 
+/* GLib 2.68 added g_memdup2() as a gsize-safe replacement for
+ * g_memdup().  The old g_memdup() takes the allocation size as guint,
+ * which can truncate a gsize value on platforms where gsize is wider.
+ *
+ * Use g_memdup2() when available; otherwise provide the same gsize-safe
+ * semantics internally for older GLib versions.
+ */
+#if GLIB_CHECK_VERSION (2, 68, 0)
+#define _gdk_memdup2(mem, byte_size) g_memdup2 ((mem), (byte_size))
+#else
+G_GNUC_INTERNAL
+gpointer _gdk_memdup2 (gconstpointer mem,
+                       gsize         byte_size);
+#endif
+
 #define GDK_PARENT_RELATIVE_BG ((GdkPixmap *)1L)
 #define GDK_NO_BG ((GdkPixmap *)2L)
 

@@ -35,6 +35,7 @@
 #include <cairo-win32.h>
 
 #include "gdkscreen.h" /* gdk_screen_get_default() */
+#include "gdkprivate.h"
 #include "gdkregion-generic.h"
 #include "gdkprivate-win32.h"
 
@@ -1179,7 +1180,7 @@ draw_segments (GdkGCWin32 *gcwin32,
   if (x_offset != 0 || y_offset != 0)
     {
       /* must not modify in place, but could splice in the offset all below */
-      segs = g_memdup (segs, nsegs * sizeof (GdkSegment));
+      segs = _gdk_memdup2 (segs, nsegs * sizeof (GdkSegment));
       for (i = 0; i < nsegs; i++)
         {
           segs[i].x1 -= x_offset;

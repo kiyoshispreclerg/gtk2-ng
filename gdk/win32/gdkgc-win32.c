@@ -33,6 +33,7 @@
 #include <string.h>
 
 #include "gdkgc.h"
+#include "gdkprivate.h"
 #include "gdkfont.h"
 #include "gdkpixmap.h"
 #include "gdkregion-generic.h"
@@ -649,7 +650,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_win32_gc->cap_style = src_win32_gc->cap_style;
   dst_win32_gc->join_style = src_win32_gc->join_style;
   if (src_win32_gc->pen_dashes)
-    dst_win32_gc->pen_dashes = g_memdup (src_win32_gc->pen_dashes,
+    dst_win32_gc->pen_dashes = _gdk_memdup2 (src_win32_gc->pen_dashes,
                                          sizeof (DWORD) * src_win32_gc->pen_num_dashes);
   else
     dst_win32_gc->pen_dashes = NULL;

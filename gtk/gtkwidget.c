@@ -55,6 +55,24 @@
 #include "gtkbuilderprivate.h"
 #include "gtkalias.h"
 
+/* See gtkprivate.h for why this avoids g_memdup(). */
+#if !GLIB_CHECK_VERSION (2, 68, 0)
+gpointer
+_gtk_memdup2 (gconstpointer mem,
+              gsize         byte_size)
+{
+  gpointer new_mem;
+
+  if (mem == NULL)
+    return NULL;
+
+  new_mem = g_malloc (byte_size);
+  memcpy (new_mem, mem, byte_size);
+
+  return new_mem;
+}
+#endif
+
 /**
  * SECTION:gtkwidget
  * @Short_description: Base class for all widgets
@@ -10186,7 +10204,7 @@ gtk_widget_class_path (GtkWidget *widget,
 GtkRequisition *
 gtk_requisition_copy (const GtkRequisition *requisition)
 {
-  return (GtkRequisition *)g_memdup2 (requisition, sizeof (GtkRequisition));
+  return (GtkRequisition *)_gtk_memdup2 (requisition, sizeof (GtkRequisition));
 }
 
 /**

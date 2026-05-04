@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include "gdkgc.h"
+#include "gdkprivate.h"
 #include "gdkprivate-quartz.h"
 
 static gpointer parent_class = NULL;
@@ -336,7 +337,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_quartz_gc->join_style = src_quartz_gc->join_style;
 
   g_free (dst_quartz_gc->dash_lengths);
-  dst_quartz_gc->dash_lengths = g_memdup (src_quartz_gc->dash_lengths,
+  dst_quartz_gc->dash_lengths = _gdk_memdup2 (src_quartz_gc->dash_lengths,
 					  sizeof (CGFloat) * src_quartz_gc->dash_count);
   dst_quartz_gc->dash_count = src_quartz_gc->dash_count;
   dst_quartz_gc->dash_phase = src_quartz_gc->dash_phase;

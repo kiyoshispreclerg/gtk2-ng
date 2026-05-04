@@ -70,6 +70,7 @@
 #include "win32/gdkwin32.h"
 #endif
 
+#include "gtkprivate.h"
 #include "gtkalias.h"
 
 #undef DEBUG_SELECTION
@@ -1829,7 +1830,7 @@ gtk_selection_data_get_targets (GtkSelectionData  *selection_data,
       selection_data->type == GDK_SELECTION_TYPE_ATOM)
     {
       if (targets)
-	*targets = g_memdup2 (selection_data->data, selection_data->length);
+	*targets = _gtk_memdup2 (selection_data->data, selection_data->length);
       if (n_atoms)
 	*n_atoms = selection_data->length / sizeof (GdkAtom);
 

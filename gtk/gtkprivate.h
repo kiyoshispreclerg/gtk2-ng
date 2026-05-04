@@ -29,14 +29,29 @@
 
 #include <gtk/gtkwidget.h>
 
+G_BEGIN_DECLS
+
+/* GLib 2.68 added g_memdup2() as a gsize-safe replacement for
+ * g_memdup().  The old g_memdup() takes the allocation size as guint,
+ * which can truncate a gsize value on platforms where gsize is wider.
+ *
+ * Use g_memdup2() when available; otherwise provide the same gsize-safe
+ * semantics internally for older GLib versions.
+ */
+#if GLIB_CHECK_VERSION (2, 68, 0)
+#define _gtk_memdup2(mem, byte_size) g_memdup2 ((mem), (byte_size))
+#else
+G_GNUC_INTERNAL
+gpointer _gtk_memdup2 (gconstpointer mem,
+                       gsize         byte_size);
+#endif
+
 /* Use g_sort_array() when available, otherwise keep the old GTK2 fallback. */
 #if GLIB_CHECK_VERSION (2, 82, 0)
 #define _gtk_sort_array g_sort_array
 #else
 #define _gtk_sort_array(a,n,s,c,d) g_qsort_with_data ((a), (gint) (n), (s), (c), (d))
 #endif
-
-G_BEGIN_DECLS
 
 /* The private flags that are used in the private_flags member of GtkWidget.
  */

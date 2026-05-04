@@ -46,6 +46,7 @@
 #include <glib/gprintf.h>
 
 #include "gdk.h"
+#include "gdkprivate.h"
 #include "gdkprivate-win32.h"
 #include "gdkinput-win32.h"
 #include "gdkkeysyms.h"
@@ -1029,7 +1030,7 @@ fill_key_event_string (GdkEvent *event)
 	    c &= 0x1F;
 	  else if (c == '2')
 	    {
-	      event->key.string = g_memdup ("\0\0", 2);
+	      event->key.string = _gdk_memdup2 ("\0\0", 2);
 	      event->key.length = 1;
 	      return;
 	    }

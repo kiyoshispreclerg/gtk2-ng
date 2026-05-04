@@ -31,6 +31,7 @@
 #include "gtkversion.h"
 #include "gtktypeutils.h"
 #include "gtkintl.h"
+#include "gtkprivate.h"
 #include "gtkalias.h"
 
 static void free_property_info (PropertyInfo *info);
@@ -693,7 +694,7 @@ create_subparser (GObject       *object,
   subparser->child = child;
   subparser->tagname = g_strdup (element_name);
   subparser->start = element_name;
-  subparser->parser = g_memdup2 (parser, sizeof (GMarkupParser));
+  subparser->parser = _gtk_memdup2 (parser, sizeof (GMarkupParser));
   subparser->data = user_data;
 
   return subparser;

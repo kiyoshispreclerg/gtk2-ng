@@ -29,6 +29,7 @@
 #include "gtkmarshalers.h"
 #include "gtktextbufferrichtext.h"
 #include "gtkintl.h"
+#include "gtkprivate.h"
 #include "gtkalias.h"
 
 #ifdef GDK_WINDOWING_X11
@@ -1390,7 +1391,7 @@ clipboard_rich_text_received_func (GtkClipboard *clipboard,
 {
   WaitResults *results = data;
 
-  results->data = g_memdup2 (text, length);
+  results->data = _gtk_memdup2 (text, length);
   results->format = format;
   results->length = length;
   g_main_loop_quit (results->loop);
@@ -1760,7 +1761,7 @@ gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard,
  	*n_targets = clipboard->n_cached_targets;
 
       if (targets)
- 	*targets = g_memdup2 (clipboard->cached_targets,
+ 	*targets = _gtk_memdup2 (clipboard->cached_targets,
  			     clipboard->n_cached_targets * sizeof (GdkAtom));
 
        return TRUE;
@@ -1784,7 +1785,7 @@ gtk_clipboard_wait_for_targets (GtkClipboard  *clipboard,
       if (gdk_display_supports_selection_notification (gtk_clipboard_get_display (clipboard)))
  	{
  	  clipboard->n_cached_targets = tmp_n_targets;
- 	  clipboard->cached_targets = g_memdup2 (tmp_targets,
+ 	  clipboard->cached_targets = _gtk_memdup2 (tmp_targets,
  						tmp_n_targets * sizeof (GdkAtom));
  	}
 

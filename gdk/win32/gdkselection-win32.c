@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include "gdkproperty.h"
+#include "gdkprivate.h"
 #include "gdkselection.h"
 #include "gdkdisplay.h"
 #include "gdkprivate-win32.h"
@@ -777,7 +778,7 @@ gdk_selection_convert (GdkWindow *requestor,
                       GDK_NOTE (DND, g_print ("... %s: %d bytes\n", mapped_target_name, length));
 
                       selection_property_store (requestor, target, 8,
-						g_memdup (ptr, length), length);
+						_gdk_memdup2 (ptr, length), length);
 	              GlobalUnlock (hdata);
                       break;
                     }
