@@ -549,15 +549,16 @@ fi
 
 # i18n stuff
 ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS" | tr '\n' ' '`"
-AM_GLIB_GNU_GETTEXT
-LIBS="$LIBS $INTLLIBS"
-AC_CONFIG_COMMANDS([po-properties/Makefile],
-  [case "$CONFIG_FILES" in *po-properties/Makefile.in*)
-     sed -e "/POTFILES =/r po-properties/POTFILES" po-properties/Makefile.in > po-properties/Makefile
-   esac],
-  [])
+AM_GNU_GETTEXT_VERSION([0.18])
+AM_GNU_GETTEXT([external])
+LIBS="$LIBS $LIBINTL"
 
-dnl Snippet below is copied from AM_GLIB_GNU_GETTEXT to generate a first
+dnl GNU gettext now generates po-properties/Makefile through po-directories.
+dnl The old custom AC_CONFIG_COMMANDS([po-properties/Makefile], ...)
+dnl replacement is no longer needed and would overwrite the gettext-generated
+dnl Makefile without the variables from po-properties/Makevars.
+
+dnl Snippet below is adapted from the old GLib gettext setup to generate a first
 dnl po-properties/POTFILES during configure; see GNOME #573515.
 dnl
 dnl Generate list of files to be processed by xgettext which will
@@ -575,9 +576,23 @@ fi
 rm -f po-properties/POTFILES
 sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$popropsrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 < $srcdir/po-properties/POTFILES.in > po-properties/POTFILES
-dnl (End of adapted AM_GLIB_GNU_GETTEXT snippet.)
+dnl (End of adapted gettext setup snippet.)
 
-AM_GLIB_DEFINE_LOCALEDIR(GTK_LOCALEDIR)
+dnl Define GTK_LOCALEDIR without using the obsolete GLib gettext macros.
+gtk_save_prefix="$prefix"
+gtk_save_exec_prefix="$exec_prefix"
+
+test "x$prefix" = "xNONE" && prefix="$ac_default_prefix"
+test "x$exec_prefix" = "xNONE" && exec_prefix='${prefix}'
+
+gtk_expanded_localedir=`eval echo "$localedir"`
+gtk_expanded_localedir=`eval echo "$gtk_expanded_localedir"`
+
+AC_DEFINE_UNQUOTED([GTK_LOCALEDIR], ["$gtk_expanded_localedir"],
+                   [Define the location where the catalogs will be installed])
+
+prefix="$gtk_save_prefix"
+exec_prefix="$gtk_save_exec_prefix"
 
 dnl The DU4 header files don't provide library prototypes unless
 dnl -std1 is given to the native cc.
