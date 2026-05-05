@@ -37,6 +37,7 @@ m4_define([pango_required_version], [1.22])
 m4_define([atk_required_version], [1.29.2])
 m4_define([cairo_required_version], [1.6])
 m4_define([gdk_pixbuf_required_version], [2.21.0])
+m4_define([fribidi_required_version], [0.19.2])
 
 
 AC_INIT([gtk+], [gtk_version],
@@ -395,7 +396,8 @@ PKG_CHECK_MODULES(BASE_DEPENDENCIES,
    atk >= atk_required_version dnl
    pango >= pango_required_version dnl
    cairo >= cairo_required_version dnl
-   gdk-pixbuf-2.0 >= gdk_pixbuf_required_version])
+   gdk-pixbuf-2.0 >= gdk_pixbuf_required_version dnl
+   fribidi >= fribidi_required_version])
 
 ## In addition to checking that cairo is present, we also need to
 ## check that the correct cairo backend is there. E.g. if the GDK
