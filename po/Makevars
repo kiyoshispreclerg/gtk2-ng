@@ -3,6 +3,11 @@
 # Usually the message domain is the same as the package name.
 DOMAIN = gtk20
 
+# Do not update PO files as part of normal build or dist targets.
+# This avoids dirtying the source tree for developers and packagers.
+PO_DEPENDS_ON_POT = no
+DIST_DEPENDS_ON_UPDATE_PO = no
+
 # These two variables depend on the location of this directory.
 subdir = po
 top_builddir = ..
