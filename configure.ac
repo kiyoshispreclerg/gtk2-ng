@@ -548,7 +548,6 @@ if test "$gtk_ok" = "yes"; then
 fi
 
 # i18n stuff
-ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS" | tr '\n' ' '`"
 AM_GNU_GETTEXT_VERSION([0.18])
 AM_GNU_GETTEXT([external])
 LIBS="$LIBS $LIBINTL"
