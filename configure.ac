@@ -1070,12 +1070,12 @@ if test "x$gdktarget" = "xx11"; then
   AC_MSG_CHECKING([if <X11/extensions/XIproto.h> is needed for xReply])
   AC_COMPILE_IFELSE(
     [AC_LANG_PROGRAM([[#include <X11/Xlibint.h>]],
-                     [[xReply *rep;]])],
+                     [[xReply *rep = 0; (void) rep;]])],
     [AC_MSG_RESULT([no])],
     [AC_COMPILE_IFELSE(
        [AC_LANG_PROGRAM([[#include <X11/extensions/XIproto.h>
 #include <X11/Xlibint.h>]],
-                        [[xReply *rep;]])],
+                        [[xReply *rep = 0; (void) rep;]])],
        [AC_MSG_RESULT([yes])
         AC_DEFINE([NEED_XIPROTO_H_FOR_XREPLY], 1,
                   [Define if <X11/extensions/XIproto.h> needed for xReply])],
