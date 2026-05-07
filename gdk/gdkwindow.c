@@ -2390,7 +2390,7 @@ gdk_window_get_position (GdkWindow *window,
  * gdk_window_get_parent() will most likely not do what you expect if
  * there are offscreen windows in the hierarchy.
  *
- * Return value: parent of @window
+ * Return value: (transfer none): parent of @window
  **/
 GdkWindow*
 gdk_window_get_parent (GdkWindow *window)
@@ -2410,7 +2410,7 @@ gdk_window_get_parent (GdkWindow *window)
  *
  * See also: gdk_offscreen_window_get_embedder()
  *
- * Return value: effective parent of @window
+ * Return value: (transfer none): effective parent of @window
  *
  * Since: 2.22
  **/
@@ -2444,7 +2444,7 @@ gdk_window_get_effective_parent (GdkWindow *window)
  * gdk_window_get_toplevel() will most likely not do what you expect
  * if there are offscreen windows in the hierarchy.
  *
- * Return value: the toplevel window containing @window
+ * Return value: (transfer none): the toplevel window containing @window
  **/
 GdkWindow *
 gdk_window_get_toplevel (GdkWindow *window)
@@ -2476,7 +2476,7 @@ gdk_window_get_toplevel (GdkWindow *window)
  *
  * See also: gdk_offscreen_window_get_embedder()
  *
- * Return value: the effective toplevel window containing @window
+ * Return value: (transfer none): the effective toplevel window containing @window
  *
  * Since: 2.22
  **/
@@ -2542,7 +2542,7 @@ gdk_window_peek_children (GdkWindow *window)
 }
 
 /**
- * gdk_window_add_filter:
+ * gdk_window_add_filter: (skip)
  * @window: a #GdkWindow
  * @function: filter callback
  * @data: data to pass to filter callback
@@ -2605,7 +2605,7 @@ gdk_window_add_filter (GdkWindow     *window,
 }
 
 /**
- * gdk_window_remove_filter:
+ * gdk_window_remove_filter: (skip)
  * @window: a #GdkWindow
  * @function: previously-added filter function
  * @data: user data for previously-added filter function
@@ -2697,7 +2697,8 @@ gdk_screen_get_toplevel_windows (GdkScreen *screen)
  * The returned list should be freed with g_list_free(), but
  * its elements need not be freed.
  *
- * Return value: list of toplevel windows, free with g_list_free()
+ * Return value: (transfer container) (element-type GdkWindow):
+ *     list of toplevel windows, free with g_list_free()
  *
  * Deprecated: 2.16: Use gdk_screen_get_toplevel_windows() instead.
  */
@@ -6191,7 +6192,7 @@ _gdk_window_invalidate_for_expose (GdkWindow       *window,
 
 
 /**
- * gdk_window_get_update_area:
+ * gdk_window_get_update_area: (skip)
  * @window: a #GdkWindow
  *
  * Transfers ownership of the update area from @window to the caller
@@ -6616,7 +6617,7 @@ gdk_window_at_pointer (gint *win_x,
  * Obtains the root window (parent all other windows are inside)
  * for the default display and screen.
  *
- * Return value: the default root window
+ * Return value: (transfer none): the default root window
  **/
 GdkWindow *
 gdk_get_default_root_window (void)
@@ -6634,7 +6635,7 @@ gdk_get_default_root_window (void)
  * For example in the X backend, a native window handle is an Xlib
  * <type>XID</type>.
  *
- * Return value: the newly-created #GdkWindow wrapper for the
+ * Return value: (transfer full): the newly-created #GdkWindow wrapper for the
  *    native window or %NULL if the window has been destroyed.
  **/
 GdkWindow *
@@ -11277,7 +11278,7 @@ gdk_window_create_similar_surface (GdkWindow *     window,
  *
  * Gets the #GdkScreen associated with a #GdkWindow.
  *
- * Return value: the #GdkScreen associated with @window
+ * Return value: (transfer none): the #GdkScreen associated with @window
  *
  * Since: 2.24
  */
@@ -11295,7 +11296,7 @@ gdk_window_get_screen (GdkWindow *window)
  *
  * Gets the #GdkDisplay associated with a #GdkWindow.
  *
- * Return value: the #GdkDisplay associated with @window
+ * Return value: (transfer none): the #GdkDisplay associated with @window
  *
  * Since: 2.24
  */
@@ -11313,7 +11314,7 @@ gdk_window_get_display (GdkWindow *window)
  *
  * Gets the #GdkVisual describing the pixel format of @window.
  *
- * Return value: a #GdkVisual
+ * Return value: (transfer none): a #GdkVisual
  *
  * Since: 2.24
  */

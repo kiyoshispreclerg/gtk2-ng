@@ -868,7 +868,7 @@ x_event_mask_to_gdk_event_mask (long mask)
  * For example in the X backend, a native window handle is an Xlib
  * <type>XID</type>.
  *
- * Return value: a #GdkWindow wrapper for the native window or
+ * Return value: (transfer full): a #GdkWindow wrapper for the native window or
  *   %NULL if the window has been destroyed. The wrapper will be
  *   newly created, if one doesn't exist already.
  *
@@ -895,7 +895,7 @@ gdk_window_foreign_new_for_display (GdkDisplay     *display,
  * was already known to GDK, a new reference to the existing
  * #GdkWindow is returned.
  *
- * Return value: a #GdkWindow wrapper for the native window or
+ * Return value: (transfer full): a #GdkWindow wrapper for the native window or
  *   %NULL if the window has been destroyed. The wrapper will be
  *   newly created, if one doesn't exist already.
  *
@@ -992,7 +992,7 @@ gdk_x11_window_foreign_new_for_display (GdkDisplay *display,
  * For example in the X backend, a native window handle is an Xlib
  * <type>XID</type>.
  *
- * Return value: the #GdkWindow wrapper for the native window,
+ * Return value: (transfer none): the #GdkWindow wrapper for the native window,
  *    or %NULL if there is none.
  *
  * Since: 2.2
@@ -1013,7 +1013,7 @@ gdk_window_lookup_for_display (GdkDisplay      *display,
  *
  * Looks up the #GdkWindow that wraps the given native window handle.
  *
- * Return value: the #GdkWindow wrapper for the native window,
+ * Return value: (transfer none): the #GdkWindow wrapper for the native window,
  *    or %NULL if there is none.
  *
  * Since: 2.24
@@ -1034,7 +1034,7 @@ gdk_x11_window_lookup_for_display (GdkDisplay *display,
  * For example in the X backend, a native window handle is an Xlib
  * <type>XID</type>.
  *
- * Return value: the #GdkWindow wrapper for the native window,
+ * Return value: (transfer none): the #GdkWindow wrapper for the native window,
  *    or %NULL if there is none.
  *
  * Deprecated: 2.24: Use gdk_x11_window_lookup_for_display() or equivalent
@@ -4402,7 +4402,7 @@ gdk_window_set_keep_below (GdkWindow *window, gboolean setting)
  *
  * Returns the group leader window for @window. See gdk_window_set_group().
  *
- * Return value: the group leader window for @window
+ * Return value: (transfer none): the group leader window for @window
  *
  * Since: 2.4
  **/
