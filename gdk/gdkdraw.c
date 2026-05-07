@@ -171,7 +171,7 @@ gdk_drawable_get_size (GdkDrawable *drawable,
  *
  * Gets the #GdkVisual describing the pixel format of @drawable.
  *
- * Return value: a #GdkVisual
+ * Return value: (transfer none): a #GdkVisual
  *
  * Deprecated: 2.24: Use gdk_window_get_visual()
  */
@@ -206,7 +206,7 @@ gdk_drawable_get_depth (GdkDrawable *drawable)
  *
  * Gets the #GdkScreen associated with a #GdkDrawable.
  *
- * Return value: the #GdkScreen associated with @drawable
+ * Return value: (transfer none): the #GdkScreen associated with @drawable
  *
  * Since: 2.2
  *
@@ -226,7 +226,7 @@ gdk_drawable_get_screen (GdkDrawable *drawable)
  *
  * Gets the #GdkDisplay associated with a #GdkDrawable.
  *
- * Return value: the #GdkDisplay associated with @drawable
+ * Return value: (transfer none): the #GdkDisplay associated with @drawable
  *
  * Since: 2.2
  *
@@ -273,7 +273,7 @@ gdk_drawable_set_colormap (GdkDrawable *drawable,
  * Gets the colormap for @drawable, if one is set; returns
  * %NULL otherwise.
  *
- * Return value: the colormap, or %NULL
+ * Return value: (transfer none): the colormap, or %NULL
  **/
 GdkColormap*
 gdk_drawable_get_colormap (GdkDrawable *drawable)
@@ -290,7 +290,7 @@ gdk_drawable_get_colormap (GdkDrawable *drawable)
  * Deprecated equivalent of calling g_object_ref() on @drawable.
  * (Drawables were not objects in previous versions of GDK.)
  *
- * Return value: the same @drawable passed in
+ * Return value: (transfer full): the same @drawable passed in
  *
  * Deprecated: 2.0: Use g_object_ref() instead.
  **/
@@ -1095,7 +1095,7 @@ gdk_draw_trapezoids (GdkDrawable        *drawable,
 }
 
 /**
- * gdk_drawable_copy_to_image:
+ * gdk_drawable_copy_to_image: (skip)
  * @drawable: a #GdkDrawable
  * @image: (allow-none): a #GdkDrawable, or %NULL if a new @image should be created.
  * @src_x: x coordinate on @drawable
@@ -1211,7 +1211,7 @@ gdk_drawable_copy_to_image (GdkDrawable *drawable,
  * or obscured, then the obscured portions of the returned image
  * will contain undefined data.
  *
- * Return value: a #GdkImage containing the contents of @drawable
+ * Return value: (transfer full): a #GdkImage containing the contents of @drawable
  *
  * Deprecated: 2.22: Use @drawable as the source and draw to a Cairo image
  * surface if you want to download contents to the client.
@@ -1292,7 +1292,7 @@ gdk_drawable_real_get_composite_drawable (GdkDrawable *drawable,
 }
 
 /**
- * gdk_drawable_get_clip_region:
+ * gdk_drawable_get_clip_region: (skip)
  * @drawable: a #GdkDrawable
  *
  * Computes the region of a drawable that potentially can be written
@@ -1314,7 +1314,7 @@ gdk_drawable_get_clip_region (GdkDrawable *drawable)
 }
 
 /**
- * gdk_drawable_get_visible_region:
+ * gdk_drawable_get_visible_region: (skip)
  * @drawable: a #GdkDrawable
  *
  * Computes the region of a drawable that is potentially visible.
