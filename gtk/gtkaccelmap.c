@@ -981,7 +981,7 @@ gtk_accel_map_init (GtkAccelMap *accel_map)
  * map via the ::changed signal; it isn't a parameter to the
  * other accelerator map functions.
  *
- * Return value: the global #GtkAccelMap object
+ * Return value: (transfer none): the global #GtkAccelMap object
  *
  * Since: 2.4
  **/
