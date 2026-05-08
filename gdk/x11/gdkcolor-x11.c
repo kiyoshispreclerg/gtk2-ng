@@ -1444,7 +1444,7 @@ gdk_colormap_equal (Colormap *a,
 }
 
 /**
- * gdk_x11_colormap_get_xdisplay:
+ * gdk_x11_colormap_get_xdisplay: (skip)
  * @colormap: a #GdkColormap.
  *
  * Returns the display of a #GdkColormap.
