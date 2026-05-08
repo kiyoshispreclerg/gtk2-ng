@@ -2542,9 +2542,9 @@ gdk_window_peek_children (GdkWindow *window)
 }
 
 /**
- * gdk_window_add_filter: (skip)
+ * gdk_window_add_filter:
  * @window: a #GdkWindow
- * @function: filter callback
+ * @function: (scope forever): filter callback
  * @data: data to pass to filter callback
  *
  * Adds an event filter to @window, allowing you to intercept events
@@ -2605,9 +2605,9 @@ gdk_window_add_filter (GdkWindow     *window,
 }
 
 /**
- * gdk_window_remove_filter: (skip)
+ * gdk_window_remove_filter:
  * @window: a #GdkWindow
- * @function: previously-added filter function
+ * @function: (scope call): previously-added filter function
  * @data: user data for previously-added filter function
  *
  * Remove a filter previously added with gdk_window_add_filter().
