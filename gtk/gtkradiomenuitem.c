@@ -55,6 +55,14 @@ static guint group_changed_signal = 0;
 
 G_DEFINE_TYPE (GtkRadioMenuItem, gtk_radio_menu_item, GTK_TYPE_CHECK_MENU_ITEM)
 
+/**
+ * gtk_radio_menu_item_new:
+ * @group: (allow-none) (element-type GtkRadioMenuItem): group the radio menu item is inside, or %NULL
+ *
+ * Creates a new #GtkRadioMenuItem.
+ *
+ * Returns: (transfer none): A new #GtkRadioMenuItem
+ */
 GtkWidget*
 gtk_radio_menu_item_new (GSList *group)
 {
@@ -108,6 +116,13 @@ gtk_radio_menu_item_get_property (GObject    *object,
     }
 }
 
+/**
+ * gtk_radio_menu_item_set_group:
+ * @radio_menu_item: a #GtkRadioMenuItem
+ * @group: (allow-none) (element-type GtkRadioMenuItem): the radio menu item group
+ *
+ * Sets the group of @radio_menu_item.
+ */
 void
 gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
 			       GSList           *group)
@@ -210,7 +225,7 @@ gtk_radio_menu_item_new_with_label (GSList *group,
 
 /**
  * gtk_radio_menu_item_new_with_mnemonic:
- * @group: group the radio menu item is inside
+ * @group: (element-type GtkRadioMenuItem): group the radio menu item is inside
  * @label: the text of the button, with an underscore in front of the
  *         mnemonic character
  * @returns: a new #GtkRadioMenuItem
@@ -324,7 +339,7 @@ gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
  * Returns the group to which the radio menu item belongs, as a #GList of
  * #GtkRadioMenuItem. The list belongs to GTK+ and should not be freed.
  *
- * Returns: (transfer none): the group of @radio_menu_item
+ * Returns: (element-type GtkRadioMenuItem) (transfer none): the group of @radio_menu_item
  */
 GSList*
 gtk_radio_menu_item_get_group (GtkRadioMenuItem *radio_menu_item)
