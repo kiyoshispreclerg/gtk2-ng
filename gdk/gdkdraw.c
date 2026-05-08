@@ -1292,7 +1292,7 @@ gdk_drawable_real_get_composite_drawable (GdkDrawable *drawable,
 }
 
 /**
- * gdk_drawable_get_clip_region: (skip)
+ * gdk_drawable_get_clip_region:
  * @drawable: a #GdkDrawable
  *
  * Computes the region of a drawable that potentially can be written
@@ -1302,7 +1302,7 @@ gdk_drawable_real_get_composite_drawable (GdkDrawable *drawable,
  * but no area outside of this region will be affected by drawing
  * primitives.
  *
- * Returns: a #GdkRegion. This must be freed with gdk_region_destroy()
+ * Returns: (transfer full): a #GdkRegion. This must be freed with gdk_region_destroy()
  *          when you are done.
  **/
 GdkRegion *
@@ -1314,7 +1314,7 @@ gdk_drawable_get_clip_region (GdkDrawable *drawable)
 }
 
 /**
- * gdk_drawable_get_visible_region: (skip)
+ * gdk_drawable_get_visible_region:
  * @drawable: a #GdkDrawable
  *
  * Computes the region of a drawable that is potentially visible.
@@ -1322,7 +1322,7 @@ gdk_drawable_get_clip_region (GdkDrawable *drawable)
  * obscured by other windows, but no area outside of this region
  * is visible.
  *
- * Returns: a #GdkRegion. This must be freed with gdk_region_destroy()
+ * Returns: (transfer full): a #GdkRegion. This must be freed with gdk_region_destroy()
  *          when you are done.
  **/
 GdkRegion *

@@ -103,7 +103,7 @@ static void miSetExtents (GdkRegion       *pReg);
  *
  * Creates a new empty #GdkRegion.
  *
- * Returns: a new empty #GdkRegion
+ * Returns: (transfer full): a new empty #GdkRegion
  */
 GdkRegion *
 gdk_region_new (void)
@@ -149,12 +149,18 @@ _gdk_region_new_from_yxbanded_rects (GdkRectangle *rects,
 
 
 /**
+ * GdkRegion: (copy-func gdk_region_copy) (free-func gdk_region_destroy)
+ *
+ * An opaque region type.
+ */
+
+/**
  * gdk_region_rectangle:
  * @rectangle: a #GdkRectangle
  *
  * Creates a new region containing the area @rectangle.
  *
- * Return value: a new region
+ * Return value: (transfer full): a new region
  **/
 GdkRegion *
 gdk_region_rectangle (const GdkRectangle *rectangle)
@@ -185,7 +191,7 @@ gdk_region_rectangle (const GdkRectangle *rectangle)
  *
  * Copies @region, creating an identical new region.
  *
- * Return value: a new region identical to @region
+ * Return value: (transfer full): a new region identical to @region
  **/
 GdkRegion *
 gdk_region_copy (const GdkRegion *region)
@@ -1805,7 +1811,7 @@ gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
  * @spans: an array of #GdkSpans
  * @n_spans: the length of @spans
  * @sorted: %TRUE if @spans is sorted wrt. the y coordinate
- * @function: function to call on each span in the intersection
+ * @function: (scope call): function to call on each span in the intersection
  * @data: data to pass to @function
  *
  * Calls a function on each span in the intersection of @region and @spans.

@@ -5273,13 +5273,13 @@ gtk_widget_intersect (GtkWidget	         *widget,
 }
 
 /**
- * gtk_widget_region_intersect: (skip)
+ * gtk_widget_region_intersect:
  * @widget: a #GtkWidget
  * @region: a #GdkRegion, in the same coordinate system as
  *          @widget->allocation. That is, relative to @widget->window
  *          for %NO_WINDOW widgets; relative to the parent window
  *          of @widget->window for widgets with their own window.
- * @returns: A newly allocated region holding the intersection of @widget
+ * @returns: (transfer full): A newly allocated region holding the intersection of @widget
  *           and @region. The coordinates of the return value are
  *           relative to @widget->window for %NO_WINDOW widgets, and
  *           relative to the parent window of @widget->window for
