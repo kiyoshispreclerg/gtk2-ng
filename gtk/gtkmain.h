@@ -157,13 +157,36 @@ GtkWidget* gtk_grab_get_current	   (void);
 void	   gtk_grab_remove	   (GtkWidget	       *widget);
 
 #if !defined (GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
+/**
+ * gtk_init_add:
+ * @function: (scope async): function to call during initialization
+ * @data: (allow-none): data to pass to @function
+ */
 void	   gtk_init_add		   (GtkFunction	       function,
 				    gpointer	       data);
 void	   gtk_quit_add_destroy	   (guint	       main_level,
 				    GtkObject	      *object);
+/**
+ * gtk_quit_add:
+ * @main_level: main loop level
+ * @function: (scope async): function to call when the main loop level is left
+ * @data: (allow-none): data to pass to @function
+ *
+ * Returns: handler id for the quit function
+ */
 guint	   gtk_quit_add		   (guint	       main_level,
 				    GtkFunction	       function,
 				    gpointer	       data);
+/**
+ * gtk_quit_add_full:
+ * @main_level: main loop level
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when the main loop level is left
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Returns: handler id for the quit function
+ */
 guint	   gtk_quit_add_full	   (guint	       main_level,
 				    GtkFunction	       function,
 				    GtkCallbackMarshal marshal,
