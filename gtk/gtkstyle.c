@@ -710,7 +710,7 @@ gtk_style_new (void)
  * in the following way:
  * <literal>style = gtk_style_attach (style, window)</literal>
  *
- * Returns: Either @style, or a newly-created #GtkStyle.
+ * Returns: (transfer full): Either @style, or a newly-created #GtkStyle.
  *   If the style is newly created, the style parameter
  *   will be unref'ed, and the new style will have
  *   a reference count belonging to the caller.
