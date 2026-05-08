@@ -197,6 +197,14 @@ gtk_tooltips_set_delay (GtkTooltips *tooltips,
   tooltips->delay = delay;
 }
 
+/**
+ * gtk_tooltips_data_get:
+ * @widget: a #GtkWidget
+ *
+ * Retrieves tooltip data for @widget.
+ *
+ * Returns: (transfer none) (type gpointer): the tooltip data for @widget
+ */
 GtkTooltipsData*
 gtk_tooltips_data_get (GtkWidget       *widget)
 {
