@@ -77,6 +77,18 @@ static GHashTable *gc_key_ht = NULL;
 static GHashTable *gc_gc_ht = NULL;
 static GQuark quark_gtk_gc_drawable_ht = 0;
 
+/**
+ * gtk_gc_get:
+ * @depth: the depth of the graphics context
+ * @colormap: a #GdkColormap
+ * @values: a #GdkGCValues structure containing values for the graphics context
+ * @values_mask: a mask indicating which fields of @values are set
+ *
+ * Gets a shared #GdkGC matching the given values.
+ *
+ * Returns: (transfer full): a #GdkGC. Release it with gtk_gc_release()
+ *   when no longer needed.
+ */
 GdkGC*
 gtk_gc_get (gint             depth,
             GdkColormap     *colormap,
