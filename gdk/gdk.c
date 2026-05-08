@@ -481,8 +481,8 @@ gdk_threads_init (void)
 
 /**
  * gdk_threads_set_lock_functions:
- * @enter_fn:   function called to guard GDK
- * @leave_fn: function called to release the guard
+ * @enter_fn: (scope forever): function called to guard GDK
+ * @leave_fn: (scope forever): function called to release the guard
  *
  * Allows the application to replace the standard method that
  * GDK uses to protect its data structures. Normally, GDK
@@ -624,7 +624,7 @@ gdk_threads_add_idle_full (gint           priority,
 
 /**
  * gdk_threads_add_idle:
- * @function: function to call
+ * @function: (scope async): function to call
  * @data:     data to pass to @function
  *
  * A wrapper for the common usage of gdk_threads_add_idle_full()
@@ -730,7 +730,7 @@ gdk_threads_add_timeout_full (gint           priority,
  * gdk_threads_add_timeout:
  * @interval: the time between calls to the function, in milliseconds
  *             (1/1000ths of a second)
- * @function: function to call
+ * @function: (scope async): function to call
  * @data:     data to pass to @function
  *
  * A wrapper for the common usage of gdk_threads_add_timeout_full()
@@ -795,7 +795,7 @@ gdk_threads_add_timeout_seconds_full (gint           priority,
 /**
  * gdk_threads_add_timeout_seconds:
  * @interval: the time between calls to the function, in seconds
- * @function: function to call
+ * @function: (scope async): function to call
  * @data:     data to pass to @function
  *
  * A wrapper for the common usage of gdk_threads_add_timeout_seconds_full()
