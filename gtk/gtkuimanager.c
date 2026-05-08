@@ -817,7 +817,7 @@ gtk_ui_manager_get_accel_group (GtkUIManager *self)
 
 /**
  * gtk_ui_manager_get_widget:
- * @self: a #GtkUIManager
+ * @manager: a #GtkUIManager
  * @path: a path
  *
  * Looks up a widget by following a path.
@@ -840,13 +840,13 @@ gtk_ui_manager_get_accel_group (GtkUIManager *self)
  * Since: 2.4
  **/
 GtkWidget *
-gtk_ui_manager_get_widget (GtkUIManager *self,
+gtk_ui_manager_get_widget (GtkUIManager *manager,
 			   const gchar  *path)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail (GTK_IS_UI_MANAGER (manager), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
-  return GTK_UI_MANAGER_GET_CLASS (self)->get_widget (self, path);
+  return GTK_UI_MANAGER_GET_CLASS (manager)->get_widget (manager, path);
 }
 
 typedef struct {
@@ -920,7 +920,7 @@ gtk_ui_manager_get_toplevels (GtkUIManager         *self,
 
 /**
  * gtk_ui_manager_get_action:
- * @self: a #GtkUIManager
+ * @manager: a #GtkUIManager
  * @path: a path
  *
  * Looks up an action by following a path. See gtk_ui_manager_get_widget()
@@ -932,13 +932,13 @@ gtk_ui_manager_get_toplevels (GtkUIManager         *self,
  * Since: 2.4
  **/
 GtkAction *
-gtk_ui_manager_get_action (GtkUIManager *self,
+gtk_ui_manager_get_action (GtkUIManager *manager,
 			   const gchar  *path)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail (GTK_IS_UI_MANAGER (manager), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
-  return GTK_UI_MANAGER_GET_CLASS (self)->get_action (self, path);
+  return GTK_UI_MANAGER_GET_CLASS (manager)->get_action (manager, path);
 }
 
 static gboolean

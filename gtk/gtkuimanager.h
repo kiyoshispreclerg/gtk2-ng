@@ -122,11 +122,11 @@ void           gtk_ui_manager_remove_action_group (GtkUIManager          *self,
 						   GtkActionGroup        *action_group);
 GList         *gtk_ui_manager_get_action_groups   (GtkUIManager          *self);
 GtkAccelGroup *gtk_ui_manager_get_accel_group     (GtkUIManager          *self);
-GtkWidget     *gtk_ui_manager_get_widget          (GtkUIManager          *self,
+GtkWidget     *gtk_ui_manager_get_widget          (GtkUIManager          *manager,
 						   const gchar           *path);
 GSList        *gtk_ui_manager_get_toplevels       (GtkUIManager          *self,
 						   GtkUIManagerItemType   types);
-GtkAction     *gtk_ui_manager_get_action          (GtkUIManager          *self,
+GtkAction     *gtk_ui_manager_get_action          (GtkUIManager          *manager,
 						   const gchar           *path);
 guint          gtk_ui_manager_add_ui_from_string  (GtkUIManager          *self,
 						   const gchar           *buffer,
