@@ -6192,7 +6192,7 @@ _gdk_window_invalidate_for_expose (GdkWindow       *window,
 
 
 /**
- * gdk_window_get_update_area: (skip)
+ * gdk_window_get_update_area:
  * @window: a #GdkWindow
  *
  * Transfers ownership of the update area from @window to the caller
@@ -6202,7 +6202,7 @@ _gdk_window_invalidate_for_expose (GdkWindow       *window,
  * gdk_window_get_update_area() returns %NULL. You are responsible for
  * calling gdk_region_destroy() on the returned region if it's non-%NULL.
  *
- * Return value: the update area for @window
+ * Return value: (nullable) (transfer full): the update area for @window
  **/
 GdkRegion *
 gdk_window_get_update_area (GdkWindow *window)
