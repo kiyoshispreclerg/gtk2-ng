@@ -246,6 +246,19 @@ guint	   gtk_idle_add_full	   (gint	       priority,
 				    GDestroyNotify     destroy);
 void	   gtk_idle_remove	   (guint	       idle_handler_id);
 void	   gtk_idle_remove_by_data (gpointer	       data);
+/**
+ * gtk_input_add_full:
+ * @source: file descriptor to watch
+ * @condition: condition to watch for
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when @condition is met
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Registers an input function.
+ *
+ * Returns: handler id for the input source
+ */
 guint	   gtk_input_add_full	   (gint	       source,
 				    GdkInputCondition  condition,
 				    GdkInputFunction   function,
@@ -255,6 +268,15 @@ guint	   gtk_input_add_full	   (gint	       source,
 void	   gtk_input_remove	   (guint	       input_handler_id);
 #endif /* GTK_DISABLE_DEPRECATED */
 
+/**
+ * gtk_key_snooper_install:
+ * @snooper: (scope forever): key snooper function to install
+ * @func_data: (allow-none): data to pass to @snooper
+ *
+ * Installs a key snooper function.
+ *
+ * Returns: handler id for the key snooper
+ */
 guint	   gtk_key_snooper_install (GtkKeySnoopFunc snooper,
 				    gpointer	    func_data);
 void	   gtk_key_snooper_remove  (guint	    snooper_handler_id);
