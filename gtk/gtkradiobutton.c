@@ -256,7 +256,7 @@ gtk_radio_button_set_group (GtkRadioButton *radio_button,
 
 /**
  * gtk_radio_button_new:
- * @group: (allow-none): an existing radio button group, or %NULL if you are
+ * @group: (allow-none) (element-type GtkRadioButton): an existing radio button group, or %NULL if you are
  *  creating a new group.
  *
  * Creates a new #GtkRadioButton. To be of any practical value, a widget should
@@ -279,7 +279,7 @@ gtk_radio_button_new (GSList *group)
 
 /**
  * gtk_radio_button_new_with_label:
- * @group: (allow-none): an existing radio button group, or %NULL if you are
+ * @group: (allow-none) (element-type GtkRadioButton): an existing radio button group, or %NULL if you are
  *  creating a new group.
  * @label: the text label to display next to the radio button.
  *
@@ -303,7 +303,7 @@ gtk_radio_button_new_with_label (GSList      *group,
 
 /**
  * gtk_radio_button_new_with_mnemonic:
- * @group: the radio button group
+ * @group: (element-type GtkRadioButton): the radio button group
  * @label: the text of the button, with an underscore in front of the
  *         mnemonic character
  *
