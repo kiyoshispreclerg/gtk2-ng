@@ -142,7 +142,7 @@ struct _GdkDrawableClass
                           gint         *height);
 
   void (*set_colormap)   (GdkDrawable  *drawable,
-                          GdkColormap  *cmap);
+                          GdkColormap  *colormap);
 
   GdkColormap* (*get_colormap)	(GdkDrawable  *drawable);
   GdkVisual*   (*get_visual)	(GdkDrawable  *drawable);
