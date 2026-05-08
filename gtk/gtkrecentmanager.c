@@ -557,9 +557,6 @@ gtk_recent_bookmark_file_get_added_time (GBookmarkFile *bookmarks,
   dt = g_bookmark_file_get_added_date_time (bookmarks, uri, NULL);
   result = dt ? g_date_time_to_unix (dt) : -1;
 
-  if (dt)
-    g_date_time_unref (dt);
-
   return result;
 #else
   return g_bookmark_file_get_added (bookmarks, uri, NULL);
@@ -577,9 +574,6 @@ gtk_recent_bookmark_file_get_modified_time (GBookmarkFile *bookmarks,
   dt = g_bookmark_file_get_modified_date_time (bookmarks, uri, NULL);
   result = dt ? g_date_time_to_unix (dt) : -1;
 
-  if (dt)
-    g_date_time_unref (dt);
-
   return result;
 #else
   return g_bookmark_file_get_modified (bookmarks, uri, NULL);
@@ -596,9 +590,6 @@ gtk_recent_bookmark_file_get_visited_time (GBookmarkFile *bookmarks,
 
   dt = g_bookmark_file_get_visited_date_time (bookmarks, uri, NULL);
   result = dt ? g_date_time_to_unix (dt) : -1;
-
-  if (dt)
-    g_date_time_unref (dt);
 
   return result;
 #else
@@ -627,9 +618,6 @@ gtk_recent_bookmark_file_get_application_info (GBookmarkFile  *bookmarks,
 
   if (stamp && dt)
     *stamp = g_date_time_to_unix (dt);
-
-  if (dt)
-    g_date_time_unref (dt);
 
   return res;
 #else
