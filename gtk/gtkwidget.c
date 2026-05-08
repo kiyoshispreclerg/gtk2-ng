@@ -5273,7 +5273,7 @@ gtk_widget_intersect (GtkWidget	         *widget,
 }
 
 /**
- * gtk_widget_region_intersect:
+ * gtk_widget_region_intersect: (skip)
  * @widget: a #GtkWidget
  * @region: a #GdkRegion, in the same coordinate system as
  *          @widget->allocation. That is, relative to @widget->window
@@ -7416,7 +7416,7 @@ gtk_widget_create_pango_layout (GtkWidget   *widget,
  * gtk_widget_render_icon:
  * @widget: a #GtkWidget
  * @stock_id: a stock ID
- * @size: (type int) a stock size. A size of (GtkIconSize)-1 means
+ * @size: (type int): a stock size. A size of (GtkIconSize)-1 means
  *     render at the size of the source and don't scale (if there are
  *     multiple source sizes, GTK+ picks one of the available sizes).
  * @detail: (allow-none): render detail to pass to theme engine
@@ -9667,7 +9667,7 @@ expose_window (GdkWindow *window)
  *
  * The returned pixmap can be %NULL, if the resulting @clip_area was empty.
  *
- * Return value: #GdkPixmap snapshot of the widget
+ * Return value: (nullable) (transfer full): #GdkPixmap snapshot of the widget
  *
  * Since: 2.14
  **/
@@ -9817,7 +9817,7 @@ gtk_widget_get_snapshot (GtkWidget    *widget,
  * gtk_widget_class_install_style_property_parser:
  * @klass: a #GtkWidgetClass
  * @pspec: the #GParamSpec for the style property
- * @parser: the parser for the style property
+ * @parser: (scope forever): the parser for the style property
  *
  * Installs a style property on a widget class.
  **/
