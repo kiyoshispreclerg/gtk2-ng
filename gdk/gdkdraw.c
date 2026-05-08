@@ -1095,9 +1095,9 @@ gdk_draw_trapezoids (GdkDrawable        *drawable,
 }
 
 /**
- * gdk_drawable_copy_to_image: (skip)
+ * gdk_drawable_copy_to_image:
  * @drawable: a #GdkDrawable
- * @image: (allow-none): a #GdkDrawable, or %NULL if a new @image should be created.
+ * @image: (allow-none): a #GdkImage, or %NULL if a new @image should be created.
  * @src_x: x coordinate on @drawable
  * @src_y: y coordinate on @drawable
  * @dest_x: x coordinate within @image. Must be 0 if @image is %NULL
@@ -1109,7 +1109,7 @@ gdk_draw_trapezoids (GdkDrawable        *drawable,
  * @image. If @image is %NULL, creates a new image of size @width x @height
  * and copies into that. See gdk_drawable_get_image() for further details.
  *
- * Return value: @image, or a new a #GdkImage containing the contents
+ * Return value: (nullable) (transfer full): @image, or a new #GdkImage containing the contents
  *               of @drawable
  *
  * Since: 2.4
