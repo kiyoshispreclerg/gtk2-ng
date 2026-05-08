@@ -564,7 +564,7 @@ gtk_clipboard_set_contents (GtkClipboard         *clipboard,
 }
 
 /**
- * gtk_clipboard_set_with_data: (skip)
+ * gtk_clipboard_set_with_data:
  * @clipboard:  a #GtkClipboard
  * @targets:    array containing information about the available forms for the
  *              clipboard data
@@ -600,7 +600,7 @@ gtk_clipboard_set_with_data (GtkClipboard          *clipboard,
 }
 
 /**
- * gtk_clipboard_set_with_owner: (skip)
+ * gtk_clipboard_set_with_owner:
  * @clipboard:  a #GtkClipboard
  * @targets:    array containing information about the available forms for the
  *              clipboard data
