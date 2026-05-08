@@ -171,9 +171,31 @@ guint	   gtk_quit_add_full	   (guint	       main_level,
 				    GDestroyNotify     destroy);
 void	   gtk_quit_remove	   (guint	       quit_handler_id);
 void	   gtk_quit_remove_by_data (gpointer	       data);
+/**
+ * gtk_timeout_add:
+ * @interval: timeout interval in milliseconds
+ * @function: (scope forever): function to call when the timeout expires
+ * @data: (allow-none): data to pass to @function
+ *
+ * Registers a timeout function.
+ *
+ * Returns: handler id for the timeout source
+ */
 guint	   gtk_timeout_add	   (guint32	       interval,
 				    GtkFunction	       function,
 				    gpointer	       data);
+/**
+ * gtk_timeout_add_full:
+ * @interval: timeout interval in milliseconds
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when the timeout expires
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Registers a timeout function.
+ *
+ * Returns: handler id for the timeout source
+ */
 guint	   gtk_timeout_add_full	   (guint32	       interval,
 				    GtkFunction	       function,
 				    GtkCallbackMarshal marshal,
