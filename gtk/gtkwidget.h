@@ -660,7 +660,7 @@ struct _GtkWidgetClass
   void (* grab_notify)         (GtkWidget        *widget,
 				gboolean          was_grabbed);
   void (* child_notify)        (GtkWidget	 *widget,
-				GParamSpec       *pspec);
+				GParamSpec       *child_property);
 
   /* Mnemonics */
   gboolean (* mnemonic_activate) (GtkWidget    *widget,
