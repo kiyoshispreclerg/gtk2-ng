@@ -585,6 +585,7 @@ gtk_text_buffer_class_init (GtkTextBufferClass *klass)
    /**
    * GtkTextBuffer::paste-done:
    * @textbuffer: the object which received the signal
+   * @clipboard: the #GtkClipboard pasted from
    *
    * The paste-done signal is emitted after paste operation has been completed.
    * This is useful to properly scroll the view to the end of the pasted text.
@@ -1876,10 +1877,10 @@ gtk_text_buffer_real_insert_pixbuf (GtkTextBuffer *buffer,
 /**
  * gtk_text_buffer_insert_pixbuf:
  * @buffer: a #GtkTextBuffer
- * @iter: location to insert the pixbuf
+ * @pos: location to insert the pixbuf
  * @pixbuf: a #GdkPixbuf
  *
- * Inserts an image into the text buffer at @iter. The image will be
+ * Inserts an image into the text buffer at @pos. The image will be
  * counted as one character in character counts, and when obtaining
  * the buffer contents as a string, will be represented by the Unicode
  * "object replacement character" 0xFFFC. Note that the "slice"
@@ -1890,16 +1891,16 @@ gtk_text_buffer_real_insert_pixbuf (GtkTextBuffer *buffer,
  **/
 void
 gtk_text_buffer_insert_pixbuf (GtkTextBuffer *buffer,
-                               GtkTextIter   *iter,
+                               GtkTextIter   *pos,
                                GdkPixbuf     *pixbuf)
 {
   g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
-  g_return_if_fail (iter != NULL);
+  g_return_if_fail (pos != NULL);
   g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-  g_return_if_fail (gtk_text_iter_get_buffer (iter) == buffer);
+  g_return_if_fail (gtk_text_iter_get_buffer (pos) == buffer);
 
   g_signal_emit (buffer, signals[INSERT_PIXBUF], 0,
-                 iter, pixbuf);
+                 pos, pixbuf);
 }
 
 /*
@@ -1920,10 +1921,10 @@ gtk_text_buffer_real_insert_anchor (GtkTextBuffer      *buffer,
 /**
  * gtk_text_buffer_insert_child_anchor:
  * @buffer: a #GtkTextBuffer
- * @iter: location to insert the anchor
+ * @pos: location to insert the anchor
  * @anchor: a #GtkTextChildAnchor
  *
- * Inserts a child widget anchor into the text buffer at @iter. The
+ * Inserts a child widget anchor into the text buffer at @pos. The
  * anchor will be counted as one character in character counts, and
  * when obtaining the buffer contents as a string, will be represented
  * by the Unicode "object replacement character" 0xFFFC. Note that the
@@ -1937,16 +1938,16 @@ gtk_text_buffer_real_insert_anchor (GtkTextBuffer      *buffer,
  **/
 void
 gtk_text_buffer_insert_child_anchor (GtkTextBuffer      *buffer,
-                                     GtkTextIter        *iter,
+                                     GtkTextIter        *pos,
                                      GtkTextChildAnchor *anchor)
 {
   g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
-  g_return_if_fail (iter != NULL);
+  g_return_if_fail (pos != NULL);
   g_return_if_fail (GTK_IS_TEXT_CHILD_ANCHOR (anchor));
-  g_return_if_fail (gtk_text_iter_get_buffer (iter) == buffer);
+  g_return_if_fail (gtk_text_iter_get_buffer (pos) == buffer);
 
   g_signal_emit (buffer, signals[INSERT_CHILD_ANCHOR], 0,
-                 iter, anchor);
+                 pos, anchor);
 }
 
 /**
@@ -2567,57 +2568,56 @@ gtk_text_buffer_emit_tag (GtkTextBuffer     *buffer,
  * gtk_text_buffer_apply_tag:
  * @buffer: a #GtkTextBuffer
  * @tag: a #GtkTextTag
- * @start: one bound of range to be tagged
- * @end: other bound of range to be tagged
+ * @start_char: one bound of range to be tagged
+ * @end_char: other bound of range to be tagged
  *
  * Emits the "apply-tag" signal on @buffer. The default
  * handler for the signal applies @tag to the given range.
- * @start and @end do not have to be in order.
+ * @start_char and @end_char do not have to be in order.
  **/
 void
 gtk_text_buffer_apply_tag (GtkTextBuffer     *buffer,
                            GtkTextTag        *tag,
-                           const GtkTextIter *start,
-                           const GtkTextIter *end)
+                           const GtkTextIter *start_char,
+                           const GtkTextIter *end_char)
 {
   g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
   g_return_if_fail (GTK_IS_TEXT_TAG (tag));
-  g_return_if_fail (start != NULL);
-  g_return_if_fail (end != NULL);
-  g_return_if_fail (gtk_text_iter_get_buffer (start) == buffer);
-  g_return_if_fail (gtk_text_iter_get_buffer (end) == buffer);
+  g_return_if_fail (start_char != NULL);
+  g_return_if_fail (end_char != NULL);
+  g_return_if_fail (gtk_text_iter_get_buffer (start_char) == buffer);
+  g_return_if_fail (gtk_text_iter_get_buffer (end_char) == buffer);
   g_return_if_fail (tag->table == buffer->tag_table);
 
-  gtk_text_buffer_emit_tag (buffer, tag, TRUE, start, end);
+  gtk_text_buffer_emit_tag (buffer, tag, TRUE, start_char, end_char);
 }
 
 /**
  * gtk_text_buffer_remove_tag:
  * @buffer: a #GtkTextBuffer
  * @tag: a #GtkTextTag
- * @start: one bound of range to be untagged
- * @end: other bound of range to be untagged
+ * @start_char: one bound of range to be untagged
+ * @end_char: other bound of range to be untagged
  *
  * Emits the "remove-tag" signal. The default handler for the signal
- * removes all occurrences of @tag from the given range. @start and
- * @end don't have to be in order.
+ * removes all occurrences of @tag from the given range. @start_char and
+ * @end_char don't have to be in order.
  **/
 void
 gtk_text_buffer_remove_tag (GtkTextBuffer     *buffer,
                             GtkTextTag        *tag,
-                            const GtkTextIter *start,
-                            const GtkTextIter *end)
-
+                            const GtkTextIter *start_char,
+                            const GtkTextIter *end_char)
 {
   g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
   g_return_if_fail (GTK_IS_TEXT_TAG (tag));
-  g_return_if_fail (start != NULL);
-  g_return_if_fail (end != NULL);
-  g_return_if_fail (gtk_text_iter_get_buffer (start) == buffer);
-  g_return_if_fail (gtk_text_iter_get_buffer (end) == buffer);
+  g_return_if_fail (start_char != NULL);
+  g_return_if_fail (end_char != NULL);
+  g_return_if_fail (gtk_text_iter_get_buffer (start_char) == buffer);
+  g_return_if_fail (gtk_text_iter_get_buffer (end_char) == buffer);
   g_return_if_fail (tag->table == buffer->tag_table);
 
-  gtk_text_buffer_emit_tag (buffer, tag, FALSE, start, end);
+  gtk_text_buffer_emit_tag (buffer, tag, FALSE, start_char, end_char);
 }
 
 /**

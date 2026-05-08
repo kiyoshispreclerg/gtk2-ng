@@ -240,12 +240,12 @@ gchar          *gtk_text_buffer_get_slice           (GtkTextBuffer     *buffer,
 
 /* Insert a pixbuf */
 void gtk_text_buffer_insert_pixbuf         (GtkTextBuffer *buffer,
-                                            GtkTextIter   *iter,
+                                            GtkTextIter   *pos,
                                             GdkPixbuf     *pixbuf);
 
 /* Insert a child anchor */
 void               gtk_text_buffer_insert_child_anchor (GtkTextBuffer      *buffer,
-                                                        GtkTextIter        *iter,
+                                                        GtkTextIter        *pos,
                                                         GtkTextChildAnchor *anchor);
 
 /* Convenience, create and insert a child anchor */
@@ -289,12 +289,12 @@ void gtk_text_buffer_select_range (GtkTextBuffer     *buffer,
 /* Tag manipulation */
 void gtk_text_buffer_apply_tag             (GtkTextBuffer     *buffer,
                                             GtkTextTag        *tag,
-                                            const GtkTextIter *start,
-                                            const GtkTextIter *end);
+                                            const GtkTextIter *start_char,
+                                            const GtkTextIter *end_char);
 void gtk_text_buffer_remove_tag            (GtkTextBuffer     *buffer,
                                             GtkTextTag        *tag,
-                                            const GtkTextIter *start,
-                                            const GtkTextIter *end);
+                                            const GtkTextIter *start_char,
+                                            const GtkTextIter *end_char);
 void gtk_text_buffer_apply_tag_by_name     (GtkTextBuffer     *buffer,
                                             const gchar       *name,
                                             const GtkTextIter *start,
