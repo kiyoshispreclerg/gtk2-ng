@@ -203,11 +203,42 @@ guint	   gtk_timeout_add_full	   (guint32	       interval,
 				    GDestroyNotify     destroy);
 void	   gtk_timeout_remove	   (guint	       timeout_handler_id);
 
+/**
+ * gtk_idle_add:
+ * @function: (scope forever): function to call when the main loop is idle
+ * @data: (allow-none): data to pass to @function
+ *
+ * Registers an idle function.
+ *
+ * Returns: handler id for the idle source
+ */
 guint	   gtk_idle_add		   (GtkFunction	       function,
 				    gpointer	       data);
+/**
+ * gtk_idle_add_priority:
+ * @priority: priority of the idle source
+ * @function: (scope forever): function to call when the main loop is idle
+ * @data: (allow-none): data to pass to @function
+ *
+ * Registers an idle function with a priority.
+ *
+ * Returns: handler id for the idle source
+ */
 guint	   gtk_idle_add_priority   (gint	       priority,
 				    GtkFunction	       function,
 				    gpointer	       data);
+/**
+ * gtk_idle_add_full:
+ * @priority: priority of the idle source
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when the main loop is idle
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Registers an idle function with a priority.
+ *
+ * Returns: handler id for the idle source
+ */
 guint	   gtk_idle_add_full	   (gint	       priority,
 				    GtkFunction	       function,
 				    GtkCallbackMarshal marshal,
