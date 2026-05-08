@@ -232,7 +232,7 @@ gdk_gc_finalize (GObject *object)
  *
  * Deprecated function; use g_object_ref() instead.
  *
- * Return value: the gc.
+ * Return value: (transfer full): the gc.
  *
  * Deprecated: 2.0: Use g_object_ref() instead.
  **/
@@ -1272,7 +1272,7 @@ gdk_gc_set_colormap (GdkGC       *gc,
  * has a colormap, or if a colormap was set explicitely with
  * gdk_gc_set_colormap.
  *
- * Return value: the colormap of @gc, or %NULL if @gc doesn't have one.
+ * Return value: (nullable) (transfer none): the colormap of @gc, or %NULL if @gc doesn't have one.
  *
  * Deprecated: 2.22: There is no replacement. Cairo handles colormaps
  * automatically, so there is no need to care about them.

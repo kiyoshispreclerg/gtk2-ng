@@ -654,7 +654,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
  *
  * Gets the #GdkScreen for which @gc was created
  *
- * Returns: the #GdkScreen for @gc.
+ * Returns: (transfer none): the #GdkScreen for @gc.
  *
  * Since: 2.2
  */
@@ -667,7 +667,7 @@ gdk_gc_get_screen (GdkGC *gc)
 }
 
 /**
- * gdk_x11_gc_get_xdisplay:
+ * gdk_x11_gc_get_xdisplay: (skip)
  * @gc: a #GdkGC.
  *
  * Returns the display of a #GdkGC.
@@ -685,7 +685,7 @@ gdk_x11_gc_get_xdisplay (GdkGC *gc)
 }
 
 /**
- * gdk_x11_gc_get_xgc:
+ * gdk_x11_gc_get_xgc: (skip)
  * @gc: a #GdkGC.
  *
  * Returns the X GC of a #GdkGC.
