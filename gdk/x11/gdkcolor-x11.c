@@ -1444,12 +1444,12 @@ gdk_colormap_equal (Colormap *a,
 }
 
 /**
- * gdk_x11_colormap_get_xdisplay: (skip)
+ * gdk_x11_colormap_get_xdisplay:
  * @colormap: a #GdkColormap.
  *
  * Returns the display of a #GdkColormap.
  *
- * Return value: an Xlib <type>Display*</type>.
+ * Return value: (transfer none) (type xlib.Display): an Xlib <type>Display*</type>.
  **/
 Display *
 gdk_x11_colormap_get_xdisplay (GdkColormap *colormap)

@@ -426,12 +426,12 @@ _gdk_cursor_destroy (GdkCursor *cursor)
 }
 
 /**
- * gdk_x11_cursor_get_xdisplay: (skip)
+ * gdk_x11_cursor_get_xdisplay:
  * @cursor: a #GdkCursor.
  *
  * Returns the display of a #GdkCursor.
  *
- * Return value: an Xlib <type>Display*</type>.
+ * Return value: (transfer none) (type xlib.Display): an Xlib <type>Display*</type>.
  **/
 Display *
 gdk_x11_cursor_get_xdisplay (GdkCursor *cursor)

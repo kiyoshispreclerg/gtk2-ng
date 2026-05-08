@@ -667,12 +667,12 @@ gdk_gc_get_screen (GdkGC *gc)
 }
 
 /**
- * gdk_x11_gc_get_xdisplay: (skip)
+ * gdk_x11_gc_get_xdisplay:
  * @gc: a #GdkGC.
  *
  * Returns the display of a #GdkGC.
  *
- * Return value: an Xlib <type>Display*</type>.
+ * Return value: (transfer none) (type xlib.Display): an Xlib <type>Display*</type>.
  *
  * Deprecated: 2.22: #GdkGC has been replaced by #cairo_t.
  **/
@@ -685,12 +685,12 @@ gdk_x11_gc_get_xdisplay (GdkGC *gc)
 }
 
 /**
- * gdk_x11_gc_get_xgc: (skip)
+ * gdk_x11_gc_get_xgc:
  * @gc: a #GdkGC.
  *
  * Returns the X GC of a #GdkGC.
  *
- * Return value: an Xlib <type>GC</type>.
+ * Return value: (transfer none) (type gpointer): an Xlib <type>GC</type>.
  *
  * Deprecated: 2.22: #GdkGC has been replaced by #cairo_t.
  **/
