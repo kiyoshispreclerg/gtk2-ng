@@ -393,7 +393,7 @@ gdk_event_send_clientmessage_toall (GdkEvent *event)
  *
  * Returns the core pointer device for the default display.
  *
- * Return value: the core pointer device; this is owned by the
+ * Return value: (transfer none): the core pointer device; this is owned by the
  *   display and should not be freed.
  **/
 GdkDevice *
@@ -408,7 +408,7 @@ gdk_device_get_core_pointer (void)
  *
  * Returns the core pointer device for the given display
  *
- * Return value: the core pointer device; this is owned by the
+ * Return value: (transfer none): the core pointer device; this is owned by the
  *   display and should not be freed.
  *
  * Since: 2.2
@@ -622,7 +622,7 @@ gdk_display_get_window_at_pointer (GdkDisplay *display,
 }
 
 /**
- * gdk_display_set_pointer_hooks:
+ * gdk_display_set_pointer_hooks: (skip)
  * @display: a #GdkDisplay
  * @new_hooks: a table of pointers to functions for getting
  *   quantities related to the current pointer position,
@@ -713,7 +713,7 @@ singlehead_default_window_at_pointer  (GdkScreen       *screen,
 }
 
 /**
- * gdk_set_pointer_hooks:
+ * gdk_set_pointer_hooks: (skip)
  * @new_hooks: a table of pointers to functions for getting
  *   quantities related to the current pointer position,
  *   or %NULL to restore the default table.
