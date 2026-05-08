@@ -622,7 +622,7 @@ gdk_display_get_window_at_pointer (GdkDisplay *display,
 }
 
 /**
- * gdk_display_set_pointer_hooks: (skip)
+ * gdk_display_set_pointer_hooks:
  * @display: a #GdkDisplay
  * @new_hooks: a table of pointers to functions for getting
  *   quantities related to the current pointer position,
@@ -634,7 +634,7 @@ gdk_display_get_window_at_pointer (GdkDisplay *display,
  * event recorder. Applications should never have any
  * reason to use this facility.
  *
- * Return value: the previous pointer hook table
+ * Return value: (transfer none) (type gpointer): the previous pointer hook table
  *
  * Since: 2.2
  *
@@ -713,7 +713,7 @@ singlehead_default_window_at_pointer  (GdkScreen       *screen,
 }
 
 /**
- * gdk_set_pointer_hooks: (skip)
+ * gdk_set_pointer_hooks:
  * @new_hooks: a table of pointers to functions for getting
  *   quantities related to the current pointer position,
  *   or %NULL to restore the default table.
@@ -727,7 +727,7 @@ singlehead_default_window_at_pointer  (GdkScreen       *screen,
  * This function is not multihead safe. For multihead operation,
  * see gdk_display_set_pointer_hooks().
  *
- * Return value: the previous pointer hook table
+ * Return value: (transfer none) (type gpointer): the previous pointer hook table
  *
  * Deprecated: 2.24: This function will go away in GTK 3 for lack of use cases.
  **/
