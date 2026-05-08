@@ -38,7 +38,7 @@
  *
  * Deprecated function; use g_object_ref() instead.
  *
- * Return value: the colormap
+ * Return value: (transfer full): the colormap
  *
  * Deprecated: 2.0: Use g_object_ref() instead.
  **/
@@ -69,7 +69,7 @@ gdk_colormap_unref (GdkColormap *cmap)
  *
  * Returns the visual for which a given colormap was created.
  *
- * Return value: the visual of the colormap.
+ * Return value: (transfer none): the visual of the colormap.
  **/
 GdkVisual *
 gdk_colormap_get_visual (GdkColormap *colormap)
@@ -386,7 +386,7 @@ gdk_color_to_string (const GdkColor *color)
  * Gets the system's default colormap for the default screen. (See
  * gdk_colormap_get_system_for_screen ())
  *
- * Return value: the default colormap.
+ * Return value: (transfer none): the default colormap.
  **/
 GdkColormap*
 gdk_colormap_get_system (void)

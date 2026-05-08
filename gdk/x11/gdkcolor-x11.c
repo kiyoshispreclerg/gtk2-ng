@@ -1253,7 +1253,7 @@ gdk_color_change (GdkColormap *colormap,
  * returns a new reference to the existing #GdkColormap object,
  * otherwise creates a new GdkColormap object and returns that
  *
- * Return value: the #GdkColormap object for @xcolormap.
+ * Return value: (transfer full): the #GdkColormap object for @xcolormap.
  *   Free with g_object_unref(). Note that for colormap created
  *   with gdk_x11_colormap_foreign_new(), unref'ing the last
  *   reference to the object will only free the #GdkColoramp
@@ -1492,7 +1492,7 @@ gdk_x11_colormap_get_xcolormap (GdkColormap *colormap)
  *
  * Gets the screen for which this colormap was created.
  *
- * Return value: the screen for which this colormap was created.
+ * Return value: (transfer none): the screen for which this colormap was created.
  *
  * Since: 2.2
  **/
