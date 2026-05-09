@@ -1387,7 +1387,7 @@ popup_grab_on_window (GdkWindow *window,
  * @menu: a #GtkMenu.
  * @parent_menu_shell: (allow-none): the menu shell containing the triggering menu item, or %NULL
  * @parent_menu_item: (allow-none): the menu item whose activation triggered the popup, or %NULL
- * @func: (allow-none): a user supplied function used to position the menu, or %NULL
+ * @func: (allow-none) (scope async): a user supplied function used to position the menu, or %NULL
  * @data: (allow-none): user supplied data to be passed to @func.
  * @button: the mouse button which was pressed to initiate the event.
  * @activate_time: the time at which the activation event occurred.
