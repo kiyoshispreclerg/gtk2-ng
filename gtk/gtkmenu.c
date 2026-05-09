@@ -1151,6 +1151,14 @@ attach_widget_screen_changed (GtkWidget *attach_widget,
     }
 }
 
+/**
+ * gtk_menu_attach_to_widget:
+ * @menu: a #GtkMenu
+ * @attach_widget: the #GtkWidget that the menu will be attached to
+ * @detacher: (allow-none) (scope async): a callback called when the menu is detached, or %NULL
+ *
+ * Attaches @menu to @attach_widget.
+ */
 void
 gtk_menu_attach_to_widget (GtkMenu	       *menu,
 			   GtkWidget	       *attach_widget,
