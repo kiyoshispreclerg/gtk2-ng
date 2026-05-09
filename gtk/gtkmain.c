@@ -1939,6 +1939,11 @@ gtk_grab_remove (GtkWidget *widget)
     }
 }
 
+/**
+ * gtk_init_add:
+ * @function: (scope async): function to call during initialization
+ * @data: (allow-none): data to pass to @function
+ */
 void
 gtk_init_add (GtkFunction function,
 	      gpointer	  data)
@@ -1952,6 +1957,15 @@ gtk_init_add (GtkFunction function,
   init_functions = g_list_prepend (init_functions, init);
 }
 
+/**
+ * gtk_key_snooper_install:
+ * @snooper: (scope forever): key snooper function to install
+ * @func_data: (allow-none): data to pass to @snooper
+ *
+ * Installs a key snooper function.
+ *
+ * Returns: handler id for the key snooper
+ */
 guint
 gtk_key_snooper_install (GtkKeySnoopFunc snooper,
 			 gpointer	 func_data)
@@ -2013,6 +2027,16 @@ gtk_invoke_key_snoopers (GtkWidget *grab_widget,
   return return_val;
 }
 
+/**
+ * gtk_quit_add_full:
+ * @main_level: main loop level
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when the main loop level is left
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Returns: handler id for the quit function
+ */
 guint
 gtk_quit_add_full (guint		main_level,
 		   GtkFunction		function,
@@ -2075,6 +2099,14 @@ gtk_quit_add_destroy (guint              main_level,
   gtk_quit_add (main_level, (GtkFunction) gtk_quit_destructor, object_p);
 }
 
+/**
+ * gtk_quit_add:
+ * @main_level: main loop level
+ * @function: (scope async): function to call when the main loop level is left
+ * @data: (allow-none): data to pass to @function
+ *
+ * Returns: handler id for the quit function
+ */
 guint
 gtk_quit_add (guint	  main_level,
 	      GtkFunction function,
@@ -2131,6 +2163,18 @@ gtk_quit_remove_by_data (gpointer data)
     }
 }
 
+/**
+ * gtk_timeout_add_full:
+ * @interval: timeout interval in milliseconds
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when the timeout expires
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Registers a timeout function.
+ *
+ * Returns: handler id for the timeout source
+ */
 guint
 gtk_timeout_add_full (guint32		 interval,
 		      GtkFunction	 function,
@@ -2156,6 +2200,16 @@ gtk_timeout_add_full (guint32		 interval,
     return g_timeout_add_full (0, interval, function, data, destroy);
 }
 
+/**
+ * gtk_timeout_add:
+ * @interval: timeout interval in milliseconds
+ * @function: (scope forever): function to call when the timeout expires
+ * @data: (allow-none): data to pass to @function
+ *
+ * Registers a timeout function.
+ *
+ * Returns: handler id for the timeout source
+ */
 guint
 gtk_timeout_add (guint32     interval,
 		 GtkFunction function,
@@ -2170,6 +2224,18 @@ gtk_timeout_remove (guint tag)
   g_source_remove (tag);
 }
 
+/**
+ * gtk_idle_add_full:
+ * @priority: priority of the idle source
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when the main loop is idle
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Registers an idle function with a priority.
+ *
+ * Returns: handler id for the idle source
+ */
 guint
 gtk_idle_add_full (gint			priority,
 		   GtkFunction		function,
@@ -2195,6 +2261,15 @@ gtk_idle_add_full (gint			priority,
     return g_idle_add_full (priority, function, data, destroy);
 }
 
+/**
+ * gtk_idle_add:
+ * @function: (scope forever): function to call when the main loop is idle
+ * @data: (allow-none): data to pass to @function
+ *
+ * Registers an idle function.
+ *
+ * Returns: handler id for the idle source
+ */
 guint
 gtk_idle_add (GtkFunction function,
 	      gpointer	  data)
@@ -2202,6 +2277,16 @@ gtk_idle_add (GtkFunction function,
   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
 }
 
+/**
+ * gtk_idle_add_priority:
+ * @priority: priority of the idle source
+ * @function: (scope forever): function to call when the main loop is idle
+ * @data: (allow-none): data to pass to @function
+ *
+ * Registers an idle function with a priority.
+ *
+ * Returns: handler id for the idle source
+ */
 guint
 gtk_idle_add_priority (gint        priority,
 		       GtkFunction function,
@@ -2223,6 +2308,19 @@ gtk_idle_remove_by_data (gpointer data)
     g_warning ("gtk_idle_remove_by_data(%p): no such idle", data);
 }
 
+/**
+ * gtk_input_add_full:
+ * @source: file descriptor to watch
+ * @condition: condition to watch for
+ * @function: (scope notified) (closure data) (destroy destroy): function to call when @condition is met
+ * @marshal: (scope notified) (closure data) (destroy destroy) (allow-none): marshal to invoke @function
+ * @data: (allow-none): data to pass to @function
+ * @destroy: (allow-none): destroy notifier for @data
+ *
+ * Registers an input function.
+ *
+ * Returns: handler id for the input source
+ */
 guint
 gtk_input_add_full (gint		source,
 		    GdkInputCondition	condition,
