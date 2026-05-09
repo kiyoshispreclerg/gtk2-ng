@@ -82,6 +82,11 @@ GtkSettings*	gtk_settings_get_default	     (void);
 GtkSettings*	gtk_settings_get_for_screen	     (GdkScreen *screen);
 
 void		gtk_settings_install_property	     (GParamSpec         *pspec);
+/**
+ * gtk_settings_install_property_parser:
+ * @pspec: a #GParamSpec
+ * @parser: (scope forever): parser for the property
+ */
 void		gtk_settings_install_property_parser (GParamSpec         *pspec,
 						      GtkRcPropertyParser parser);
 
