@@ -2892,7 +2892,7 @@ gtk_color_selection_set_change_palette_hook (GtkColorSelectionChangePaletteFunc 
 
 /**
  * gtk_color_selection_set_change_palette_with_screen_hook:
- * @func: a function to call when the custom palette needs saving.
+ * @func: (scope forever): a function to call when the custom palette needs saving.
  *
  * Installs a global function to be called whenever the user tries to
  * modify the palette in a color selection. This function should save
