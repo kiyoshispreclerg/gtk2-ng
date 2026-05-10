@@ -570,7 +570,7 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
  * GTK+ maintains a global list of binding sets. Each binding set has
  * a unique name which needs to be specified upon creation.
  *
- * Return value: new binding set
+ * Return value: (transfer none): new binding set
  */
 GtkBindingSet*
 gtk_binding_set_new (const gchar *set_name)
@@ -601,7 +601,7 @@ gtk_binding_set_new (const gchar *set_name)
  * the passed in class structure. New binding sets are created on
  * demand by this function.
  *
- * Return value: the binding set corresponding to @object_class
+ * Return value: (transfer none): the binding set corresponding to @object_class
  */
 GtkBindingSet*
 gtk_binding_set_by_class (gpointer object_class)
