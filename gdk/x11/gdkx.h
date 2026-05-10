@@ -40,7 +40,19 @@ extern Display          *gdk_display;
 
 Display *gdk_x11_drawable_get_xdisplay    (GdkDrawable *drawable);
 XID      gdk_x11_drawable_get_xid         (GdkDrawable *drawable);
+/**
+ * gdk_x11_window_get_drawable_impl:
+ * @window: a #GdkWindow
+ *
+ * Returns: (transfer none): the drawable implementation for @window
+ */
 GdkDrawable *gdk_x11_window_get_drawable_impl (GdkWindow *window);
+/**
+ * gdk_x11_pixmap_get_drawable_impl:
+ * @pixmap: a #GdkPixmap
+ *
+ * Returns: (transfer none): the drawable implementation for @pixmap
+ */
 GdkDrawable *gdk_x11_pixmap_get_drawable_impl (GdkPixmap *pixmap);
 Display *gdk_x11_image_get_xdisplay       (GdkImage    *image);
 XImage  *gdk_x11_image_get_ximage         (GdkImage    *image);

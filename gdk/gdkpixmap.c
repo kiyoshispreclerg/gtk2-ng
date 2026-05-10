@@ -744,7 +744,7 @@ gdk_pixmap_colormap_create_from_xpm (GdkDrawable    *drawable,
  * gdk_pixmap_create_from_xpm:
  * @drawable: a #GdkDrawable, used to determine default values
  *     for the new pixmap.
- * @mask: (out) a pointer to a place to store a bitmap representing
+ * @mask: (out): a pointer to a place to store a bitmap representing
  *     the transparency mask of the XPM file. Can be %NULL,
  *     in which case transparency will be ignored.
  * @transparent_color: the color to be used for the pixels
