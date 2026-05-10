@@ -302,7 +302,7 @@ gtk_ruler_set_metric (GtkRuler      *ruler,
  *
  * Return value: the units currently used for @ruler
  *
- * @Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
+ * Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
  *              unmaintained and too specialized. There is no replacement.
  **/
 GtkMetricType
@@ -332,7 +332,7 @@ gtk_ruler_get_metric (GtkRuler *ruler)
  *
  * This sets the range of the ruler.
  *
- * @Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
+ * Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
  *              unmaintained and too specialized. There is no replacement.
  */
 void
@@ -383,7 +383,7 @@ gtk_ruler_set_range (GtkRuler *ruler,
  * Retrieves values indicating the range and current position of a #GtkRuler.
  * See gtk_ruler_set_range().
  *
- * @Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
+ * Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
  *              unmaintained and too specialized. There is no replacement.
  **/
 void

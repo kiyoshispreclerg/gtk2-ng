@@ -73,7 +73,7 @@ gtk_vruler_init (GtkVRuler *vruler)
  *
  * Returns: a new #GtkVRuler.
  *
- * @Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
+ * Deprecated: 2.24: #GtkRuler has been removed from GTK 3 for being
  *              unmaintained and too specialized. There is no replacement.
  */
 GtkWidget *
