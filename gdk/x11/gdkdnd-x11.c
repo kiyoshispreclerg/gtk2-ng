@@ -3183,7 +3183,7 @@ gdk_drag_do_leave (GdkDragContext *context, guint32 time)
  *
  * This function is called by the drag source.
  *
- * Return value: a newly created #GdkDragContext.
+ * Return value: (transfer full): a newly created #GdkDragContext.
  **/
 GdkDragContext *
 gdk_drag_begin (GdkWindow     *window,
