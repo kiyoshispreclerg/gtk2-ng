@@ -1383,7 +1383,7 @@ gdk_screen_make_display_name (GdkScreen *screen)
  * The returned window should be unrefed using g_object_unref() when
  * no longer needed.
  *
- * Return value: the currently active window, or %NULL.
+ * Return value: (transfer full): the currently active window, or %NULL.
  *
  * Since: 2.10
  **/
