@@ -101,7 +101,7 @@ gdk_fontset_name_hash_get (GdkDisplay *display)
  *
  * Returns the #GdkDisplay for @font.
  *
- * Returns: the corresponding #GdkDisplay.
+ * Returns: (transfer none): the corresponding #GdkDisplay.
  *
  * Since: 2.2
  **/
