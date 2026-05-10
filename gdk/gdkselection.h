@@ -71,7 +71,7 @@ gboolean   gdk_selection_owner_set (GdkWindow	 *owner,
 				    GdkAtom	  selection,
 				    guint32	  time_,
 				    gboolean      send_event);
-GdkWindow* (transfer none) gdk_selection_owner_get (GdkAtom	  selection);
+GdkWindow* gdk_selection_owner_get (GdkAtom	  selection);
 #endif/* GDK_MULTIHEAD_SAFE */
 
 gboolean   gdk_selection_owner_set_for_display (GdkDisplay *display,
