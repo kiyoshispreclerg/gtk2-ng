@@ -37,6 +37,8 @@
 
 G_BEGIN_DECLS
 
+#define GTK_TYPE_STOCK_ITEM (gtk_stock_item_get_type ())
+
 typedef struct _GtkStockItem GtkStockItem;
 
 struct _GtkStockItem
@@ -60,6 +62,7 @@ gboolean gtk_stock_lookup     (const gchar         *stock_id,
  */
 GSList*  gtk_stock_list_ids  (void);
 
+GType         gtk_stock_item_get_type (void) G_GNUC_CONST;
 GtkStockItem *gtk_stock_item_copy (const GtkStockItem *item);
 void          gtk_stock_item_free (GtkStockItem       *item);
 

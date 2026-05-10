@@ -3949,6 +3949,7 @@ gtk_statusbar_set_has_resize_grip
 #if IN_FILE(__GTK_STOCK_C__)
 gtk_stock_add
 gtk_stock_add_static
+gtk_stock_item_get_type G_GNUC_CONST
 gtk_stock_item_copy
 gtk_stock_item_free
 gtk_stock_list_ids

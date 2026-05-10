@@ -308,6 +308,19 @@ gtk_stock_item_free (GtkStockItem *item)
   g_free (item);
 }
 
+GType
+gtk_stock_item_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (our_type == 0)
+    our_type = g_boxed_type_register_static (I_("GtkStockItem"),
+                                             (GBoxedCopyFunc) gtk_stock_item_copy,
+                                             (GBoxedFreeFunc) gtk_stock_item_free);
+
+  return our_type;
+}
+
 static const GtkStockItem builtin_items [] =
 {
   /* KEEP IN SYNC with gtkiconfactory.c stock icons, when appropriate */
