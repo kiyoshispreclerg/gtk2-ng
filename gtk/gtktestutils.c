@@ -499,7 +499,7 @@ gtk_test_text_get (GtkWidget *widget)
  * g_object_ref_sink() them (to keep them alive across a running test)
  * and set them up for destruction during the next test teardown phase.
  *
- * Returns: a newly created widget.
+ * Returns: (transfer none): a newly created widget.
  *
  * Since: 2.14
  */
@@ -557,7 +557,7 @@ test_increment_intp (int *intp)
  * The window will quit any running gtk_main()-loop when destroyed, and it
  * will automatically be destroyed upon test function teardown.
  *
- * Returns: a widget pointer to the newly created GtkWindow.
+ * Returns: (transfer none): a widget pointer to the newly created GtkWindow.
  *
  * Since: 2.14
  **/
