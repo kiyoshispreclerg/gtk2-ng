@@ -897,7 +897,7 @@ gdk_x11_get_visual (GdkDrawable    *drawable)
  *
  * Returns the display of a #GdkDrawable.
  *
- * Return value: an Xlib <type>Display*</type>.
+ * Returns: (type gpointer) (transfer none): an Xlib <type>Display*</type>.
  **/
 Display *
 gdk_x11_drawable_get_xdisplay (GdkDrawable *drawable)
