@@ -127,6 +127,16 @@ void     gdk_string_extents (GdkFont     *font,
 			     gint        *ascent,
 			     gint        *descent);
 
+/**
+ * gdk_font_get_display:
+ * @font: the #GdkFont.
+ *
+ * Returns the #GdkDisplay for @font.
+ *
+ * Returns: (transfer none): the corresponding #GdkDisplay.
+ *
+ * Since: 2.2
+ */
 GdkDisplay * gdk_font_get_display (GdkFont *font);
 
 #endif /* GDK_DISABLE_DEPRECATED */
