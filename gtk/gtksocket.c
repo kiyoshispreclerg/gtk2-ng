@@ -433,7 +433,6 @@ gtk_socket_realize (GtkWidget *widget)
 
 /**
  * _gtk_socket_end_embedding:
- *
  * @socket: a #GtkSocket
  *
  * Called to end the embedding of a plug in the socket.
@@ -607,7 +606,6 @@ find_accel_key (GtkAccelKey *key,
 
 /**
  * _gtk_socket_add_grabbed_key:
- *
  * @socket: a #GtkSocket
  * @keyval: a key
  * @modifiers: modifiers for the key
@@ -646,7 +644,6 @@ _gtk_socket_add_grabbed_key (GtkSocket       *socket,
 
 /**
  * _gtk_socket_remove_grabbed_key:
- *
  * @socket: a #GtkSocket
  * @keyval: a key
  * @modifiers: modifiers for the key
@@ -785,7 +782,6 @@ gtk_socket_notify (GObject    *object,
 
 /**
  * _gtk_socket_claim_focus:
- *
  * @socket: a #GtkSocket
  * @send_event: huh?
  *
@@ -852,7 +848,6 @@ gtk_socket_forall (GtkContainer *container,
 
 /**
  * _gtk_socket_add_window:
- *
  * @socket: a #GtkSocket
  * @xid: the native identifier for a window
  * @need_reparent: whether the socket's plug's window needs to be
@@ -965,7 +960,6 @@ _gtk_socket_add_window (GtkSocket       *socket,
 
 /**
  * _gtk_socket_handle_map_request:
- *
  * @socket: a #GtkSocket
  *
  * Called from the GtkSocket backend when the plug has been mapped.
@@ -984,7 +978,6 @@ _gtk_socket_handle_map_request (GtkSocket *socket)
 
 /**
  * _gtk_socket_unmap_notify:
- *
  * @socket: a #GtkSocket
  *
  * Called from the GtkSocket backend when the plug has been unmapped ???
@@ -1001,7 +994,6 @@ _gtk_socket_unmap_notify (GtkSocket *socket)
 
 /**
  * _gtk_socket_advance_toplevel_focus:
- *
  * @socket: a #GtkSocket
  * @direction: a direction
  *
