@@ -744,6 +744,22 @@ get_text_renderer (GdkScreen *screen)
   return text_renderer;
 }
 
+/**
+ * gtk_text_layout_draw:
+ * @layout: a #GtkTextLayout
+ * @widget: widget to grab some style information from
+ * @drawable: drawable to render to
+ * @cursor_gc: graphics context to use for the cursor
+ * @x_offset: X position of the drawable in layout coordinates
+ * @y_offset: Y position of the drawable in layout coordinates
+ * @x: X position of the region of the layout to render
+ * @y: Y position of the region of the layout to render
+ * @width: width of the region of the layout to render
+ * @height: height of the region of the layout to render
+ * @widgets: (out) (element-type GtkWidget): list of widgets that need exposing
+ *
+ * Draws a text layout.
+ */
 void
 gtk_text_layout_draw (GtkTextLayout *layout,
                       GtkWidget *widget,
