@@ -42,6 +42,7 @@ typedef enum
   GDK_PROP_MODE_APPEND
 } GdkPropMode;
 
+GType   gdk_atom_get_type (void) G_GNUC_CONST;
 GdkAtom gdk_atom_intern (const gchar *atom_name,
 			 gboolean     only_if_exists);
 GdkAtom gdk_atom_intern_static_string (const gchar *atom_name);

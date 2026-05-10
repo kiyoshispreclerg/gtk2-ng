@@ -77,6 +77,8 @@ typedef struct _GdkSpan	              GdkSpan;
  */
 typedef guint32			    GdkWChar;
 
+#define GDK_TYPE_ATOM (gdk_atom_get_type ())
+
 typedef struct _GdkAtom            *GdkAtom;
 
 #define GDK_ATOM_TO_POINTER(atom) (atom)

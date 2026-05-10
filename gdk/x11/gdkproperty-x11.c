@@ -393,6 +393,31 @@ intern_atom (const gchar *atom_name,
   return result;
 }
 
+static gpointer
+gdk_atom_copy (gpointer atom)
+{
+  return atom;
+}
+
+static void
+gdk_atom_free (gpointer atom)
+{
+  /* GdkAtom values are interned and must not be freed. */
+}
+
+GType
+gdk_atom_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (our_type == 0)
+    our_type = g_boxed_type_register_static (g_intern_static_string ("GdkAtom"),
+                                             (GBoxedCopyFunc) gdk_atom_copy,
+                                             (GBoxedFreeFunc) gdk_atom_free);
+
+  return our_type;
+}
+
 GdkAtom
 gdk_atom_intern (const gchar *atom_name,
 		 gboolean     only_if_exists)
