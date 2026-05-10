@@ -1199,7 +1199,7 @@ rgbconvert (GdkImage    *image,
  * converts the resulting image to a #GdkPixbuf, so the
  * documentation for gdk_drawable_get_image() may also be relevant.
  *
- * Return value: The same pixbuf as @dest if it was non-%NULL, or a newly-created
+ * Return value: (transfer full): The same pixbuf as @dest if it was non-%NULL, or a newly-created
  * pixbuf with a reference count of 1 if no destination pixbuf was specified, or %NULL on error
  **/
 GdkPixbuf *
@@ -1327,7 +1327,7 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
  * Same as gdk_pixbuf_get_from_drawable() but gets the pixbuf from
  * an image.
  *
- * Return value: @dest, newly-created pixbuf if @dest was %NULL, %NULL on error
+ * Return value: (transfer full): @dest, newly-created pixbuf if @dest was %NULL, %NULL on error
  **/
 GdkPixbuf*
 gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
