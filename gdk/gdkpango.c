@@ -589,7 +589,7 @@ on_renderer_display_closed (GdkDisplay       *display,
  * and gdk_pango_renderer_set_gc() to set the drawable and graphics context
  * to use for drawing.
  *
- * Return value: the default #PangoRenderer for @screen. The
+ * Return value: (transfer none): the default #PangoRenderer for @screen. The
  *  renderer is owned by GTK+ and will be kept around until the
  *  screen is closed.
  *
@@ -1336,7 +1336,7 @@ layout_iter_get_line_clip_region (PangoLayoutIter *iter,
  * the clip region.  The clip region is mainly useful for highlightling parts
  * of text, such as when text is selected.
  *
- * Return value: a clip region containing the given ranges
+ * Return value: (transfer full): a clip region containing the given ranges
  **/
 GdkRegion*
 gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line,
@@ -1380,7 +1380,7 @@ gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line,
  * the clip region.  The clip region is mainly useful for highlightling parts
  * of text, such as when text is selected.
  *
- * Return value: a clip region containing the given ranges
+ * Return value: (transfer full): a clip region containing the given ranges
  **/
 GdkRegion*
 gdk_pango_layout_get_clip_region (PangoLayout *layout,
@@ -1441,7 +1441,7 @@ gdk_pango_layout_get_clip_region (PangoLayout *layout,
  * is more convenient if you want to keep a context around and track
  * changes to the screen's font rendering settings.
  *
- * Return value: a new #PangoContext for the default display
+ * Return value: (transfer full): a new #PangoContext for the default display
  **/
 PangoContext *
 gdk_pango_context_get (void)
@@ -1467,7 +1467,7 @@ gdk_pango_context_get (void)
  * is more convenient if you want to keep a context around and track
  * changes to the screen's font rendering settings.
  *
- * Return value: a new #PangoContext for @screen
+ * Return value: (transfer full): a new #PangoContext for @screen
  *
  * Since: 2.2
  **/
