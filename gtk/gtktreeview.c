@@ -14038,7 +14038,7 @@ gtk_tree_view_set_search_column (GtkTreeView *tree_view,
  *
  * Returns the compare function currently in use.
  *
- * Return value: the currently used compare function for the search code.
+ * Return value: (type gpointer) (transfer none): the currently used compare function for the search code.
  */
 
 GtkTreeViewSearchEqualFunc
@@ -14205,7 +14205,7 @@ gtk_tree_view_set_search_position_func (GtkTreeView                   *tree_view
  *
  * Returns the positioning function currently in use.
  *
- * Return value: the currently used function for positioning the search dialog.
+ * Return value: (type gpointer) (transfer none): the currently used function for positioning the search dialog.
  *
  * Since: 2.10
  */
@@ -15100,7 +15100,7 @@ gtk_tree_view_is_rubber_banding_active (GtkTreeView *tree_view)
  *
  * Returns the current row separator function.
  *
- * Return value: the current row separator function.
+ * Return value: (type gpointer) (transfer none): the current row separator function.
  *
  * Since: 2.6
  **/

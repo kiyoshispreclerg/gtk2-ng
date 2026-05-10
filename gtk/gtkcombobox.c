@@ -6099,7 +6099,7 @@ gtk_combo_box_get_popup_accessible (GtkComboBox *combo_box)
  *
  * Returns the current row separator function.
  *
- * Return value: the current row separator function.
+ * Return value: (type gpointer) (transfer none): the current row separator function.
  *
  * Since: 2.6
  */

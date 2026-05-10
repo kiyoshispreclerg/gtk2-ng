@@ -2899,7 +2899,7 @@ gtk_color_selection_set_change_palette_hook (GtkColorSelectionChangePaletteFunc 
  * the new palette contents, and update the GtkSettings property
  * "gtk-color-palette" so all GtkColorSelection widgets will be modified.
  *
- * Return value: the previous change palette hook (that was replaced).
+ * Return value: (type gpointer) (transfer none): the previous change palette hook (that was replaced).
  *
  * Since: 2.2
  **/
