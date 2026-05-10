@@ -228,6 +228,11 @@ typedef enum {
   GTK_RC_TOKEN_LAST
 } GtkRcTokenType;
 
+/**
+ * gtk_rc_scanner_new:
+ *
+ * Returns: (type gpointer) (transfer full): a new #GScanner.
+ */
 GScanner* gtk_rc_scanner_new	(void);
 guint	  gtk_rc_parse_color	(GScanner	     *scanner,
 				 GdkColor	     *color);
