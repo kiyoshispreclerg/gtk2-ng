@@ -106,7 +106,7 @@ _gdk_screen_x11_init (GdkScreenX11 *screen)
  *
  * Gets the display to which the @screen belongs.
  *
- * Returns: the display to which @screen belongs
+ * Returns: (transfer none): the display to which @screen belongs
  *
  * Since: 2.2
  **/
