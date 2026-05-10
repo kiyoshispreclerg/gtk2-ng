@@ -1157,7 +1157,7 @@ gdk_input_add_full (gint	      source,
  * gdk_input_add:
  * @source: a file descriptor.
  * @condition: the condition.
- * @function: the callback function.
+ * @function: (scope forever): the callback function.
  * @data: callback data passed to @function.
  *
  * Establish a callback when a condition becomes true on
