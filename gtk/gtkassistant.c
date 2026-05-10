@@ -372,7 +372,7 @@ gtk_assistant_class_init (GtkAssistantClass *class)
 								   GTK_PARAM_READWRITE));
 
   /**
-   * GtkAssistant:header-image:
+   * GtkAssistant:sidebar-image:
    *
    * The image that is displayed next to the page.
    *
