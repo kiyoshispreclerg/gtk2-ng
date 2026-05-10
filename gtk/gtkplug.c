@@ -869,7 +869,6 @@ add_grabbed_key_always (gpointer key,
 
 /**
  * _gtk_plug_add_all_grabbed_keys:
- *
  * @plug: a #GtkPlug
  *
  * Calls _gtk_plug_windowing_add_grabbed_key() on all the grabbed keys
@@ -997,7 +996,6 @@ gtk_plug_check_resize (GtkContainer *container)
 
 /**
  * _gtk_plug_handle_modality_on:
- *
  * @plug: a #GtkPlug
  *
  * Called from the GtkPlug backend when the corresponding socket has
@@ -1019,7 +1017,6 @@ _gtk_plug_handle_modality_on (GtkPlug *plug)
 
 /**
  * _gtk_plug_handle_modality_off:
- *
  * @plug: a #GtkPlug
  *
  * Called from the GtkPlug backend when the corresponding socket has
@@ -1037,7 +1034,6 @@ _gtk_plug_handle_modality_off (GtkPlug *plug)
 
 /**
  * _gtk_plug_focus_first_last:
- *
  * @plug: a #GtkPlug
  * @direction: a direction
  *
