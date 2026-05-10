@@ -249,6 +249,17 @@ gdk_pixmap_new (GdkDrawable *drawable,
   return _gdk_pixmap_new (source_drawable, width, height, depth);
 }
 
+/**
+ * gdk_bitmap_create_from_data:
+ * @drawable: a #GdkDrawable, used to determine default values for the new bitmap
+ * @data: a pointer to the data
+ * @width: width of the new bitmap in pixels
+ * @height: height of the new bitmap in pixels
+ *
+ * Creates a new bitmap from data in XBM format.
+ *
+ * Returns: (type GdkPixmap) (transfer full): the newly-created bitmap
+ */
 GdkPixmap *
 gdk_bitmap_create_from_data (GdkDrawable *drawable,
                              const gchar *data,
