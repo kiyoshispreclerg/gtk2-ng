@@ -748,7 +748,7 @@ gdk_x11_image_destroy (GdkImage *image)
  *
  * Returns the display of a #GdkImage.
  *
- * Return value: an Xlib <type>Display*</type>.
+ * Returns: (type gpointer) (transfer none): an Xlib <type>Display*</type>.
  **/
 Display *
 gdk_x11_image_get_xdisplay (GdkImage *image)
@@ -768,7 +768,7 @@ gdk_x11_image_get_xdisplay (GdkImage *image)
  *
  * Returns the X image belonging to a #GdkImage.
  *
- * Return value: an <type>XImage*</type>.
+ * Returns: (type gpointer) (transfer none): an Xlib <type>XImage*</type>.
  **/
 XImage *
 gdk_x11_image_get_ximage (GdkImage *image)

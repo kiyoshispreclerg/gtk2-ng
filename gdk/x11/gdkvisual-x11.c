@@ -647,7 +647,7 @@ gdk_visual_equal (Visual *a,
  *
  * Returns the X visual belonging to a #GdkVisual.
  *
- * Return value: an Xlib <type>Visual*</type>.
+ * Returns: (type gpointer) (transfer none): an Xlib <type>Visual*</type>.
  **/
 Visual *
 gdk_x11_visual_get_xvisual (GdkVisual *visual)

@@ -744,7 +744,7 @@ gdk_x11_get_default_root_xwindow (void)
  *
  * Gets the default GTK+ display.
  *
- * Return value: the Xlib <type>Display*</type> for the display
+ * Returns: (type gpointer) (transfer none): the default Xlib <type>Display*</type>.
  * specified in the <option>--display</option> command line option
  * or the <envar>DISPLAY</envar> environment variable.
  **/
