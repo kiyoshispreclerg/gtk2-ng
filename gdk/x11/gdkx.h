@@ -222,6 +222,14 @@ gpointer             gdk_x11_font_get_xfont    (GdkFont *font);
 
 #ifndef GDK_DISABLE_DEPRECATED
 
+/**
+ * gdk_x11_font_get_xdisplay:
+ * @font: a #GdkFont
+ *
+ * Returns the display of a #GdkFont.
+ *
+ * Returns: (type gpointer) (transfer none): an Xlib <type>Display*</type>.
+ */
 Display *            gdk_x11_font_get_xdisplay (GdkFont *font);
 const char *         gdk_x11_font_get_name     (GdkFont *font);
 
