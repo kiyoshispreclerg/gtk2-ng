@@ -746,7 +746,7 @@ get_text_renderer (GdkScreen *screen)
 
 /**
  * gtk_text_layout_draw:
- * @layout: a #GtkTextLayout
+ * @layout: (type gpointer): a #GtkTextLayout
  * @widget: widget to grab some style information from
  * @drawable: drawable to render to
  * @cursor_gc: graphics context to use for the cursor
