@@ -40,7 +40,7 @@
  *
  * Deprecated function; use g_object_ref() instead.
  *
- * Return value: the image
+ * Return value: (transfer full): the image
  *
  * Deprecated: 2.0: Use g_object_ref() instead.
  **/
@@ -81,7 +81,7 @@ gdk_image_unref (GdkImage *image)
  * most cases gdk_pixbuf_get_from_drawable() is the most convenient
  * choice.
  *
- * Return value: a new #GdkImage or %NULL
+ * Return value: (transfer full): a new #GdkImage or %NULL
  **/
 GdkImage*
 gdk_image_get (GdkWindow *drawable,
@@ -138,7 +138,7 @@ gdk_image_set_colormap (GdkImage       *image,
  * a colormap, or if a colormap was set explicitely with
  * gdk_image_set_colormap().
  *
- * Return value: colormap for the image
+ * Return value: (transfer none): colormap for the image
  *
  * Deprecated: 2.22: #GdkImage should not be used anymore.
  **/
@@ -176,7 +176,7 @@ gdk_image_get_image_type (GdkImage *image)
  *
  * Determines the visual that was used to create the image.
  *
- * Return value: a #GdkVisual
+ * Return value: (transfer none): a #GdkVisual
  *
  * Since: 2.22
  *
