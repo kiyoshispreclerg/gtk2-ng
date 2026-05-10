@@ -71,6 +71,16 @@ gboolean   gdk_selection_owner_set (GdkWindow	 *owner,
 				    GdkAtom	  selection,
 				    guint32	  time_,
 				    gboolean      send_event);
+/**
+ * gdk_selection_owner_get:
+ * @selection: an atom identifying a selection.
+ *
+ * Determines the owner of the given selection.
+ *
+ * Returns: (transfer none): if there is a selection owner for this window,
+ *     and it is a window known to the current process, the #GdkWindow that
+ *     owns the selection, otherwise %NULL.
+ */
 GdkWindow* gdk_selection_owner_get (GdkAtom	  selection);
 #endif/* GDK_MULTIHEAD_SAFE */
 
