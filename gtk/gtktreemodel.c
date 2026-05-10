@@ -975,7 +975,7 @@ gtk_tree_model_get_n_columns (GtkTreeModel *tree_model)
  *
  * Returns the type of the column.
  *
- * Return value: (transfer none): The type of the column.
+ * Return value: The type of the column.
  **/
 GType
 gtk_tree_model_get_column_type (GtkTreeModel *tree_model,
