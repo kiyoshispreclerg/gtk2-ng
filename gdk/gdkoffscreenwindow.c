@@ -856,7 +856,7 @@ _gdk_offscreen_window_get_real_drawable (GdkOffscreenWindow *offscreen)
  * If you need to keep this around over window resizes, you need to
  * add a reference to it.
  *
- * Returns: The offscreen pixmap, or %NULL if not offscreen
+ * Returns: (transfer none): The offscreen pixmap, or %NULL if not offscreen
  *
  * Since: 2.18
  */
@@ -1205,7 +1205,7 @@ gdk_offscreen_window_set_embedder (GdkWindow     *window,
  *
  * Gets the window that @window is embedded in.
  *
- * Returns: the embedding #GdkWindow, or %NULL if @window is not an
+ * Returns: (transfer none): the embedding #GdkWindow, or %NULL if @window is not an
  *     embedded offscreen window
  *
  * Since: 2.18
