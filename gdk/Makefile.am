@@ -249,7 +249,7 @@ x11_introspection_files = 		\
         x11/gdkx.h
 
 GdkX11-2.0.gir: $(gdktargetlib) Gdk-2.0.gir Makefile
-GdkX11_2_0_gir_SCANNERFLAGS = --identifier-prefix=Gdk --include-uninstalled=Gdk-2.0.gir
+GdkX11_2_0_gir_SCANNERFLAGS = --identifier-prefix=Gdk --symbol-prefix=gdk --symbol-prefix=gdkx --include-uninstalled=Gdk-2.0.gir
 GdkX11_2_0_gir_INCLUDES = Gio-2.0 GdkPixbuf-2.0 Pango-1.0 xlib-2.0
 
 GdkX11_2_0_gir_LIBS = $(gdktargetlib)

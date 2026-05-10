@@ -578,7 +578,7 @@ gdk_x11_screen_lookup_visual (GdkScreen *screen,
  *
  * Returns a #GdkVisual corresponding to a X visual.
  *
- * Return value: the #GdkVisual.
+ * Returns: (transfer none): the #GdkVisual.
  *
  * Deprecated:2.24: Use gdk_x11_screen_lookup_visual() instead
  */
