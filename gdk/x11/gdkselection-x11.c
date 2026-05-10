@@ -195,7 +195,7 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
  * process if a foreign window was previously created for that
  * window, but a new foreign window will never be created by this call.
  *
- * Returns: if there is a selection owner for this window, and it is a
+ * Returns: (transfer none): if there is a selection owner for this window, and it is a
  *    window known to the current process, the #GdkWindow that owns the
  *    selection, otherwise %NULL.
  *
