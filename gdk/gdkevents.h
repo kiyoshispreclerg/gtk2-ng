@@ -553,6 +553,15 @@ void	  gdk_set_show_events		(gboolean	 show_events);
 gboolean  gdk_get_show_events		(void);
 
 #ifndef GDK_MULTIHEAD_SAFE
+/**
+ * gdk_add_client_message_filter:
+ * @message_type: the type of ClientMessage events to receive.
+ * @func: (scope forever): the function to call to process the event.
+ * @data: user data to pass to @func.
+ *
+ * Adds a filter to the default display to be called when X ClientMessage
+ * events are received. See gdk_display_add_client_message_filter().
+ */
 void gdk_add_client_message_filter (GdkAtom       message_type,
 				    GdkFilterFunc func,
 				    gpointer      data);

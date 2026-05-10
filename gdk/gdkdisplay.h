@@ -166,6 +166,15 @@ GdkEvent* gdk_display_peek_event (GdkDisplay     *display);
 void      gdk_display_put_event  (GdkDisplay     *display,
 				  const GdkEvent *event);
 
+/**
+ * gdk_display_add_client_message_filter:
+ * @display: a #GdkDisplay for which this message filter applies.
+ * @message_type: the type of ClientMessage events to receive.
+ * @func: (scope forever): the function to call to process the event.
+ * @data: user data to pass to @func.
+ *
+ * Adds a filter to be called when X ClientMessage events are received.
+ */
 void gdk_display_add_client_message_filter (GdkDisplay   *display,
 					    GdkAtom       message_type,
 					    GdkFilterFunc func,
