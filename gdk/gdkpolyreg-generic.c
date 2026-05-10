@@ -457,7 +457,7 @@ PtsToRegion (int         numFullPtBlocks,
  * Creates a new #GdkRegion using the polygon defined by a
  * number of points.
  *
- * Returns: a new #GdkRegion based on the given polygon
+ * Returns: (transfer full): a new #GdkRegion based on the given polygon
  *
  * Deprecated: 2.22: There is no replacement. For working with paths, please
  *             use Cairo.
