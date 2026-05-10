@@ -34,7 +34,7 @@
  * The #GtkToolShell interface allows container widgets to provide additional
  * information when embedding #GtkToolItem widgets.
  *
- * @See_also: #GtkToolbar, #GtkToolItem
+ * See also: #GtkToolbar, #GtkToolItem
  */
 
 /**
