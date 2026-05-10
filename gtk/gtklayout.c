@@ -663,6 +663,7 @@ gtk_layout_class_init (GtkLayoutClass *class)
 
   /**
    * GtkLayout::set-scroll-adjustments
+   * @layout: the object which received the signal
    * @horizontal: the horizontal #GtkAdjustment
    * @vertical: the vertical #GtkAdjustment
    *

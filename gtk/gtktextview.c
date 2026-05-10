@@ -968,6 +968,7 @@ gtk_text_view_class_init (GtkTextViewClass *klass)
 
   /**
    * GtkTextView::set-scroll-adjustments
+   * @text_view: the object which received the signal
    * @horizontal: the horizontal #GtkAdjustment
    * @vertical: the vertical #GtkAdjustment
    *

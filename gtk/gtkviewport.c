@@ -146,6 +146,7 @@ gtk_viewport_class_init (GtkViewportClass *class)
 
   /**
    * GtkViewport::set-scroll-adjustments
+   * @viewport: the object which received the signal
    * @horizontal: the horizontal #GtkAdjustment
    * @vertical: the vertical #GtkAdjustment
    *

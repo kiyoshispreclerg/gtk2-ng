@@ -876,6 +876,7 @@ gtk_tree_view_class_init (GtkTreeViewClass *class)
   /* Signals */
   /**
    * GtkTreeView::set-scroll-adjustments
+   * @tree_view: the object which received the signal
    * @horizontal: the horizontal #GtkAdjustment
    * @vertical: the vertical #GtkAdjustment
    *

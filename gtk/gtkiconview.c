@@ -814,6 +814,7 @@ gtk_icon_view_class_init (GtkIconViewClass *klass)
   /* Signals */
   /**
    * GtkIconView::set-scroll-adjustments
+   * @icon_view: the object which received the signal
    * @horizontal: the horizontal #GtkAdjustment
    * @vertical: the vertical #GtkAdjustment
    *
