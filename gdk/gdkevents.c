@@ -168,7 +168,7 @@ _gdk_event_queue_insert_after (GdkDisplay *display,
 }
 
 /**
- * _gdk_event_queue_insert_after:
+ * _gdk_event_queue_insert_before:
  * @display: a #GdkDisplay
  * @sibling: Append after this event.
  * @event: Event to append.
