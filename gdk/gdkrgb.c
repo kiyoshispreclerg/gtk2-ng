@@ -3588,6 +3588,34 @@ gdk_rgb_cmap_get_info (GdkRgbCmap *cmap,
 }
 
 GdkRgbCmap *
+gdk_rgb_cmap_copy (const GdkRgbCmap *cmap)
+{
+  GdkRgbCmap *copy;
+
+  g_return_val_if_fail (cmap != NULL, NULL);
+
+  copy = g_new (GdkRgbCmap, 1);
+  copy->n_colors = cmap->n_colors;
+  memcpy (copy->colors, cmap->colors, sizeof (copy->colors));
+  copy->info_list = NULL;
+
+  return copy;
+}
+
+GType
+gdk_rgb_cmap_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (our_type == 0)
+    our_type = g_boxed_type_register_static (g_intern_static_string ("GdkRgbCmap"),
+                                             (GBoxedCopyFunc) gdk_rgb_cmap_copy,
+                                             (GBoxedFreeFunc) gdk_rgb_cmap_free);
+
+  return our_type;
+}
+
+GdkRgbCmap *
 gdk_rgb_cmap_new (guint32 *colors, gint n_colors)
 {
   GdkRgbCmap *cmap;

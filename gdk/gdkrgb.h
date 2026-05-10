@@ -35,6 +35,8 @@
 
 G_BEGIN_DECLS
 
+#define GDK_TYPE_RGB_CMAP (gdk_rgb_cmap_get_type ())
+
 typedef struct _GdkRgbCmap GdkRgbCmap;
 
 typedef enum
@@ -125,6 +127,8 @@ void        gdk_draw_indexed_image          (GdkDrawable  *drawable,
 					     const guchar *buf,
 					     gint          rowstride,
 					     GdkRgbCmap   *cmap);
+GType       gdk_rgb_cmap_get_type           (void) G_GNUC_CONST;
+GdkRgbCmap *gdk_rgb_cmap_copy               (const GdkRgbCmap *cmap);
 GdkRgbCmap *gdk_rgb_cmap_new                (guint32      *colors,
 					     gint          n_colors);
 void        gdk_rgb_cmap_free               (GdkRgbCmap   *cmap);

@@ -1086,6 +1086,8 @@ gdk_region_polygon
 #if IN_HEADER(__GDK_RGB_H__)
 #if IN_FILE(__GDK_RGB_C__)
 gdk_rgb_cmap_free
+gdk_rgb_cmap_copy
+gdk_rgb_cmap_get_type G_GNUC_CONST
 gdk_rgb_cmap_new
 gdk_rgb_colormap_ditherable
 gdk_rgb_ditherable
