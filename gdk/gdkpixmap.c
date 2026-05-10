@@ -264,6 +264,23 @@ gdk_bitmap_create_from_data (GdkDrawable *drawable,
   return _gdk_bitmap_create_from_data (source_drawable, data, width, height);
 }
 
+/**
+ * gdk_pixmap_create_from_data:
+ * @drawable: a #GdkDrawable, used to determine default values
+ *     for the new pixmap.
+ * @data: a string containing the bitmap data.
+ * @width: width of the pixmap in pixels.
+ * @height: height of the pixmap in pixels.
+ * @depth: depth of the pixmap.
+ * @fg: the foreground color.
+ * @bg: the background color.
+ *
+ * Creates a new pixmap from data in XBM format.
+ *
+ * Returns: (transfer full): a new #GdkPixmap.
+ *
+ * Deprecated: 2.22: Use a #GdkPixbuf instead.
+ */
 GdkPixmap*
 gdk_pixmap_create_from_data (GdkDrawable    *drawable,
                              const gchar    *data,
@@ -728,11 +745,11 @@ gdk_pixmap_colormap_create_from_xpm (GdkDrawable    *drawable,
  * @drawable: a #GdkDrawable, used to determine default values
  *     for the new pixmap.
  * @mask: (out) a pointer to a place to store a bitmap representing
- * the transparency mask of the XPM file. Can be %NULL,
- * in which case transparency will be ignored.
+ *     the transparency mask of the XPM file. Can be %NULL,
+ *     in which case transparency will be ignored.
  * @transparent_color: the color to be used for the pixels
- * that are transparent in the input file. Can be %NULL,
- * in which case a default color will be used.
+ *     that are transparent in the input file. Can be %NULL,
+ *     in which case a default color will be used.
  * @filename: the filename of a file containing XPM data.
  *
  * Create a pixmap from a XPM file.
