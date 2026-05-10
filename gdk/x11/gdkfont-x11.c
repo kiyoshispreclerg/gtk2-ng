@@ -794,7 +794,7 @@ gdk_text_extents_wc (GdkFont        *font,
  *
  * Returns the display of a #GdkFont.
  *
- * Return value:  an Xlib <type>Display*</type>.
+ * Returns: (type gpointer) (transfer none): an Xlib <type>Display*</type>.
  **/
 Display *
 gdk_x11_font_get_xdisplay (GdkFont *font)
