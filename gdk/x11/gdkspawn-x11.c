@@ -59,7 +59,7 @@ set_environment (gpointer user_data)
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before exec()
+ * @child_setup: (scope call): function to run in the child just before exec()
  * @user_data: user data for @child_setup
  * @child_pid: return location for child process ID, or %NULL
  * @error: return location for error
@@ -115,7 +115,7 @@ gdk_spawn_on_screen (GdkScreen             *screen,
  * @argv: child's argument vector
  * @envp: child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before exec()
+ * @child_setup: (scope call): function to run in the child just before exec()
  * @user_data: user data for @child_setup
  * @child_pid: return location for child process ID, or %NULL
  * @standard_input: return location for file descriptor to write to
