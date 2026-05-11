@@ -78,7 +78,7 @@ sudo apt install \
   libfontconfig1-dev libfreetype-dev libharfbuzz-dev libfribidi-dev libpng-dev \
   libx11-dev libxext-dev libxrender-dev libxrandr-dev libxcursor-dev \
   libxinerama-dev libxi-dev libxfixes-dev libxcomposite-dev libxdamage-dev \
-  libcups2-dev
+  libcups2-dev gettext autopoint
 ```
 
 ## Dependencies (Arch/Artix/Manjaro)
