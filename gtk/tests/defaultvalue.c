@@ -129,6 +129,16 @@ test_type (gconstpointer data)
 	  (strcmp (pspec->name, "default-display") == 0))
 	continue;
 
+      /* A bare g_object_new(GDK_TYPE_PIXBUF, NULL) may create fallback
+       * dummy storage. Its rowstride is derived from the resulting
+       * storage layout and does not have to match the ParamSpec default.
+       */
+      if (g_type_is_a (type, GDK_TYPE_PIXBUF) &&
+          (strcmp (pspec->name, "rowstride") == 0 ||
+           strcmp (pspec->name, "pixels") == 0 ||
+           strcmp (pspec->name, "pixel-bytes") == 0))
+        continue;
+
       if (g_type_is_a (type, GDK_TYPE_PANGO_RENDERER) &&
 	  (strcmp (pspec->name, "screen") == 0))
 	continue;
