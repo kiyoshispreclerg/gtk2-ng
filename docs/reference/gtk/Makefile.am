@@ -386,3 +386,9 @@ dist-hook-local: $(BUILT_EXTRA_DIST)
 	  cp $$d/$$f $(distdir) || exit 1; done
 
 -include $(top_srcdir)/git.mk
+
+# This directory has no runtime tests.  Keep recursive `make test`
+# working when the top-level test target descends into the documentation
+# reference directories.
+test:
+

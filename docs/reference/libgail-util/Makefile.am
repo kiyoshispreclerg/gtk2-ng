@@ -34,3 +34,9 @@ HTML_IMAGES =
 include $(top_srcdir)/gtk-doc.make
 
 -include $(top_srcdir)/git.mk
+
+# This directory has no runtime tests.  Keep recursive `make test`
+# working when the top-level test target descends into the documentation
+# reference directories.
+test:
+
