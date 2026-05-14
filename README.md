@@ -6,6 +6,12 @@ This fork focuses on modern compatibility while preserving stability, performanc
 
 Backed by the **devuanusers.com** community.
 
+## Recent Development News
+
+- Build scripts to automate local testing - https://git.devuan.org/greenjeans/gtk2-ng-test-scripts
+- Testing iso (Daedalus) - https://sourceforge.net/projects/vuu-do/files/Vuu-do-5.03/5.03-gtk2ng-testing/
+- Deb packages (Excalibur) - https://git.devuan.org/SteveM/DTK_debs
+
 ## Highlights
 
 - Conservative GTK+ 2.24 maintenance with ABI compatibility as a priority
