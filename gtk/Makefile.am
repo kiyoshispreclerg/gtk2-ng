@@ -1081,7 +1081,7 @@ Gtk_2_0_gir_CFLAGS = \
 		$(INCLUDES) \
 		-DGTK_DISABLE_DEPRECATED \
 		-DGTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
-Gtk_2_0_gir_LIBS = $(gtktargetlib)
+Gtk_2_0_gir_LIBS = $(gtktargetlib) $(top_builddir)/gdk/$(gdktargetlib)
 Gtk_2_0_gir_FILES = \
 	$(filter-out gtkprivate.h gtkpixdatautils.h gtktextlayout.h gtkmarshal.h, \
 	$(introspection_files))
