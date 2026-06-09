@@ -652,8 +652,8 @@ gtk-win32-$(GTK_VER)s.lib : $(gtk_OBJECTS)
 gtk-query-immodules-$(GTK_VER).exe : queryimmodules.obj
 	$(CC) $(CFLAGS) -Fe$@ queryimmodules.obj $(GTK_LIBS) $(GLIB_LIBS) $(PANGO_LIBS) $(LDFLAGS)
 
-gtk-update-icon-cache.exe : updateiconcache.obj
-	$(CC) $(CFLAGS) -Fe$@ updateiconcache.obj $(GDK_PIXBUF_LIBS) $(GLIB_LIBS) $(INTL_LIBS) $(PANGO_LIBS) $(LDFLAGS)
+gtk-update-icon-cache.exe : updateiconcache.obj gtkpixdatautils.obj
+	$(CC) $(CFLAGS) -Fe$@ updateiconcache.obj gtkpixdatautils.obj $(GDK_PIXBUF_LIBS) $(GLIB_LIBS) $(INTL_LIBS) $(PANGO_LIBS) $(LDFLAGS)
 
 gtk-x11-$(GTK_VER).dll : $(gtk_OBJECTS) gtk.def
 	$(CC) $(CFLAGS) -LD -Fm -Fegtk-x11-$(GTK_VER).dll $(gtk_OBJECTS) ../gdk/gdk-x11-$(GTK_VER).lib $(GDK_PIXBUF_LIBS) $(PANGO_LIBS) $(INTL_LIBS) $(GLIB_LIBS) gdi32.lib user32.lib advapi32.lib $(LDFLAGS) /def:gtk.def
