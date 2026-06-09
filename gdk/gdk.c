@@ -817,6 +817,31 @@ gdk_threads_add_timeout_seconds (guint       interval,
 }
 
 
+static gpointer
+gdk_atom_copy (gpointer atom)
+{
+  return atom;
+}
+
+static void
+gdk_atom_free (gpointer atom)
+{
+  /* GdkAtom values are interned and must not be freed. */
+}
+
+GType
+gdk_atom_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (our_type == 0)
+    our_type = g_boxed_type_register_static (g_intern_static_string ("GdkAtom"),
+                                             (GBoxedCopyFunc) gdk_atom_copy,
+                                             (GBoxedFreeFunc) gdk_atom_free);
+
+  return our_type;
+}
+
 const char *
 gdk_get_program_class (void)
 {
