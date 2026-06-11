@@ -1,3 +1,6 @@
+**Hacking gtk2-ng**
+
+Note:
 When this document was first created back in the day, "hacking" meant to 
 modify code to do new and interesting things, not quite the same as the 
 more sinister meaning it has taken on today. It is in the spirit of the 
