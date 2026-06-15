@@ -13,6 +13,7 @@ Backed by the **devuanusers.com** community.
 - Deb packages (Daedalus, Excalibur) - https://git.devuan.org/SteveM/DTK_debs
 - Win32 build scripts - https://git.devuan.org/lmemsm/bldgtk
 - Successfully built for EasyOS and KLV-Airedale - https://forum.puppylinux.com/viewtopic.php?p=171842#p171842
+- EasyOS 7.4 released featuring gtk2-ng - https://distrowatch.com/?newsid=12874
 
 ## Highlights
 
