@@ -14,6 +14,7 @@ Backed by the **devuanusers.com** community.
 - Win32 build scripts - https://git.devuan.org/lmemsm/bldgtk
 - Successfully built for EasyOS and KLV-Airedale - https://forum.puppylinux.com/viewtopic.php?p=171842#p171842
 - EasyOS 7.4 released featuring gtk2-ng - https://distrowatch.com/?newsid=12874
+- Available in the AUR for Archlinux - https://aur.archlinux.org/packages/gtk2-ng-git
 
 ## Highlights
 
