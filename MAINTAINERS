@@ -1,12 +1,13 @@
-Matthias Clasen
-E-mail: mclasen@redhat.com
-Userid: matthiasc
+Daemonratte - lead developer
+https://git.devuan.org/Daemonratte
 
-Tim Janik
-E-mail: timj@gtk.org
-Userid: timj
+greenjeans - collaborator
+https://git.devuan.org/greenjeans
 
-Note that a lot of people are contributing to GTK+, and some parts of it 
-are technically maintained by other people. The people listed above are
-meant as contacts for administrative questions such as cvs accounts. Other
-questions are best directed to the mailing list gtk-devel-list@gnome.org.
+Note that a LOT of people are contributing to gtk2-ng, and some parts of it 
+like the .deb packages are being maintained by other people. The people listed 
+above are meant as contacts for administrative questions. The best way to get
+involved is by registering an account at : https://git.devuan.org/ for any
+feature requests or issues. You can also register an account on the Devuan
+users forum : https://devuanusers.com/index.php and post or message/email
+any one of us.
