@@ -8,8 +8,6 @@
 # is permitted in any medium without royalty provided the copyright
 # notice and this notice are preserved.
 #
-# The canonical source for this file is https://github.com/behdad/git.mk.
-#
 # To use in your project, import this file in your git repo's toplevel,
 # then do "make -f git.mk".  This modifies all Makefile.am files in
 # your project to -include git.mk.  Remember to add that line to new
