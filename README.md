@@ -10,11 +10,12 @@ Backed by the **devuanusers.com** community.
 
 - Build scripts to automate local testing - https://git.devuan.org/greenjeans/gtk2-ng-test-scripts
 - Testing iso (Daedalus) - https://sourceforge.net/projects/vuu-do/files/Vuu-do-5.03/5.03-gtk2ng-testing/
-- Deb packages (Daedalus, Excalibur) - https://git.devuan.org/SteveM/DTK_debs
+- Deb packages (Daedalus, Excalibur) - https://git.devuan.org/SteveM/gtk2-ng_debs
 - Win32 build scripts - https://git.devuan.org/lmemsm/bldgtk
 - Successfully built for EasyOS and KLV-Airedale - https://forum.puppylinux.com/viewtopic.php?p=171842#p171842
 - EasyOS 7.4 released featuring gtk2-ng - https://distrowatch.com/?newsid=12874
 - Available in the AUR for Archlinux - https://aur.archlinux.org/packages/gtk2-ng-git
+- The Lateral Tech Foundation formed - https://lateraltechfoundation.com/
 
 ## Highlights
 
