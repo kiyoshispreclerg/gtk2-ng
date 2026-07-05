@@ -34,7 +34,7 @@ Backed by the **devuanusers.com** community and **The Lateral Tech Foundation**.
 - Preserved GTK2 theming, theme engines, input modules and print backends
 - Preserved legacy configuration and module lookup behaviour
 - Continued focus on performance, low overhead and responsiveness
-- Community-driven maintenance backed by devuanusers.com
+- Community-driven maintenance backed by devuanusers.com and lateraltechfoundation.com
 
 ## Roadmap
 
