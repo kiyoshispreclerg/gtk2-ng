@@ -4,7 +4,7 @@
 
 This fork focuses on modern compatibility while preserving stability, performance, ABI compatibility, and original behavior as much as possible. X11-first, no forced Wayland migration.
 
-Backed by the **devuanusers.com** community.
+Backed by the **devuanusers.com** community and **The Lateral Tech Foundation**.
 
 ## Recent Development News
 
