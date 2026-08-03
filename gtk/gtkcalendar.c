@@ -710,7 +710,7 @@ gtk_calendar_init (GtkCalendar *calendar)
     for (i=0; i<7; i++)
       {
 #ifndef G_OS_WIN32
-        tmp_dt = g_date_time_new_utc (2001, 1, i + 1, 12, 0, 0.0);
+        tmp_dt = g_date_time_new_utc (2001, 1, i + 7, 12, 0, 0.0);
         if (tmp_dt)
           {
             tmp_str = g_date_time_format (tmp_dt, "%a");
