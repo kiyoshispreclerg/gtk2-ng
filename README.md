@@ -141,7 +141,7 @@ https://devuanusers.com/thread-gtk2-revival-thread--80
 
 Test apps, report issues, submit patches!
 
-Or buy me a coffee!
+Or buy me a coffee ☕ \
 https://buymeacoffee.com/daemonratte
 
 ## License
