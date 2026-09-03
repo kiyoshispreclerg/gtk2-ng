@@ -141,5 +141,8 @@ https://devuanusers.com/thread-gtk2-revival-thread--80
 
 Test apps, report issues, submit patches!
 
+Or buy me a coffee!
+https://buymeacoffee.com/daemonratte
+
 ## License
 LGPL v2.1 or later (same as original GTK+)
