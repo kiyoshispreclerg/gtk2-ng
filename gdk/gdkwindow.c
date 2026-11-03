@@ -286,6 +286,12 @@ _gdk_window_get_density (GdkWindow *window)
   return density ? density->scale : 1;
 }
 
+static gboolean
+is_integral (gdouble value)
+{
+  return fabs (value - floor (value + 0.5)) < 1e-6;
+}
+
 typedef struct {
   GdkRegion *dest_region; /* The destination region */
   int dx, dy; /* The amount that the source was moved to reach dest_region */
@@ -2919,6 +2925,8 @@ gdk_window_begin_implicit_paint (GdkWindow *window, GdkRectangle *rect)
 {
   GdkWindowObject *private = (GdkWindowObject *)window;
   GdkWindowPaint *paint;
+  GdkRectangle r;
+  gint i;
 
   g_assert (gdk_window_has_impl (private));
 
@@ -2945,16 +2953,33 @@ gdk_window_begin_implicit_paint (GdkWindow *window, GdkRectangle *rect)
 
   paint = g_new (GdkWindowPaint, 1);
   paint->region = gdk_region_new (); /* Empty */
-  paint->x_offset = rect->x;
-  paint->y_offset = rect->y;
   paint->uses_implicit = FALSE;
   paint->flushed = FALSE;
   paint->surface = NULL;
   paint->scale = _gdk_window_get_density (window);
+
+  /* At a fractional density, a paint starting at, say, y = 13 would start
+   * at 19.5 dense pixels for 3/2: copied into the dense pixmap it would
+   * land half a pixel off and resampled. Start it a little earlier, on a
+   * whole dense pixel. */
+  r = *rect;
+  for (i = 0; i < 16 && !is_integral (r.x * paint->scale); i++)
+    {
+      r.x--;
+      r.width++;
+    }
+  for (i = 0; i < 16 && !is_integral (r.y * paint->scale); i++)
+    {
+      r.y--;
+      r.height++;
+    }
+
+  paint->x_offset = r.x;
+  paint->y_offset = r.y;
   paint->pixmap =
     gdk_pixmap_new (window,
-		    MAX ((gint) ceil (rect->width * paint->scale), 1),
-		    MAX ((gint) ceil (rect->height * paint->scale), 1), -1);
+		    MAX ((gint) ceil (r.width * paint->scale), 1),
+		    MAX ((gint) ceil (r.height * paint->scale), 1), -1);
 
   private->implicit_paint = paint;
 
