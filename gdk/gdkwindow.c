@@ -3016,7 +3016,12 @@ gdk_window_density_push (GdkWindowObject *private,
   cairo_scale (cr, 1 / s, 1 / s);
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface (cr, src, 0, 0);
-  cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_GOOD);
+  /* the compositor shows the dense pixmap meanwhile, not this copy;
+   * pixman's GOOD filter gets expensive past 1/2 (a full redraw at 3×
+   * took 4× longer with it), while bilinear is already a 2×2 average at
+   * exactly 1/2 */
+  cairo_pattern_set_filter (cairo_get_source (cr),
+                            s <= 2 ? CAIRO_FILTER_GOOD : CAIRO_FILTER_BILINEAR);
   cairo_paint (cr);
   cairo_destroy (cr);
   cairo_surface_destroy (dst);
