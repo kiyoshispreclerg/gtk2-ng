@@ -164,6 +164,8 @@ typedef struct
   gdouble scale;
   GdkPixmap *pixmap;    /* window size × scale */
   GdkRegion *pending;   /* window area not drawn into pixmap since it was allocated */
+  GdkRegion *edges;     /* scroll edges to draw again once scrolling stops */
+  guint edges_source;
   GdkWindowDensityFunc pushed;
   gpointer data;
 } GdkWindowDensity;
@@ -187,6 +189,10 @@ gdk_window_density_free (gpointer data)
     g_object_unref (density->pixmap);
   if (density->pending)
     gdk_region_destroy (density->pending);
+  if (density->edges)
+    gdk_region_destroy (density->edges);
+  if (density->edges_source)
+    g_source_remove (density->edges_source);
   g_free (density);
 }
 
@@ -286,10 +292,153 @@ _gdk_window_get_density (GdkWindow *window)
   return density ? density->scale : 1;
 }
 
+static GdkWindowObject *gdk_window_get_impl_window (GdkWindowObject *window);
+
 static gboolean
 is_integral (gdouble value)
 {
   return fabs (value - floor (value + 0.5)) < 1e-6;
+}
+
+/* A scroll by dx, dy can be done by moving the dense pixels too (instead
+ * of drawing all of it again) when it lands on whole dense pixels */
+static gboolean
+gdk_window_density_movable (gdouble scale,
+                            gint    dx,
+                            gint    dy)
+{
+  return is_integral (dx * scale) && is_integral (dy * scale);
+}
+
+/* Mirror on the dense pixmap a move of the real window's bits: @dest_region
+ * (impl window coords) gets what was at @dest_region - (@dx, @dy). At a
+ * fractional scale the edges of the region fall inside dense pixels that
+ * also hold what is around it: those move too, and the scroll invalidated
+ * a 1 px ring on both sides of the edges (gdk_window_density_scrolled) */
+static void
+gdk_window_density_move (GdkWindowObject *impl_window,
+                         GdkRegion       *dest_region,
+                         gint             dx,
+                         gint             dy)
+{
+  GdkWindowDensity *density = gdk_window_get_density_state ((GdkWindow *) impl_window);
+  GdkRegion *dense_region, *moved;
+  GdkRectangle *rects, box;
+  GdkGC *gc;
+  gdouble s;
+  gint i, n_rects;
+
+  if (!density || !gdk_window_density_movable (density->scale, dx, dy))
+    return;
+  s = density->scale;
+
+  dense_region = gdk_region_new ();
+  gdk_region_get_rectangles (dest_region, &rects, &n_rects);
+  for (i = 0; i < n_rects; i++)
+    {
+      /* rounded out, so rectangles sharing an edge leave no gap */
+      GdkRectangle r;
+      gint x1 = ceil ((rects[i].x + rects[i].width) * s - 1e-6);
+      gint y1 = ceil ((rects[i].y + rects[i].height) * s - 1e-6);
+
+      r.x = floor (rects[i].x * s + 1e-6);
+      r.y = floor (rects[i].y * s + 1e-6);
+      r.width = x1 - r.x;
+      r.height = y1 - r.y;
+      if (r.width > 0 && r.height > 0)
+        gdk_region_union_with_rect (dense_region, &r);
+    }
+  g_free (rects);
+
+  if (!gdk_region_empty (dense_region))
+    {
+      gdk_region_get_clipbox (dense_region, &box);
+      gc = gdk_gc_new (density->pixmap);
+      gdk_gc_set_clip_region (gc, dense_region);
+      /* XCopyArea handles the overlap */
+      gdk_draw_drawable (density->pixmap, gc, density->pixmap,
+                         box.x - dx * s, box.y - dy * s, box.x, box.y,
+                         box.width, box.height);
+      g_object_unref (gc);
+    }
+  gdk_region_destroy (dense_region);
+
+  /* what was still undrawn moves along */
+  moved = gdk_region_copy (density->pending);
+  gdk_region_offset (moved, dx, dy);
+  gdk_region_intersect (moved, dest_region);
+  gdk_region_subtract (density->pending, dest_region);
+  gdk_region_union (density->pending, moved);
+  gdk_region_destroy (moved);
+}
+
+static gboolean
+gdk_window_density_redraw_edges (gpointer data)
+{
+  GdkWindow *window = data;
+  GdkWindowDensity *density = gdk_window_get_density_state (window);
+
+  if (density)
+    {
+      density->edges_source = 0;
+      gdk_window_invalidate_region (window, density->edges, TRUE);
+      gdk_region_destroy (density->edges);
+      density->edges = NULL;
+    }
+  return FALSE;
+}
+
+/* After @window scrolled @region (window coords) by dx, dy: what the
+ * dense pixmap cannot get from gdk_window_density_move has to be drawn
+ * again */
+static void
+gdk_window_density_scrolled (GdkWindowObject *private,
+                             const GdkRegion *region,
+                             gint             dx,
+                             gint             dy)
+{
+  GdkWindowObject *impl_window = gdk_window_get_impl_window (private);
+  gdouble s = _gdk_window_get_density ((GdkWindow *) impl_window);
+  GdkWindowDensity *density;
+  GdkRegion *ring, *inner;
+
+  if (s == 1)
+    return;
+
+  if (!gdk_window_density_movable (s, dx, dy))
+    {
+      gdk_window_invalidate_region ((GdkWindow *) private, region, TRUE);
+      return;
+    }
+  if (is_integral (s))
+    return;
+
+  /* in the native window, as the pixels just outside belong to whatever
+   * is around @window */
+  ring = gdk_region_copy (region);
+  gdk_region_offset (ring, private->abs_x, private->abs_y);
+  inner = gdk_region_copy (ring);
+  gdk_region_shrink (ring, -1, -1);
+  gdk_region_shrink (inner, 1, 1);
+  gdk_region_subtract (ring, inner);
+  gdk_region_destroy (inner);
+
+  /* Not right away: the ring's bounding box is all of the scrolled area,
+   * and widgets redraw their whole exposed box, so that would cost as much
+   * as not moving at all. Meanwhile the edges show at most a dense pixel
+   * of mixed-up colour. */
+  density = gdk_window_get_density_state ((GdkWindow *) impl_window);
+  if (density->edges)
+    {
+      gdk_region_union (density->edges, ring);
+      gdk_region_destroy (ring);
+    }
+  else
+    density->edges = ring;
+  if (density->edges_source)
+    g_source_remove (density->edges_source);
+  density->edges_source = gdk_threads_add_timeout (150, gdk_window_density_redraw_edges,
+                                                   impl_window);
 }
 
 typedef struct {
@@ -3526,6 +3675,8 @@ do_move_region_bits_on_impl (GdkWindowObject *impl_window,
   GdkRectangle copy_rect;
   GdkWindowObject *private;
   GdkWindowImplIface *impl_iface;
+
+  gdk_window_density_move (impl_window, dest_region, dx, dy);
 
   /* We need to get data from subwindows here, because we might have
    * shaped a native window over the moving region (with bg none,
@@ -8385,10 +8536,7 @@ gdk_window_scroll (GdkWindow *window,
 
   _gdk_synthesize_crossing_events_for_geometry_change (window);
 
-  /* the copy only moved the real window's pixels: the dense pixmap needs
-   * all of it drawn again */
-  if (_gdk_window_get_density ((GdkWindow *) gdk_window_get_impl_window (private)) != 1)
-    gdk_window_invalidate_rect (window, NULL, TRUE);
+  gdk_window_density_scrolled (private, private->clip_region, dx, dy);
 }
 
 /**
@@ -8450,10 +8598,7 @@ gdk_window_move_region (GdkWindow       *window,
   gdk_window_invalidate_region_full (window, nocopy_area, FALSE, CLEAR_BG_ALL);
   gdk_region_destroy (nocopy_area);
 
-  /* the copy only moved the real window's pixels: the dense pixmap needs
-   * all of it drawn again */
-  if (_gdk_window_get_density ((GdkWindow *) gdk_window_get_impl_window (private)) != 1)
-    gdk_window_invalidate_rect (window, NULL, TRUE);
+  gdk_window_density_scrolled (private, region, dx, dy);
 }
 
 /**
