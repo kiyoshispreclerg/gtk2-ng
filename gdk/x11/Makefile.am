@@ -23,6 +23,7 @@ libgdk_x11_la_SOURCES =    	\
 	gdkasync.h		\
 	gdkcolor-x11.c	   	\
 	gdkcursor-x11.c	   	\
+	gdkdensity-x11.c	\
 	gdkdisplay-x11.c	\
 	gdkdisplay-x11.h	\
 	gdkdnd-x11.c	   	\

@@ -370,6 +370,17 @@ void _gdk_gc_update_context (GdkGC          *gc,
 			     gboolean        gc_changed,
 			     GdkDrawable    *target_drawable);
 
+typedef void (*GdkWindowDensityFunc) (GdkWindow *window,
+				      GdkPixmap *pixmap,
+				      gboolean   complete,
+				      gpointer   data);
+
+void    _gdk_window_set_density (GdkWindow            *window,
+				 gdouble               scale,
+				 GdkWindowDensityFunc  pushed,
+				 gpointer              data);
+gdouble _gdk_window_get_density (GdkWindow            *window);
+
 /*************************************
  * Interfaces used by windowing code *
  *************************************/

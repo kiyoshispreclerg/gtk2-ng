@@ -44,6 +44,7 @@
 #endif
 
 #include "math.h"
+#include <pango/pangocairo.h>
 
 /* Historically a GdkWindow always matches a platform native window,
  * be it a toplevel window or a child window. In this setup the
@@ -150,7 +151,140 @@ struct _GdkWindowPaint
   guint uses_implicit : 1;
   guint flushed : 1;
   guint32 region_tag;
+  gdouble scale; /* pixmap is scale× the logical area (density, 1 normally) */
 };
+
+/* Transient per-window density (X-DENSITY): while a native window has a
+ * density != 1, its implicit paints are rendered at that scale through
+ * cairo's device scale, accumulated into a persistent dense pixmap the
+ * windowing backend hands to the compositor, and downscaled into the real
+ * window, whose geometry never changes. See _gdk_window_set_density(). */
+typedef struct
+{
+  gdouble scale;
+  GdkPixmap *pixmap;    /* window size × scale */
+  GdkRegion *pending;   /* window area not drawn into pixmap since it was allocated */
+  GdkWindowDensityFunc pushed;
+  gpointer data;
+} GdkWindowDensity;
+
+static GQuark quark_density;
+
+static GdkWindowDensity *
+gdk_window_get_density_state (GdkWindow *window)
+{
+  if (!quark_density)
+    return NULL;
+  return g_object_get_qdata (G_OBJECT (window), quark_density);
+}
+
+static void
+gdk_window_density_free (gpointer data)
+{
+  GdkWindowDensity *density = data;
+
+  if (density->pixmap)
+    g_object_unref (density->pixmap);
+  if (density->pending)
+    gdk_region_destroy (density->pending);
+  g_free (density);
+}
+
+/* (Re)allocate the dense pixmap for the window's current size, cleared,
+ * with all of the window pending and invalidated */
+static void
+gdk_window_density_alloc (GdkWindow        *window,
+                          GdkWindowDensity *density)
+{
+  GdkRectangle rect = { 0, 0, 0, 0 };
+  cairo_surface_t *surface;
+  cairo_t *cr;
+
+  if (density->pixmap)
+    g_object_unref (density->pixmap);
+  if (density->pending)
+    gdk_region_destroy (density->pending);
+
+  gdk_drawable_get_size (window, &rect.width, &rect.height);
+  density->pixmap = gdk_pixmap_new (window,
+                                    MAX ((gint) ceil (rect.width * density->scale), 1),
+                                    MAX ((gint) ceil (rect.height * density->scale), 1),
+                                    -1);
+  density->pending = gdk_region_rectangle (&rect);
+
+  /* new pixmap memory is not cleared, and the first paints may not cover
+   * all of it */
+  surface = _gdk_drawable_ref_cairo_surface (density->pixmap);
+  cr = cairo_create (surface);
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+
+  gdk_window_invalidate_rect (window, NULL, TRUE);
+}
+
+/**
+ * _gdk_window_set_density:
+ * @window: a native #GdkWindow
+ * @scale: the density to render at, 1 to go back to normal
+ * @pushed: called after new contents land in the dense pixmap
+ * @data: data for @pushed
+ *
+ * Makes @window render at @scale into an extra pixmap, without touching
+ * its geometry. @pushed gets that pixmap and whether all of the window has
+ * been drawn into it since it was (re)allocated; the pixmap changes when
+ * the window is resized.
+ */
+void
+_gdk_window_set_density (GdkWindow            *window,
+                         gdouble               scale,
+                         GdkWindowDensityFunc  pushed,
+                         gpointer              data)
+{
+  GdkWindowDensity *density;
+
+  g_return_if_fail (_gdk_window_has_impl (window));
+
+  if (!quark_density)
+    quark_density = g_quark_from_static_string ("gdk-window-density");
+
+  density = gdk_window_get_density_state (window);
+
+  if (scale <= 1)
+    {
+      if (density)
+        {
+          g_object_set_qdata (G_OBJECT (window), quark_density, NULL);
+          /* the real window only had a downscaled copy */
+          gdk_window_invalidate_rect (window, NULL, TRUE);
+        }
+      return;
+    }
+
+  if (!density)
+    {
+      density = g_new0 (GdkWindowDensity, 1);
+      g_object_set_qdata_full (G_OBJECT (window), quark_density,
+                               density, gdk_window_density_free);
+    }
+
+  density->pushed = pushed;
+  density->data = data;
+  if (density->scale != scale)
+    {
+      density->scale = scale;
+      gdk_window_density_alloc (window, density);
+    }
+}
+
+gdouble
+_gdk_window_get_density (GdkWindow *window)
+{
+  GdkWindowDensity *density = gdk_window_get_density_state (window);
+
+  return density ? density->scale : 1;
+}
 
 typedef struct {
   GdkRegion *dest_region; /* The destination region */
@@ -2816,13 +2950,83 @@ gdk_window_begin_implicit_paint (GdkWindow *window, GdkRectangle *rect)
   paint->uses_implicit = FALSE;
   paint->flushed = FALSE;
   paint->surface = NULL;
+  paint->scale = _gdk_window_get_density (window);
   paint->pixmap =
     gdk_pixmap_new (window,
-		    MAX (rect->width, 1), MAX (rect->height, 1), -1);
+		    MAX ((gint) ceil (rect->width * paint->scale), 1),
+		    MAX ((gint) ceil (rect->height * paint->scale), 1), -1);
 
   private->implicit_paint = paint;
 
   return TRUE;
+}
+
+/* Push @region (impl window coords) of a scaled implicit paint: copy it
+ * 1:1 into the window's dense pixmap, and downscale it into the real
+ * window, which keeps working as a normal window meanwhile. */
+static void
+gdk_window_density_push (GdkWindowObject *private,
+                         GdkWindowPaint  *paint,
+                         GdkRegion       *region)
+{
+  GdkWindow *window = (GdkWindow *) private;
+  GdkWindowDensity *density = gdk_window_get_density_state (window);
+  cairo_surface_t *src, *dst;
+  cairo_t *cr;
+  gdouble s = paint->scale;
+
+  src = _gdk_drawable_ref_cairo_surface (paint->pixmap);
+  /* begin_paint_region left a subwindow's offset and scale on this surface */
+  cairo_surface_set_device_offset (src, 0, 0);
+  cairo_surface_set_device_scale (src, 1, 1);
+
+  /* density can change or go away in the middle of a paint: then this
+   * paint only matters for the real window */
+  if (density && density->scale == s)
+    {
+      gint width, height, dw, dh;
+
+      /* the window was resized (X-DENSITY.md 8.5): the next paint covers
+       * all of it at the new size */
+      gdk_drawable_get_size (window, &width, &height);
+      gdk_drawable_get_size (density->pixmap, &dw, &dh);
+      if (dw != MAX ((gint) ceil (width * s), 1) || dh != MAX ((gint) ceil (height * s), 1))
+        gdk_window_density_alloc (window, density);
+
+      dst = _gdk_drawable_ref_cairo_surface (density->pixmap);
+      cr = cairo_create (dst);
+      cairo_scale (cr, s, s);
+      gdk_cairo_region (cr, region);
+      cairo_clip (cr);
+      cairo_identity_matrix (cr);
+      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+      cairo_set_source_surface (cr, src, paint->x_offset * s, paint->y_offset * s);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+      cairo_surface_destroy (dst);
+
+      gdk_region_subtract (density->pending, region);
+    }
+
+  dst = _gdk_drawable_ref_cairo_surface (private->impl);
+  cr = cairo_create (dst);
+  gdk_cairo_region (cr, region);
+  cairo_clip (cr);
+  cairo_translate (cr, paint->x_offset, paint->y_offset);
+  cairo_scale (cr, 1 / s, 1 / s);
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface (cr, src, 0, 0);
+  cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_GOOD);
+  cairo_paint (cr);
+  cairo_destroy (cr);
+  cairo_surface_destroy (dst);
+
+  cairo_surface_destroy (src);
+
+  /* contents first, announcement after (X-DENSITY.md 4) */
+  if (density && density->scale == s && density->pushed)
+    density->pushed (window, density->pixmap,
+                     gdk_region_empty (density->pending), density->data);
 }
 
 /* Ensure that all content related to this (sub)window is pushed to the
@@ -2863,6 +3067,13 @@ gdk_window_flush_implicit_paint (GdkWindow *window)
       /* Remove flushed region from the implicit paint */
       gdk_region_subtract (paint->region, region);
 
+      if (paint->scale != 1)
+	{
+	  gdk_window_density_push (impl_window, paint, region);
+	  gdk_region_destroy (region);
+	  return;
+	}
+
       /* Some regions are valid, push these to window now */
       tmp_gc = _gdk_drawable_get_scratch_gc ((GdkDrawable *)window, FALSE);
       _gdk_gc_set_clip_region_internal (tmp_gc, region, TRUE);
@@ -2891,7 +3102,13 @@ gdk_window_end_implicit_paint (GdkWindow *window)
 
   private->implicit_paint = NULL;
 
-  if (!GDK_WINDOW_DESTROYED (window) && !gdk_region_empty (paint->region))
+  if (!GDK_WINDOW_DESTROYED (window) && !gdk_region_empty (paint->region) &&
+      paint->scale != 1)
+    {
+      gdk_window_density_push (private, paint, paint->region);
+      gdk_region_destroy (paint->region);
+    }
+  else if (!GDK_WINDOW_DESTROYED (window) && !gdk_region_empty (paint->region))
     {
       /* Some regions are valid, push these to window now */
       tmp_gc = _gdk_drawable_get_scratch_gc ((GdkDrawable *)window, FALSE);
@@ -3029,9 +3246,11 @@ gdk_window_begin_paint_region (GdkWindow       *window,
       paint->pixmap = g_object_ref (implicit_paint->pixmap);
       paint->x_offset = -private->abs_x + implicit_paint->x_offset;
       paint->y_offset = -private->abs_y + implicit_paint->y_offset;
+      paint->scale = implicit_paint->scale;
     }
   else
     {
+      paint->scale = 1;
       paint->uses_implicit = FALSE;
       paint->x_offset = clip_box.x;
       paint->y_offset = clip_box.y;
@@ -3043,8 +3262,12 @@ gdk_window_begin_paint_region (GdkWindow       *window,
   paint->surface = _gdk_drawable_ref_cairo_surface (paint->pixmap);
 
   if (paint->surface)
-    cairo_surface_set_device_offset (paint->surface,
-				     -paint->x_offset, -paint->y_offset);
+    {
+      cairo_surface_set_device_scale (paint->surface, paint->scale, paint->scale);
+      cairo_surface_set_device_offset (paint->surface,
+				       -paint->x_offset * paint->scale,
+				       -paint->y_offset * paint->scale);
+    }
 
   for (list = private->paint_stack; list != NULL; list = list->next)
     {
@@ -3935,6 +4158,55 @@ gdk_window_create_gc (GdkDrawable     *drawable,
 				 values, mask);
 }
 
+/* While the current paint is dense, core X requests
+ * would land unscaled in the dense pixmap, so draw through cairo on the
+ * paint's (device-scaled) surface instead. Returns NULL when not dense. */
+static cairo_t *
+gdk_window_density_cairo (GdkDrawable *drawable,
+                     GdkGC       *gc)
+{
+  GdkWindowObject *private = (GdkWindowObject *) drawable;
+  GdkWindowPaint *paint;
+  cairo_t *cr;
+
+  if (!private->paint_stack)
+    return NULL;
+  paint = private->paint_stack->data;
+  if (paint->scale == 1)
+    return NULL;
+
+  cr = gdk_cairo_create (drawable);
+  if (gc)
+    {
+      GdkGCValues values;
+
+      _gdk_gc_update_context (gc, cr, NULL, NULL, TRUE, drawable);
+      gdk_gc_get_values (gc, &values);
+      cairo_set_line_width (cr, MAX (values.line_width, 1));
+    }
+  return cr;
+}
+
+/* X core thin lines run through pixel centers */
+static void
+gdk_window_density_stroke_points (cairo_t  *cr,
+                             GdkPoint *points,
+                             gint      npoints,
+                             gboolean  close)
+{
+  gint i;
+
+  for (i = 0; i < npoints; i++)
+    if (i == 0)
+      cairo_move_to (cr, points[i].x + 0.5, points[i].y + 0.5);
+    else
+      cairo_line_to (cr, points[i].x + 0.5, points[i].y + 0.5);
+  if (close)
+    cairo_close_path (cr);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+  cairo_stroke (cr);
+}
+
 static void
 gdk_window_draw_rectangle (GdkDrawable *drawable,
 			   GdkGC       *gc,
@@ -3944,8 +4216,26 @@ gdk_window_draw_rectangle (GdkDrawable *drawable,
 			   gint         width,
 			   gint         height)
 {
+  cairo_t *cr;
+
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      if (filled)
+        {
+          cairo_rectangle (cr, x, y, width, height);
+          cairo_fill (cr);
+        }
+      else
+        {
+          cairo_rectangle (cr, x + 0.5, y + 0.5, width, height);
+          cairo_stroke (cr);
+        }
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
   gdk_draw_rectangle (impl, gc, filled,
@@ -3964,8 +4254,37 @@ gdk_window_draw_arc (GdkDrawable *drawable,
 		     gint         angle1,
 		     gint         angle2)
 {
+  cairo_t *cr;
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      /* GDK angles: 1/64 degree, counterclockwise from 3 o'clock */
+      gdouble a1 = -angle1 / 64.0 * G_PI / 180, a2 = -(angle1 + angle2) / 64.0 * G_PI / 180;
+
+      cairo_save (cr);
+      if (filled)
+        cairo_translate (cr, x + width / 2.0, y + height / 2.0);
+      else
+        cairo_translate (cr, x + 0.5 + width / 2.0, y + 0.5 + height / 2.0);
+      cairo_scale (cr, MAX (width, 1) / 2.0, MAX (height, 1) / 2.0);
+      if (filled)
+        cairo_move_to (cr, 0, 0);
+      if (angle2 > 0)
+        cairo_arc_negative (cr, 0, 0, 1, a1, a2);
+      else
+        cairo_arc (cr, 0, 0, 1, a1, a2);
+      if (filled)
+        cairo_close_path (cr);
+      cairo_restore (cr);
+      if (filled)
+        cairo_fill (cr);
+      else
+        cairo_stroke (cr);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
   gdk_draw_arc (impl, gc, filled,
@@ -3981,10 +4300,27 @@ gdk_window_draw_polygon (GdkDrawable *drawable,
 			 GdkPoint    *points,
 			 gint         npoints)
 {
+  cairo_t *cr;
   GdkPoint *new_points;
 
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      if (filled)
+        {
+          gint i;
+
+          for (i = 0; i < npoints; i++)
+            cairo_line_to (cr, points[i].x, points[i].y);
+          cairo_fill (cr);
+        }
+      else
+        gdk_window_density_stroke_points (cr, points, npoints, TRUE);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
 
@@ -4082,6 +4418,11 @@ gdk_window_get_composite_drawable (GdkDrawable *drawable,
   *composite_y_offset = -private->abs_y;
 
   if ((GDK_IS_WINDOW (drawable) && GDK_WINDOW_DESTROYED (drawable)))
+    return g_object_ref (_gdk_drawable_get_source_drawable (drawable));
+
+  /* a dense paint pixmap is not at the window's scale: read the real
+   * window instead */
+  if (_gdk_window_get_density ((GdkWindow *) gdk_window_get_impl_window (private)) != 1)
     return g_object_ref (_gdk_drawable_get_source_drawable (drawable));
 
   /* See if any buffered part is overlapping the part we want
@@ -4242,10 +4583,24 @@ gdk_window_draw_drawable (GdkDrawable *drawable,
 			  gint         height,
 			  GdkDrawable *original_src)
 {
+  cairo_t *cr;
   GdkWindowObject *private = (GdkWindowObject *)drawable;
 
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      cairo_surface_t *surface = _gdk_drawable_ref_cairo_surface (src);
+
+      /* a 1× source comes out magnified, the best a copy can do */
+      cairo_set_source_surface (cr, surface, xdest - xsrc, ydest - ysrc);
+      cairo_rectangle (cr, xdest, ydest, width, height);
+      cairo_fill (cr);
+      cairo_destroy (cr);
+      cairo_surface_destroy (surface);
+      return;
+    }
 
   BEGIN_DRAW;
 
@@ -4325,10 +4680,22 @@ gdk_window_draw_points (GdkDrawable *drawable,
 			GdkPoint    *points,
 			gint         npoints)
 {
+  cairo_t *cr;
   GdkPoint *new_points;
 
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      gint i;
+
+      for (i = 0; i < npoints; i++)
+        cairo_rectangle (cr, points[i].x, points[i].y, 1, 1);
+      cairo_fill (cr);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
 
@@ -4360,10 +4727,26 @@ gdk_window_draw_segments (GdkDrawable *drawable,
 			  GdkSegment  *segs,
 			  gint         nsegs)
 {
+  cairo_t *cr;
   GdkSegment *new_segs;
 
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      gint i;
+
+      for (i = 0; i < nsegs; i++)
+        {
+          cairo_move_to (cr, segs[i].x1 + 0.5, segs[i].y1 + 0.5);
+          cairo_line_to (cr, segs[i].x2 + 0.5, segs[i].y2 + 0.5);
+        }
+      cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+      cairo_stroke (cr);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
 
@@ -4397,10 +4780,18 @@ gdk_window_draw_lines (GdkDrawable *drawable,
 		       GdkPoint    *points,
 		       gint         npoints)
 {
+  cairo_t *cr;
   GdkPoint *new_points;
 
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      gdk_window_density_stroke_points (cr, points, npoints, FALSE);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
 
@@ -4434,8 +4825,17 @@ gdk_window_draw_glyphs (GdkDrawable      *drawable,
 			gint              y,
 			PangoGlyphString *glyphs)
 {
+  cairo_t *cr;
   if (GDK_WINDOW_DESTROYED (drawable))
     return;
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      cairo_move_to (cr, x, y);
+      pango_cairo_show_glyph_string (cr, font, glyphs);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
   gdk_draw_glyphs (impl, gc, font,
@@ -4958,6 +5358,7 @@ gdk_window_draw_pixbuf (GdkDrawable     *drawable,
 			gint             y_dither)
 {
   GdkWindowObject *private = (GdkWindowObject *)drawable;
+  cairo_t *cr;
   GdkDrawableClass *klass;
 
   if (GDK_WINDOW_DESTROYED (drawable))
@@ -4967,6 +5368,15 @@ gdk_window_draw_pixbuf (GdkDrawable     *drawable,
      for window emulation, so use a scratch gc */
   if (!gc)
     gc = _gdk_drawable_get_scratch_gc (drawable, FALSE);
+
+  if ((cr = gdk_window_density_cairo (drawable, gc)))
+    {
+      gdk_cairo_set_source_pixbuf (cr, pixbuf, dest_x - src_x, dest_y - src_y);
+      cairo_rectangle (cr, dest_x, dest_y, width, height);
+      cairo_fill (cr);
+      cairo_destroy (cr);
+      return;
+    }
 
   BEGIN_DRAW;
 
@@ -7944,6 +8354,11 @@ gdk_window_scroll (GdkWindow *window,
     }
 
   _gdk_synthesize_crossing_events_for_geometry_change (window);
+
+  /* the copy only moved the real window's pixels: the dense pixmap needs
+   * all of it drawn again */
+  if (_gdk_window_get_density ((GdkWindow *) gdk_window_get_impl_window (private)) != 1)
+    gdk_window_invalidate_rect (window, NULL, TRUE);
 }
 
 /**
@@ -8004,6 +8419,11 @@ gdk_window_move_region (GdkWindow       *window,
 
   gdk_window_invalidate_region_full (window, nocopy_area, FALSE, CLEAR_BG_ALL);
   gdk_region_destroy (nocopy_area);
+
+  /* the copy only moved the real window's pixels: the dense pixmap needs
+   * all of it drawn again */
+  if (_gdk_window_get_density ((GdkWindow *) gdk_window_get_impl_window (private)) != 1)
+    gdk_window_invalidate_rect (window, NULL, TRUE);
 }
 
 /**

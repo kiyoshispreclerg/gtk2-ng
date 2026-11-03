@@ -216,4 +216,10 @@ extern gboolean          _gdk_synchronize;
 #define GDK_GC_DISPLAY(gc)            (GDK_SCREEN_DISPLAY (GDK_GC_X11(gc)->screen))
 #define GDK_WINDOW_IS_X11(win)        (GDK_IS_WINDOW_IMPL_X11 (((GdkWindowObject *)win)->impl))
 
+void _gdk_x11_density_init_screen     (GdkScreen      *screen);
+void _gdk_x11_density_property_notify (GdkWindow      *window,
+				       XPropertyEvent *xevent);
+void _gdk_x11_density_owner_change    (GdkScreen      *screen,
+				       Atom            selection);
+
 #endif /* __GDK_PRIVATE_X11_H__ */

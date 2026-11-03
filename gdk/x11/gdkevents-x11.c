@@ -1975,6 +1975,8 @@ gdk_event_translate (GdkDisplay *display,
           break;
         }
 
+      _gdk_x11_density_property_notify (window, &xevent->xproperty);
+
       /* We compare with the serial of the last time we mapped the
        * window to avoid refetching properties that we set ourselves
        */
@@ -2152,6 +2154,7 @@ gdk_event_translate (GdkDisplay *display,
 	  XFixesSelectionNotifyEvent *selection_notify = (XFixesSelectionNotifyEvent *)xevent;
 
 	  _gdk_x11_screen_process_owner_change (screen, xevent);
+	  _gdk_x11_density_owner_change (screen, selection_notify->selection);
 
 	  event->owner_change.type = GDK_OWNER_CHANGE;
 	  event->owner_change.window = window;
