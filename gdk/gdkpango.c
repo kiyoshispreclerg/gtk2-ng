@@ -226,6 +226,95 @@ get_cairo_context (GdkPangoRenderer *gdk_renderer,
   return priv->cr;
 }
 
+/* While a window renders at a higher density (X-DENSITY, the paint
+ * surface has a device scale), glyph positions still come from a layout
+ * done at 1×: with hinted metrics every advance is a whole 1× pixel, and
+ * at the higher density that shows as uneven letter spacing next to
+ * glyphs hinted for the finer grid. Returns a copy of @glyphs with the
+ * advances hinted for the density's grid, scaled so the run keeps its
+ * width and nothing around it moves, or %NULL when there is nothing to do.
+ */
+static PangoGlyphString *
+density_respace_glyphs (cairo_t          *cr,
+			PangoFont        *font,
+			PangoGlyphString *glyphs)
+{
+  cairo_scaled_font_t *scaled_font, *dense_font;
+  cairo_font_options_t *options;
+  cairo_matrix_t matrix, font_matrix, ctm;
+  PangoGlyphString *copy = NULL;
+  gdouble sx, sy, *advances, dense_width = 0, done = 0, factor;
+  gint64 width = 0;
+  gint i, placed = 0;
+
+  cairo_surface_get_device_scale (cairo_get_target (cr), &sx, &sy);
+  if (sx <= 1 || sx != sy || glyphs->num_glyphs == 0)
+    return NULL;
+
+  /* leave transformed text (a PangoMatrix) alone */
+  cairo_get_matrix (cr, &matrix);
+  if (matrix.xx != 1 || matrix.yy != 1 || matrix.xy != 0 || matrix.yx != 0)
+    return NULL;
+
+  if (!PANGO_IS_CAIRO_FONT (font))
+    return NULL;
+  scaled_font = pango_cairo_font_get_scaled_font (PANGO_CAIRO_FONT (font));
+  if (!scaled_font || cairo_scaled_font_status (scaled_font) != CAIRO_STATUS_SUCCESS)
+    return NULL;
+
+  /* the same font as seen through the density's device scale, which is
+   * the font cairo renders these glyphs with */
+  options = cairo_font_options_create ();
+  cairo_scaled_font_get_font_options (scaled_font, options);
+  cairo_scaled_font_get_font_matrix (scaled_font, &font_matrix);
+  cairo_scaled_font_get_ctm (scaled_font, &ctm);
+  cairo_matrix_scale (&ctm, sx, sy);
+  dense_font = cairo_scaled_font_create (cairo_scaled_font_get_font_face (scaled_font),
+					 &font_matrix, &ctm, options);
+  cairo_font_options_destroy (options);
+
+  advances = g_new (gdouble, glyphs->num_glyphs);
+  for (i = 0; i < glyphs->num_glyphs; i++)
+    {
+      PangoGlyphInfo *info = &glyphs->glyphs[i];
+
+      width += info->geometry.width;
+      if (info->geometry.width == 0 || info->glyph == PANGO_GLYPH_EMPTY ||
+	  (info->glyph & PANGO_GLYPH_UNKNOWN_FLAG))
+	advances[i] = info->geometry.width;
+      else
+	{
+	  cairo_glyph_t glyph = { info->glyph, 0, 0 };
+	  cairo_text_extents_t extents;
+
+	  cairo_scaled_font_glyph_extents (dense_font, &glyph, 1, &extents);
+	  advances[i] = extents.x_advance * PANGO_SCALE;
+	}
+      dense_width += advances[i];
+    }
+  cairo_scaled_font_destroy (dense_font);
+
+  /* letter spacing or justification widened the run: its spacing is not
+   * the font's to redo */
+  factor = dense_width > 0 ? width / dense_width : 0;
+  if (factor > 0.9 && factor < 1.1)
+    {
+      copy = pango_glyph_string_copy (glyphs);
+      for (i = 0; i < copy->num_glyphs; i++)
+	{
+	  gint end;
+
+	  done += advances[i] * factor;
+	  end = (gint) floor (done + 0.5);
+	  copy->glyphs[i].geometry.width = end - placed;
+	  placed = end;
+	}
+    }
+
+  g_free (advances);
+  return copy;
+}
+
 static void
 gdk_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 				PangoFont        *font,
@@ -235,10 +324,15 @@ gdk_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 {
   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+  PangoGlyphString *respaced;
   cairo_t *cr;
 
   cr = get_cairo_context (gdk_renderer,
 			  PANGO_RENDER_PART_FOREGROUND);
+
+  respaced = density_respace_glyphs (cr, font, glyphs);
+  if (respaced)
+    glyphs = respaced;
 
   if (priv->embossed)
     {
@@ -251,6 +345,9 @@ gdk_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 
   cairo_move_to (cr, (double)x / PANGO_SCALE, (double)y / PANGO_SCALE);
   pango_cairo_show_glyph_string (cr, font, glyphs);
+
+  if (respaced)
+    pango_glyph_string_free (respaced);
 }
 
 static void
