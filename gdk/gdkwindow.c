@@ -310,6 +310,59 @@ gdk_window_density_movable (gdouble scale,
   return is_integral (dx * scale) && is_integral (dy * scale);
 }
 
+/* The dense pixels that @region (logical coords) touches, rounded out so
+ * rectangles sharing an edge leave no gap */
+static GdkRegion *
+gdk_window_density_round_out (const GdkRegion *region,
+                              gdouble          s)
+{
+  GdkRegion *dense_region = gdk_region_new ();
+  GdkRectangle *rects;
+  gint i, n_rects;
+
+  gdk_region_get_rectangles (region, &rects, &n_rects);
+  for (i = 0; i < n_rects; i++)
+    {
+      GdkRectangle r;
+      gint x1 = ceil ((rects[i].x + rects[i].width) * s - 1e-6);
+      gint y1 = ceil ((rects[i].y + rects[i].height) * s - 1e-6);
+
+      r.x = floor (rects[i].x * s + 1e-6);
+      r.y = floor (rects[i].y * s + 1e-6);
+      r.width = x1 - r.x;
+      r.height = y1 - r.y;
+      if (r.width > 0 && r.height > 0)
+        gdk_region_union_with_rect (dense_region, &r);
+    }
+  g_free (rects);
+
+  return dense_region;
+}
+
+/* The dense pixels that lie entirely inside @region (logical coords) as
+ * far as a @width x @height window goes: the ones no other part of the
+ * window touches */
+static GdkRegion *
+gdk_window_density_round_in (const GdkRegion *region,
+                             gdouble          s,
+                             gint             width,
+                             gint             height)
+{
+  GdkRegion *dense_region, *outside, *dense_outside;
+  GdkRectangle rect = { 0, 0, width, height };
+
+  outside = gdk_region_rectangle (&rect);
+  gdk_region_subtract (outside, region);
+
+  dense_region = gdk_window_density_round_out (region, s);
+  dense_outside = gdk_window_density_round_out (outside, s);
+  gdk_region_subtract (dense_region, dense_outside);
+  gdk_region_destroy (dense_outside);
+  gdk_region_destroy (outside);
+
+  return dense_region;
+}
+
 /* Mirror on the dense pixmap a move of the real window's bits: @dest_region
  * (impl window coords) gets what was at @dest_region - (@dx, @dy). At a
  * fractional scale the edges of the region fall inside dense pixels that
@@ -323,32 +376,15 @@ gdk_window_density_move (GdkWindowObject *impl_window,
 {
   GdkWindowDensity *density = gdk_window_get_density_state ((GdkWindow *) impl_window);
   GdkRegion *dense_region, *moved;
-  GdkRectangle *rects, box;
+  GdkRectangle box;
   GdkGC *gc;
   gdouble s;
-  gint i, n_rects;
 
   if (!density || !gdk_window_density_movable (density->scale, dx, dy))
     return;
   s = density->scale;
 
-  dense_region = gdk_region_new ();
-  gdk_region_get_rectangles (dest_region, &rects, &n_rects);
-  for (i = 0; i < n_rects; i++)
-    {
-      /* rounded out, so rectangles sharing an edge leave no gap */
-      GdkRectangle r;
-      gint x1 = ceil ((rects[i].x + rects[i].width) * s - 1e-6);
-      gint y1 = ceil ((rects[i].y + rects[i].height) * s - 1e-6);
-
-      r.x = floor (rects[i].x * s + 1e-6);
-      r.y = floor (rects[i].y * s + 1e-6);
-      r.width = x1 - r.x;
-      r.height = y1 - r.y;
-      if (r.width > 0 && r.height > 0)
-        gdk_region_union_with_rect (dense_region, &r);
-    }
-  g_free (rects);
+  dense_region = gdk_window_density_round_out (dest_region, s);
 
   if (!gdk_region_empty (dense_region))
     {
@@ -3145,6 +3181,7 @@ gdk_window_density_push (GdkWindowObject *private,
 {
   GdkWindow *window = (GdkWindow *) private;
   GdkWindowDensity *density = gdk_window_get_density_state (window);
+  GdkRegion *dense_region;
   cairo_surface_t *src, *dst;
   cairo_t *cr;
   gdouble s = paint->scale;
@@ -3167,12 +3204,17 @@ gdk_window_density_push (GdkWindowObject *private,
       if (dw != MAX ((gint) ceil (width * s), 1) || dh != MAX ((gint) ceil (height * s), 1))
         gdk_window_density_alloc (window, density);
 
+      /* Only the dense pixels wholly inside @region: one that it covers
+       * in part was drawn in part too (antialiased clip, on a pixmap whose
+       * other part is undefined), and pushing it would mix that into what
+       * was there. impl_window_add_update_area grew the area so that the
+       * ones it was asked for are still all in. */
+      dense_region = gdk_window_density_round_in (region, s, width, height);
       dst = _gdk_drawable_ref_cairo_surface (density->pixmap);
       cr = cairo_create (dst);
-      cairo_scale (cr, s, s);
-      gdk_cairo_region (cr, region);
+      gdk_cairo_region (cr, dense_region);
       cairo_clip (cr);
-      cairo_identity_matrix (cr);
+      gdk_region_destroy (dense_region);
       cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
       cairo_set_source_surface (cr, src, paint->x_offset * s, paint->y_offset * s);
       cairo_paint (cr);
@@ -6513,6 +6555,25 @@ static void
 impl_window_add_update_area (GdkWindowObject *impl_window,
 			     GdkRegion *region)
 {
+  gdouble s = _gdk_window_get_density ((GdkWindow *) impl_window);
+  GdkRegion *grown = NULL;
+
+  /* At a fractional density the edges of @region fall inside dense pixels
+   * shared with what is around it, which gdk_window_density_push leaves
+   * alone. 1 px more on each side is more than a dense pixel, so those
+   * get drawn whole. */
+  if (!is_integral (s))
+    {
+      GdkRectangle rect = { 0, 0, impl_window->width, impl_window->height };
+      GdkRegion *window_region = gdk_region_rectangle (&rect);
+
+      grown = gdk_region_copy (region);
+      gdk_region_shrink (grown, -1, -1);
+      gdk_region_intersect (grown, window_region);
+      gdk_region_destroy (window_region);
+      region = grown;
+    }
+
   if (impl_window->update_area)
     gdk_region_union (impl_window->update_area, region);
   else
@@ -6521,6 +6582,9 @@ impl_window_add_update_area (GdkWindowObject *impl_window,
       impl_window->update_area = gdk_region_copy (region);
       gdk_window_schedule_update ((GdkWindow *)impl_window);
     }
+
+  if (grown)
+    gdk_region_destroy (grown);
 }
 
 /* clear_bg controls if the region will be cleared to
