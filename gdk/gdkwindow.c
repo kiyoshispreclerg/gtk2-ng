@@ -8150,7 +8150,7 @@ gdk_window_move_resize_internal (GdkWindow *window,
 				 gint       height)
 {
   GdkWindowObject *private;
-  GdkRegion *old_region, *new_region, *copy_area;
+  GdkRegion *old_region, *new_region, *copy_area, *dense_area;
   GdkRegion *old_native_child_region, *new_native_child_region;
   GdkWindowObject *impl_window;
   GdkWindowImplIface *impl_iface;
@@ -8304,6 +8304,9 @@ gdk_window_move_resize_internal (GdkWindow *window,
 
       gdk_region_subtract (new_region, copy_area);
 
+      /* still in parent coords, for gdk_window_density_scrolled */
+      dense_area = (dx || dy) ? gdk_region_copy (copy_area) : NULL;
+
       /* Convert old region to impl coords */
       gdk_region_offset (old_region, -dx + private->abs_x - private->x, -dy + private->abs_y - private->y);
 
@@ -8328,6 +8331,12 @@ gdk_window_move_resize_internal (GdkWindow *window,
 
       gdk_region_destroy (old_region);
       gdk_region_destroy (new_region);
+
+      if (dense_area)
+	{
+	  gdk_window_density_scrolled (private->parent, dense_area, dx, dy);
+	  gdk_region_destroy (dense_area);
+	}
     }
 
   if (old_native_child_region)
