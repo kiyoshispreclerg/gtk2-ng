@@ -3244,10 +3244,18 @@ gdk_window_density_push (GdkWindowObject *private,
 
   cairo_surface_destroy (src);
 
-  /* contents first, announcement after (X-DENSITY.md 4) */
+  /* contents first, announcement after (X-DENSITY.md 4); complete once
+   * what can be seen is drawn: the clip region leaves out what a shape
+   * cuts away (rounded menu corners), which is never painted */
   if (density && density->scale == s && density->pushed)
-    density->pushed (window, density->pixmap,
-                     gdk_region_empty (density->pending), density->data);
+    {
+      GdkRegion *visible_pending = gdk_region_copy (density->pending);
+
+      gdk_region_intersect (visible_pending, private->clip_region);
+      density->pushed (window, density->pixmap,
+                       gdk_region_empty (visible_pending), density->data);
+      gdk_region_destroy (visible_pending);
+    }
 }
 
 /* Ensure that all content related to this (sub)window is pushed to the
