@@ -200,7 +200,7 @@ density_set_passthrough (GdkWindow       *window,
   g_free (rects);
 }
 
-static void
+static gboolean
 density_pushed (GdkWindow       *window,
                 GdkPixmap       *pixmap,
                 gboolean         complete,
@@ -209,11 +209,21 @@ density_pushed (GdkWindow       *window,
 {
   DensityX11 *density = g_object_get_qdata (G_OBJECT (window), quark_density_x11);
   glong values[2];
+  gboolean shown;
+
+  if (!density || GDK_WINDOW_DESTROYED (window))
+    return FALSE;
+
+  /* not "after announcing": the push that completes the first pixmap
+   * still has to reach the window, as the ones before it may have been
+   * partial */
+  shown = density->announced != NULL;
 
   /* a freshly (re)allocated pixmap is only announced once all of the
-   * window has been drawn into it */
-  if (!density || !complete || GDK_WINDOW_DESTROYED (window))
-    return;
+   * window has been drawn into it; after a resize, the compositor shows
+   * the previous one meanwhile */
+  if (!complete)
+    return shown;
 
   /* before the pixmap's PropertyNotify, so the compositor sees both
    * together */
@@ -235,6 +245,8 @@ density_pushed (GdkWindow       *window,
         g_object_unref (density->announced);
       density->announced = g_object_ref (pixmap);
     }
+
+  return shown;
 }
 
 /* Bring the window's density in line with its request and the manager */

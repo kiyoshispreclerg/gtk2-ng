@@ -3188,11 +3188,12 @@ static GdkRegion *collect_native_child_region (GdkWindowObject *window,
  * (rounded menu corners), and native children (an embedded video player,
  * anything given an XID) draw into their own X window, never into the
  * pixmap, so the backend hands their area over as passthrough. */
-static void
+static gboolean
 gdk_window_density_announce (GdkWindowObject  *private,
                              GdkWindowDensity *density)
 {
   GdkRegion *passthrough, *visible_pending;
+  gboolean shown;
 
   passthrough = collect_native_child_region (private, FALSE);
   if (!passthrough)
@@ -3206,10 +3207,12 @@ gdk_window_density_announce (GdkWindowObject  *private,
     gdk_region_destroy (density->passthrough);
   density->passthrough = passthrough;
 
-  density->pushed ((GdkWindow *) private, density->pixmap,
-                   gdk_region_empty (visible_pending), passthrough,
-                   density->data);
+  shown = density->pushed ((GdkWindow *) private, density->pixmap,
+                           gdk_region_empty (visible_pending), passthrough,
+                           density->data);
   gdk_region_destroy (visible_pending);
+
+  return shown;
 }
 
 static gboolean
@@ -3268,6 +3271,7 @@ gdk_window_density_push (GdkWindowObject *private,
   cairo_surface_t *src, *dst;
   cairo_t *cr;
   gdouble s = paint->scale;
+  gboolean shown = FALSE;
 
   src = _gdk_drawable_ref_cairo_surface (paint->pixmap);
   /* begin_paint_region left a subwindow's offset and scale on this surface */
@@ -3305,31 +3309,37 @@ gdk_window_density_push (GdkWindowObject *private,
       cairo_surface_destroy (dst);
 
       gdk_region_subtract (density->pending, region);
+
+      /* contents first, announcement after (X-DENSITY.md 4) */
+      if (density->pushed)
+        shown = gdk_window_density_announce (private, density);
     }
 
-  dst = _gdk_drawable_ref_cairo_surface (private->impl);
-  cr = cairo_create (dst);
-  gdk_cairo_region (cr, region);
-  cairo_clip (cr);
-  cairo_translate (cr, paint->x_offset, paint->y_offset);
-  cairo_scale (cr, 1 / s, 1 / s);
-  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface (cr, src, 0, 0);
-  /* the compositor shows the dense pixmap meanwhile, not this copy;
-   * pixman's GOOD filter gets expensive past 1/2 (a full redraw at 3×
-   * took 4× longer with it), while bilinear is already a 2×2 average at
-   * exactly 1/2 */
-  cairo_pattern_set_filter (cairo_get_source (cr),
-                            s <= 2 ? CAIRO_FILTER_GOOD : CAIRO_FILTER_BILINEAR);
-  cairo_paint (cr);
-  cairo_destroy (cr);
-  cairo_surface_destroy (dst);
+  /* While the compositor shows the dense pixmap, keeping the window up to
+   * date is wasted work: it gets drawn again when density goes back to 1.
+   * Until then it holds what it had (for screenshots of the window, or a
+   * compositor that unredirects it). */
+  if (!shown)
+    {
+      dst = _gdk_drawable_ref_cairo_surface (private->impl);
+      cr = cairo_create (dst);
+      gdk_cairo_region (cr, region);
+      cairo_clip (cr);
+      cairo_translate (cr, paint->x_offset, paint->y_offset);
+      cairo_scale (cr, 1 / s, 1 / s);
+      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+      cairo_set_source_surface (cr, src, 0, 0);
+      /* pixman's GOOD filter gets expensive past 1/2 (a full redraw at 3×
+       * took 4× longer with it), while bilinear is already a 2×2 average
+       * at exactly 1/2 */
+      cairo_pattern_set_filter (cairo_get_source (cr),
+                                s <= 2 ? CAIRO_FILTER_GOOD : CAIRO_FILTER_BILINEAR);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+      cairo_surface_destroy (dst);
+    }
 
   cairo_surface_destroy (src);
-
-  /* contents first, announcement after (X-DENSITY.md 4) */
-  if (density && density->scale == s && density->pushed)
-    gdk_window_density_announce (private, density);
 }
 
 /* Ensure that all content related to this (sub)window is pushed to the
