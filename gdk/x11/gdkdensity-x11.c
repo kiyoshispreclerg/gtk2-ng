@@ -25,6 +25,9 @@
  *   _X_DENSITY_REQUESTED [num, den]  compositor -> client
  *   _X_DENSITY_SCALE     [num, den]  client -> compositor, density in effect
  *   _X_DENSITY_PIXMAP    [xid]       client -> compositor, the dense pixmap
+ *   _X_DENSITY_PASSTHROUGH [x, y, w, h]...  client -> compositor, areas
+ *                        missing from the pixmap (native children), to be
+ *                        shown from the real window instead
  * and a manager selection, _X_DENSITY_MANAGER_S<screen>, owned by a
  * compositor while it consumes the protocol. Without an owner, density is
  * ignored altogether, _X_DENSITY_REQUESTED included.
@@ -62,6 +65,7 @@ typedef struct
   gint num, den;         /* density in effect, 1/1 when none */
   GdkPixmap *announced;  /* pixmap published in _X_DENSITY_PIXMAP, kept
                           * alive until a new one replaces it */
+  GdkRegion *passthrough; /* published in _X_DENSITY_PASSTHROUGH */
 } DensityX11;
 
 static GQuark quark_density_x11;
@@ -138,16 +142,70 @@ density_x11_free (gpointer data)
 
   if (density->announced)
     g_object_unref (density->announced);
+  if (density->passthrough)
+    gdk_region_destroy (density->passthrough);
   g_free (density);
 }
 
 /* New contents landed in the dense pixmap (after the drawing requests,
  * so the properties below reach the server after the contents) */
 static void
-density_pushed (GdkWindow *window,
-                GdkPixmap *pixmap,
-                gboolean   complete,
-                gpointer   data)
+density_delete_property (GdkWindow   *window,
+                         const gchar *property)
+{
+  XDeleteProperty (GDK_WINDOW_XDISPLAY (window), GDK_WINDOW_XID (window),
+                   gdk_x11_get_xatom_by_name_for_display (gdk_drawable_get_display (window),
+                                                          property));
+}
+
+/* _X_DENSITY_PASSTHROUGH [x, y, width, height]...: where the pixmap has
+ * nothing and the compositor shows the real window, scaled, instead
+ * (native children: an embedded video player and the like) */
+static void
+density_set_passthrough (GdkWindow       *window,
+                         DensityX11      *density,
+                         const GdkRegion *passthrough)
+{
+  GdkRectangle *rects;
+  glong *values;
+  gint i, n_rects;
+
+  if (density->passthrough && gdk_region_equal (density->passthrough, passthrough))
+    return;
+  if (!density->passthrough && gdk_region_empty (passthrough))
+    return;
+
+  if (density->passthrough)
+    gdk_region_destroy (density->passthrough);
+  density->passthrough = NULL;
+
+  if (gdk_region_empty (passthrough))
+    {
+      density_delete_property (window, "_X_DENSITY_PASSTHROUGH");
+      return;
+    }
+  density->passthrough = gdk_region_copy (passthrough);
+
+  gdk_region_get_rectangles (passthrough, &rects, &n_rects);
+  values = g_new (glong, 4 * n_rects);
+  for (i = 0; i < n_rects; i++)
+    {
+      values[4 * i] = rects[i].x;
+      values[4 * i + 1] = rects[i].y;
+      values[4 * i + 2] = rects[i].width;
+      values[4 * i + 3] = rects[i].height;
+    }
+  density_set_cardinals (window, "_X_DENSITY_PASSTHROUGH", values, 4 * n_rects);
+  g_free (values);
+  g_free (rects);
+}
+
+static void
+density_pushed (GdkWindow       *window,
+                GdkPixmap       *pixmap,
+                gboolean         complete,
+                const GdkRegion *passthrough,
+                gpointer         data)
 {
   DensityX11 *density = g_object_get_qdata (G_OBJECT (window), quark_density_x11);
   glong values[2];
@@ -156,6 +214,10 @@ density_pushed (GdkWindow *window,
    * window has been drawn into it */
   if (!density || !complete || GDK_WINDOW_DESTROYED (window))
     return;
+
+  /* before the pixmap's PropertyNotify, so the compositor sees both
+   * together */
+  density_set_passthrough (window, density, passthrough);
 
   /* a Pixmap raises no Damage of its own: rewriting the property with the
    * same XID is the compositor's "new frame" signal (X-DENSITY.md 4) */
@@ -202,9 +264,9 @@ density_update_window (GdkWindow *window)
       /* draw into the real window again before dropping the pixmap */
       _gdk_window_set_density (window, 1, NULL, NULL);
       gdk_error_trap_push ();
-      XDeleteProperty (GDK_WINDOW_XDISPLAY (window), GDK_WINDOW_XID (window),
-                       gdk_x11_get_xatom_by_name_for_display (gdk_drawable_get_display (window),
-                                                              "_X_DENSITY_PIXMAP"));
+      density_delete_property (window, "_X_DENSITY_PIXMAP");
+      if (density->passthrough)
+        density_delete_property (window, "_X_DENSITY_PASSTHROUGH");
       density_set_cardinals (window, "_X_DENSITY_SCALE", values, 2);
       gdk_error_trap_pop ();
       g_object_set_qdata (G_OBJECT (window), quark_density_x11, NULL);

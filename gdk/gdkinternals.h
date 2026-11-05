@@ -370,10 +370,13 @@ void _gdk_gc_update_context (GdkGC          *gc,
 			     gboolean        gc_changed,
 			     GdkDrawable    *target_drawable);
 
-typedef void (*GdkWindowDensityFunc) (GdkWindow *window,
-				      GdkPixmap *pixmap,
-				      gboolean   complete,
-				      gpointer   data);
+/* @passthrough: the area of native child windows (window coords), which
+ * draw into their own X window and so are missing from @pixmap */
+typedef void (*GdkWindowDensityFunc) (GdkWindow       *window,
+				      GdkPixmap       *pixmap,
+				      gboolean         complete,
+				      const GdkRegion *passthrough,
+				      gpointer         data);
 
 void    _gdk_window_set_density (GdkWindow            *window,
 				 gdouble               scale,

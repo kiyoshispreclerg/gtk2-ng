@@ -166,11 +166,15 @@ typedef struct
   GdkRegion *pending;   /* window area not drawn into pixmap since it was allocated */
   GdkRegion *edges;     /* scroll edges to draw again once scrolling stops */
   guint edges_source;
+  GdkRegion *passthrough; /* native children last told to pushed */
+  guint children_source;
   GdkWindowDensityFunc pushed;
   gpointer data;
 } GdkWindowDensity;
 
 static GQuark quark_density;
+
+static void gdk_window_density_children_changed (GdkWindowObject *private);
 
 static GdkWindowDensity *
 gdk_window_get_density_state (GdkWindow *window)
@@ -193,6 +197,10 @@ gdk_window_density_free (gpointer data)
     gdk_region_destroy (density->edges);
   if (density->edges_source)
     g_source_remove (density->edges_source);
+  if (density->passthrough)
+    gdk_region_destroy (density->passthrough);
+  if (density->children_source)
+    g_source_remove (density->children_source);
   g_free (density);
 }
 
@@ -1445,6 +1453,7 @@ recompute_visible_regions (GdkWindowObject *private,
 				      TRUE,
 				      recalculate_siblings,
 				      recalculate_children);
+  gdk_window_density_children_changed (private);
 }
 
 void
@@ -3171,6 +3180,80 @@ gdk_window_begin_implicit_paint (GdkWindow *window, GdkRectangle *rect)
   return TRUE;
 }
 
+static GdkRegion *collect_native_child_region (GdkWindowObject *window,
+					      gboolean         include_this);
+
+/* Tell the backend about the dense pixmap. It is complete once what can be
+ * seen is drawn: the clip region leaves out what a shape cuts away
+ * (rounded menu corners), and native children (an embedded video player,
+ * anything given an XID) draw into their own X window, never into the
+ * pixmap, so the backend hands their area over as passthrough. */
+static void
+gdk_window_density_announce (GdkWindowObject  *private,
+                             GdkWindowDensity *density)
+{
+  GdkRegion *passthrough, *visible_pending;
+
+  passthrough = collect_native_child_region (private, FALSE);
+  if (!passthrough)
+    passthrough = gdk_region_new ();
+
+  visible_pending = gdk_region_copy (density->pending);
+  gdk_region_intersect (visible_pending, private->clip_region);
+  gdk_region_subtract (visible_pending, passthrough);
+
+  if (density->passthrough)
+    gdk_region_destroy (density->passthrough);
+  density->passthrough = passthrough;
+
+  density->pushed ((GdkWindow *) private, density->pixmap,
+                   gdk_region_empty (visible_pending), passthrough,
+                   density->data);
+  gdk_region_destroy (visible_pending);
+}
+
+static gboolean
+gdk_window_density_children_idle (gpointer data)
+{
+  GdkWindowObject *private = data;
+  GdkWindowDensity *density = gdk_window_get_density_state ((GdkWindow *) private);
+  GdkRegion *passthrough;
+
+  if (!density)
+    return FALSE;
+  density->children_source = 0;
+
+  if (GDK_WINDOW_DESTROYED (private) || !density->pushed)
+    return FALSE;
+
+  passthrough = collect_native_child_region (private, FALSE);
+  if (!passthrough)
+    passthrough = gdk_region_new ();
+  if (!density->passthrough || !gdk_region_equal (passthrough, density->passthrough))
+    gdk_window_density_announce (private, density);
+  gdk_region_destroy (passthrough);
+
+  return FALSE;
+}
+
+/* The windows inside @private's toplevel moved around: a native child may
+ * have been mapped, moved or gone, with nothing drawn that would tell the
+ * backend */
+static void
+gdk_window_density_children_changed (GdkWindowObject *private)
+{
+  GdkWindowObject *toplevel;
+  GdkWindowDensity *density;
+
+  if (!quark_density || private->window_type == GDK_WINDOW_ROOT)
+    return;
+  toplevel = (GdkWindowObject *) gdk_window_get_toplevel ((GdkWindow *) private);
+  density = gdk_window_get_density_state ((GdkWindow *) toplevel);
+  if (density && density->pushed && !density->children_source)
+    density->children_source = gdk_threads_add_idle (gdk_window_density_children_idle,
+                                                     toplevel);
+}
+
 /* Push @region (impl window coords) of a scaled implicit paint: copy it
  * 1:1 into the window's dense pixmap, and downscale it into the real
  * window, which keeps working as a normal window meanwhile. */
@@ -3244,18 +3327,9 @@ gdk_window_density_push (GdkWindowObject *private,
 
   cairo_surface_destroy (src);
 
-  /* contents first, announcement after (X-DENSITY.md 4); complete once
-   * what can be seen is drawn: the clip region leaves out what a shape
-   * cuts away (rounded menu corners), which is never painted */
+  /* contents first, announcement after (X-DENSITY.md 4) */
   if (density && density->scale == s && density->pushed)
-    {
-      GdkRegion *visible_pending = gdk_region_copy (density->pending);
-
-      gdk_region_intersect (visible_pending, private->clip_region);
-      density->pushed (window, density->pixmap,
-                       gdk_region_empty (visible_pending), density->data);
-      gdk_region_destroy (visible_pending);
-    }
+    gdk_window_density_announce (private, density);
 }
 
 /* Ensure that all content related to this (sub)window is pushed to the
