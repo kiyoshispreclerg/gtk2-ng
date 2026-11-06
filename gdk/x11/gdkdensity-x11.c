@@ -229,13 +229,14 @@ density_pushed (GdkWindow       *window,
    * together */
   density_set_passthrough (window, density, passthrough);
 
-  /* a Pixmap raises no Damage of its own: rewriting the property with the
-   * same XID is the compositor's "new frame" signal (X-DENSITY.md 4) */
-  values[0] = GDK_PIXMAP_XID (pixmap);
-  density_set_cardinals (window, "_X_DENSITY_PIXMAP", values, 1);
-
+  /* Announced once per pixmap. Its later frames need no word from here:
+   * they are drawn with requests the server sees, and the compositor
+   * follows them with Damage on the pixmap (X-DENSITY.md 4) */
   if (density->announced != pixmap)
     {
+      values[0] = GDK_PIXMAP_XID (pixmap);
+      density_set_cardinals (window, "_X_DENSITY_PIXMAP", values, 1);
+
       values[0] = density->num;
       values[1] = density->den;
       density_set_cardinals (window, "_X_DENSITY_SCALE", values, 2);
